@@ -35,6 +35,13 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Links\Cad-Projects - Especialistas en Proyectos y Cad - Recursos - Curso de Dibujo Técnico - Curvas Espirales - Espiral clotoide.URL" />
+    <None Include="Links\Clotoides - MDT - Manual de Referencia.URL" />
+    <None Include="Links\Curso gratis de Geometría - Calcular la longitud de un arco de Circunferencia AulaFacil.com Los mejores cursos gratis online.URL" />
+    <None Include="Links\Integrales de Feesnel.URL" />
+    <None Include="Links\The Clothoid.URL" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
