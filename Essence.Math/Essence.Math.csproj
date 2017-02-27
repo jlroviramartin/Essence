@@ -62,62 +62,6 @@
     <Compile Include="FileUtils.cs" />
     <Compile Include="IDisposableEx.cs" />
     <Compile Include="Double\MathUtils.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\DifferentiableUnivariateFunction.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\ConvergenceException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\DimensionMismatchException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\MathArithmeticException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\MathIllegalArgumentException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\MathIllegalNumberException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\MathIllegalStateException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\MathInternalError.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\MaxCountExceededException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\NoBracketingException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\NoDataException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\NonMonotonicSequenceException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\NotPositiveException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\NotStrictlyPositiveException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\NumberIsTooLargeException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\NumberIsTooSmallException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\exception\TooManyEvaluationsException.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\BaseAbstractUnivariateIntegrator.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\gauss\BaseRuleFactory.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\gauss\GaussIntegrator.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\gauss\GaussIntegratorFactory.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\gauss\HermiteRuleFactory.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\gauss\LegendreRuleFactory.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\gauss\SymmetricGaussIntegrator.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\IterativeLegendreGaussIntegrator.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\LegendreGaussIntegrator.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\MidPointIntegrator.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\RombergIntegrator.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\SimpsonIntegrator.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\TrapezoidIntegrator.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\integration\UnivariateIntegrator.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\AbstractDifferentiableUnivariateSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\AbstractUnivariateSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\AllowedSolution.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\BaseAbstractUnivariateSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\BaseSecantSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\BaseUnivariateSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\BisectionSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\BracketedUnivariateSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\BracketingNthOrderBrentSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\BrentSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\DifferentiableUnivariateSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\IllinoisSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\MullerSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\MullerSolver2.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\NewtonSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\PegasusSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\RegulaFalsiSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\RiddersSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\SecantSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\UnivariateSolver.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\solvers\UnivariateSolverUtils.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\UnivariateFunction.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\util\Incrementor.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\util\MathArrays.cs" />
-    <Compile Include="org.apache.commons.math3\analysis\util\MyUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Double\VecMath.cs" />
@@ -127,7 +71,12 @@
   <ItemGroup>
     <Compile Include="Double\MathUtils.Clothoid.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\org.apache.commons.math3\org.apache.commons.math3.csproj">
+      <Project>{dff459dc-5096-4dfd-ac21-d23d39a422b5}</Project>
+      <Name>org.apache.commons.math3</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

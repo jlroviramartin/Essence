@@ -8,14 +8,6 @@ namespace Essence.Math
     {
         static void Main(string[] args)
         {
-            new MathUtilsTest().Test1();
-            new MathUtilsTest().Test3();
-
-            new MathUtilsTest().Test2();
-
-            new ClothoidArc2dTest().Test1();
-            //new ClothoidArc2dTest().Test2();
-            new ClothoidArc2dTest().Test7();
         }
     }
 

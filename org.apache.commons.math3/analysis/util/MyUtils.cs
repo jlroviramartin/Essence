@@ -1,5 +1,4 @@
 ﻿using System;
-using Essence.Math.Double;
 
 namespace org.apache.commons.math3.analysis.util
 {
