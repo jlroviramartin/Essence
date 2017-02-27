@@ -1,0 +1,7 @@
+.vs/
+**/*.user
+**/*.DotSettings.user
+packages/
+**/obj/
+**/bin/
+
