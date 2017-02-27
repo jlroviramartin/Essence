@@ -1,15 +1,17 @@
-﻿using System.Diagnostics.Contracts;
-using System.IO;
+﻿using System.IO;
 using Essence.Math.Double;
 using Essence.Math.Double.Curves;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SysMath = System.Math;
 
 namespace Essence.Math
 {
+    [TestClass]
     public class ClothoidArc2dTest
     {
         private const double ERROR = 1e-5;
 
+        [TestMethod]
         public void Test1()
         {
             for (double a = 0.5; a < 10; a += 0.5)
@@ -33,19 +35,20 @@ namespace Essence.Math
                         double l_v2 = MathUtils.FindTangent(invertY, a, angle);
 
                         // Se comprueba que las busquedas de tangente sean equivalentes.
-                        Contract.Assert(l.EpsilonEquals(l_v2));
+                        Assert.IsTrue(l.EpsilonEquals(l_v2));
 
                         // Se comprueba que la solucion corresponde con el vector tangente.
                         Vec2d d_pos = MathUtils.DClotho(l, invertY, a);
-                        Contract.Assert(d_pos.Cross(v).EpsilonEquals(0));
+                        Assert.IsTrue(d_pos.Cross(v).EpsilonEquals(0));
 
                         Vec2d d_neg = MathUtils.DClotho(-l, invertY, a);
-                        Contract.Assert(d_neg.Cross(v).EpsilonEquals(0));
+                        Assert.IsTrue(d_neg.Cross(v).EpsilonEquals(0));
                     }
                 }
             }
         }
 
+        [TestMethod]
         public void Test2()
         {
             double a = 10;
@@ -84,6 +87,7 @@ namespace Essence.Math
             }
         }
 
+        [TestMethod]
         public void Test7()
         {
             bool toWavefront = false;
@@ -147,12 +151,12 @@ namespace Essence.Math
 
             ClothoidArc2 arc = new ClothoidArc2(l0, p0, p1, r0, r1);
 
-            Contract.Assert(arc.Point0.EpsilonEquals(p0, ERROR));
-            Contract.Assert(arc.Point1.EpsilonEquals(p1, ERROR));
-            Contract.Assert(arc.GetRadius(arc.TMin).EpsilonEquals(r0, ERROR));
-            Contract.Assert(arc.GetRadius(arc.TMax).EpsilonEquals(r1, ERROR));
-            Contract.Assert(arc.InvertY == invertY);
-            Contract.Assert(arc.A.EpsilonEquals(a, ERROR));
+            Assert.IsTrue(arc.Point0.EpsilonEquals(p0, ERROR));
+            Assert.IsTrue(arc.Point1.EpsilonEquals(p1, ERROR));
+            Assert.IsTrue(arc.GetRadius(arc.TMin).EpsilonEquals(r0, ERROR));
+            Assert.IsTrue(arc.GetRadius(arc.TMax).EpsilonEquals(r1, ERROR));
+            Assert.IsTrue(arc.InvertY == invertY);
+            Assert.IsTrue(arc.A.EpsilonEquals(a, ERROR));
 
             // Salida por fichero de la prueba.
             if ((fileName != null) && toWavefront)
@@ -186,7 +190,7 @@ namespace Essence.Math
             }
         }
 
-        private readonly VecMath<double, DoubleMath, Vec2d, Vec2dFactory> vecMath = VecMath<double, DoubleMath, Vec2d, Vec2dFactory>.Instance;
+        private static readonly VecMath<double, DoubleMath, Vec2d, Vec2dFactory> vecMath = VecMath<double, DoubleMath, Vec2d, Vec2dFactory>.Instance;
     }
 }
 

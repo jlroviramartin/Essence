@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using Essence.Math.Double;
+﻿using Essence.Math.Double;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SysMath = System.Math;
 
 namespace Essence.Math
 {
+    [TestClass]
     public partial class MathUtilsTest
     {
         /// <summary>Radio apartir del cual se considera una recta.</summary>
         private const double RRECTA = 1e20;
 
+        [TestMethod]
         public void Test1()
         {
             const double error = 1e-8;
@@ -41,15 +41,16 @@ namespace Essence.Math
                 double tg2 = MathUtils.ClothoTangent(s, r < 0, a);
                 double direction2 = MathUtils.ClothoTangent(s, r < 0, a);
 
-                Contract.Assert(x.EpsilonEquals(x2, error));
-                Contract.Assert(y.EpsilonEquals(y2, error));
-                Contract.Assert((double.IsInfinity(radio) && double.IsInfinity(radio2)) || radio.EpsilonEquals(radio2, error));
-                //Contract.Assert(AngleUtils.Ensure0To2Pi(normal).EpsilonEquals(AngleUtils.Ensure0To2Pi(normal2), error));
+                Assert.IsTrue(x.EpsilonEquals(x2, error));
+                Assert.IsTrue(y.EpsilonEquals(y2, error));
+                Assert.IsTrue((double.IsInfinity(radio) && double.IsInfinity(radio2)) || radio.EpsilonEquals(radio2, error));
+                //Assert.IsTrue(AngleUtils.Ensure0To2Pi(normal).EpsilonEquals(AngleUtils.Ensure0To2Pi(normal2), error));
 
-                //Contract.Assert(AngleUtils.Ensure0To2Pi(tg).EpsilonEquals(AngleUtils.Ensure0To2Pi(tg2), error));
+                //Assert.IsTrue(AngleUtils.Ensure0To2Pi(tg).EpsilonEquals(AngleUtils.Ensure0To2Pi(tg2), error));
             }
         }
 
+        [TestMethod]
         public void Test2()
         {
             using (MaterialFormat mf = new MaterialFormat(@"C:\Temp\Default.mtl"))
@@ -70,6 +71,7 @@ namespace Essence.Math
             }
         }
 
+        [TestMethod]
         public void Test3()
         {
             int i = 0;
@@ -82,8 +84,8 @@ namespace Essence.Math
                 double s2 = testData3_sc[i++];
                 double c2 = testData3_sc[i++];
 
-                Contract.Assert(s1.EpsilonEquals(s2));
-                Contract.Assert(c1.EpsilonEquals(c2));
+                Assert.IsTrue(s1.EpsilonEquals(s2));
+                Assert.IsTrue(c1.EpsilonEquals(c2));
             }
         }
     }

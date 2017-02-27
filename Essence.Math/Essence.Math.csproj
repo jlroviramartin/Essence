@@ -50,7 +50,6 @@
     <Compile Include="Double\Curves\Circle2.cs" />
     <Compile Include="Double\Curves\CircleArc2.cs" />
     <Compile Include="Double\Curves\ClothoidArc2.cs" />
-    <Compile Include="ClothoidArc2dTest.cs" />
     <Compile Include="Double\ClothoUtils.cs" />
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Double\Distances\DistPointCircle2.cs" />
@@ -121,9 +120,6 @@
     <Compile Include="org.apache.commons.math3\analysis\util\MyUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test1.cs" />
-    <Compile Include="Test1.Data.cs" />
-    <Compile Include="Test1.Data2.cs" />
     <Compile Include="Double\VecMath.cs" />
     <Compile Include="WavefrontFormat.cs" />
     <Compile Include="WavefrontFormatUtils.cs" />
