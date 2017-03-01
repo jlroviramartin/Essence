@@ -2,7 +2,7 @@
 
 namespace Essence.Math.Double.Curves
 {
-    public class Line2 : AbsCurve2
+    public class Line2 : SimpleCurve2
     {
         public Line2(Vec2d p0, double t0, Vec2d p1, double t1)
         {

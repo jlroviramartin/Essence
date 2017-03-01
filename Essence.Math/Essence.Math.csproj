@@ -15,7 +15,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -37,6 +37,15 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="commons-math3-3.6.1">
+      <HintPath>..\Lib\commons-math3-3.6.1.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Core">
+      <HintPath>..\Lib\IKVM.OpenJDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime">
+      <HintPath>..\Lib\IKVM.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,13 +57,16 @@
   <ItemGroup>
     <Compile Include="Double\AABoundingBox2.cs" />
     <Compile Include="Double\AngleUtils.cs" />
-    <Compile Include="Double\Curves\AbsCurve2.cs" />
+    <Compile Include="Double\Curves\ComposedCurve2.cs" />
+    <Compile Include="Double\Curves\MultiCurve2.cs" />
+    <Compile Include="Double\Curves\SimpleCurve2.cs" />
     <Compile Include="Double\Curves\BaseCircle2.cs" />
     <Compile Include="Double\Curves\Circle2.cs" />
     <Compile Include="Double\Curves\CircleArc2.cs" />
     <Compile Include="Double\Curves\ClothoidArc2.cs" />
     <Compile Include="Double\ClothoUtils.cs" />
     <Compile Include="DisposableObject.cs" />
+    <Compile Include="Double\Curves\DelegateUnivariateFunction.cs" />
     <Compile Include="Double\Distances\DistPointCircle2.cs" />
     <Compile Include="Double\Distances\DistPointCircleArc2.cs" />
     <Compile Include="Double\Curves\ICurve2.cs" />
@@ -73,12 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Double\MathUtils.Clothoid.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\org.apache.commons.math3\org.apache.commons.math3.csproj">
-      <Project>{dff459dc-5096-4dfd-ac21-d23d39a422b5}</Project>
-      <Name>org.apache.commons.math3</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

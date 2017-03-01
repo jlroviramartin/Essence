@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
-using org.apache.commons.math3.analysis;
-using org.apache.commons.math3.analysis.exception;
+using org.apache.commons.math3.exception;
 using org.apache.commons.math3.analysis.solvers;
 using SysMath = System.Math;
 
@@ -10,7 +9,7 @@ namespace Essence.Math.Double.Curves
     /// <summary>
     ///     Arco de clotoide.
     /// </summary>
-    public class ClothoidArc2 : AbsCurve2
+    public class ClothoidArc2 : SimpleCurve2
     {
         /// <summary>
         ///     Constructor.
@@ -88,6 +87,16 @@ namespace Essence.Math.Double.Curves
             get { return this.invertY; }
         }
 
+        public double GetRadius(double t)
+        {
+            return MathUtils.ClothoRadious(t, this.InvertY, this.A);
+        }
+
+        public new double GetTangent(double t)
+        {
+            return MathUtils.ClothoTangent(t, this.InvertY, this.A);
+        }
+
         #region private
 
         private const double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
@@ -121,7 +130,7 @@ namespace Essence.Math.Double.Curves
 
             try
             {
-                double v = solver.Solve(maxEval, new DelegateUnivariateFunction(f), 0, SysMath.Min(SysMath.Abs(r0), SysMath.Abs(r1)) * MathUtils.MAX_L);
+                double v = solver.solve(maxEval, new DelegateUnivariateFunction(f), 0, SysMath.Min(SysMath.Abs(r0), SysMath.Abs(r1)) * MathUtils.MAX_L);
                 return v;
             }
             catch (TooManyEvaluationsException e)
@@ -154,16 +163,6 @@ namespace Essence.Math.Double.Curves
         private Transform1 ttransform;
 
         #endregion
-
-        public double GetRadius(double t)
-        {
-            return MathUtils.ClothoRadious(t, this.InvertY, this.A);
-        }
-
-        public new double GetTangent(double t)
-        {
-            return MathUtils.ClothoTangent(t, this.InvertY, this.A);
-        }
 
         #region Curve2
 
@@ -263,16 +262,16 @@ namespace Essence.Math.Double.Curves
             return this.transform.TransformVector(v);
         }
 
+        public override double TotalLength
+        {
+            get { return this.l1 - this.l0; }
+        }
+
         public override double GetLength(double t0, double t1)
         {
             double dl0 = this.GetL(t0);
             double dl1 = this.GetL(t1);
             return dl1 - dl0;
-        }
-
-        public override double TotalLength
-        {
-            get { return this.l1 - this.l0; }
         }
 
         #endregion

@@ -2,7 +2,7 @@
 
 namespace Essence.Math.Double.Curves
 {
-    public abstract class BaseCircle2 : AbsCurve2
+    public abstract class BaseCircle2 : SimpleCurve2
     {
         public BaseCircle2(Vec2d center, double radius)
         {

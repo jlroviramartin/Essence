@@ -24,19 +24,19 @@
 
         #region Differential geometric quantities
 
-        double GetSpeed(double t);
-
         double GetLength(double t0, double t1);
 
         double TotalLength { get; }
+
+        double GetSpeed(double t);
+
+        double GetCurvature(double t);
 
         Vec2d GetTangent(double t);
 
         Vec2d GetLeftNormal(double t);
 
-        void GetFrame(double t, ref Vec2d position, ref Vec2d tangent, ref Vec2d normal);
-
-        double GetCurvature(double t);
+        void GetFrame(double t, ref Vec2d position, ref Vec2d tangent, ref Vec2d leftNormal);
 
         #endregion
     }
