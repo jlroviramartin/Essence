@@ -91,6 +91,13 @@ namespace Essence.Math.Double.Curves
 
         #region ICurve2
 
+        public override void SetTInterval(double tmin, double tmax)
+        {
+            this.tmin = tmin;
+            this.tmax = tmax;
+            this.ttransform = new Transform1(this.TMin, this.TMax, this.Angle0, this.Angle1);
+        }
+
         public override double TotalLength
         {
             get { return AngleUtils.Diff(this.Angle0, this.Angle1) * this.Radius; }

@@ -4,6 +4,11 @@ namespace Essence.Math.Double.Curves
 {
     public class Line2 : SimpleCurve2
     {
+        public Line2(Vec2d p0, Vec2d p1)
+            : this(p0, 0, p1, vecMath.Length(p0, p1))
+        {
+        }
+
         public Line2(Vec2d p0, double t0, Vec2d p1, double t1)
         {
             this.p0 = p0;
@@ -144,6 +149,9 @@ namespace Essence.Math.Double.Curves
 
         /// <summary>Transformacion que se aplica sobre el parametro.</summary>
         private Transform1 ttransform;
+
+        private static readonly DoubleMath math = DoubleMath.Instance;
+        private static readonly VecMath<double, DoubleMath, Vec2d, Vec2dFactory> vecMath = VecMath<double, DoubleMath, Vec2d, Vec2dFactory>.Instance;
 
         #endregion
     }

@@ -8,6 +8,12 @@ namespace Essence.Math.Double
         where T : struct, IConvertible
     {
         [Pure]
+        T Zero { get; }
+
+        [Pure]
+        T One { get; }
+
+        [Pure]
         T Add(T a, T b);
 
         [Pure]
@@ -36,18 +42,24 @@ namespace Essence.Math.Double
     {
         [Pure]
         int Dim { get; }
+
         [Pure]
         void Get(T[] array);
 
         [Pure]
         TVec Add(TVec b);
+
         [Pure]
         TVec Sub(TVec b);
 
         [Pure]
         TVec Mul(T v);
+
         [Pure]
         TVec Div(T v);
+
+        [Pure]
+        TVec Add(T alpha, TVec b, T beta);
 
         [Pure]
         TVec Norm();
@@ -241,6 +253,12 @@ namespace Essence.Math.Double
         public double Angle(TVec a, TVec b)
         {
             return (this.Angle(b) - this.Angle(a));
+        }
+
+        [Pure]
+        public TVec Interpolate(TVec v0, TVec v1, T alpha)
+        {
+            return v0.Add(alpha, v1, math.Sub(math.One, alpha));
         }
 
         private static readonly TMath math = new TMath();

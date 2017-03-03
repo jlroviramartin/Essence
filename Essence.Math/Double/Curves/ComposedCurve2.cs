@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using IntMathUtils = Essence.Math.Int.MathUtils;
 
 namespace Essence.Math.Double.Curves
 {
     public class ComposedCurve2 : MultiCurve2
     {
+        public IEnumerable<ICurve2> GetSegments()
+        {
+            return this.segments;
+        }
+
         public void Add(ICurve2 curve)
         {
             if (this.segments.Count == 0)
@@ -17,6 +23,7 @@ namespace Essence.Math.Double.Curves
                 double tmin = last.TMax;
                 double tlen = curve.TMax - curve.TMin;
                 curve.SetTInterval(tmin, tmin + tlen);
+                this.segments.Add(curve);
             }
         }
 
@@ -25,12 +32,19 @@ namespace Essence.Math.Double.Curves
             this.closed = closed;
         }
 
-        protected override double GetTMin(int indice)
+        #region MultiCurve2
+
+        public override int SegmentsCount
+        {
+            get { return this.segments.Count; }
+        }
+
+        public override double GetTMin(int indice)
         {
             return this.segments[indice].TMin;
         }
 
-        protected override double GetTMax(int indice)
+        public override double GetTMax(int indice)
         {
             return this.segments[indice].TMax;
         }
@@ -96,18 +110,25 @@ namespace Essence.Math.Double.Curves
         protected override void FindIndex(double t, out int index, out double tInSegment)
         {
             index = this.segments.BinarySearch(new CurveForSearch(t), CurveComparer.Instance);
+            if (index < 0)
+            {
+                index = ~index;
+            }
+            index = IntMathUtils.Clamp(index, 0, this.segments.Count - 1);
+
             tInSegment = t;
         }
 
-        protected override int SegmentsCount
-        {
-            get { return this.segments.Count; }
-        }
+        #endregion
+
+        #region ICurve2
 
         public override bool IsClosed
         {
             get { return this.closed; }
         }
+
+        #endregion
 
         #region private
 

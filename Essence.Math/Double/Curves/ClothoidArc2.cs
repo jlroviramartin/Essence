@@ -11,6 +11,12 @@ namespace Essence.Math.Double.Curves
     /// </summary>
     public class ClothoidArc2 : SimpleCurve2
     {
+        public ClothoidArc2(Vec2d point0, Vec2d point1,
+                            double radius0, double radius1)
+            : this(0, point0,  point1, radius0,  radius1)
+        {
+        }
+
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -101,6 +107,7 @@ namespace Essence.Math.Double.Curves
 
         private const double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
         private static readonly double sqrtpi = SysMath.Sqrt(SysMath.PI);
+
         private static readonly DoubleMath math = DoubleMath.Instance;
         private static readonly VecMath<double, DoubleMath, Vec2d, Vec2dFactory> vecMath = VecMath<double, DoubleMath, Vec2d, Vec2dFactory>.Instance;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Essence.Math.Double;
 using Essence.Math.Double.Curves;
@@ -189,6 +190,42 @@ namespace Essence.Math
             Vec2d p0 = point.Sub(v.Mul(ext));
             Vec2d p1 = point.Add(v.Mul(ext));
             wf.AddLines(new Vec2d[] { p0, p1 }, false);
+            return wf;
+        }
+
+        public static WavefrontFormat DrawCurve(this WavefrontFormat wf,
+                                                string color,
+                                                ICurve2 curve,
+                                                int count = 100)
+        {
+            wf.UseMaterial(color);
+            if (curve is ComposedCurve2)
+            {
+                int i = 0;
+                ComposedCurve2 composed = (ComposedCurve2)curve;
+                foreach (ICurve2 segment in composed.GetSegments())
+                {
+                    Vec2d pt = segment.GetPosition(segment.TMin);
+                    wf.DrawFigure(color, WaveFigure.X, pt, 1);
+                    wf.DrawString(color, pt, FontFamily.GenericSerif, FontStyle.Regular, 1000, "" + (i++));
+
+                    //if (segment is CircleArc2)
+                    {
+                        wf.AddLines(MathUtils.For(segment.TMin, segment.TMax, 100).Select(segment.GetPosition), false);
+                    }
+                }
+
+                if (!curve.IsClosed)
+                {
+                    Vec2d pt = curve.GetPosition(curve.TMax);
+                    wf.DrawFigure(color, WaveFigure.X, pt, 1);
+                    wf.DrawString(color, pt, FontFamily.GenericSerif, FontStyle.Regular, 1000, "" + (i++));
+                }
+            }
+            else
+            {
+                wf.AddLines(MathUtils.For(curve.TMin, curve.TMax, count).Select(curve.GetPosition), false);
+            }
             return wf;
         }
 

@@ -7,6 +7,16 @@ namespace Essence.Math.Double
     {
         public static readonly DoubleMath Instance = new DoubleMath();
 
+        public double Zero
+        {
+            get { return 0; }
+        }
+
+        public double One
+        {
+            get { return 1; }
+        }
+
         public double Add(double a, double b)
         {
             return a + b;
@@ -87,6 +97,11 @@ namespace Essence.Math.Double
         public Vec2d Div(double v)
         {
             return new Vec2d(this.X / v, this.Y / v);
+        }
+
+        public Vec2d Add(double alpha, Vec2d b, double beta)
+        {
+            return new Vec2d(this.X * alpha + b.X * beta, this.Y * alpha + b.Y * beta);
         }
 
         public Vec2d Norm()
@@ -192,6 +207,11 @@ namespace Essence.Math.Double
         public Vec3d Div(double v)
         {
             return new Vec3d(this.X / v, this.Y / v, this.Z / v);
+        }
+
+        public Vec3d Add(double alpha, Vec3d b, double beta)
+        {
+            return new Vec3d(this.X * alpha + b.X * beta, this.Y * alpha + b.Y * beta, this.Z * alpha + b.Z * beta);
         }
 
         public Vec3d Norm()

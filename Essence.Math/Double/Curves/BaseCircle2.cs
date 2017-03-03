@@ -36,7 +36,7 @@ namespace Essence.Math.Double.Curves
         {
             this.tmin = tmin;
             this.tmax = tmax;
-            this.ttransform = new Transform1(this.tmin, this.tmax, 0, 2 * SysMath.PI);
+            this.ttransform = new Transform1(this.TMin, this.TMax, 0, 2 * SysMath.PI);
         }
 
         public override Vec2d GetPosition(double t)
@@ -144,11 +144,11 @@ namespace Essence.Math.Double.Curves
         private readonly Vec2d center;
         private readonly double radius;
 
-        private double tmin;
-        private double tmax;
+        protected double tmin;
+        protected double tmax;
 
         /// <summary>Transformacion que se aplica sobre el parametro.</summary>
-        private Transform1 ttransform;
+        protected Transform1 ttransform;
 
         #endregion
     }

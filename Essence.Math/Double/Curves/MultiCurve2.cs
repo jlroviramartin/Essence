@@ -8,9 +8,11 @@ namespace Essence.Math.Double.Curves
 {
     public abstract class MultiCurve2 : ICurve2
     {
-        protected abstract double GetTMin(int indice);
+        public abstract int SegmentsCount { get; }
 
-        protected abstract double GetTMax(int indice);
+        public abstract double GetTMin(int indice);
+
+        public abstract double GetTMax(int indice);
 
         #region Position and derivatives
 
@@ -96,8 +98,6 @@ namespace Essence.Math.Double.Curves
 
         #region private
 
-        protected abstract int SegmentsCount { get; }
-
         private void EnsureLengthsEvaluated()
         {
             if (this.lengths == null)
@@ -154,11 +154,7 @@ namespace Essence.Math.Double.Curves
 
         public virtual double TMax
         {
-            get
-            {
-                int c = this.SegmentsCount;
-                return this.GetTMax(c);
-            }
+            get { return this.GetTMax(this.SegmentsCount - 1); }
         }
 
         public virtual void SetTInterval(double tmin, double tmax)

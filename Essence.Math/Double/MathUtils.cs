@@ -5,6 +5,8 @@ namespace Essence.Math.Double
 {
     public static partial class MathUtils
     {
+        public const double EPSILON = 0.000001;
+
         public static IEnumerable<double> For(double i, double f, int c)
         {
             yield return i;
