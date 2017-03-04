@@ -88,5 +88,10 @@ namespace Essence.Math.Double
             //return SysMath.Abs(a1 - a0);
             return Ensure0To2Pi(a1 - a0, true);
         }
+
+        public static bool EpsilonEquals(double a1, double a2, double epsilon = MathUtils.EPSILON)
+        {
+            return Ensure0To2Pi(a1).EpsilonEquals(Ensure0To2Pi(a2), epsilon);
+        }
     }
 }

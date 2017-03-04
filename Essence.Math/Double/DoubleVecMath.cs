@@ -79,6 +79,11 @@ namespace Essence.Math.Double
             array[1] = this.Y;
         }
 
+        public Vec2d Neg()
+        {
+            return new Vec2d(-this.X, -this.Y);
+        }
+
         public Vec2d Add(Vec2d v)
         {
             return new Vec2d(this.X + v.X, this.Y + v.Y);
@@ -139,7 +144,7 @@ namespace Essence.Math.Double
             get { return this.Y; }
         }
 
-        public bool EpsilonEquals(Vec2d vec, double error)
+        public bool EpsilonEquals(Vec2d vec, double error = MathUtils.EPSILON)
         {
             return this.X.EpsilonEquals(vec.X, error) && this.Y.EpsilonEquals(vec.Y, error);
         }
@@ -187,6 +192,11 @@ namespace Essence.Math.Double
             array[0] = this.X;
             array[1] = this.Y;
             array[2] = this.Z;
+        }
+
+        public Vec3d Neg()
+        {
+            return new Vec3d(-this.X, -this.Y, -this.Z);
         }
 
         public Vec3d Add(Vec3d v)

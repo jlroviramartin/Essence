@@ -21,8 +21,15 @@ namespace Essence.Math
                 //float dpiY = 1;
                 path.AddString(text,
                                family, (int)style, emSize,
-                               new PointF((float)pt.X, (float)pt.Y),
+                               new PointF(0, 0),
                                StringFormat.GenericTypographic);
+
+                float pathheight = path.GetBounds().Height;
+                path.Transform(new Matrix(1, 0, 0, -1, 0, pathheight));
+                path.Transform(new Matrix(1, 0, 0, 1, (float)pt.X, (float)pt.Y));
+
+                path.Flatten(new Matrix(), 0.01f);
+
                 DrawPath(wf, path);
             }
         }

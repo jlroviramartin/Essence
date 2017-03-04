@@ -20,6 +20,13 @@ namespace Essence.Math.Double.Curves
             get { return this.radius; }
         }
 
+        public double GetAngle(double t)
+        {
+            t = t.Clamp(this.TMin, this.TMax);
+            double a = this.ttransform.Get(t);
+            return a;
+        }
+
         #region Curve2
 
         public override double TMin
@@ -124,17 +131,6 @@ namespace Essence.Math.Double.Curves
             double a0 = this.GetAngle(t0);
             double a1 = this.GetAngle(t1);
             return AngleUtils.Diff(a0, a1) * this.Radius;
-        }
-
-        #endregion
-
-        #region protected
-
-        protected double GetAngle(double t)
-        {
-            t = t.Clamp(this.TMin, this.TMax);
-            double a = this.ttransform.Get(t);
-            return a;
         }
 
         #endregion

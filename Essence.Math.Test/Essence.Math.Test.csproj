@@ -45,6 +45,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssertEx.cs" />
+    <Compile Include="Double\Curves\CircleArc2Test.cs" />
     <Compile Include="Double\Curves\ClothoidArc2dTest.cs" />
     <Compile Include="Double\MathUtilsTest.cs" />
     <Compile Include="Double\MathUtilsTest.Data.cs" />

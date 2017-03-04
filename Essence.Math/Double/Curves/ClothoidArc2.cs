@@ -11,6 +11,110 @@ namespace Essence.Math.Double.Curves
     /// </summary>
     public class ClothoidArc2 : SimpleCurve2
     {
+        public static ClothoidArc2[] Split(double l0,
+                                           Vec2d point0, Vec2d point1,
+                                           double radius0, double radius1,
+                                           double a)
+        {
+            bool invertY = (radius1 < 0);
+
+            double l0_n = MathUtils.ClothoL(radius0, invertY, a);
+            double l1_n = MathUtils.ClothoL(radius1, invertY, a);
+            Contract.Assert(l0_n < 0 && l1_n > 0);
+
+            // Coordenadas en el punto (0) y (1) para una clotoide normalizada.
+            Vec2d p0_n = MathUtils.Clotho(l0_n, invertY, a);
+            Vec2d p1_n = MathUtils.Clotho(l1_n, invertY, a);
+
+            // Diferencia de puntos en coordenadas reales.
+            Vec2d v01 = point1.Sub(point0);
+
+            Vec2d v01_n = p1_n.Sub(p0_n);
+
+            // Rotacion de v01_n -> v01.
+            double r = vecMath.Angle(v01_n, v01);
+
+            // Transformacion a aplicar.
+            Transform2 transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
+                                                .Mult(Transform2.Rotate(p1_n.X, p1_n.Y, r));
+
+            ClothoidArc2 left = new ClothoidArc2(transform, l0_n, 0, invertY, a);
+            ClothoidArc2 right = new ClothoidArc2(transform, 0, l1_n, invertY, a);
+
+            left.SetTInterval(l0, l0 + (-l0_n)); // l0_n < 0
+            right.SetTInterval(l0 + (-l0_n), l0 + (-l0_n) + l1_n);
+
+            return new [] { left, right };
+        }
+
+
+        public ClothoidArc2(double l0,
+                            Vec2d point0, Vec2d point1,
+                            double radius0, double radius1,
+                            double a)
+        {
+            // Correccion sobre los radios.
+            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
+            {
+                if (double.IsInfinity(radius0))
+                {
+                    radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
+                }
+                else if (double.IsInfinity(radius1))
+                {
+                    radius1 = SysMath.Sign(radius0) * double.PositiveInfinity;
+                }
+                else
+                {
+                    // No se permite cambio de signo en el radio.
+                    //Contract.Assert(false);
+                }
+            }
+
+            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
+            {
+                this.invertY = (radius1 < 0);
+            }
+            else
+            {
+                if (SysMath.Abs(radius0) > SysMath.Abs(radius1))
+                { // t positivas
+                    this.invertY = radius1 < 0;
+                }
+                else
+                { // t negativa
+                    this.invertY = radius1 > 0;
+                }
+            }
+
+            // Diferencia de puntos en coordenadas reales.
+            Vec2d v01 = point1.Sub(point0);
+
+            this.a = a;
+
+            // Desarrollo segun el radio en el punto (0) y (1).
+            double l0_n = MathUtils.ClothoL(radius0, this.invertY, this.a);
+            double l1_n = MathUtils.ClothoL(radius1, this.invertY, this.a);
+
+            // Coordenadas en el punto (0) y (1) para una clotoide normalizada.
+            Vec2d p0_n = MathUtils.Clotho(l0_n, this.invertY, this.a);
+            Vec2d p1_n = MathUtils.Clotho(l1_n, this.invertY, this.a);
+
+            Vec2d v01_n = p1_n.Sub(p0_n);
+
+            // Rotacion de v01_n -> v01.
+            double r = vecMath.Angle(v01_n, v01);
+
+            // Transformacion a aplicar.
+            this.transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
+                                       .Mult(Transform2.Rotate(p1_n.X, p1_n.Y, r));
+
+            this.l0 = l0_n;
+            this.l1 = l1_n;
+
+            this.SetTInterval(l0, l0 + (this.l1 - this.l0));
+        }
+
         public ClothoidArc2(Vec2d point0, Vec2d point1,
                             double radius0, double radius1)
             : this(0, point0,  point1, radius0,  radius1)
@@ -76,11 +180,23 @@ namespace Essence.Math.Double.Curves
             this.l0 = l0_n;
             this.l1 = l1_n;
 
-            //this.tmin = this.l0;
-            //this.tmax = this.l0 + (this.l1 - this.l0);
-            //this.ttransform = new Transform1(this.l0, this.l1, this.tmin, this.tmax);
-
             this.SetTInterval(l0, l0 + (this.l1 - this.l0));
+        }
+
+        public ClothoidArc2(Transform2 transform,
+                            double l0, double l1,
+                            bool invertY, double a)
+        {
+            this.invertY = invertY;
+
+            this.a = a;
+
+            this.transform = transform;
+
+            this.l0 = l0;
+            this.l1 = l1;
+
+            this.SetTInterval(this.l0, this.l1);
         }
 
         public double A

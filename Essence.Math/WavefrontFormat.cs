@@ -28,8 +28,12 @@ namespace Essence.Math
 
         public WavefrontFormat(StreamWriter streamWriter)
         {
+            this.Transform = Transform2.Identity();
             this.streamWriter = streamWriter;
         }
+
+        // NOTA: Transform3 !!!
+        public Transform2 Transform { get; set; }
 
         public bool UseObjectGroup { get; set; }
 
@@ -95,19 +99,21 @@ namespace Essence.Math
 
         public int AddVertex(Vec3d v)
         {
+            Vec2d v2 = this.Transform.TransformPoint(new Vec2d(v.X, v.Y));
             this.WritePadding();
             this.streamWriter.WriteLine(string.Format(en_US,
                                                       "v {0:F3} {1:F3} {2:F3}",
-                                                      v.X, v.Y, v.Z));
+                                                      v2.X, v2.Y, v.Z));
             return this.vertexIndex++;
         }
 
         public int AddVertex(Vec2d v)
         {
+            Vec2d v2 = this.Transform.TransformPoint(new Vec2d(v.X, v.Y));
             this.WritePadding();
             this.streamWriter.WriteLine(string.Format(en_US,
                                                       "v {0:F3} {1:F3} {2:F3}",
-                                                      v.X, v.Y, 0));
+                                                      v2.X, v2.Y, 0));
             return this.vertexIndex++;
         }
 
@@ -122,10 +128,11 @@ namespace Essence.Math
 
         public int AddNormal(Vec3d n)
         {
+            Vec2d n2 = this.Transform.TransformVector(new Vec2d(n.X, n.Y));
             this.WritePadding();
             this.streamWriter.WriteLine(string.Format(en_US,
                                                       "vn  {0:F3} {1:F3} {2:F3}",
-                                                      n.X, n.Y, n.Z));
+                                                      n2.X, n2.Y, n.Z));
             return this.normalIndex++;
         }
 

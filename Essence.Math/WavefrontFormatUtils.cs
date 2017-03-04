@@ -205,22 +205,22 @@ namespace Essence.Math
                 ComposedCurve2 composed = (ComposedCurve2)curve;
                 foreach (ICurve2 segment in composed.GetSegments())
                 {
-                    Vec2d pt = segment.GetPosition(segment.TMin);
+                    /*Vec2d pt = segment.GetPosition(segment.TMin);
                     wf.DrawFigure(color, WaveFigure.X, pt, 1);
-                    wf.DrawString(color, pt, FontFamily.GenericSerif, FontStyle.Regular, 1000, "" + (i++));
+                    wf.DrawString(color, pt, FontFamily.GenericSerif, FontStyle.Regular, 1000, "" + (i++));*/
 
                     //if (segment is CircleArc2)
                     {
-                        wf.AddLines(MathUtils.For(segment.TMin, segment.TMax, 100).Select(segment.GetPosition), false);
+                        wf.AddLines(MathUtils.For(segment.TMin, segment.TMax, count).Select(segment.GetPosition), false);
                     }
                 }
 
-                if (!curve.IsClosed)
+                /*if (!curve.IsClosed)
                 {
                     Vec2d pt = curve.GetPosition(curve.TMax);
                     wf.DrawFigure(color, WaveFigure.X, pt, 1);
                     wf.DrawString(color, pt, FontFamily.GenericSerif, FontStyle.Regular, 1000, "" + (i++));
-                }
+                }*/
             }
             else
             {

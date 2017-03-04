@@ -34,7 +34,7 @@ namespace Essence.Math.Double.Distances
             double ca = AngleUtils.Ensure0To2Pi(dist.ClosestAngle); // [0, 2PI)
 
             // Se comprueba si el punto cae dentro del arco.
-            double ai = this.Arc.Angle0;
+            double ai = this.Arc.Angle1;
             double aa = this.Arc.AdvAngle;
             if (AngleUtils.InArc(ai, aa, ca))
             {
@@ -49,13 +49,13 @@ namespace Essence.Math.Double.Distances
             if (d2_0 <= d2_1)
             {
                 this.ClosestPoint = this.Arc.Point0;
-                this.ClosestAngle = AngleUtils.Ensure0To2Pi(this.Arc.Angle0, true);
+                this.ClosestAngle = AngleUtils.Ensure0To2Pi(this.Arc.Angle1, true);
                 return d2_0;
             }
             else
             {
                 this.ClosestPoint = this.Arc.Point1;
-                this.ClosestAngle = AngleUtils.Ensure0To2Pi(this.Arc.Angle1, true);
+                this.ClosestAngle = AngleUtils.Ensure0To2Pi(this.Arc.Angle2, true);
                 return d2_1;
             }
         }

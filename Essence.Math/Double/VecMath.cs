@@ -47,6 +47,9 @@ namespace Essence.Math.Double
         void Get(T[] array);
 
         [Pure]
+        TVec Neg();
+
+        [Pure]
         TVec Add(TVec b);
 
         [Pure]
@@ -234,6 +237,18 @@ namespace Essence.Math.Double
         }
 
         [Pure]
+        public double Angle(TVec a, TVec b)
+        {
+            //return (this.Angle(b) - this.Angle(a));
+            // http://stackoverflow.com/questions/2150050/finding-signed-angle-between-vectors
+            double ax = a.X.ToDouble();
+            double ay = a.Y.ToDouble();
+            double bx = b.X.ToDouble();
+            double by = b.Y.ToDouble();
+            return SysMath.Atan2(ax * by - ay * bx, ax * bx + ay * by);
+        }
+
+        [Pure]
         public TVec Rotate(TVec a, double angle)
         {
             double s = SysMath.Sin(angle);
@@ -247,12 +262,6 @@ namespace Essence.Math.Double
         public TVec NewRotate(double angle, double len = 1)
         {
             return fac.New(math.ToValue(len * SysMath.Cos(angle)), math.ToValue(len * SysMath.Sin(angle)));
-        }
-
-        [Pure]
-        public double Angle(TVec a, TVec b)
-        {
-            return (this.Angle(b) - this.Angle(a));
         }
 
         [Pure]

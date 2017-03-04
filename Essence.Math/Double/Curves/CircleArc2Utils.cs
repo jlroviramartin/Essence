@@ -1,80 +1,81 @@
 ﻿using System;
+using System.Collections;
 using SysMath = System.Math;
+using LenP1P2Dir = System.Tuple<double, Essence.Math.Double.Vec2d, Essence.Math.Double.Vec2d, Essence.Math.Double.Vec2d>;
 
 namespace Essence.Math.Double.Curves
 {
     public class CircleArc2Utils
     {
         /// <summary>
-        /// Crea un arco indicando el angulo inicial y el angulo de avance.
-        /// El angulo inicial puede ser positivo o negativo e indica el punto donde empieza el
-        /// arco.
-        /// El angulo de avance indica cuanto avanza el arco.
+        ///     Crea un arco indicando el angulo inicial y el angulo de avance.
+        ///     El angulo inicial puede ser positivo o negativo e indica el punto donde empieza el
+        ///     arco.
+        ///     El angulo de avance indica cuanto avanza el arco.
         ///     Si es positivo, avanza en sentido contrario a las agujas del reloj.
         ///     Si es negativo, avanza en sentido de las agujas del reloj.
         /// </summary>
         /// <param name="center">Centro.</param>
         /// <param name="radius">Radio.</param>
-        /// <param name="anguloInicial">Angulo inicial del arco (radianes).</param>
-        /// <param name="anguloAvance">Angulo de avance del arco (radianes).</param>
+        /// <param name="angle1">Angulo inicial del arco (radianes).</param>
+        /// <param name="advAngle">Angulo de avance del arco (radianes).</param>
         /// <returns></returns>
-        public static CircleArc2 NewArcWithAdvance(Vec2d center, double radius, double anguloInicial, double anguloAvance)
+        public static CircleArc2 NewArcWithAdvance(Vec2d center, double radius, double angle1, double advAngle)
         {
-            return new CircleArc2(center, radius, anguloInicial, anguloInicial + anguloAvance);
+            return new CircleArc2(center, radius, angle1, angle1 + advAngle);
         }
 
         /// <summary>
-        /// Crea un arco de circunferencia indicando puntoInicial, puntoFinal, centro, radio y sentido de giro.
+        ///     Crea un arco de circunferencia indicando puntoInicial, puntoFinal, centro, radio y sentido de giro (cw).
         /// </summary>
-        public static CircleArc2 NewArc(Vec2d pt0, Vec2d pt1, Vec2d center, double radius, bool sentidoGiroHorario)
+        public static CircleArc2 NewArc(Vec2d pt1, Vec2d pt2, Vec2d center, double radius, bool cw)
         {
-            // NOTA: si el radio es muy grande, el error que se produce es grande!
-            //Constraints.RequiresD((punto1 - centro).Longitud.EpsilonEquals(radio, 1));
-            //Constraints.RequiresD((punto2 - centro).Longitud.EpsilonEquals(radio, 1));
-
-            double a1 = vecMath.Angle(pt0.Sub(center));
-            double a2 = vecMath.Angle(pt1.Sub(center));
+            double a1 = vecMath.Angle(pt1.Sub(center));
+            double a2 = vecMath.Angle(pt2.Sub(center));
 
             a1 = AngleUtils.Ensure0To2Pi(a1);
             a2 = AngleUtils.Ensure0To2Pi(a2);
 
-            return !sentidoGiroHorario
-                       ? new CircleArc2(center, radius, a1, AngleUtils.EnsureBranch(a2, a1))
-                       : new CircleArc2(center, radius, AngleUtils.EnsureBranch(a1, a2), a2);
+            if (cw)
+            {
+                if (a2 > a1)
+                {
+                    a2 -= 2 * SysMath.PI;
+                }
+            }
+            else
+            {
+                if (a2 < a1)
+                {
+                    a2 += 2 * SysMath.PI;
+                }
+            }
+
+            return new CircleArc2(center, radius, a1, a2);
         }
 
         /// <summary>
-        /// Crea un arco de circunferencia indicando dos puntos y un radio. El arco creado es siempre el que
-        /// no contiene el extremo positivo del eje X. 
-        /// Cuidado con los radios negativos!!!
+        ///     Crea un arco de circunferencia indicando dos puntos y un radio. El arco creado es siempre el que
+        ///     no contiene el extremo positivo del eje X.
+        ///     Cuidado con los radios negativos!!!
         /// </summary>
-        public static CircleArc2 TwoPointsRadius(Vec2d pt0, Vec2d pt1, double radius)
+        public static CircleArc2 TwoPointsRadius(Vec2d pt0, Vec2d pt1, double radius, bool leftRule)
         {
-            Vec2d centro = EvaluateCenter(pt0, pt1, radius);
-
-            /*Angulo a1 = (punto1 - centro).AnguloV2;
-            Angulo a2 = (punto2 - centro).AnguloV2;
-            return new CircleArc2(centro, radio, radio, a1.Radianes0A2PI, a2.Radianes0A2PI);*/
-
-            return NewArc(pt0, pt1, centro, SysMath.Abs(radius), radius > 0);
+            Vec2d centro = EvaluateCenter(pt0, pt1, radius, leftRule);
+            return NewArc(pt0, pt1, centro, SysMath.Abs(radius), leftRule ? (radius < 0) : (radius > 0));
         }
-
-#if false
-/// <summary>
-/// Numero de puntos para que tenga la precision indicada.
-/// </summary>
-/// <param name="precision">Precision.</param>
-/// <returns>Numero de puntos.</returns>
-        public int CalcularNumPuntos(double precision)
-        {
-            return Utilidades.CalcularNumPuntos(this.radioX, this.radioY,
-                                                this.anguloInicial, this.anguloFinal, precision);
-        }
-#endif
 
         /// <summary>
-        /// Obtiene el centro de la circunferencia que pasa por los 2 puntos, con el radio indicado.
-        /// <c><![CDATA[
+        ///     Obtiene el centro de la circunferencia que pasa por los 2 puntos, con el radio indicado.
+        ///     Dependiendo del criterio (leftRule), se interpreta el signo del radio:
+        ///     Si leftRule entonces el radio se multiplica por la normal a la izquierda (leftNormal) para obtener el centro de la
+        ///     circunferencia.
+        ///     Si rightRule (!leftRule) entonces el radio se multiplica por la normal a la derecha (rightNormal) para obtener el
+        ///     centro de la circunferencia.
+        ///     Clip utiliza un criterio rightRule.
+        ///     <p />
+        ///     Criterio rightRule:
+        ///     <c><![CDATA[
         ///            _                  _
         ///         _ /                    \c
         ///       _/ O pf                   O
@@ -87,7 +88,7 @@ namespace Essence.Math.Double.Curves
         ///   O pi                   O__/
         ///    \                   _/
         /// ]]></c>
-        /// <![CDATA[
+        ///     <![CDATA[
         ///  p1   a/2  pm   a/2   p2
         ///  x---------+-------->x
         ///   \        |        /
@@ -101,18 +102,16 @@ namespace Essence.Math.Double.Curves
         ///           \|/
         ///            pc
         /// ]]>
-        /// Teniendo como dato p1, p2 y r, tenemos que obtener el centro del circulo que pasa por
-        /// p1 y p2, con radio r.
-        /// 
-        /// Con el vector 1-2 obtenemos la distancia a.
-        /// b es calculado mediante la f�rmula b = raizcua(r * r + a/2 * a/2).
-        /// Creamos un vector perpendicular al 1-2 a una distacion a/2 desde p1 y obtenemos
-        /// el punto central de la circunferencia.
-        /// Con este dato y conociendo el radio ya simplemente calculamos la esquina del rectangulo.
-        /// 
-        /// Si el radio es positivo, avanza en sentido contrario a las agujas del reloj.
-        /// Si el radio es negativo, avanza en sentido de las agujas del reloj.
-        /// <![CDATA[
+        ///     Teniendo como dato p1, p2 y r, tenemos que obtener el centro del circulo que pasa por
+        ///     p1 y p2, con radio r.
+        ///     Con el vector 1-2 obtenemos la distancia a.
+        ///     b es calculado mediante la fórmula b = raizcua(r * r + a/2 * a/2).
+        ///     Creamos un vector perpendicular al 1-2 a una distacion a/2 desde p1 y obtenemos
+        ///     el punto central de la circunferencia.
+        ///     Con este dato y conociendo el radio ya simplemente calculamos la esquina del rectangulo.
+        ///     Si el radio es positivo, avanza en sentido contrario a las agujas del reloj.
+        ///     Si el radio es negativo, avanza en sentido de las agujas del reloj.
+        ///     <![CDATA[
         ///                   + p2
         ///                  /|\
         ///                   |
@@ -127,11 +126,16 @@ namespace Essence.Math.Double.Curves
         ///                   + p1
         /// ]]>
         /// </summary>
-        /// <exception cref="CalculoImposibleException">Indica que no se puede calcular el
-        /// centro.</exception>
-        public static Vec2d EvaluateCenter(Vec2d pt0, Vec2d pt1, double radius)
+        /// <exception cref="CalculoImposibleException">
+        ///     Indica que no se puede calcular el
+        ///     centro.
+        /// </exception>
+        public static Vec2d EvaluateCenter(Vec2d pt0, Vec2d pt1, double radius, bool leftRule)
         {
-            double a = vecMath.Length(pt0, pt1);
+            // Vector direccion normalizado y longitud.
+            Vec2d dir = pt1.Sub(pt0);
+            double a = dir.Length;
+            dir = dir.Div(a);
 
             // Punto medio.
             Vec2d pm = vecMath.Interpolate(pt0, pt1, 0.5);
@@ -147,118 +151,34 @@ namespace Essence.Math.Double.Curves
                 throw new Exception("CalculoImposible: Radio erroneo.");
             }
 
-            double b = SysMath.Sqrt(v);
+            double b = SysMath.Sign(radius) * SysMath.Sqrt(v);
 
-            Vec2d vectorm1 = vecMath.PerpRight(pt1.Sub(pt0).Norm()).Mul(b);
-
-            if (radius > 0) // Derecha
+            Vec2d normal;
+            if (leftRule)
             {
-                return pm.Add(vectorm1);
-            }
-            else // Izquierda
-            {
-                return pm.Sub(vectorm1);
-            }
-        }
-
-        /// <summary>
-        /// Similar a <c>ObtenerCentro</c> pero en este caso devuelve los dos centros, el
-        /// negativo y el positivo.
-        /// </summary>
-        /// <exception cref="CalculoImposibleException">Indica que no se puede calcular el
-        /// radio.</exception>
-        public static Vec2d[] EvaluateTwoCenters(Vec2d pt0, Vec2d pt1, double radius)
-        {
-            double a = vecMath.Length(pt0, pt1);
-
-            // Punto medio.
-            Vec2d pm = vecMath.Interpolate(pt0, pt1, 0.5);
-
-            // Se tratan radios erroneos que no permitan generar un circunferencia.
-            double v = radius * radius - a * a / 4;
-            if (v.EpsilonEquals(0))
-            {
-                return new[] { pm, pm };
-            }
-            if (v < 0)
-            {
-                throw new Exception("CalculoImposible: Radio err�neo.");
-            }
-
-            double b = SysMath.Sqrt(v);
-
-            Vec2d vectorm1 = vecMath.PerpRight(pt1.Sub(pt0).Norm()).Mul(b);
-
-            if (radius > 0)
-            {
-                return new[] { pm.Add(vectorm1), pm.Sub(vectorm1) };
+                // Vector normal a la izquierda.
+                normal = vecMath.PerpLeft(dir);
             }
             else
             {
-                return new[] { pm.Sub(vectorm1), pm.Add(vectorm1) };
+                // Vector normal a la derecha.
+                normal = vecMath.PerpRight(dir);
             }
+
+            Vec2d vectorm1 = normal.Mul(b);
+            return pm.Add(vectorm1);
         }
-
-#if false
-/// <summary>
-/// Obtiene el recubrimiento de la circunferencia formada por 2 punto + radio.
-/// </summary>
-        public static AABoundingBox2 GetRecubrimiento(Vec2d punto1, Vec2d punto2, double radio)
-        {
-            double r = SysMath.Abs(radio);
-
-            // Calcula el centro.
-            Vec2d c = ObtenerCentro(punto1, punto2, radio);
-
-            // Angulo inicial.
-            double ai = punto1.Sub(c).AnguloV2.Radianes0A2PI;
-            ai %= (2 * SysMath.PI);
-            if (ai < 0)
-            {
-                ai += (2 * SysMath.PI);
-            }
-
-            // Angulo final.
-            double af = punto2.Sub(c).AnguloV2.Radianes0A2PI;
-            af %= (2 * SysMath.PI);
-            if (af < 0)
-            {
-                af += (2 * SysMath.PI);
-            }
-
-            // Angulo de avance.
-            double aa = af - ai;
-            if (radio > 0)
-            {
-                // Giro a la derecha -> negativo.
-                if (aa > 0)
-                {
-                    aa -= (2 * SysMath.PI);
-                }
-            }
-            else
-            {
-                // Giro a la izquierda -> positivo.
-                if (aa < 0)
-                {
-                    aa += (2 * SysMath.PI);
-                }
-            }
-
-            return GetRecubrimiento(c, r, r, ai, aa);
-        }
-#endif
-
-        // NOTA: no tiene sentido que este metodo pertenezca a esta clase. Buscar alternativas.
 
         /// <summary>
-        /// Indica si los puntos estan alineados.
+        ///     Indica si los puntos estan alineados.
         /// </summary>
         /// <param name="pt0">Punto 1.</param>
         /// <param name="pt1">Punto 2.</param>
         /// <param name="pt2">Punto 3.</param>
-        /// <returns>Indica si los puntos estan al
-        /// ineados.</returns>
+        /// <returns>
+        ///     Indica si los puntos estan al
+        ///     ineados.
+        /// </returns>
         public static bool AreAligned(Vec2d pt0, Vec2d pt1, Vec2d pt2)
         {
             Vec2d v13 = pt2.Sub(pt0);
@@ -268,62 +188,150 @@ namespace Essence.Math.Double.Curves
         }
 
         /// <summary>
-        /// Arco que pasa por los puntos <c>pinicial</c>, <c>ppaso</c>, <c>pfinal</c>.
+        ///     Arco que pasa por los puntos <c>pinicial</c>, <c>ppaso</c>, <c>pfinal</c>.
         /// </summary>
-        /// <exception cref="PuntosAlineadosException">Indica que los puntos estan
-        /// alineados.</exception>
-        public static CircleArc2 ThreePoints(Vec2d pinicial, Vec2d ppaso, Vec2d pfinal)
+        /// <exception cref="PuntosAlineadosException">
+        ///     Indica que los puntos estan
+        ///     alineados.
+        /// </exception>
+        public static CircleArc2 ThreePoints(Vec2d p1, Vec2d pp, Vec2d p2)
         {
-            Vec2d vif = pfinal.Sub(pinicial);
-            Vec2d vip = ppaso.Sub(pinicial);
-            Vec2d vfp = ppaso.Sub(pfinal);
+            Vec2d pcenter = GetCenter(p1, pp, p2);
 
-            double area = vif.Cross(vip) / 2;
-            if (area.EpsilonEquals(0))
-            {
-                throw new Exception("PuntosAlineados");
+            double radius = vecMath.Length(pcenter, p1);
+
+            Vec2d v1 = p1.Sub(pcenter);
+            Vec2d vp = pp.Sub(pcenter);
+            Vec2d v2 = p2.Sub(pcenter);
+            double alpha1 = vecMath.Angle(v1);
+            double alphap = vecMath.Angle(vp);
+            double alpha2 = vecMath.Angle(v2);
+
+            { // Se prueba el sentido CCW, alpha1 < alphap < alpha2
+                double a1 = alpha1;
+                double ap = alphap;
+                double a2 = alpha2;
+                while (ap < a1)
+                {
+                    ap += 2 * SysMath.PI;
+                }
+                while (a2 < ap)
+                {
+                    a2 += 2 * SysMath.PI;
+                }
+                if (a2 - a1 > 2 * SysMath.PI)
+                { // Se ha dado mas de una vuelta, solucion no valida.
+                }
+                else
+                {
+                    return NewArcWithAdvance(pcenter, radius, AngleUtils.Ensure0To2Pi(a1), a2 - a1);
+                }
             }
 
-            double u = vif.Dot(vif);
-            double v = vip.Dot(vip);
-            double w = vfp.Dot(vfp);
-
-            double radio = SysMath.Sqrt(u * v * w) / (4 * area);
-
-            Vec2d[] pcentros = EvaluateTwoCenters(pinicial, pfinal, radio);
-
-            Vec2d pcentro = pcentros[0];
-            if (vecMath.Length(ppaso, pcentro) > (SysMath.Abs(radio) + MathUtils.EPSILON))
-            {
-                pcentro = pcentros[1];
+            { // Se prueba el sentido CW, alpha1 > alphap > alpha2
+                double a1 = alpha1;
+                double ap = alphap;
+                double a2 = alpha2;
+                while (ap > a1)
+                {
+                    ap -= 2 * SysMath.PI;
+                }
+                while (a2 > ap)
+                {
+                    a2 -= 2 * SysMath.PI;
+                }
+                if (a1 - a2 > 2 * SysMath.PI)
+                { // Se ha dado mas de una vuelta, solucion no valida.
+                }
+                else
+                {
+                    return NewArcWithAdvance(pcenter, radius, AngleUtils.Ensure0To2Pi(a1), a2 - a1);
+                }
             }
 
-            Vec2d vIni = pinicial.Sub(pcentro);
-            Vec2d vFin = pfinal.Sub(pcentro);
-            double alfaIni = vecMath.Angle(new Vec2d(1, 0), vIni);
-            double alfaFin = vecMath.Angle(vIni, vFin);
+            throw new Exception();
 
-            if (alfaIni < 0)
-            {
-                alfaIni += 2.0 * SysMath.PI;
-            }
+#if false
+            double alpha2 = vecMath.Angle(v1, v2);
 
-            if (alfaFin < 0)
-            {
-                alfaFin += 2.0 * SysMath.PI;
-            }
+            alpha1 = AngleUtils.Ensure0To2Pi(alpha1);
 
-            if (radio < 0)
+            // Existen 2 soluciones que dependen de angulo de pp:
+            //  si alpha2 > 0 : alpha2 y alpha2 - 2*PI
+            //  si alpha2 < 0 : alpha2 y alpha2 + 2*PI
+
+            if (alpha2 > 0)
             {
-                return NewArcWithAdvance(pcentro, SysMath.Abs(radio), alfaIni, alfaFin);
+                double alpha3 = vecMath.Angle(pp);
             }
             else
             {
-                return NewArcWithAdvance(pcentro, SysMath.Abs(radio), alfaIni, alfaFin - 2.0 * SysMath.PI);
+                
             }
+            return NewArcWithAdvance(pcenter, radius, alpha1, alpha2);
+#endif
         }
+
+        /// <summary>
+        ///     Calcula el centro de la circunferencia que pasa por los 3 puntos.
+        /// </summary>
+        public static Vec2d GetCenter(Vec2d p1, Vec2d p2, Vec2d p3)
+        {
+            Vec2d v1 = p2.Sub(p1);
+            Vec2d v2 = p3.Sub(p1);
+            Vec2d v3 = p3.Sub(p2);
+            double l1 = v1.Length2;
+            double l2 = v2.Length2;
+            double l3 = v3.Length2;
+
+            LenP1P2Dir[] vs =
+            {
+                Tuple.Create(l1, p1, p2, v1),
+                Tuple.Create(l2, p1, p3, v2),
+                Tuple.Create(l3, p2, p3, v3)
+            };
+            Array.Sort(vs, Length2Comparar.Instance);
+
+            // Para mejorar el calculo, se toman los segmentos mas alejados.
+            Vec2d pm_a = vecMath.Interpolate(vs[1].Item2, vs[1].Item3, 0.5);
+            Vec2d d_a = vecMath.PerpLeft(vs[1].Item4);
+
+            Vec2d pm_b = vecMath.Interpolate(vs[2].Item2, vs[2].Item3, 0.5);
+            Vec2d d_b = vecMath.PerpLeft(vs[2].Item4);
+
+            // Se resuelve la ecuacion: d_a * t1 + pm_a = d_b * t2 + pm_b
+            // Maxima:
+            //  e1: d_ax * t1 + pm_ax = d_bx * t2 + pm_bx;
+            //  e2: d_ay * t1 + pm_ay = d_by * t2 + pm_by;
+            //  algsys ([e1, e2], [t1, t2]);
+
+            double div = (d_a.Y * d_b.X - d_a.X * d_b.Y);
+            if (div.EpsilonEquals(0))
+            {
+                throw new Exception("Cálculo imposible");
+            }
+
+            double t1 = (d_b.X * (pm_b.Y - pm_a.Y) - d_b.Y * (pm_b.X - pm_a.X)) / div;
+            //double t2 = (d_a.X * (pm_b.Y - pm_a.Y) - d_a.Y * (pm_b.X - pm_a.X)) / div;
+
+            return d_a.Mul(t1).Add(pm_a);
+        }
+
+        #region private
 
         private static readonly DoubleMath math = DoubleMath.Instance;
         private static readonly VecMath<double, DoubleMath, Vec2d, Vec2dFactory> vecMath = VecMath<double, DoubleMath, Vec2d, Vec2dFactory>.Instance;
+
+        private sealed class Length2Comparar : IComparer
+        {
+            public static readonly Length2Comparar Instance = new Length2Comparar();
+
+            public int Compare(object x, object y)
+            {
+                return ((LenP1P2Dir)x).Item1.CompareTo(((LenP1P2Dir)y).Item1);
+            }
+        }
+
+        #endregion
     }
 }
