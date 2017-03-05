@@ -135,6 +135,12 @@ namespace Essence.Math.Double.Curves
             // Vector direccion normalizado y longitud.
             Vec2d dir = pt1.Sub(pt0);
             double a = dir.Length;
+
+            if (a.EpsilonEquals(0))
+            {
+                throw new Exception("CalculoImposible: Puntos coincidentes.");
+            }
+
             dir = dir.Div(a);
 
             // Punto medio.

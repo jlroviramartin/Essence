@@ -36,7 +36,7 @@ namespace Essence.Math.Double.Curves
 
             // Transformacion a aplicar.
             Transform2 transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
-                                                .Mult(Transform2.Rotate(p1_n.X, p1_n.Y, r));
+                                             .Mult(Transform2.Rotate(p1_n.X, p1_n.Y, r));
 
             ClothoidArc2 left = new ClothoidArc2(transform, l0_n, 0, invertY, a);
             ClothoidArc2 right = new ClothoidArc2(transform, 0, l1_n, invertY, a);
@@ -44,9 +44,8 @@ namespace Essence.Math.Double.Curves
             left.SetTInterval(l0, l0 + (-l0_n)); // l0_n < 0
             right.SetTInterval(l0 + (-l0_n), l0 + (-l0_n) + l1_n);
 
-            return new [] { left, right };
+            return new[] { left, right };
         }
-
 
         public ClothoidArc2(double l0,
                             Vec2d point0, Vec2d point1,
@@ -66,25 +65,18 @@ namespace Essence.Math.Double.Curves
                 }
                 else
                 {
-                    // No se permite cambio de signo en el radio.
-                    //Contract.Assert(false);
+                    // Se toma el radio inicio como infinito.
+                    //radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
                 }
             }
 
-            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
-            {
-                this.invertY = (radius1 < 0);
+            if (SysMath.Abs(radius0) > SysMath.Abs(radius1))
+            { // t positivas
+                this.invertY = radius1 < 0;
             }
             else
-            {
-                if (SysMath.Abs(radius0) > SysMath.Abs(radius1))
-                { // t positivas
-                    this.invertY = radius1 < 0;
-                }
-                else
-                { // t negativa
-                    this.invertY = radius1 > 0;
-                }
+            { // t negativa
+                this.invertY = radius1 > 0;
             }
 
             // Diferencia de puntos en coordenadas reales.
@@ -109,6 +101,14 @@ namespace Essence.Math.Double.Curves
             this.transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
                                        .Mult(Transform2.Rotate(p1_n.X, p1_n.Y, r));
 
+            if (!this.transform.TransformPoint(p0_n).EpsilonEquals(point0))
+            {
+            }
+
+            if (!this.transform.TransformPoint(p1_n).EpsilonEquals(point1))
+            {
+            }
+
             this.l0 = l0_n;
             this.l1 = l1_n;
 
@@ -117,7 +117,7 @@ namespace Essence.Math.Double.Curves
 
         public ClothoidArc2(Vec2d point0, Vec2d point1,
                             double radius0, double radius1)
-            : this(0, point0,  point1, radius0,  radius1)
+            : this(0, point0, point1, radius0, radius1)
         {
         }
 
@@ -228,7 +228,8 @@ namespace Essence.Math.Double.Curves
         private static readonly VecMath<double, DoubleMath, Vec2d, Vec2dFactory> vecMath = VecMath<double, DoubleMath, Vec2d, Vec2dFactory>.Instance;
 
         /// <summary>
-        /// Resuelve el parametro de la clotoide dado los radios <c>r0</c> y <c>r1</c> Con una distancia <c>d</c> entre los puntos.
+        ///     Resuelve el parametro de la clotoide dado los radios <c>r0</c> y <c>r1</c> Con una distancia <c>d</c> entre los
+        ///     puntos.
         /// </summary>
         private static double SolveParam(double d, double r0, double r1)
         {
@@ -267,7 +268,10 @@ namespace Essence.Math.Double.Curves
         {
             t = t.Clamp(this.tmin, this.tmax);
             double dl = this.ttransform.Get(t);
-            Contract.Assert(SysMath.Abs(dl) <= MathUtils.GetMaxL(this.a));
+            if (SysMath.Abs(dl) > MathUtils.GetMaxL(this.a))
+            {
+                throw new Exception("Longitud del arco por encima del máximo permitido.");
+            }
             return dl;
         }
 
