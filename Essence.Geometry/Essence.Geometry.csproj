@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{435DDDB4-5427-4D0F-98C9-121A2B8192B1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Essence.Geometry</RootNamespace>
+    <AssemblyName>Essence.Geometry</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="commons-math3-3.6.1">
+      <HintPath>..\Lib\commons-math3-3.6.1.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Core">
+      <HintPath>..\Lib\IKVM.OpenJDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algorithms\PolylineSimplification.cs" />
+    <Compile Include="Core\Axis.cs" />
+    <Compile Include="Core\Byte\Color4b.cs" />
+    <Compile Include="Core\Byte\Color3b.cs" />
+    <Compile Include="Core\ColorUtils.cs" />
+    <Compile Include="Curves\BaseCircle2.cs" />
+    <Compile Include="Curves\Circle2.cs" />
+    <Compile Include="Curves\CircleArc2.cs" />
+    <Compile Include="Curves\CircleArc2Utils.cs" />
+    <Compile Include="Curves\ClothoidArc2.cs" />
+    <Compile Include="Curves\ComposedCurve2.cs" />
+    <Compile Include="Curves\DelegateUnivariateFunction.cs" />
+    <Compile Include="Curves\ICurve2.cs" />
+    <Compile Include="Curves\Line2.cs" />
+    <Compile Include="Curves\MultiCurve2.cs" />
+    <Compile Include="Curves\SimpleCurve2.cs" />
+    <Compile Include="Maths\Double\AngleUtils.cs" />
+    <Compile Include="Core\Double\BoundingBox2d.cs" />
+    <Compile Include="Core\Double\BoundingBox2dUtils.cs" />
+    <Compile Include="Maths\Double\ClothoUtils.cs" />
+    <Compile Include="Maths\Double\Derivative.cs" />
+    <Compile Include="Core\Double\Matrix2x2d.cs" />
+    <Compile Include="Core\Double\Matrix2x2dUtils.cs" />
+    <Compile Include="Core\Double\Matrix2x3d.cs" />
+    <Compile Include="Core\Double\Matrix3x3d.cs" />
+    <Compile Include="Core\Double\Matrix3x3dUtils.cs" />
+    <Compile Include="Core\Double\Matrix4x4d.cs" />
+    <Compile Include="Core\Double\Matriz4x4dUtils.cs" />
+    <Compile Include="Core\Double\Point3d.cs" />
+    <Compile Include="Core\Double\Point2d.cs" />
+    <Compile Include="Core\Double\Point4d.cs" />
+    <Compile Include="Core\Double\Rectangle2d.cs" />
+    <Compile Include="Core\Float\Color4f.cs" />
+    <Compile Include="Core\Float\Color3f.cs" />
+    <Compile Include="Core\IColor.cs" />
+    <Compile Include="Core\IColor3.cs" />
+    <Compile Include="Core\IColor4.cs" />
+    <Compile Include="Core\IColorConvertible.cs" />
+    <Compile Include="Core\Int\BoundingBox2i.cs" />
+    <Compile Include="Core\Int\BoundingBox2iUtils.cs" />
+    <Compile Include="Core\PointUtils.cs" />
+    <Compile Include="Maths\Double\Transform1.cs" />
+    <Compile Include="Core\Transform2D.cs" />
+    <Compile Include="Core\Transform2DIdentity.cs" />
+    <Compile Include="Core\Double\Transform2DMatrix.cs" />
+    <Compile Include="Core\Double\Vector3d.cs" />
+    <Compile Include="Core\Double\Vector2d.cs" />
+    <Compile Include="Core\Double\Vector4d.cs" />
+    <Compile Include="Core\Int\Point2i.cs" />
+    <Compile Include="Core\Int\Vector2i.cs" />
+    <Compile Include="Core\TransformUtils.cs" />
+    <Compile Include="Core\VectorFormatInfo.cs" />
+    <Compile Include="Core\VectorStyles.cs" />
+    <Compile Include="Core\VectorUtils.cs" />
+    <Compile Include="Core\IPoint.cs" />
+    <Compile Include="Core\IPoint2D.cs" />
+    <Compile Include="Core\IPoint3D.cs" />
+    <Compile Include="Core\IPoint4D.cs" />
+    <Compile Include="Core\ITransform2D.cs" />
+    <Compile Include="Core\IVector.cs" />
+    <Compile Include="Core\IVector2D.cs" />
+    <Compile Include="Core\IVector3D.cs" />
+    <Compile Include="Core\IVector4D.cs" />
+    <Compile Include="Distances\DistPointCircle2.cs" />
+    <Compile Include="Distances\DistPointCircleArc2.cs" />
+    <Compile Include="Geom2D\Geom2DUtils.cs" />
+    <Compile Include="Geom2D\Line2d.cs" />
+    <Compile Include="Geom2D\LineSide.cs" />
+    <Compile Include="Geom2D\Orientation.cs" />
+    <Compile Include="Geom2D\Segment2d.cs" />
+    <Compile Include="Geom2D\Triangle2d.cs" />
+    <Compile Include="Geom3D\Geom3DUtils.cs" />
+    <Compile Include="Geom3D\Plane3d.cs" />
+    <Compile Include="Geom3D\PlaneSide.cs" />
+    <Compile Include="Geom3D\Triangle3d.cs" />
+    <Compile Include="Intersection\IntersectionType.cs" />
+    <Compile Include="Intersection\IntrLine2dLine2d.cs" />
+    <Compile Include="Intersection\IntrPoint2.cs" />
+    <Compile Include="Intersection\IntrSegment2dSegment2d.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WavefrontFormat.cs" />
+    <Compile Include="WavefrontFormatGDIUtils.cs" />
+    <Compile Include="WavefrontFormatUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Essence.Util\Essence.Util.csproj">
+      <Project>{8ef57341-1971-4217-baf9-2aa8993e5285}</Project>
+      <Name>Essence.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

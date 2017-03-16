@@ -1,12 +1,31 @@
-﻿using Essence.Math.Double;
-using Essence.Math.Double.Curves;
+﻿#region License
+
+// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using Essence.Maths.Double;
+using Essence.Maths.Double.Curves;
+using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
-namespace Essence.Math
+namespace Essence.Maths
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
         }
     }
@@ -23,7 +42,7 @@ namespace Essence.Math
             this.radio = radio;
 
             this.dir = this.p1.Sub(this.p0);
-            this.len = dir.Length;
+            this.len = this.dir.Length;
             this.dirN = this.dir.Div(this.len);
         }
 
@@ -31,10 +50,10 @@ namespace Essence.Math
         {
             double t01 = this.Project01(pnt);
             double t = (t01.EpsilonEquals(0)
-                ? this.t0
-                : (t01.EpsilonEquals(1)
-                    ? this.t1
-                    : this.t0 + (this.t1 - this.t0) * t01));
+                            ? this.t0
+                            : (t01.EpsilonEquals(1)
+                                   ? this.t1
+                                   : this.t0 + (this.t1 - this.t0) * t01));
             return t;
         }
 
@@ -42,10 +61,10 @@ namespace Essence.Math
         {
             // Se normaliza la estacion.
             double t01 = (t.EpsilonEquals(this.t0)
-                ? 0
-                : (t.EpsilonEquals(this.t1)
-                    ? 1
-                    : (t - this.t0) / (this.t1 - this.t0)));
+                              ? 0
+                              : (t.EpsilonEquals(this.t1)
+                                     ? 1
+                                     : (t - this.t0) / (this.t1 - this.t0)));
 
             pnt = this.Evaluate01(t01);
             normal = this.normal;
@@ -175,7 +194,6 @@ namespace Essence.Math
     public class Clothoid
     {
     }
-
 
 #if false
     public class EllipseArc2d

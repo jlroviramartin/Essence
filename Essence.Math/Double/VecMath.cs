@@ -1,8 +1,27 @@
+#region License
+
+// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using Essence.Util.Math;
 using System;
 using System.Diagnostics.Contracts;
 using SysMath = System.Math;
 
-namespace Essence.Math.Double
+namespace Essence.Maths.Double
 {
     public interface IMath<T>
         where T : struct, IConvertible
@@ -87,10 +106,10 @@ namespace Essence.Math.Double
         T Y { get; }
 
         /// <summary>
-        /// Operacion producto escalar (dot): this · vector. Tiene en cuenta el signo.
-        /// A · B = |A| * |B| * cos( angulo( A, B ) )
-        /// <see cref="http://en.wikipedia.org/wiki/Dot_product"/>
-        /// <pre><![CDATA[
+        ///     Operacion producto escalar (dot): this · vector. Tiene en cuenta el signo.
+        ///     A · B = |A| * |B| * cos( angulo( A, B ) )
+        ///     <see cref="http://en.wikipedia.org/wiki/Dot_product" />
+        ///     <pre><![CDATA[
         ///          
         ///  (-)    |   (+)     __ vector
         ///         |          _/|
@@ -99,16 +118,16 @@ namespace Essence.Math.Double
         ///         | _/         |
         /// --------+------------+------> this
         /// ]]></pre>
-        /// Si <c> </c> esta normalizado, es la proyeccion de <c>vector</c> sobre <c>this</c>.
+        ///     Si <c> </c> esta normalizado, es la proyeccion de <c>vector</c> sobre <c>this</c>.
         /// </summary>
         [Pure]
         T Dot(TVec v);
 
         /// <summary>
-        /// Operacion producto vectorial (cross) en 3D: this x vector. Tiene en cuenta el signo.
-        /// A x B = |A| * |B| * sin( angulo( A, B ) )
-        /// <see cref="http://en.wikipedia.org/wiki/Cross_product"/>
-        /// <code><![CDATA[
+        ///     Operacion producto vectorial (cross) en 3D: this x vector. Tiene en cuenta el signo.
+        ///     A x B = |A| * |B| * sin( angulo( A, B ) )
+        ///     <see cref="http://en.wikipedia.org/wiki/Cross_product" />
+        ///     <code><![CDATA[
         /// ^ this x vector ( + )
         /// |
         /// |   _
@@ -137,10 +156,10 @@ namespace Essence.Math.Double
         T Z { get; }
 
         /// <summary>
-        /// Operacion producto vectorial (cross) en 3D: this x vector. Tiene en cuenta el signo.
-        /// A x B = |A| * |B| * sin( angulo( A, B ) )
-        /// <see cref="http://en.wikipedia.org/wiki/Cross_product"/>
-        /// <code><![CDATA[
+        ///     Operacion producto vectorial (cross) en 3D: this x vector. Tiene en cuenta el signo.
+        ///     A x B = |A| * |B| * sin( angulo( A, B ) )
+        ///     <see cref="http://en.wikipedia.org/wiki/Cross_product" />
+        ///     <code><![CDATA[
         /// ^ this x vector ( + )
         /// |
         /// |   _
@@ -207,8 +226,8 @@ namespace Essence.Math.Double
         }
 
         /// <summary>
-        /// Calcula el angulo de <c>this</c> respecto del eje X.
-        /// <pre><![CDATA[
+        ///     Calcula el angulo de <c>this</c> respecto del eje X.
+        ///     <pre><![CDATA[
         ///   ^           __
         ///   |          _/| this
         ///   |        _/
@@ -289,7 +308,9 @@ namespace Essence.Math.Double
         where T : struct, IConvertible
     {
         TVec TransformVector(TVec v);
+
         TVec TransformPoint(TVec v);
+
         TTransform Mult(TTransform t);
     }
 }

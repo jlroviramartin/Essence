@@ -1,15 +1,33 @@
-﻿using System;
+﻿#region License
+
+// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using System;
 using System.Diagnostics.Contracts;
 using SysMath = System.Math;
 using UnaryFunction = System.Func<double, double>;
 
-namespace Essence.Math.Double
+namespace Essence.Maths.Double
 {
     /// <summary>
-    /// http://stackoverflow.com/questions/373186/mathematical-derivation-with-c
-    /// http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/
-    /// http://www.variousconsequences.com/2009/05/maxima-functions-to-generate-finite.html
-    /// http://mathfaculty.fullerton.edu/mathews/n2003/NumericalDiffFormulaeMod.html
+    ///     http://stackoverflow.com/questions/373186/mathematical-derivation-with-c
+    ///     http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/
+    ///     http://www.variousconsequences.com/2009/05/maxima-functions-to-generate-finite.html
+    ///     http://mathfaculty.fullerton.edu/mathews/n2003/NumericalDiffFormulaeMod.html
     /// </summary>
     public static class Derivative
     {
@@ -380,7 +398,6 @@ namespace Essence.Math.Double
         }
     }
 }
-
 
 #if false
         public void Test()

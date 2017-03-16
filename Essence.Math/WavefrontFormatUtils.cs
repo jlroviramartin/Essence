@@ -1,12 +1,31 @@
-﻿using System;
+﻿#region License
+
+// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Essence.Math.Double;
-using Essence.Math.Double.Curves;
+using Essence.Maths.Double;
+using Essence.Maths.Double.Curves;
+using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
-namespace Essence.Math
+namespace Essence.Maths
 {
     public static class WavefrontFormatUtils
     {
@@ -46,21 +65,21 @@ namespace Essence.Math
             int c = 100;
             for (int i = -c; i <= c; i++)
             {
-                double lmax = MathUtils.GetMaxL(a);
+                double lmax = ClothoUtils.GetMaxL(a);
                 double s = i * lmax / c;
 
                 double x, y;
-                MathUtils.Clotho(s, invertY, a, out x, out y);
+                ClothoUtils.Clotho(s, invertY, a, out x, out y);
 
                 int v0 = wf.AddVertex(new Vec2d(x, y));
                 indices.Add(v0);
 
-                Vec2d n = MathUtils.ClothoLeftNormal(s, invertY, a).Norm();
+                Vec2d n = ClothoUtils.ClothoLeftNormal(s, invertY, a).Norm();
 
                 int v1 = wf.AddVertex(new Vec2d(x + n.X, y + n.Y));
                 normals.Add(Tuple.Create(v0, v1));
 
-                double dir = MathUtils.ClothoTangent(s, invertY, a);
+                double dir = ClothoUtils.ClothoTangent(s, invertY, a);
                 double dx = SysMath.Cos(dir);
                 double dy = SysMath.Sin(dir);
                 Vec2d d = new Vec2d(dx, dy).Norm();
@@ -68,7 +87,7 @@ namespace Essence.Math
                 int v2 = wf.AddVertex(new Vec2d(x + 5 * d.X, y + 5 * d.Y));
                 dirs.Add(Tuple.Create(v0, v2));
 
-                double r = MathUtils.ClothoRadious(s, invertY, a);
+                double r = ClothoUtils.ClothoRadious(s, invertY, a);
                 if (double.IsInfinity(r))
                 {
                     r = SysMath.Sign(r) * 100;
@@ -113,11 +132,11 @@ namespace Essence.Math
             int c = 100;
             for (int i = -c; i <= c; i++)
             {
-                double lmax = MathUtils.GetMaxL(a);
+                double lmax = ClothoUtils.GetMaxL(a);
                 double s = i * lmax / c;
 
                 double x, y;
-                MathUtils.Clotho(s, invertY, a, out x, out y);
+                ClothoUtils.Clotho(s, invertY, a, out x, out y);
 
                 int v0 = wf.AddVertex(new Vec2d(x, y));
                 indices.Add(v0);
@@ -137,13 +156,13 @@ namespace Essence.Math
         {
             List<int> indices = new List<int>();
 
-            double lmax = MathUtils.GetMaxL(a);
+            double lmax = ClothoUtils.GetMaxL(a);
             int c = 100;
             for (int i = -c; i <= c; i++)
             {
                 double s = i * lmax / c;
 
-                double r = MathUtils.ClothoRadious(s, invertY, a);
+                double r = ClothoUtils.ClothoRadious(s, invertY, a);
                 if (double.IsInfinity(r))
                 {
                     r = SysMath.Sign(r) * 1000;

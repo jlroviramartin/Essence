@@ -1,0 +1,289 @@
+﻿#region License
+
+// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using System;
+using Essence.Geometry.Core.Double;
+using Essence.Util.Math.Double;
+using REAL = System.Double;
+
+namespace Essence.Geometry.Geom3D
+{
+    public class Plane3d
+    {
+        /// <summary>
+        ///     Plano con los vectores ortonormalizados.
+        /// </summary>
+        public static Plane3d NewOrthonormal(Point3d origin, Vector3d dx, Vector3d dy)
+        {
+            // Se calcula el vector vx.
+            Vector3d vx = dx.Unit;
+
+            // Se calcula el vector vy.
+            double y = vx.Dot(dy); // Mas eficiente que 'Proyectar', 'vx' ya es unitario
+            Vector3d vy = (dy - vx * y).Unit;
+
+            Plane3d plane = new Plane3d(origin, vx, vy);
+
+            if (vx.IsZero || vy.IsZero)
+            {
+                plane.evaluated |= Evaluated.IsDegenerate;
+                plane.isDegenerate = true;
+            }
+            else
+            {
+                plane.evaluated |= Evaluated.IsOrthonormal;
+                plane.isOrthonormal = true;
+            }
+
+            return plane;
+        }
+
+        /// <summary>
+        ///     Plano con los vectores ortonormalizados.
+        /// </summary>
+        public static Plane3d NewOrthonormal(Point3d p0, Point3d p1, Point3d p2)
+        {
+            return NewOrthonormal(p0, p1 - p0, p2 - p0);
+        }
+
+        /// <summary>
+        ///     Plano con los vectores sin ortonormalizar.
+        /// </summary>
+        public static Plane3d NewNonOrthonormal(Point3d origin, Vector3d dx, Vector3d dy)
+        {
+            return new Plane3d(origin, dx, dy);
+        }
+
+        /// <summary>
+        ///     Plano con los vectores sin ortonormalizar.
+        /// </summary>
+        public static Plane3d NewNonOrthonormal(Point3d p0, Point3d p1, Point3d p2)
+        {
+            return NewNonOrthonormal(p0, p1 - p0, p2 - p0);
+        }
+
+        /// <summary>
+        ///     Indica si esta degenerado: algun vector direccion es zero o son paralelos.
+        /// </summary>
+        public bool IsDegenerate
+        {
+            get
+            {
+                if ((this.evaluated & Evaluated.IsDegenerate) != Evaluated.IsDegenerate)
+                {
+                    this.evaluated |= Evaluated.IsDegenerate;
+
+                    this.isDegenerate = this.DX.IsZero || this.DY.IsZero || this.DX.Cross(this.DY).LengthCuad.EpsilonEquals(0);
+                }
+                return this.isDegenerate;
+            }
+        }
+
+        /// <summary>
+        ///     Indica si esta ortonormalizado: los vectores direccion son unitarios y perpendiculares.
+        /// </summary>
+        public bool IsOrthonormal
+        {
+            get
+            {
+                if ((this.evaluated & Evaluated.IsOrthonormal) != Evaluated.IsOrthonormal)
+                {
+                    this.evaluated |= Evaluated.IsOrthonormal;
+
+                    this.isOrthonormal = this.DX.IsUnit && this.DY.IsUnit && this.DX.Dot(this.DY).EpsilonEquals(0);
+                }
+                return this.isOrthonormal;
+            }
+        }
+
+        public Point3d Origin { get; private set; }
+
+        public Vector3d DX { get; private set; }
+
+        public Vector3d DY { get; private set; }
+
+        /// <summary>
+        ///     Obtiene el vector normal normalizado.
+        /// </summary>
+        public Vector3d Normal
+        {
+            get
+            {
+                if ((this.evaluated & Evaluated.Normal) != Evaluated.Normal)
+                {
+                    this.evaluated |= Evaluated.Normal;
+
+                    this.normal = this.DX.Cross(this.DY);
+                    if (!this.IsOrthonormal)
+                    {
+                        this.normal = this.normal.Unit;
+                    }
+                }
+                return this.normal;
+            }
+        }
+
+        /// <summary>
+        ///     Constante en la ecuacion del plano.
+        ///     nx*x + ny*y + nz*z = c
+        /// </summary>
+        public double Constant
+        {
+            get
+            {
+                if ((this.evaluated & Evaluated.Constant) != Evaluated.Constant)
+                {
+                    this.evaluated |= Evaluated.Constant;
+
+                    this.constant = this.Normal.Dot(this.Origin);
+                }
+                return this.constant;
+            }
+        }
+
+        /// <summary>
+        ///     Evalua la proyeccion del punto sobre el plano, respecto del origen.
+        /// </summary>
+        /// <param name="p">Punto.</param>
+        /// <returns>Parametro [-Inf, Inf].</returns>
+        public REAL[] Project(Point3d p)
+        {
+            Vector3d diff = (p - this.Origin);
+
+            REAL u, v;
+            if (this.IsOrthonormal)
+            {
+                //REAL w = this.Normal.Dot(diff);
+                u = this.DX.Dot(diff);
+                v = this.DY.Dot(diff);
+            }
+            else
+            {
+                REAL w;
+                Geom3DUtils.Resolve(this.DX, this.DY, this.Normal, diff, out u, out v, out w);
+            }
+            return new[] { u, v };
+        }
+
+        /// <summary>
+        ///     Evalua el punto.
+        /// </summary>
+        /// <param name="u">Parametro [-Inf, Inf].</param>
+        /// <param name="v">Parametro [-Inf, Inf].</param>
+        /// <returns>Punto.</returns>
+        public Point3d Evaluate(REAL u, REAL v)
+        {
+            return this.Origin + u * this.DX + v * this.DY;
+        }
+
+        #region Distancia
+
+        /// <summary>
+        ///     Distancia (con signo) de un punto a la linea.
+        /// </summary>
+        public REAL Distance(Point3d p, out Point3d closestPoint)
+        {
+            Vector3d normal = this.Normal;
+            REAL c = this.Constant;
+
+            //REAL signedDistance = normal.Dot((VECTOR)p) - c = normal.Dot(p - this.Origin) = normal.Dot(p) - normal.Dot(this.Origin);
+            REAL signedDistance = normal.X * p.X + normal.Y * p.Y + normal.Z * p.Z - c;
+            closestPoint = p - signedDistance * normal;
+            return signedDistance;
+        }
+
+        /// <summary>
+        ///     Distancia (con signo) de un punto a la linea.
+        /// </summary>
+        public REAL Distance(Point3d p)
+        {
+            Vector3d normal = this.Normal;
+            REAL c = this.Constant;
+
+            //REAL signedDistance = normal.Dot((VECTOR)p) - c = normal.Dot(p - this.Origin) = normal.Dot(p) - normal.Dot(this.Origin);
+            REAL signedDistance = normal.X * p.X + normal.Y * p.Y + normal.Z * p.Z - c;
+            return signedDistance;
+        }
+
+        /// <summary>
+        ///     Indica a que lado esta el punto respecto de la linea:
+        ///     - Si == 0, esta en la linea.
+        ///     - Si &gt; 0 esta debajo/derecha de la linea.
+        ///     - Si &lt; 0 esta encima/izquierda de la linea.
+        ///     <c><![CDATA[
+        ///             |
+        ///             |
+        ///   (-)       +-----> (+) normal
+        ///   back      |       front
+        ///             |
+        /// ]]></c>
+        /// </summary>
+        public PlaneSide WhichSide(Point3d p)
+        {
+            REAL distance = this.Distance(p);
+
+            if (distance.EpsilonZero())
+            {
+                return PlaneSide.Middle;
+            }
+            else if (distance > 0)
+            {
+                // Derecha
+                return PlaneSide.Front;
+            }
+            else // if (distance < 0)
+            {
+                // Izquierda
+                return PlaneSide.Back;
+            }
+        }
+
+        #endregion
+
+        #region private
+
+        private Plane3d(Point3d origin, Vector3d dx, Vector3d dy)
+        {
+            this.Origin = origin;
+            this.DX = dx;
+            this.DY = dy;
+        }
+
+        private Vector3d normal;
+        private REAL constant;
+        private bool isOrthonormal;
+        private bool isDegenerate;
+        private Evaluated evaluated = Evaluated.None;
+
+        #endregion
+
+        #region inner classes
+
+        [Flags]
+        private enum Evaluated
+        {
+            None = 0x0,
+            Normal = 0x1,
+            Constant = 0x2,
+            IsOrthonormal = 0x4,
+            IsDegenerate = 0x8,
+        }
+
+        #endregion
+    }
+}
