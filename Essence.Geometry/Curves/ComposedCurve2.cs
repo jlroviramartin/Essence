@@ -1,22 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-#endregion
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Essence.Geometry.Core.Double;
 
@@ -93,14 +75,14 @@ namespace Essence.Maths.Double.Curves
 
         #region Differential geometric quantities
 
-        protected override double GetSpeed(int index, double tInSegment)
-        {
-            return this.segments[index].GetSpeed(tInSegment);
-        }
-
         protected override double GetLength(int index, double tInSegment0, double tInSegment1)
         {
             return this.segments[index].GetLength(tInSegment0, tInSegment1);
+        }
+
+        protected override double GetSpeed(int index, double tInSegment)
+        {
+            return this.segments[index].GetSpeed(tInSegment);
         }
 
         protected override Vector2d GetTangent(int index, double tInSegment)
@@ -179,39 +161,14 @@ namespace Essence.Maths.Double.Curves
                 get { throw new NotImplementedException(); }
             }
 
+            public double TMin { get; private set; }
+
             double ICurve2.TMax
             {
                 get { throw new NotImplementedException(); }
             }
 
-            public double TMin { get; private set; }
-
-            double ICurve2.TotalLength
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            double ICurve2.GetCurvature(double t)
-            {
-                throw new NotImplementedException();
-            }
-
-            Vector2d ICurve2.GetFirstDerivative(double t)
-            {
-                throw new NotImplementedException();
-            }
-
-            void ICurve2.GetFrame(double t, ref Point2d position, ref Vector2d tangent, ref Vector2d normal)
-            {
-                throw new NotImplementedException();
-            }
-
-            Vector2d ICurve2.GetLeftNormal(double t)
-            {
-                throw new NotImplementedException();
-            }
-
-            double ICurve2.GetLength(double t0, double t1)
+            void ICurve2.SetTInterval(double tmin, double tmax)
             {
                 throw new NotImplementedException();
             }
@@ -221,17 +178,12 @@ namespace Essence.Maths.Double.Curves
                 throw new NotImplementedException();
             }
 
+            Vector2d ICurve2.GetFirstDerivative(double t)
+            {
+                throw new NotImplementedException();
+            }
+
             Vector2d ICurve2.GetSecondDerivative(double t)
-            {
-                throw new NotImplementedException();
-            }
-
-            double ICurve2.GetSpeed(double t)
-            {
-                throw new NotImplementedException();
-            }
-
-            Vector2d ICurve2.GetTangent(double t)
             {
                 throw new NotImplementedException();
             }
@@ -241,7 +193,37 @@ namespace Essence.Maths.Double.Curves
                 throw new NotImplementedException();
             }
 
-            void ICurve2.SetTInterval(double tmin, double tmax)
+            double ICurve2.TotalLength
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            double ICurve2.GetLength(double t0, double t1)
+            {
+                throw new NotImplementedException();
+            }
+
+            double ICurve2.GetSpeed(double t)
+            {
+                throw new NotImplementedException();
+            }
+
+            double ICurve2.GetCurvature(double t)
+            {
+                throw new NotImplementedException();
+            }
+
+            Vector2d ICurve2.GetLeftNormal(double t)
+            {
+                throw new NotImplementedException();
+            }
+
+            Vector2d ICurve2.GetTangent(double t)
+            {
+                throw new NotImplementedException();
+            }
+
+            void ICurve2.GetFrame(double t, ref Point2d position, ref Vector2d tangent, ref Vector2d normal)
             {
                 throw new NotImplementedException();
             }

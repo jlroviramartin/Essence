@@ -44,9 +44,9 @@ namespace Essence.Maths.Double.Curves
 
         #region Differential geometric quantities
 
-        double GetLength(double t0, double t1);
-
         double TotalLength { get; }
+
+        double GetLength(double t0, double t1);
 
         double GetSpeed(double t);
 

@@ -115,7 +115,7 @@ namespace Essence.Util.Collections.Iterators
 
         public override int GetHashCode()
         {
-            return this.i;
+            return this.i.GetHashCode();
         }
 
         public override string ToString()

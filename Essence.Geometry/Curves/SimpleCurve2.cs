@@ -79,7 +79,6 @@ namespace Essence.Maths.Double.Curves
 
         public virtual Vector2d GetThirdDerivative(double t)
         {
-            throw new NotImplementedException();
             UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(tt).X, 3, 5);
             UnaryFunction fdy = Derivative.Central(tt => this.GetPosition(tt).Y, 3, 5);
             return new Vector2d(fdx(t), fdy(t));
@@ -92,34 +91,6 @@ namespace Essence.Maths.Double.Curves
         public virtual double TotalLength
         {
             get { return this.GetLength(this.TMin, this.TMax); }
-        }
-
-        public virtual Vector2d GetTangent(double t)
-        {
-            return this.GetFirstDerivative(t).Unit;
-        }
-
-        public virtual double GetSpeed(double t)
-        {
-            return this.GetFirstDerivative(t).Length;
-        }
-
-        public virtual double GetCurvature(double t)
-        {
-            Vector2d der1 = this.GetFirstDerivative(t);
-            double speed2 = der1.LengthCuad;
-
-            if (speed2.EpsilonEquals(0))
-            {
-                // Curvature is indeterminate, just return 0.
-                return 0;
-            }
-
-            Vector2d der2 = this.GetSecondDerivative(t);
-
-            double numer = der1.Dot(der2);
-            double denom = SysMath.Pow(speed2, 1.5);
-            return numer / denom;
         }
 
         public virtual double GetLength(double t0, double t1)
@@ -138,6 +109,34 @@ namespace Essence.Maths.Double.Curves
 
             RombergIntegrator iintegral = new RombergIntegrator();
             return iintegral.integrate(IntegralMaxEval, new DelegateUnivariateFunction(this.GetSpeed), t0, t1);
+        }
+
+        public virtual double GetSpeed(double t)
+        {
+            return this.GetFirstDerivative(t).Length;
+        }
+
+        public virtual double GetCurvature(double t)
+        { // https://en.wikipedia.org/wiki/Curvature
+            Vector2d der1 = this.GetFirstDerivative(t);
+            double speed2 = der1.LengthCuad;
+
+            if (speed2.EpsilonEquals(0))
+            {
+                // Curvature is indeterminate, just return 0.
+                return 0;
+            }
+
+            Vector2d der2 = this.GetSecondDerivative(t);
+
+            double numer = der1.DotPerpRight(der2);
+            double denom = SysMath.Pow(speed2, 3d / 2);
+            return numer / denom;
+        }
+
+        public virtual Vector2d GetTangent(double t)
+        {
+            return this.GetFirstDerivative(t).Unit;
         }
 
         public virtual Vector2d GetLeftNormal(double t)

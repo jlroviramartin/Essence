@@ -1,22 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-#endregion
-
-using System;
+﻿using System;
 using System.Diagnostics.Contracts;
 using Essence.Geometry.Core.Double;
 using Essence.Util.Math.Double;
@@ -54,7 +36,6 @@ namespace Essence.Maths.Double.Curves
 
         protected virtual Vector2d GetThirdDerivative(int index, double t)
         {
-            throw new NotImplementedException();
             UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(index, tt).X, 3, 5);
             UnaryFunction fdy = Derivative.Central(tt => this.GetPosition(index, tt).Y, 3, 5);
             return new Vector2d(fdx(t), fdy(t));
@@ -123,7 +104,7 @@ namespace Essence.Maths.Double.Curves
             if (this.lengths == null)
             {
                 this.EvaluateLengths();
-                Contract.Assert(this.lengths != null && this.accLengths != null);
+                Contract.Assert((this.lengths != null) && (this.accLengths != null));
             }
         }
 
@@ -214,13 +195,13 @@ namespace Essence.Maths.Double.Curves
             return this.GetThirdDerivative(index, tInSegment);
         }
 
-        public virtual double GetSpeed(double t)
+        public virtual double TotalLength
         {
-            int index;
-            double tInSegment;
-            this.FindIndex(t, out index, out tInSegment);
-
-            return this.GetSpeed(index, tInSegment);
+            get
+            {
+                this.EnsureLengthsEvaluated();
+                return this.accLengths[this.accLengths.Length - 1];
+            }
         }
 
         public virtual double GetLength(double t0, double t1)
@@ -271,13 +252,22 @@ namespace Essence.Maths.Double.Curves
             return longitud;
         }
 
-        public virtual double TotalLength
+        public virtual double GetSpeed(double t)
         {
-            get
-            {
-                this.EnsureLengthsEvaluated();
-                return this.accLengths[this.accLengths.Length - 1];
-            }
+            int index;
+            double tInSegment;
+            this.FindIndex(t, out index, out tInSegment);
+
+            return this.GetSpeed(index, tInSegment);
+        }
+
+        public virtual double GetCurvature(double t)
+        {
+            int index;
+            double tInSegment;
+            this.FindIndex(t, out index, out tInSegment);
+
+            return this.GetCurvature(index, tInSegment);
         }
 
         public virtual Vector2d GetTangent(double t)
@@ -301,15 +291,6 @@ namespace Essence.Maths.Double.Curves
             this.FindIndex(t, out index, out tInSegment);
 
             this.GetFrame(index, tInSegment, ref position, ref tangent, ref normal);
-        }
-
-        public virtual double GetCurvature(double t)
-        {
-            int index;
-            double tInSegment;
-            this.FindIndex(t, out index, out tInSegment);
-
-            return this.GetCurvature(index, tInSegment);
         }
 
         #endregion

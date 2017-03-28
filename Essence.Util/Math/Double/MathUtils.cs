@@ -61,7 +61,7 @@ namespace Essence.Util.Math.Double
             if (value.EpsilonZero())
             {
                 throw new Exception("Division by zero in InvSqr");
-                return 0;
+                //return 0;
             }
 
             return (REAL)1.0 / (REAL)System.Math.Sqrt(value);

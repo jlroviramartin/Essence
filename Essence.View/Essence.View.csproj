@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0510D637-47A5-45FD-9494-6BC278439A15}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Essence.View</RootNamespace>
+    <AssemblyName>Essence.View</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.4.0\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.13.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DockPanelSuite.2.13.0\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2005Multithreading, Version=2.13.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DockPanelSuite.ThemeVS2005Multithreading.2.13.0\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2005Multithreading.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\FormatAttribute.cs" />
+    <Compile Include="Attributes\RefListAttribute.cs" />
+    <Compile Include="Attributes\TextAttribute.cs" />
+    <Compile Include="Attributes\ViewAttribute.cs" />
+    <Compile Include="Config\AutofacConfig.cs" />
+    <Compile Include="Controls\Menus\TSIRenderComposedComponentUI.cs" />
+    <Compile Include="Controls\Menus\TSIRenderLabel.cs" />
+    <Compile Include="Controls\Menus\TSIRenderNull.cs" />
+    <Compile Include="Controls\Menus\TSIRenderProperty.cs" />
+    <Compile Include="Controls\Menus\TSIRenderSeparator.cs" />
+    <Compile Include="Forms\ControlUtils.cs" />
+    <Compile Include="Forms\LabelValueControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\LabelValueToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Models\AbsComponentUI.cs" />
+    <Compile Include="Models\ActionUtils.cs" />
+    <Compile Include="Controls\Forms\ControlExchange.cs" />
+    <Compile Include="Controls\ControlUtils.cs" />
+    <Compile Include="Controls\DialogViewControl.cs" />
+    <Compile Include="Controls\FormViewAsTableControl.cs" />
+    <Compile Include="Controls\FormViewControl.cs" />
+    <Compile Include="Controls\IEditorFactory.cs" />
+    <Compile Include="Controls\IRefControl.cs" />
+    <Compile Include="Controls\Menus\ToolStripItemRender.cs" />
+    <Compile Include="Controls\Menus\TSIContext.cs" />
+    <Compile Include="Controls\Menus\TSILocalization.cs" />
+    <Compile Include="Controls\Menus\TSIRender.cs" />
+    <Compile Include="Controls\Menus\TSIRenderAction.cs" />
+    <Compile Include="Controls\Menus\TSIRenderComposedAction.cs" />
+    <Compile Include="Controls\ViewContainerControl.cs" />
+    <Compile Include="Forms\CollapsibleControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Icon.cs" />
+    <Compile Include="IconUtils.cs" />
+    <Compile Include="Models\AbsFormModel.cs" />
+    <Compile Include="Controls\Forms\DefaultEditorFactory.cs" />
+    <Compile Include="Models\Action.cs" />
+    <Compile Include="Models\ComposedComponentUI.cs" />
+    <Compile Include="Models\ComposedAction.cs" />
+    <Compile Include="Models\IAction.cs" />
+    <Compile Include="Models\IComposedAction.cs" />
+    <Compile Include="Models\IComponentUI.cs" />
+    <Compile Include="Models\IComposedComponentUI.cs" />
+    <Compile Include="Models\IProperty.cs" />
+    <Compile Include="Models\IRefFormObject.cs" />
+    <Compile Include="Models\IRefList.cs" />
+    <Compile Include="Controls\MenuViewControl.cs" />
+    <Compile Include="Models\Label.cs" />
+    <Compile Include="Models\Properties\FormatProperties.cs" />
+    <Compile Include="Models\Properties\IViewPropertiesProvider.cs" />
+    <Compile Include="Models\Properties\PropertyProperties.cs" />
+    <Compile Include="Models\Properties\RefListProperties.cs" />
+    <Compile Include="Models\Properties\SimpleProperties.cs" />
+    <Compile Include="Models\Properties\TextProperties.cs" />
+    <Compile Include="Models\Property.cs" />
+    <Compile Include="Models\Separator.cs" />
+    <Compile Include="Models\UpdateStateEventArgs.cs" />
+    <Compile Include="Models\Properties\ViewProperties.cs" />
+    <Compile Include="Models\PropertyDescription.cs" />
+    <Compile Include="Models\ReflectionFormModel.cs" />
+    <Compile Include="Resources\MainResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MainResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IDialogView.cs" />
+    <Compile Include="Views\IListView.cs" />
+    <Compile Include="Views\IFormView.cs" />
+    <Compile Include="Views\IMenuView.cs" />
+    <Compile Include="Views\ITableView.cs" />
+    <Compile Include="Views\IView.cs" />
+    <Compile Include="Views\IViewContainer.cs" />
+    <Compile Include="Models\IFormModel.cs" />
+    <Compile Include="Models\IListView.cs" />
+    <Compile Include="Models\ITreeView.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controls\ViewControl.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Essence.Geometry\Essence.Geometry.csproj">
+      <Project>{435dddb4-5427-4d0f-98c9-121a2b8192b1}</Project>
+      <Name>Essence.Geometry</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Essence.Util\Essence.Util.csproj">
+      <Project>{8ef57341-1971-4217-baf9-2aa8993e5285}</Project>
+      <Name>Essence.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\LabelValueControl.resx" />
+    <EmbeddedResource Include="Resources\MainResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MainResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icons\icon_not_found.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

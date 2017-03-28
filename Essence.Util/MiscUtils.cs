@@ -16,6 +16,8 @@
 
 #endregion
 
+using System;
+
 namespace Essence.Util
 {
     /// <summary>
@@ -28,6 +30,23 @@ namespace Essence.Util
             T tmp = o1;
             o1 = o2;
             o2 = tmp;
+        }
+
+        public static void PreventReentry(Func<bool> get, Action<bool> set, Action action)
+        {
+            if (get())
+            {
+                return;
+            }
+            set(true);
+            try
+            {
+                action();
+            }
+            finally
+            {
+                set(false);
+            }
         }
     }
 }

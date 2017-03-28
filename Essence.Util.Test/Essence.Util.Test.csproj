@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Converters\StringConverterTest.cs" />
     <Compile Include="DictionaryOfTypeTest.cs" />
     <Compile Include="ListenerManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
