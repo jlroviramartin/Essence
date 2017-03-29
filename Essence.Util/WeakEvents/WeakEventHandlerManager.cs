@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Collections.Generic;
@@ -55,17 +51,17 @@ namespace Essence.Util.WeakEvents
 
             Contract.Assert(!this.mapDelegates.ContainsKey(name));
 
-            Type sourceManagerType = typeof (SourceManager<,,,>).MakeGenericType(
+            Type sourceManagerType = typeof(SourceManager<,,,>).MakeGenericType(
                 delEventHandler.Method.DeclaringType,
-                typeof (TSource),
-                typeof (TEventHandler),
-                typeof (TEventArgs));
+                typeof(TSource),
+                typeof(TEventHandler),
+                typeof(TEventArgs));
 
             ConstructorInfo sourceManagerConstructor = sourceManagerType.GetConstructor(new[]
             {
-                typeof (TEventHandler),
-                typeof (RegisterCallback<TSource, TEventHandler>),
-                typeof (UnregisterCallback<TSource, TEventHandler>)
+                typeof(TEventHandler),
+                typeof(RegisterCallback<TSource, TEventHandler>),
+                typeof(UnregisterCallback<TSource, TEventHandler>)
             });
             Contract.Assert(sourceManagerConstructor != null);
 
@@ -96,7 +92,7 @@ namespace Essence.Util.WeakEvents
         /// </summary>
         public void AddWeak<TSource>(TSource source)
         {
-            foreach (ISourceManager sourceManager in this.mapDelegates.Values.Where(x => typeof (TSource) == x.SourceType))
+            foreach (ISourceManager sourceManager in this.mapDelegates.Values.Where(x => typeof(TSource) == x.SourceType))
             {
                 sourceManager.AddSource(source);
             }
@@ -134,7 +130,7 @@ namespace Essence.Util.WeakEvents
         /// </summary>
         public void RemoveWeak<TSource>(TSource source)
         {
-            foreach (ISourceManager sourceManager in this.mapDelegates.Values.Where(x => typeof (TSource) == x.SourceType))
+            foreach (ISourceManager sourceManager in this.mapDelegates.Values.Where(x => typeof(TSource) == x.SourceType))
             {
                 sourceManager.RemoveSource(source);
             }
@@ -159,7 +155,7 @@ namespace Essence.Util.WeakEvents
         /// </summary>
         public void ClearWeaks<TSource>()
         {
-            foreach (ISourceManager sourceManager in this.mapDelegates.Values.Where(x => typeof (TSource) == x.SourceType))
+            foreach (ISourceManager sourceManager in this.mapDelegates.Values.Where(x => typeof(TSource) == x.SourceType))
             {
                 sourceManager.RemoveAll();
             }
@@ -275,15 +271,15 @@ namespace Essence.Util.WeakEvents
                 if (!this.staticHandler)
                 {
                     this.targetRef = new WeakReference<T>((T)delEventHandler.Target);
-                    this.openHandler = (OpenEventHandler)Delegate.CreateDelegate(typeof (OpenEventHandler), null, delEventHandler.Method);
+                    this.openHandler = (OpenEventHandler)Delegate.CreateDelegate(typeof(OpenEventHandler), null, delEventHandler.Method);
                 }
                 else
                 {
                     this.targetRef = null;
-                    this.closedHandler = (ClosedEventHandler)Delegate.CreateDelegate(typeof (ClosedEventHandler), null, delEventHandler.Method);
+                    this.closedHandler = (ClosedEventHandler)Delegate.CreateDelegate(typeof(ClosedEventHandler), null, delEventHandler.Method);
                 }
 
-                this.handler = (TEventHandler)(object)Delegate.CreateDelegate(typeof (TEventHandler), this, invokeMth);
+                this.handler = (TEventHandler)(object)Delegate.CreateDelegate(typeof(TEventHandler), this, invokeMth);
 
                 this.register = register;
                 this.unregister = unregister;
@@ -343,7 +339,7 @@ namespace Essence.Util.WeakEvents
             private readonly List<WeakReference<TSource>> sources = new List<WeakReference<TSource>>();
 
             private static readonly MethodInfo invokeMth
-                = typeof (SourceManager<T, TSource, TEventHandler, TEventArgs>).GetMethod("Invoke");
+                = typeof(SourceManager<T, TSource, TEventHandler, TEventArgs>).GetMethod("Invoke");
 
             #endregion
 
@@ -382,7 +378,7 @@ namespace Essence.Util.WeakEvents
 
             public Type SourceType
             {
-                get { return typeof (TSource); }
+                get { return typeof(TSource); }
             }
 
             #endregion

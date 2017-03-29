@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using Essence.Util.Math;
 using System;
@@ -63,7 +59,7 @@ namespace Essence.Geometry.Core.Int
             get { return new Vector2i(0, 1); }
         }
 
-        public Vector2i(INT x, INT y)
+        public Vector2i(int x, int y)
         {
             this.X = x;
             this.Y = y;
@@ -95,19 +91,19 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>Property X.</summary>
-        public readonly INT X;
+        public readonly int X;
 
         /// <summary>Property Y.</summary>
-        public readonly INT Y;
+        public readonly int Y;
 
         #region operators
 
         /// <summary>
         ///     Casting a REAL[].
         /// </summary>
-        public static explicit operator INT[](Vector2i v)
+        public static explicit operator int[](Vector2i v)
         {
-            return new INT[] { v.X, v.Y };
+            return new int[] { v.X, v.Y };
         }
 
         public static Vector2i operator -(Vector2i v1)
@@ -125,17 +121,17 @@ namespace Essence.Geometry.Core.Int
             return v1.Sub(v2);
         }
 
-        public static Vector2i operator *(Vector2i v, INT c)
+        public static Vector2i operator *(Vector2i v, int c)
         {
             return v.Mul(c);
         }
 
-        public static Vector2i operator *(INT c, Vector2i v)
+        public static Vector2i operator *(int c, Vector2i v)
         {
             return v.Mul(c);
         }
 
-        public static Vector2i operator /(Vector2i v, INT c)
+        public static Vector2i operator /(Vector2i v, int c)
         {
             return v.Div(c);
         }
@@ -154,7 +150,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        public INT this[int i]
+        public int this[int i]
         {
             get
             {
@@ -196,31 +192,31 @@ namespace Essence.Geometry.Core.Int
             get
             {
                 return ((this.X >= 0)
-                            ? ((this.Y >= 0) ? 0 : 3)
-                            : ((this.Y >= 0) ? 1 : 2));
+                    ? ((this.Y >= 0) ? 0 : 3)
+                    : ((this.Y >= 0) ? 1 : 2));
             }
         }
 
         [Pure]
-        public INT Cross(Vector2i v2)
+        public int Cross(Vector2i v2)
         {
             return this.X * v2.Y - this.Y * v2.X;
         }
 
         [Pure]
-        public REAL Length
+        public double Length
         {
-            get { return (REAL)Math.Sqrt(this.LengthCuad); }
+            get { return (double)Math.Sqrt(this.LengthCuad); }
         }
 
         [Pure]
-        public REAL LengthCuad
+        public double LengthCuad
         {
             get { return this.Dot(this); }
         }
 
         [Pure]
-        public REAL LengthL1
+        public double LengthL1
         {
             get { return Math.Abs(this.X) + Math.Abs(this.Y); }
         }
@@ -238,13 +234,13 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        public Vector2i Mul(INT c)
+        public Vector2i Mul(int c)
         {
             return new Vector2i(this.X * c, this.Y * c);
         }
 
         [Pure]
-        public Vector2i Div(INT c)
+        public Vector2i Div(int c)
         {
             return new Vector2i(this.X / c, this.Y / c);
         }
@@ -268,32 +264,32 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        public Vector2i Lerp(Vector2i v2, REAL alpha)
+        public Vector2i Lerp(Vector2i v2, double alpha)
         {
             return this.Lineal(v2, 1 - alpha, alpha);
         }
 
         [Pure]
-        public REAL InvLerp(Vector2i v2, Vector2i vLerp)
+        public double InvLerp(Vector2i v2, Vector2i vLerp)
         {
             Vector2i v12 = v2.Sub(this);
             return v12.Proy(vLerp.Sub(this));
         }
 
         [Pure]
-        public Vector2i Lineal(Vector2i v2, REAL alpha, REAL beta)
+        public Vector2i Lineal(Vector2i v2, double alpha, double beta)
         {
-            return new Vector2i((INT)(alpha * this.X + beta * v2.X), (INT)(alpha * this.Y + beta * v2.Y));
+            return new Vector2i((int)(alpha * this.X + beta * v2.X), (int)(alpha * this.Y + beta * v2.Y));
         }
 
         [Pure]
-        public INT Dot(Vector2i v2)
+        public int Dot(Vector2i v2)
         {
             return this.X * v2.X + this.Y * v2.Y;
         }
 
         [Pure]
-        public REAL Proy(Vector2i v2)
+        public double Proy(Vector2i v2)
         {
             return this.Dot(v2) / this.Length;
         }
@@ -344,8 +340,8 @@ namespace Essence.Geometry.Core.Int
         {
             Contract.Requires(s != null);
 
-            INT[] ret;
-            if (!VectorUtils.TryParse(s, 2, out ret, INT.TryParse, provider, vstyle, style))
+            int[] ret;
+            if (!VectorUtils.TryParse(s, 2, out ret, int.TryParse, provider, vstyle, style))
             {
                 result = Zero;
                 return false;
@@ -363,7 +359,7 @@ namespace Essence.Geometry.Core.Int
         {
             get
             {
-                REAL len = this.Length;
+                double len = this.Length;
                 if (Essence.Util.Math.Double.MathUtils.EpsilonZero(len))
                 {
                     return Zero;
@@ -373,22 +369,22 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        private Vector2i Mul(REAL c)
+        private Vector2i Mul(double c)
         {
-            return new Vector2i((INT)(this.X * c), (INT)(this.Y * c));
+            return new Vector2i((int)(this.X * c), (int)(this.Y * c));
         }
 
         [Pure]
-        private Vector2i Div(REAL c)
+        private Vector2i Div(double c)
         {
-            return new Vector2i((INT)(this.X / c), (INT)(this.Y / c));
+            return new Vector2i((int)(this.X / c), (int)(this.Y / c));
         }
 
         /// <summary>
         ///     Comprueba si son iguales.
         /// </summary>
         [Pure]
-        private bool Equals(INT x, INT y)
+        private bool Equals(int x, int y)
         {
             return this.X == x && this.Y == y;
         }
@@ -454,7 +450,7 @@ namespace Essence.Geometry.Core.Int
                 }
             }
 
-            return VectorUtils.ToString(provider, format, (INT[])this);
+            return VectorUtils.ToString(provider, format, (int[])this);
         }
 
         #endregion
@@ -521,13 +517,13 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        IVector IVector.Mul(REAL c)
+        IVector IVector.Mul(double c)
         {
             return this.Mul(c);
         }
 
         [Pure]
-        IVector IVector.Div(REAL c)
+        IVector IVector.Div(double c)
         {
             return this.Div(c);
         }
@@ -555,7 +551,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        IVector IVector.Lerp(IVector v2, REAL alpha)
+        IVector IVector.Lerp(IVector v2, double alpha)
         {
             if (v2 is Vector2i)
             {
@@ -565,7 +561,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        REAL IVector.InvLerp(IVector v2, IVector vLerp)
+        double IVector.InvLerp(IVector v2, IVector vLerp)
         {
             if (v2 is Vector2i)
             {
@@ -582,7 +578,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        IVector IVector.Lineal(IVector v2, REAL alpha, REAL beta)
+        IVector IVector.Lineal(IVector v2, double alpha, double beta)
         {
             if (v2 is Vector2i)
             {
@@ -592,7 +588,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        REAL IVector.Dot(IVector v2)
+        double IVector.Dot(IVector v2)
         {
             if (v2 is Vector2i)
             {
@@ -602,7 +598,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        REAL IVector.Proy(IVector v2)
+        double IVector.Proy(IVector v2)
 
         {
             if (v2 is Vector2i)
@@ -639,7 +635,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        REAL IVector2D.Cross(IVector2D v2)
+        double IVector2D.Cross(IVector2D v2)
         {
             if (v2 is Vector2i)
             {
@@ -653,7 +649,7 @@ namespace Essence.Geometry.Core.Int
         #region IEpsilonEquatable<IVector>
 
         [Pure]
-        bool IEpsilonEquatable<IVector>.EpsilonEquals(IVector other, REAL epsilon)
+        bool IEpsilonEquatable<IVector>.EpsilonEquals(IVector other, double epsilon)
         {
             if (other is Vector2i)
             {

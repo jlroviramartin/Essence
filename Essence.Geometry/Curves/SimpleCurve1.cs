@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
 using System.Diagnostics.Contracts;
 using org.apache.commons.math3.analysis.integration;
 using REAL = System.Double;
@@ -25,49 +21,49 @@ namespace Essence.Maths.Double.Curves
 {
     public abstract class SimpleCurve1 : ICurve1
     {
-        public REAL Point0
+        public double Point0
         {
             get { return this.GetPosition(this.TMin); }
         }
 
-        public REAL Point1
+        public double Point1
         {
             get { return this.GetPosition(this.TMax); }
         }
 
         #region ICurve1
 
-        public virtual REAL TMin
+        public virtual double TMin
         {
             get { return 0; }
         }
 
-        public virtual REAL TMax
+        public virtual double TMax
         {
             get { return 1; }
         }
 
-        public virtual void SetTInterval(REAL tmin, REAL tmax)
+        public virtual void SetTInterval(double tmin, double tmax)
         {
         }
 
         #region Position and derivatives
 
-        public abstract REAL GetPosition(REAL t);
+        public abstract double GetPosition(double t);
 
-        public virtual REAL GetFirstDerivative(REAL t)
+        public virtual double GetFirstDerivative(double t)
         {
             UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(tt), 1, 5);
             return fdx(t);
         }
 
-        public virtual REAL GetSecondDerivative(REAL t)
+        public virtual double GetSecondDerivative(double t)
         {
             UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(tt), 2, 5);
             return fdx(t);
         }
 
-        public virtual REAL GetThirdDerivative(REAL t)
+        public virtual double GetThirdDerivative(double t)
         {
             UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(tt), 3, 5);
             return fdx(t);
@@ -77,12 +73,12 @@ namespace Essence.Maths.Double.Curves
 
         #region Differential geometric quantities
 
-        public virtual REAL TotalLength
+        public virtual double TotalLength
         {
             get { return this.GetLength(this.TMin, this.TMax); }
         }
 
-        public virtual REAL GetLength(REAL t0, REAL t1)
+        public virtual double GetLength(double t0, double t1)
         {
             Contract.Assert(t0 <= t1);
 
@@ -100,7 +96,7 @@ namespace Essence.Maths.Double.Curves
             return iintegral.integrate(IntegralMaxEval, new DelegateUnivariateFunction(this.GetSpeed), t0, t1);
         }
 
-        public virtual REAL GetSpeed(REAL t)
+        public virtual double GetSpeed(double t)
         {
             return this.GetFirstDerivative(t);
         }

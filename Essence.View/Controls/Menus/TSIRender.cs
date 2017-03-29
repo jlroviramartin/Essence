@@ -1,4 +1,18 @@
-﻿using System;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.Windows.Forms;
 using Essence.Util;
 using Essence.Util.Events;
@@ -8,21 +22,21 @@ using Essence.View.Resources;
 namespace Essence.View.Controls.Menus
 {
     /// <summary>
-    /// Render de <c>ToolStripItem</c>.
+    ///     Render de <c>ToolStripItem</c>.
     /// </summary>
     public abstract class TSIRender
     {
         #region Miembros publicos
 
         /// <summary>
-        /// Indica si puede renderizar el objeto.
+        ///     Indica si puede renderizar el objeto.
         /// </summary>
         /// <param name="obj">Objeto.</param>
         /// <returns>Indica si puede renderizarlo.</returns>
         public abstract bool IsRenderable(object obj);
 
         /// <summary>
-        /// Renderiza el objeto.
+        ///     Renderiza el objeto.
         /// </summary>
         /// <param name="obj">Objeto.</param>
         /// <param name="context">Contexto.</param>
@@ -87,7 +101,7 @@ namespace Essence.View.Controls.Menus
     }
 
     /// <summary>
-    /// Render.
+    ///     Render.
     /// </summary>
     public abstract class TSIRender<T, TTSItem> : TSIRender
         where TTSItem : ToolStripItem
@@ -98,7 +112,7 @@ namespace Essence.View.Controls.Menus
         }
 
         /// <summary>
-        /// Renderiza el objeto.
+        ///     Renderiza el objeto.
         /// </summary>
         /// <param name="obj">Objeto.</param>
         /// <param name="context">Contexto.</param>
@@ -108,7 +122,7 @@ namespace Essence.View.Controls.Menus
         #region TSIRender
 
         /// <summary>
-        /// Indica si puede renderizar el objeto indicado.
+        ///     Indica si puede renderizar el objeto indicado.
         /// </summary>
         /// <param name="obj">Objeto.</param>
         /// <returns>Indica si puede renderizar.</returns>
@@ -118,7 +132,7 @@ namespace Essence.View.Controls.Menus
         }
 
         /// <summary>
-        /// Renderiza el objeto indicado.
+        ///     Renderiza el objeto indicado.
         /// </summary>
         /// <param name="obj">Objeto.</param>
         /// <param name="context">Contexto.</param>
@@ -136,7 +150,7 @@ namespace Essence.View.Controls.Menus
         where T : class, IComponentUI
     {
         /// <summary>
-        /// Asociation entre un <c>ToolStripItem</c> y una <c>IProperty</c>.
+        ///     Asociation entre un <c>ToolStripItem</c> y una <c>IProperty</c>.
         /// </summary>
         protected abstract class Link : DisposableObject
         {
@@ -168,7 +182,7 @@ namespace Essence.View.Controls.Menus
             }
 
             /// <summary>
-            /// Escucha el evento <c>TSItem.Disposed</c>.
+            ///     Escucha el evento <c>TSItem.Disposed</c>.
             /// </summary>
             private void TSItem_Disposed(object sender, EventArgs args)
             {
@@ -176,7 +190,7 @@ namespace Essence.View.Controls.Menus
             }
 
             /// <summary>
-            /// Escucha el evento <c>Property.PropertyChanged</c>.
+            ///     Escucha el evento <c>Property.PropertyChanged</c>.
             /// </summary>
             private void Property_PropertyChanged(object sender, PropertyChangedExEventArgs args)
             {
@@ -202,7 +216,7 @@ namespace Essence.View.Controls.Menus
             }
 
             /// <summary>
-            /// Etiqueta+Valor ToolStripItem.
+            ///     Etiqueta+Valor ToolStripItem.
             /// </summary>
             protected TTSItem TSItem
             {
@@ -225,7 +239,7 @@ namespace Essence.View.Controls.Menus
             }
 
             /// <summary>
-            /// Propiedad.
+            ///     Propiedad.
             /// </summary>
             protected T Item
             {

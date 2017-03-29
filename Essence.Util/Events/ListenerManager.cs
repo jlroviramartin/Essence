@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Collections;
@@ -121,7 +117,7 @@ namespace Essence.Util.Events
 
         internal void Add<TSender>(Listener listener)
         {
-            this.Add(typeof (TSender), listener);
+            this.Add(typeof(TSender), listener);
         }
 
         internal void Add(Type senderType, Listener listener)
@@ -144,7 +140,7 @@ namespace Essence.Util.Events
 
         internal bool Remove<TSender>(Listener listener)
         {
-            return this.Remove(typeof (TSender), listener);
+            return this.Remove(typeof(TSender), listener);
         }
 
         internal bool Remove(Type senderType, Listener listener)
@@ -416,7 +412,7 @@ namespace Essence.Util.Events
                                     RegisterCallback<EventHandler_v2<PropertyChangedExEventArgs>> register,
                                     UnregisterCallback<EventHandler_v2<PropertyChangedExEventArgs>> unregister,
                                     bool valuesToManager)
-                : base(typeof (TItem),
+                : base(typeof(TItem),
                        eventHandler,
                        propertyName, sender => getValue(sender),
                        register, unregister,
@@ -651,7 +647,7 @@ namespace Essence.Util.Events
             {
                 base.OnEvent(sender, args);
 
-                if (this.ValuesToManager && this.Manager.IsValid(typeof (TItem)))
+                if (this.ValuesToManager && this.Manager.IsValid(typeof(TItem)))
                 {
                     args.ForEach(item => this.Manager.Register(item), item => this.Manager.Unregister(item));
                 }
@@ -689,7 +685,7 @@ namespace Essence.Util.Events
             {
                 base.OnEvent(sender, args);
 
-                if (this.ValuesToManager && this.Manager.IsValid(typeof (TItem)))
+                if (this.ValuesToManager && this.Manager.IsValid(typeof(TItem)))
                 {
                     args.ForEach(item => this.Manager.Register(item), item => this.Manager.Unregister(item));
                 }
@@ -826,7 +822,7 @@ namespace Essence.Util.Events
                                                                                                                (sender, h) => unregister((TSender)sender, h),
                                                                                                                valuesToManager);
 
-                foreach (ListenerManager.Listener aux in this.manager.FindListenersOfExactType(typeof (TSender)))
+                foreach (ListenerManager.Listener aux in this.manager.FindListenersOfExactType(typeof(TSender)))
                 {
                     if (aux is ListenerManager.PropertyListener)
                     {

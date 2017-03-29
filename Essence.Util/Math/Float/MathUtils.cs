@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,12 +24,12 @@ namespace Essence.Util.Math.Float
     public static class MathUtils
     {
         /// <summary>Error.</summary>
-        public const REAL EPSILON = (REAL)1e-05;
+        public const float EPSILON = (float)1e-05;
 
         /// <summary>Tolerancia a cero.</summary>
-        public const REAL ZERO_TOLERANCE = (REAL)1e-04;
+        public const float ZERO_TOLERANCE = (float)1e-04;
 
-        public static void MinMax(REAL a, REAL b, out REAL min, out REAL max)
+        public static void MinMax(float a, float b, out float min, out float max)
         {
             if (a > b)
             {
@@ -47,13 +43,13 @@ namespace Essence.Util.Math.Float
             }
         }
 
-        public static REAL Reparam(REAL t, REAL a, REAL b, REAL c, REAL d)
+        public static float Reparam(float t, float a, float b, float c, float d)
         {
-            REAL tt = ((t - a) / (b - a));
+            float tt = ((t - a) / (b - a));
             return c + tt * (d - c);
         }
 
-        internal static REAL InvSqrt(REAL value)
+        internal static float InvSqrt(float value)
         {
             if (value.EpsilonZero())
             {
@@ -61,7 +57,7 @@ namespace Essence.Util.Math.Float
                 return 0;
             }
 
-            return (REAL)1.0 / (REAL)System.Math.Sqrt(value);
+            return (float)1.0 / (float)System.Math.Sqrt(value);
         }
 
         /// <summary>
@@ -69,12 +65,12 @@ namespace Essence.Util.Math.Float
         /// </summary>
         /// <param name="v">Valor.</param>
         /// <returns>Indica si no es NaN ni Infinito.</returns>
-        public static bool IsValid(this REAL v)
+        public static bool IsValid(this float v)
         {
-            return (!REAL.IsNaN(v) && !REAL.IsInfinity(v));
+            return (!float.IsNaN(v) && !float.IsInfinity(v));
         }
 
-        public static REAL Max(params REAL[] values)
+        public static float Max(params float[] values)
         {
             switch (values.Length)
             {
@@ -85,10 +81,10 @@ namespace Essence.Util.Math.Float
                 case 2:
                     return System.Math.Max(values[0], values[1]);
                 default:
-                    REAL max = values[0];
+                    float max = values[0];
                     for (int i = 1; i < values.Length; i++)
                     {
-                        REAL v = values[i];
+                        float v = values[i];
                         if (v > max)
                         {
                             max = v;
@@ -98,7 +94,7 @@ namespace Essence.Util.Math.Float
             }
         }
 
-        public static REAL Min(params REAL[] values)
+        public static float Min(params float[] values)
         {
             switch (values.Length)
             {
@@ -109,10 +105,10 @@ namespace Essence.Util.Math.Float
                 case 2:
                     return System.Math.Min(values[0], values[1]);
                 default:
-                    REAL min = values[0];
+                    float min = values[0];
                     for (int i = 1; i < values.Length; i++)
                     {
-                        REAL v = values[i];
+                        float v = values[i];
                         if (v < min)
                         {
                             min = v;
@@ -122,7 +118,7 @@ namespace Essence.Util.Math.Float
             }
         }
 
-        public static REAL EpsilonClamp(this REAL v, REAL min, REAL max, REAL epsilon = ZERO_TOLERANCE)
+        public static float EpsilonClamp(this float v, float min, float max, float epsilon = ZERO_TOLERANCE)
         {
             if (v.EpsilonLE(min, epsilon))
             {
@@ -135,7 +131,7 @@ namespace Essence.Util.Math.Float
             return v;
         }
 
-        public static REAL Clamp(this REAL v, REAL min, REAL max)
+        public static float Clamp(this float v, float min, float max)
         {
             if (v < min)
             {
@@ -150,7 +146,7 @@ namespace Essence.Util.Math.Float
 
         #region EpsilonZero, EpsilonEquals, EpsilonMayor, EpsilonMayorIgual, EpsilonMenor, EpsilonMenorIgual, EpsilonEntre
 
-        public static int EpsilonSign(this REAL v, REAL epsilon = EPSILON)
+        public static int EpsilonSign(this float v, float epsilon = EPSILON)
         {
             return ((System.Math.Abs(v) <= epsilon) ? 0 : ((v < 0) ? -1 : 1));
         }
@@ -161,7 +157,7 @@ namespace Essence.Util.Math.Float
         /// <param name="v">Valor.</param>
         /// <param name="epsilon">Error maximo.</param>
         /// <returns>Indica si son iguales.</returns>
-        public static bool EpsilonZero(this REAL v, REAL epsilon = ZERO_TOLERANCE)
+        public static bool EpsilonZero(this float v, float epsilon = ZERO_TOLERANCE)
         {
             return (System.Math.Abs(v) <= epsilon);
         }
@@ -173,7 +169,7 @@ namespace Essence.Util.Math.Float
         /// <param name="v2">Valor 2.</param>
         /// <param name="epsilon">Error maximo.</param>
         /// <returns>Indica si son iguales.</returns>
-        public static bool EpsilonEquals(this REAL v1, REAL v2, REAL epsilon = EPSILON)
+        public static bool EpsilonEquals(this float v1, float v2, float epsilon = EPSILON)
         {
             //return (System.Math.Abs(v2 - v1) <= epsilon);
             // Resuelve las comparaciones con PositiveInfinity / NegativeInfinity.
@@ -194,7 +190,7 @@ namespace Essence.Util.Math.Float
         /// <param name="v2">Valor 2.</param>
         /// <param name="epsilon">Error maximo.</param>
         /// <returns>Comparacion.</returns>
-        public static int EpsilonCompareTo(this REAL v1, REAL v2, REAL epsilon = EPSILON)
+        public static int EpsilonCompareTo(this float v1, float v2, float epsilon = EPSILON)
         {
             if (v1.EpsilonEquals(v2, epsilon))
             {
@@ -210,7 +206,7 @@ namespace Essence.Util.Math.Float
         /// <param name="v2s">Valores 2.</param>
         /// <param name="epsilon">Error maximo.</param>
         /// <returns>Indica si son iguales.</returns>
-        public static bool EpsilonEquals(REAL[] v1s, REAL[] v2s, REAL epsilon = EPSILON)
+        public static bool EpsilonEquals(float[] v1s, float[] v2s, float epsilon = EPSILON)
         {
             Debug.Assert(v1s != null);
             Debug.Assert((v2s != null) && (v2s.Length == v1s.Length));
@@ -233,7 +229,7 @@ namespace Essence.Util.Math.Float
         /// <param name="min">Minimo.</param>
         /// <param name="epsilon">Error.</param>
         /// <returns>Indica si el valor es mayor que el minimo.</returns>
-        public static bool EpsilonGE(this REAL v, REAL min, REAL epsilon = EPSILON)
+        public static bool EpsilonGE(this float v, float min, float epsilon = EPSILON)
         {
             return ((min - epsilon) <= v);
         }
@@ -246,7 +242,7 @@ namespace Essence.Util.Math.Float
         /// <param name="min">Minimo.</param>
         /// <param name="epsilon">Error.</param>
         /// <returns>Indica si el valor es mayor que el minimo.</returns>
-        public static bool EpsilonG(this REAL v, REAL min, REAL epsilon = EPSILON)
+        public static bool EpsilonG(this float v, float min, float epsilon = EPSILON)
         {
             return ((min + epsilon) < v);
         }
@@ -259,7 +255,7 @@ namespace Essence.Util.Math.Float
         /// <param name="max">Maximo.</param>
         /// <param name="epsilon">Error.</param>
         /// <returns>Indica si el valor es menor que el maximo.</returns>
-        public static bool EpsilonL(this REAL v, REAL max, REAL epsilon = EPSILON)
+        public static bool EpsilonL(this float v, float max, float epsilon = EPSILON)
         {
             return (v < (max - epsilon));
         }
@@ -272,7 +268,7 @@ namespace Essence.Util.Math.Float
         /// <param name="max">Maximo.</param>
         /// <param name="epsilon">Error.</param>
         /// <returns>Indica si el valor es menor que el maximo.</returns>
-        public static bool EpsilonLE(this REAL v, REAL max, REAL epsilon = EPSILON)
+        public static bool EpsilonLE(this float v, float max, float epsilon = EPSILON)
         {
             return (v <= (max + epsilon));
         }
@@ -287,7 +283,7 @@ namespace Essence.Util.Math.Float
         /// <param name="max">Maximo.</param>
         /// <param name="epsilon">Error.</param>
         /// <returns>Indica si esta entre los valores minimo y maximo.</returns>
-        public static bool EpsilonBetweenClosed(this REAL v, REAL min, REAL max, REAL epsilon = EPSILON)
+        public static bool EpsilonBetweenClosed(this float v, float min, float max, float epsilon = EPSILON)
         {
             return ((min - epsilon) <= v) && (v <= (max + epsilon));
         }
@@ -302,14 +298,14 @@ namespace Essence.Util.Math.Float
         /// <param name="max">Maximo.</param>
         /// <param name="epsilon">Error.</param>
         /// <returns>Indica si esta estrictamente entre los valores minimo y maximo.</returns>
-        public static bool EpsilonBetweenOpen(this REAL v, REAL min, REAL max, REAL epsilon = EPSILON)
+        public static bool EpsilonBetweenOpen(this float v, float min, float max, float epsilon = EPSILON)
         {
             return ((min + epsilon) < v) && (v < (max - epsilon));
         }
 
         #endregion
 
-        public static REAL Cuad(REAL d)
+        public static float Cuad(float d)
         {
             return d * d;
         }
@@ -319,9 +315,9 @@ namespace Essence.Util.Math.Float
         /// </summary>
         /// <param name="grad">Grados.</param>
         /// <returns>Radianes.</returns>
-        public static REAL Rad(REAL grad)
+        public static float Rad(float grad)
         {
-            return (REAL)(grad * System.Math.PI / 180.0);
+            return (float)(grad * System.Math.PI / 180.0);
         }
 
         /// <summary>
@@ -329,9 +325,9 @@ namespace Essence.Util.Math.Float
         /// </summary>
         /// <param name="grad">Grados centesimales.</param>
         /// <returns>Radianes.</returns>
-        public static REAL CRad(REAL grad)
+        public static float CRad(float grad)
         {
-            return (REAL)(grad * System.Math.PI / 200);
+            return (float)(grad * System.Math.PI / 200);
         }
 
         /// <summary>
@@ -339,19 +335,19 @@ namespace Essence.Util.Math.Float
         /// </summary>
         /// <param name="rad">Radianes.</param>
         /// <returns>Grados.</returns>
-        public static REAL Grad(REAL rad)
+        public static float Grad(float rad)
         {
-            return (REAL)(rad * 180.0 / System.Math.PI);
+            return (float)(rad * 180.0 / System.Math.PI);
         }
 
         /// <summary>
         ///     Une dos enumerados ordenados.
         /// </summary>
-        public static IEnumerable<REAL> ConcatSorted(IEnumerable<REAL> t1, IEnumerable<REAL> t2, REAL error = EPSILON)
+        public static IEnumerable<float> ConcatSorted(IEnumerable<float> t1, IEnumerable<float> t2, float error = EPSILON)
         {
-            using (IEnumerator<REAL> enumer1 = t1.GetEnumerator())
+            using (IEnumerator<float> enumer1 = t1.GetEnumerator())
             {
-                using (IEnumerator<REAL> enumer2 = t2.GetEnumerator())
+                using (IEnumerator<float> enumer2 = t2.GetEnumerator())
                 {
                     bool next1 = enumer1.MoveNext();
                     bool next2 = enumer2.MoveNext();
@@ -394,7 +390,7 @@ namespace Essence.Util.Math.Float
         /// <summary>
         ///     Interpolación lineal.
         /// </summary>
-        public static REAL Lerp(REAL d1, REAL d2, REAL alpha)
+        public static float Lerp(float d1, float d2, float alpha)
         {
             return (1 - alpha) * d1 + alpha * d2;
         }
@@ -402,7 +398,7 @@ namespace Essence.Util.Math.Float
         /// <summary>
         ///     Interpolación lineal.
         /// </summary>
-        public static REAL Lerp(REAL x, REAL x1, REAL y1, REAL x2, REAL y2)
+        public static float Lerp(float x, float x1, float y1, float x2, float y2)
         {
             if (EpsilonEquals(x1, x2) || EpsilonEquals(y1, y2))
             {
@@ -411,7 +407,7 @@ namespace Essence.Util.Math.Float
             return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
         }
 
-        public static IEnumerable<double> For(REAL i, REAL f, int c)
+        public static IEnumerable<double> For(float i, float f, int c)
         {
             yield return i;
 
@@ -428,17 +424,17 @@ namespace Essence.Util.Math.Float
             yield return f;
         }
 
-        public static bool Between(this REAL v, REAL a, REAL b)
+        public static bool Between(this float v, float a, float b)
         {
             return v >= a && v <= b;
         }
 
-        public static bool BetweenClosedOpen(this REAL v, REAL a, REAL b)
+        public static bool BetweenClosedOpen(this float v, float a, float b)
         {
             return v >= a && v < b;
         }
 
-        public static int SafeSign(REAL v)
+        public static int SafeSign(float v)
         {
             return ((v < 0) ? -1 : 1);
         }
@@ -448,28 +444,28 @@ namespace Essence.Util.Math.Float
         /// <summary>
         ///     Compara los valores indicados.
         /// </summary>
-        public sealed class EpsilonEqualityComparer : IEqualityComparer<REAL>, IEqualityComparer
+        public sealed class EpsilonEqualityComparer : IEqualityComparer<float>, IEqualityComparer
         {
             public EpsilonEqualityComparer()
                 : this(EPSILON)
             {
             }
 
-            public EpsilonEqualityComparer(REAL epsilon)
+            public EpsilonEqualityComparer(float epsilon)
             {
                 this.epsilon = epsilon;
             }
 
-            private readonly REAL epsilon;
+            private readonly float epsilon;
 
             #region IComparer<REAL>
 
-            public bool Equals(REAL x, REAL y)
+            public bool Equals(float x, float y)
             {
                 return x.EpsilonEquals(y, this.epsilon);
             }
 
-            public int GetHashCode(REAL x)
+            public int GetHashCode(float x)
             {
                 return x.GetHashCode();
             }
@@ -480,14 +476,14 @@ namespace Essence.Util.Math.Float
 
             bool IEqualityComparer.Equals(object x, object y)
             {
-                Contract.Requires((x is REAL) && (y is REAL));
-                return this.Equals((REAL)x, (REAL)y);
+                Contract.Requires((x is float) && (y is float));
+                return this.Equals((float)x, (float)y);
             }
 
             int IEqualityComparer.GetHashCode(object x)
             {
-                Contract.Requires(x is REAL);
-                return this.GetHashCode((REAL)x);
+                Contract.Requires(x is float);
+                return this.GetHashCode((float)x);
             }
 
             #endregion
@@ -496,23 +492,23 @@ namespace Essence.Util.Math.Float
         /// <summary>
         ///     Compara los valores indicados.
         /// </summary>
-        public sealed class EpsilonComparer : IComparer<REAL>, IComparer
+        public sealed class EpsilonComparer : IComparer<float>, IComparer
         {
             public EpsilonComparer()
                 : this(EPSILON)
             {
             }
 
-            public EpsilonComparer(REAL epsilon)
+            public EpsilonComparer(float epsilon)
             {
                 this.epsilon = epsilon;
             }
 
-            private readonly REAL epsilon;
+            private readonly float epsilon;
 
             #region IComparer<REAL>
 
-            public int Compare(REAL x, REAL y)
+            public int Compare(float x, float y)
             {
                 return x.EpsilonCompareTo(y, this.epsilon);
             }
@@ -523,8 +519,8 @@ namespace Essence.Util.Math.Float
 
             int IComparer.Compare(object x, object y)
             {
-                Contract.Requires((x is REAL) && (y is REAL));
-                return this.Compare((REAL)x, (REAL)y);
+                Contract.Requires((x is float) && (y is float));
+                return this.Compare((float)x, (float)y);
             }
 
             #endregion
@@ -533,11 +529,11 @@ namespace Essence.Util.Math.Float
         /// <summary>
         ///     Compara los valores indicados.
         /// </summary>
-        public sealed class Comparer : IComparer<REAL>, IComparer
+        public sealed class Comparer : IComparer<float>, IComparer
         {
             #region IComparer<REAL>
 
-            public int Compare(REAL x, REAL y)
+            public int Compare(float x, float y)
             {
                 return System.Math.Sign(x - y);
             }
@@ -548,8 +544,8 @@ namespace Essence.Util.Math.Float
 
             int IComparer.Compare(object x, object y)
             {
-                Contract.Requires((x is REAL) && (y is REAL));
-                return this.Compare((REAL)x, (REAL)y);
+                Contract.Requires((x is float) && (y is float));
+                return this.Compare((float)x, (float)y);
             }
 
             #endregion

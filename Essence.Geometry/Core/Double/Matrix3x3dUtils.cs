@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Diagnostics.Contracts;
@@ -34,7 +30,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     <see cref="http://adndevblog.typepad.com/autocad/2012/08/remove-scaling-from-transformation-matrix.html" />
         /// </summary>
-        public static Matrix3x3d RemoveScaling(Matrix3x3d m, REAL scalingValue = 1)
+        public static Matrix3x3d RemoveScaling(Matrix3x3d m, double scalingValue = 1)
         {
             Vector2d v0 = new Vector2d(m.M00, m.M01).Unit.Mul(scalingValue);
             Vector2d v1 = new Vector2d(m.M10, m.M11).Unit.Mul(scalingValue);
@@ -58,7 +54,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="r">Rotacion en radianes.</param>
         /// <param name="e">Escala.</param>
         /// <returns>Matriz de traslacion, rotacion y escala.</returns>
-        public static Matrix3x3d TranslateRotateScale(Vector2d t, REAL r, Vector2d e)
+        public static Matrix3x3d TranslateRotateScale(Vector2d t, double r, Vector2d e)
         {
             return TranslateRotateScale(t.X, t.Y, r, e.X, e.Y);
         }
@@ -71,7 +67,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="r">Rotacion en radianes.</param>
         /// <param name="e">Escala.</param>
         /// <returns>Matriz de traslacion, rotacion y escala.</returns>
-        public static Matrix3x3d TranslateRotateScale(Point2d o, REAL r, Vector2d e)
+        public static Matrix3x3d TranslateRotateScale(Point2d o, double r, Vector2d e)
         {
             return TranslateRotateScale(o.X, o.Y, r, e.X, e.Y);
         }
@@ -86,10 +82,10 @@ namespace Essence.Geometry.Core.Double
         /// <param name="ex">Escala x.</param>
         /// <param name="ey">Escala y.</param>
         /// <returns>Matriz de traslacion, rotacion y escala.</returns>
-        public static Matrix3x3d TranslateRotateScale(REAL tx, REAL ty, REAL r, REAL ex, REAL ey)
+        public static Matrix3x3d TranslateRotateScale(double tx, double ty, double r, double ex, double ey)
         {
-            REAL s = (REAL)Math.Sin(r);
-            REAL c = (REAL)Math.Cos(r);
+            double s = (double)Math.Sin(r);
+            double c = (double)Math.Cos(r);
             return new Matrix3x3d(
                 c * ex, -ey * s, tx,
                 ex * s, c * ey, ty,
@@ -126,7 +122,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="tx">Traslacion x.</param>
         /// <param name="ty">Traslacion y.</param>
         /// <returns>Matriz de traslacion.</returns>
-        public static Matrix3x3d Translate(REAL tx, REAL ty)
+        public static Matrix3x3d Translate(double tx, double ty)
         {
             return new Matrix3x3d(
                 1, 0, tx,
@@ -163,15 +159,15 @@ namespace Essence.Geometry.Core.Double
         /// [m10 m11 m12 0]
         /// [m20 m21 m22 0]
         /// [0   0   0   1]
-        public static Matrix3x3d RotateEuler(REAL heading, REAL attitude, REAL bank)
+        public static Matrix3x3d RotateEuler(double heading, double attitude, double bank)
         {
             // Assuming the angles are in radians.
-            REAL ch = (REAL)Math.Cos(heading);
-            REAL sh = (REAL)Math.Sin(heading);
-            REAL ca = (REAL)Math.Cos(attitude);
-            REAL sa = (REAL)Math.Sin(attitude);
-            REAL cb = (REAL)Math.Cos(bank);
-            REAL sb = (REAL)Math.Sin(bank);
+            double ch = (double)Math.Cos(heading);
+            double sh = (double)Math.Sin(heading);
+            double ca = (double)Math.Cos(attitude);
+            double sa = (double)Math.Sin(attitude);
+            double cb = (double)Math.Cos(bank);
+            double sb = (double)Math.Sin(bank);
             return new Matrix3x3d(
                 ch * ca, sh * sb - ch * sa * cb, ch * sa * sb + sh * cb,
                 sa, ca * cb, -ca * sb,
@@ -183,7 +179,7 @@ namespace Essence.Geometry.Core.Double
             return RotateQuat(v.X, v.Y, v.Z, v.W);
         }
 
-        public static Matrix3x3d RotateQuat(REAL x, REAL y, REAL z, REAL w)
+        public static Matrix3x3d RotateQuat(double x, double y, double z, double w)
         {
             // squared length
             double length2 = w * w + x * x + y * y + z * z;
@@ -222,10 +218,10 @@ namespace Essence.Geometry.Core.Double
         /// </summary>
         /// <param name="r">Angulo en radianes.</param>
         /// <returns>Matriz de rotacion.</returns>
-        public static Matrix3x3d Rotate(REAL r)
+        public static Matrix3x3d Rotate(double r)
         {
-            REAL c = (REAL)Math.Cos(r);
-            REAL s = (REAL)Math.Sin(r);
+            double c = (double)Math.Cos(r);
+            double s = (double)Math.Sin(r);
             return new Matrix3x3d(
                 c, -s, 0,
                 s, c, 0,
@@ -238,7 +234,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="p">Punto de aplicacion.</param>
         /// <param name="r">Angulo en radianes.</param>
         /// <returns>Matriz de rotacion.</returns>
-        public static Matrix3x3d Rotate(Point2d p, REAL r)
+        public static Matrix3x3d Rotate(Point2d p, double r)
         {
             return Rotate(p.X, p.Y, r);
         }
@@ -250,10 +246,10 @@ namespace Essence.Geometry.Core.Double
         /// <param name="py">Punto de aplicacion Y.</param>
         /// <param name="r">Angulo en radianes.</param>
         /// <returns>Matriz de rotacion.</returns>
-        public static Matrix3x3d Rotate(REAL px, REAL py, REAL r)
+        public static Matrix3x3d Rotate(double px, double py, double r)
         {
-            REAL c = (REAL)Math.Cos(r);
-            REAL s = (REAL)Math.Sin(r);
+            double c = (double)Math.Cos(r);
+            double s = (double)Math.Sin(r);
             return new Matrix3x3d(
                 c, -s, -px * c + py * s + px,
                 s, c, -px * s - py * c + py,
@@ -269,7 +265,7 @@ namespace Essence.Geometry.Core.Double
         /// </summary>
         /// <param name="e">Escala.</param>
         /// <returns>Matriz escala.</returns>
-        public static Matrix3x3d Scale(REAL e)
+        public static Matrix3x3d Scale(double e)
         {
             return Scale(e, e);
         }
@@ -290,7 +286,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="ex">Escala x.</param>
         /// <param name="ey">Escala y.</param>
         /// <returns>Matriz escala.</returns>
-        public static Matrix3x3d Scale(REAL ex, REAL ey)
+        public static Matrix3x3d Scale(double ex, double ey)
         {
             return new Matrix3x3d(
                 ex, 0, 0,
@@ -304,7 +300,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="p">Punto de aplicacion.</param>
         /// <param name="e">Escala.</param>
         /// <returns>Matriz escala.</returns>
-        public static Matrix3x3d Scale(Point2d p, REAL e)
+        public static Matrix3x3d Scale(Point2d p, double e)
         {
             return Scale(p.X, p.Y, e, e);
         }
@@ -327,7 +323,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="py">Punto de aplicacion Y.</param>
         /// <param name="e">Escala.</param>
         /// <returns>Matriz escala.</returns>
-        public static Matrix3x3d Scale(REAL px, REAL py, REAL e)
+        public static Matrix3x3d Scale(double px, double py, double e)
         {
             return Scale(px, py, e, e);
         }
@@ -340,7 +336,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="ex">Escala x.</param>
         /// <param name="ey">Escala y.</param>
         /// <returns>Matriz escala.</returns>
-        public static Matrix3x3d Scale(REAL px, REAL py, REAL ex, REAL ey)
+        public static Matrix3x3d Scale(double px, double py, double ex, double ey)
         {
             return new Matrix3x3d(
                 ex, 0, px - ex * px,
@@ -369,10 +365,10 @@ namespace Essence.Geometry.Core.Double
         {
             Contract.Requires((recOrig.DX > 0) && (recOrig.DY > 0));
 
-            REAL m00 = recDst.DX / recOrig.DX;
-            REAL m10 = 0;
-            REAL m01 = 0;
-            REAL m11 = recDst.DY / recOrig.DY;
+            double m00 = recDst.DX / recOrig.DX;
+            double m10 = 0;
+            double m01 = 0;
+            double m11 = recDst.DY / recOrig.DY;
 
             /*MATRIX m = new MATRIX(
                 m00, m01, recDst.Origen.X,
@@ -409,10 +405,10 @@ namespace Essence.Geometry.Core.Double
         {
             Contract.Requires((recOrig.DX > 0) && (recOrig.DY > 0));
 
-            REAL m00 = (pd1.X - pd0.X) / recOrig.DX;
-            REAL m10 = (pd1.Y - pd0.Y) / recOrig.DX;
-            REAL m01 = (pd2.X - pd0.X) / recOrig.DY;
-            REAL m11 = (pd2.Y - pd0.Y) / recOrig.DY;
+            double m00 = (pd1.X - pd0.X) / recOrig.DX;
+            double m10 = (pd1.Y - pd0.Y) / recOrig.DX;
+            double m01 = (pd2.X - pd0.X) / recOrig.DY;
+            double m11 = (pd2.Y - pd0.Y) / recOrig.DY;
 
             /*MATRIX m = new MATRIX(
                 m00, m01, pd0.X,
@@ -453,12 +449,12 @@ namespace Essence.Geometry.Core.Double
             return m;*/
             Contract.Requires((recDst.DX > 0) && (recDst.DY > 0));
 
-            REAL m00 = (po1.X - po0.X) / recDst.DX;
-            REAL m10 = (po1.Y - po0.Y) / recDst.DX;
-            REAL m01 = (po2.X - po0.X) / recDst.DY;
-            REAL m11 = (po2.Y - po0.Y) / recDst.DY;
+            double m00 = (po1.X - po0.X) / recDst.DX;
+            double m10 = (po1.Y - po0.Y) / recDst.DX;
+            double m01 = (po2.X - po0.X) / recDst.DY;
+            double m11 = (po2.Y - po0.Y) / recDst.DY;
 
-            REAL det = 1 / (m00 * m11 - m01 * m10);
+            double det = 1 / (m00 * m11 - m01 * m10);
 
             return new Matrix3x3d(
                 m11 * det, -m01 * det, (m01 * ((-m11 * recDst.Y) - m10 * recDst.X + po0.Y) - m11 * ((-m01 * recDst.Y) - m00 * recDst.X + po0.X)) * det,
@@ -497,10 +493,10 @@ namespace Essence.Geometry.Core.Double
             //MATRIX m = TransformRectangle(rec, pd0, pd1, pd2);
             Matrix3x3d m;
             {
-                REAL m00 = (pd1.X - pd0.X);
-                REAL m10 = (pd1.Y - pd0.Y);
-                REAL m01 = (pd2.X - pd0.X);
-                REAL m11 = (pd2.Y - pd0.Y);
+                double m00 = (pd1.X - pd0.X);
+                double m10 = (pd1.Y - pd0.Y);
+                double m01 = (pd2.X - pd0.X);
+                double m11 = (pd2.Y - pd0.Y);
                 m = new Matrix3x3d(
                     m00, m01, pd0.X,
                     m10, m11, pd0.Y,
@@ -510,10 +506,10 @@ namespace Essence.Geometry.Core.Double
             //MATRIX aux = TransformRectangle(rec, po0, po1, po2);
             Matrix3x3d aux;
             {
-                REAL m00 = (po1.X - po0.X);
-                REAL m10 = (po1.Y - po0.Y);
-                REAL m01 = (po2.X - po0.X);
-                REAL m11 = (po2.Y - po0.Y);
+                double m00 = (po1.X - po0.X);
+                double m10 = (po1.Y - po0.Y);
+                double m01 = (po2.X - po0.X);
+                double m11 = (po2.Y - po0.Y);
 
                 aux = new Matrix3x3d(
                     m00, m01, po0.X,
@@ -551,8 +547,8 @@ namespace Essence.Geometry.Core.Double
         /// <param name="deformar">Indica si se permiten deformaciones.</param>
         public static Matrix3x3d AdjustTo(Rectangle2d orig, Rectangle2d dest, bool deformar)
         {
-            REAL sx = dest.DX / orig.DX;
-            REAL sy = dest.DY / orig.DY;
+            double sx = dest.DX / orig.DX;
+            double sy = dest.DY / orig.DY;
 
             // Calcula la transformacion.
             Matrix3x3d t;

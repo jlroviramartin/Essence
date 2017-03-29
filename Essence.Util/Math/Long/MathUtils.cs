@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
 using System.Text;
 using INT = System.Int64;
 
@@ -25,7 +21,7 @@ namespace Essence.Util.Math.Long
     {
         #region Clamp
 
-        public static INT Clamp(this INT v, INT min, INT max)
+        public static long Clamp(this long v, long min, long max)
         {
             if (v < min)
             {
@@ -46,7 +42,7 @@ namespace Essence.Util.Math.Long
         /// <param name="valor">Valor largo para formatear.</param>
         /// <param name="blancos">Indica si se ponen blancos cada 4 bits.</param>
         /// <returns>Cadena de texto con el valor binario.</returns>
-        public static string ToBinaryString(INT valor, bool blancos)
+        public static string ToBinaryString(long valor, bool blancos)
         {
             StringBuilder bitstring = new StringBuilder();
             for (int i = 63; i >= 0; i--)
@@ -67,7 +63,7 @@ namespace Essence.Util.Math.Long
         /// <summary>
         ///     Interpolación lineal.
         /// </summary>
-        public static INT Lerp(INT x, INT x1, INT y1, INT x2, INT y2)
+        public static long Lerp(long x, long x1, long y1, long x2, long y2)
         {
             if ((x1 == x2) || (y1 == y2))
             {
@@ -79,7 +75,7 @@ namespace Essence.Util.Math.Long
         /// <summary>
         ///     Interpolación lineal.
         /// </summary>
-        public static INT Lerp(INT x, INT x1, INT y1, INT x2, INT y2, out INT result)
+        public static long Lerp(long x, long x1, long y1, long x2, long y2, out long result)
         {
             if ((x1 == x2) || (y1 == y2))
             {

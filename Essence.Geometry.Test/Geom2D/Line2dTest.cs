@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Diagnostics;
@@ -85,10 +81,10 @@ namespace Essence.Geometry.Test.Geom2D
         [TestMethod]
         public void TestEvaluatAndProject()
         {
-            Action<Line2d, REAL> test = (line, u) =>
+            Action<Line2d, double> test = (line, u) =>
             {
                 Point2d p = line.Evaluate(u);
-                REAL _u = line.Project(p);
+                double _u = line.Project(p);
                 Assert.IsTrue(u.EpsilonEquals(_u));
                 Point2d p2 = line.Evaluate(_u);
                 Assert.IsTrue(p.EpsilonEquals(p2));
@@ -162,12 +158,12 @@ namespace Essence.Geometry.Test.Geom2D
         {
             Func<Line2d, Point2d, bool> test = (line, p) =>
             {
-                REAL u = line.Project(p);
+                double u = line.Project(p);
 
                 Point2d pEnPlano = line.Evaluate(u);
 
                 Point2d closestPoint;
-                REAL d = line.Distance(p, out closestPoint);
+                double d = line.Distance(p, out closestPoint);
 
                 Point2d p3 = pEnPlano + line.Normal * d;
 

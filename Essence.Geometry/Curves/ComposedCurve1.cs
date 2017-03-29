@@ -1,4 +1,18 @@
-﻿using System;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.Collections.Generic;
 using REAL = System.Double;
 
@@ -20,8 +34,8 @@ namespace Essence.Maths.Double.Curves
             else
             {
                 ICurve1 last = this.segments[this.segments.Count - 1];
-                REAL tmin = last.TMax;
-                REAL tlen = curve.TMax - curve.TMin;
+                double tmin = last.TMax;
+                double tlen = curve.TMax - curve.TMin;
                 curve.SetTInterval(tmin, tmin + tlen);
                 this.segments.Add(curve);
             }
@@ -39,34 +53,34 @@ namespace Essence.Maths.Double.Curves
             get { return this.segments.Count; }
         }
 
-        public override REAL GetTMin(int indice)
+        public override double GetTMin(int indice)
         {
             return this.segments[indice].TMin;
         }
 
-        public override REAL GetTMax(int indice)
+        public override double GetTMax(int indice)
         {
             return this.segments[indice].TMax;
         }
 
         #region Position and derivatives
 
-        protected override REAL GetPosition(int index, REAL tInSegment)
+        protected override double GetPosition(int index, double tInSegment)
         {
             return this.segments[index].GetPosition(tInSegment);
         }
 
-        protected override REAL GetFirstDerivative(int index, REAL tInSegment)
+        protected override double GetFirstDerivative(int index, double tInSegment)
         {
             return this.segments[index].GetFirstDerivative(tInSegment);
         }
 
-        protected override REAL GetSecondDerivative(int index, REAL tInSegment)
+        protected override double GetSecondDerivative(int index, double tInSegment)
         {
             return this.segments[index].GetSecondDerivative(tInSegment);
         }
 
-        protected override REAL GetThirdDerivative(int index, REAL tInSegment)
+        protected override double GetThirdDerivative(int index, double tInSegment)
         {
             return this.segments[index].GetThirdDerivative(tInSegment);
         }
@@ -75,19 +89,19 @@ namespace Essence.Maths.Double.Curves
 
         #region Differential geometric quantities
 
-        protected override REAL GetLength(int index, REAL tInSegment0, REAL tInSegment1)
+        protected override double GetLength(int index, double tInSegment0, double tInSegment1)
         {
             return this.segments[index].GetLength(tInSegment0, tInSegment1);
         }
 
-        protected override REAL GetSpeed(int index, REAL tInSegment)
+        protected override double GetSpeed(int index, double tInSegment)
         {
             return this.segments[index].GetSpeed(tInSegment);
         }
 
         #endregion
 
-        protected override void FindIndex(REAL t, out int index, out REAL tInSegment)
+        protected override void FindIndex(double t, out int index, out double tInSegment)
         {
             index = this.segments.BinarySearch(new CurveForSearch(t), CurveComparer.Instance);
             if (index < 0)
@@ -126,54 +140,54 @@ namespace Essence.Maths.Double.Curves
 
         private sealed class CurveForSearch : ICurve1
         {
-            public CurveForSearch(REAL t)
+            public CurveForSearch(double t)
             {
                 this.TMin = t;
             }
 
-            public REAL TMin { get; private set; }
+            public double TMin { get; private set; }
 
-            REAL ICurve1.TMax
+            double ICurve1.TMax
             {
                 get { throw new NotImplementedException(); }
             }
 
-            void ICurve1.SetTInterval(REAL tmin, REAL tmax)
+            void ICurve1.SetTInterval(double tmin, double tmax)
             {
                 throw new NotImplementedException();
             }
 
-            REAL ICurve1.GetPosition(REAL t)
+            double ICurve1.GetPosition(double t)
             {
                 throw new NotImplementedException();
             }
 
-            REAL ICurve1.GetFirstDerivative(REAL t)
+            double ICurve1.GetFirstDerivative(double t)
             {
                 throw new NotImplementedException();
             }
 
-            REAL ICurve1.GetSecondDerivative(REAL t)
+            double ICurve1.GetSecondDerivative(double t)
             {
                 throw new NotImplementedException();
             }
 
-            REAL ICurve1.GetThirdDerivative(REAL t)
+            double ICurve1.GetThirdDerivative(double t)
             {
                 throw new NotImplementedException();
             }
 
-            REAL ICurve1.TotalLength
+            double ICurve1.TotalLength
             {
                 get { throw new NotImplementedException(); }
             }
 
-            REAL ICurve1.GetLength(REAL t0, REAL t1)
+            double ICurve1.GetLength(double t0, double t1)
             {
                 throw new NotImplementedException();
             }
 
-            REAL ICurve1.GetSpeed(REAL t)
+            double ICurve1.GetSpeed(double t)
             {
                 throw new NotImplementedException();
             }

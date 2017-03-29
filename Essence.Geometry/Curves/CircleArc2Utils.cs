@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Collections;
@@ -233,7 +229,8 @@ namespace Essence.Maths.Double.Curves
             double alphap = vp.Angle;
             double alpha2 = v2.Angle;
 
-            { // Se prueba el sentido CCW, alpha1 < alphap < alpha2
+            {
+                // Se prueba el sentido CCW, alpha1 < alphap < alpha2
                 double a1 = alpha1;
                 double ap = alphap;
                 double a2 = alpha2;
@@ -246,7 +243,8 @@ namespace Essence.Maths.Double.Curves
                     a2 += 2 * SysMath.PI;
                 }
                 if (a2 - a1 > 2 * SysMath.PI)
-                { // Se ha dado mas de una vuelta, solucion no valida.
+                {
+                    // Se ha dado mas de una vuelta, solucion no valida.
                 }
                 else
                 {
@@ -254,7 +252,8 @@ namespace Essence.Maths.Double.Curves
                 }
             }
 
-            { // Se prueba el sentido CW, alpha1 > alphap > alpha2
+            {
+                // Se prueba el sentido CW, alpha1 > alphap > alpha2
                 double a1 = alpha1;
                 double ap = alphap;
                 double a2 = alpha2;
@@ -267,7 +266,8 @@ namespace Essence.Maths.Double.Curves
                     a2 -= 2 * SysMath.PI;
                 }
                 if (a1 - a2 > 2 * SysMath.PI)
-                { // Se ha dado mas de una vuelta, solucion no valida.
+                {
+                    // Se ha dado mas de una vuelta, solucion no valida.
                 }
                 else
                 {

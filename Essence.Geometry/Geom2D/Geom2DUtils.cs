@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using Essence.Geometry.Core.Double;
 using REAL = System.Double;
@@ -30,7 +26,7 @@ namespace Essence.Geometry.Geom2D
         ///     Ayuda a determinar las coordenadas del punto <c>po</c> segun el plano formado por <c>uu</c> y <c>vv</c>.
         /// </summary>
         internal static void Resolve(Vector2d uu, Vector2d vv, Vector2d po,
-                                     out REAL u, out REAL v)
+                                     out double u, out double v)
         {
             // Resuelve la ecuacion:
             //   u * uux + v * vvx = pox

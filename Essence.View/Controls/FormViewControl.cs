@@ -1,4 +1,18 @@
-﻿using System;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Drawing;
@@ -383,56 +397,20 @@ namespace Essence.View.Controls
             }
 
             this.form2Control.Do(
-                    () =>
+                () =>
+                {
+                    foreach (string name in this.FormModel.GetProperties())
                     {
-                        foreach (string name in this.FormModel.GetProperties())
-                        {
-                            Control editControl = this.Control.GetEditControl(name);
-                            if (editControl == null)
-                            {
-                                continue;
-                            }
-
-                            ControlExchange exchange = ControlExchange.Get(editControl);
-                            if (exchange == null)
-                            {
-                                continue;
-                            }
-
-                            try
-                            {
-                                object value = formModel.GetPropertyValue(name);
-                                exchange.SetValue(editControl, value);
-                            }
-                            catch (Exception e)
-                            {
-                                this.ErrorProvider.SetError(editControl, e.Message);
-                            }
-                        }
-                    });
-        }
-
-        private void Form2Control(string name)
-        {
-            this.form2Control.Do(
-                    () =>
-                    {
-                        IFormModel formModel = this.FormModel;
-                        if (formModel == null)
-                        {
-                            return;
-                        }
-
                         Control editControl = this.Control.GetEditControl(name);
                         if (editControl == null)
                         {
-                            return;
+                            continue;
                         }
 
                         ControlExchange exchange = ControlExchange.Get(editControl);
                         if (exchange == null)
                         {
-                            return;
+                            continue;
                         }
 
                         try
@@ -444,7 +422,43 @@ namespace Essence.View.Controls
                         {
                             this.ErrorProvider.SetError(editControl, e.Message);
                         }
-                    });
+                    }
+                });
+        }
+
+        private void Form2Control(string name)
+        {
+            this.form2Control.Do(
+                () =>
+                {
+                    IFormModel formModel = this.FormModel;
+                    if (formModel == null)
+                    {
+                        return;
+                    }
+
+                    Control editControl = this.Control.GetEditControl(name);
+                    if (editControl == null)
+                    {
+                        return;
+                    }
+
+                    ControlExchange exchange = ControlExchange.Get(editControl);
+                    if (exchange == null)
+                    {
+                        return;
+                    }
+
+                    try
+                    {
+                        object value = formModel.GetPropertyValue(name);
+                        exchange.SetValue(editControl, value);
+                    }
+                    catch (Exception e)
+                    {
+                        this.ErrorProvider.SetError(editControl, e.Message);
+                    }
+                });
         }
 
         private void ContentChanged()
@@ -503,7 +517,7 @@ namespace Essence.View.Controls
         }
 
         /// <summary>
-        /// Obtiene el proveedor de servicios para comunicarse con <c>ControlExchange</c>.
+        ///     Obtiene el proveedor de servicios para comunicarse con <c>ControlExchange</c>.
         /// </summary>
         private IServiceProvider GetServiceProvider()
         {

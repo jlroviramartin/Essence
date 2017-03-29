@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using Essence.Util.Math.Double;
@@ -34,7 +30,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     <see cref="http://adndevblog.typepad.com/autocad/2012/08/remove-scaling-from-transformation-matrix.html" />
         /// </summary>
-        public static Matrix4x4d RemoveScaling(Matrix4x4d m, REAL scalingValue = 1)
+        public static Matrix4x4d RemoveScaling(Matrix4x4d m, double scalingValue = 1)
         {
             Vector3d v0 = new Vector3d(m.M00, m.M01, m.M02).Unit.Mul(scalingValue);
             Vector3d v1 = new Vector3d(m.M10, m.M11, m.M12).Unit.Mul(scalingValue);
@@ -94,9 +90,9 @@ namespace Essence.Geometry.Core.Double
         /// <param name="ez">Escala z.</param>
         /// <returns>Matriz de escala, rotacion y traslacion.</returns>
         public static Matrix4x4d TranslateRotateScale(
-            REAL tx, REAL ty, REAL tz,
-            REAL rx, REAL ry, REAL rz,
-            REAL ex, REAL ey, REAL ez)
+            double tx, double ty, double tz,
+            double rx, double ry, double rz,
+            double ex, double ey, double ez)
         {
             Matrix4x4d mt = Translate(tx, ty, tz);
             Matrix4x4d mr = Rotate(rx, ry, rz);
@@ -130,7 +126,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="ty">Traslacion y.</param>
         /// <param name="tz">Traslacion z.</param>
         /// <returns>Matriz de traslacion.</returns>
-        public static Matrix4x4d Translate(REAL tx, REAL ty, REAL tz)
+        public static Matrix4x4d Translate(double tx, double ty, double tz)
         {
             return new Matrix4x4d(
                 1, 0, 0, tx,
@@ -177,7 +173,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="ey">Escala y.</param>
         /// <param name="ez">Escala z.</param>
         /// <returns>Matriz de escala.</returns>
-        public static Matrix4x4d Scale(REAL ex, REAL ey, REAL ez)
+        public static Matrix4x4d Scale(double ex, double ey, double ez)
         {
             return new Matrix4x4d(
                 ex, 0, 0, 0,
@@ -200,7 +196,7 @@ namespace Essence.Geometry.Core.Double
         /// [m10 m11 m12 0]
         /// [m20 m21 m22 0]
         /// [0   0   0   1]
-        public static Matrix4x4d RotateEuler(REAL heading, REAL attitude, REAL bank)
+        public static Matrix4x4d RotateEuler(double heading, double attitude, double bank)
         {
             Matrix3x3d m = Matrix3x3dUtils.RotateEuler(heading, attitude, bank);
             return new Matrix4x4d(
@@ -215,7 +211,7 @@ namespace Essence.Geometry.Core.Double
             return RotateQuat(v.X, v.Y, v.Z, v.W);
         }
 
-        public static Matrix4x4d RotateQuat(REAL x, REAL y, REAL z, REAL w)
+        public static Matrix4x4d RotateQuat(double x, double y, double z, double w)
         {
             Matrix3x3d m = Matrix3x3dUtils.RotateQuat(x, y, z, w);
             return new Matrix4x4d(
@@ -242,16 +238,16 @@ namespace Essence.Geometry.Core.Double
         /// <param name="ry">Angulo en radianes y respecto al plano XZ.</param>
         /// <param name="rz">Angulo en radianes z respecto al plano XY.</param>
         /// <returns>Matriz de rotacion.</returns>
-        public static Matrix4x4d Rotate(REAL rx, REAL ry, REAL rz)
+        public static Matrix4x4d Rotate(double rx, double ry, double rz)
         {
-            REAL ca = (REAL)Math.Cos(rx);
-            REAL sa = (REAL)Math.Sin(rx);
+            double ca = (double)Math.Cos(rx);
+            double sa = (double)Math.Sin(rx);
 
-            REAL cb = (REAL)Math.Cos(ry);
-            REAL sb = (REAL)Math.Sin(ry);
+            double cb = (double)Math.Cos(ry);
+            double sb = (double)Math.Sin(ry);
 
-            REAL cg = (REAL)Math.Cos(rz);
-            REAL sg = (REAL)Math.Sin(rz);
+            double cg = (double)Math.Cos(rz);
+            double sg = (double)Math.Sin(rz);
 
             return new Matrix4x4d(
                 cb * cg, sa * sb * cg - ca * sg, ca * sb * cg + sa * sg, 0,
@@ -266,10 +262,10 @@ namespace Essence.Geometry.Core.Double
         /// <param name="axis">Eje de rotacion (eje X = 0, Y = 1, Z = 2).</param>
         /// <param name="r">Angulo en radianes.</param>
         /// <returns>Matriz de rotacion.</returns>
-        public static Matrix4x4d Rotate(Axis axis, REAL r)
+        public static Matrix4x4d Rotate(Axis axis, double r)
         {
-            REAL c = (REAL)Math.Cos(r);
-            REAL s = (REAL)Math.Sin(r);
+            double c = (double)Math.Cos(r);
+            double s = (double)Math.Sin(r);
 
             switch (axis)
             {
@@ -310,7 +306,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="v">VECTOR3 de rotacion.</param>
         /// <param name="r">Angulo en radianes.</param>
         /// <returns>Matriz de rotacion.</returns>
-        public static Matrix4x4d Rotate(Vector3d v, REAL r)
+        public static Matrix4x4d Rotate(Vector3d v, double r)
         {
             return Rotate(v.X, v.Y, v.Z, r);
         }
@@ -323,39 +319,39 @@ namespace Essence.Geometry.Core.Double
         /// <param name="z">Z.</param>
         /// <param name="r">Angulo en radianes.</param>
         /// <returns>Matriz de rotacion.</returns>
-        public static Matrix4x4d Rotate(REAL x, REAL y, REAL z, REAL r)
+        public static Matrix4x4d Rotate(double x, double y, double z, double r)
         {
             // Taken from Rick's which is taken from Wertz. pg. 412
             // Bug Fixed and changed into right-handed by hiranabe
-            REAL n = (REAL)Math.Sqrt(x * x + y * y + z * z);
+            double n = (double)Math.Sqrt(x * x + y * y + z * z);
             // zero-div may occur
             n = 1 / n;
             x *= n;
             y *= n;
             z *= n;
 
-            REAL c = (REAL)Math.Cos(r);
-            REAL s = (REAL)Math.Sin(r);
-            REAL umc = 1 - c;
+            double c = (double)Math.Cos(r);
+            double s = (double)Math.Sin(r);
+            double umc = 1 - c;
 
-            REAL m00 = x * x * umc + c;
-            REAL m11 = y * y * umc + c;
-            REAL m22 = z * z * umc + c;
+            double m00 = x * x * umc + c;
+            double m11 = y * y * umc + c;
+            double m22 = z * z * umc + c;
 
-            REAL xyumc = x * y * umc;
-            REAL zs = z * s;
-            REAL m01 = xyumc - zs;
-            REAL m10 = xyumc + zs;
+            double xyumc = x * y * umc;
+            double zs = z * s;
+            double m01 = xyumc - zs;
+            double m10 = xyumc + zs;
 
-            REAL xzumc = x * z * umc;
-            REAL ys = y * s;
-            REAL m02 = xzumc + ys;
-            REAL m20 = xzumc - ys;
+            double xzumc = x * z * umc;
+            double ys = y * s;
+            double m02 = xzumc + ys;
+            double m20 = xzumc - ys;
 
-            REAL yzumc = y * z * umc;
-            REAL xs = x * s;
-            REAL m12 = yzumc - xs;
-            REAL m21 = yzumc + xs;
+            double yzumc = y * z * umc;
+            double xs = x * s;
+            double m12 = yzumc - xs;
+            double m21 = yzumc + xs;
 
             return new Matrix4x4d(
                 m00, m01, m02, 0,
@@ -381,7 +377,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="b">Coordenada Y del vector normal.</param>
         /// <param name="c">Coordenada Z del vector normal.</param>
         /// <returns>Matriz de extrusion.</returns>
-        public static Matrix4x4d Extrude(REAL a, REAL b, REAL c)
+        public static Matrix4x4d Extrude(double a, double b, double c)
         {
             return Extrude(a, b, c, 0);
         }
@@ -390,7 +386,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="vZ">Vector normal.</param>
         /// <param name="d">Distancia minima del plano al origen.</param>
         /// <returns>Matriz de extrusion.</returns>
-        public static Matrix4x4d Extrude(Vector3d vZ, REAL d)
+        public static Matrix4x4d Extrude(Vector3d vZ, double d)
         {
             return Extrude(vZ.X, vZ.Y, vZ.Z, d);
         }
@@ -406,7 +402,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="c">Coordenada Z del vector normal.</param>
         /// <param name="d">Distancia minima del plano al origen.</param>
         /// <returns>Matriz de extrusion.</returns>
-        public static Matrix4x4d Extrude(REAL a, REAL b, REAL c, REAL d)
+        public static Matrix4x4d Extrude(double a, double b, double c, double d)
         {
             if (a.EpsilonEquals(0) && b.EpsilonEquals(0) && c.EpsilonEquals(1))
             {
@@ -415,7 +411,7 @@ namespace Essence.Geometry.Core.Double
 
             // Vector eje Z normalizado.
             Vector3d vZ = new Vector3d(a, b, c);
-            REAL m = 1 / vZ.Length;
+            double m = 1 / vZ.Length;
             vZ = vZ.Mul(m);
 
             // Origen.
@@ -481,17 +477,17 @@ namespace Essence.Geometry.Core.Double
         /// <param name="zMin">Plano Z de corte (> 0).</param>
         /// <param name="zMax">Plano Z de corte (> 0).</param>
         /// <returns></returns>
-        public static Matrix4x4d Orto(REAL xMin, REAL xMax,
-                                      REAL yMin, REAL yMax,
-                                      REAL zMin, REAL zMax)
+        public static Matrix4x4d Orto(double xMin, double xMax,
+                                      double yMin, double yMax,
+                                      double zMin, double zMax)
         {
-            REAL m00 = 2 / (xMax - xMin);
-            REAL m11 = 2 / (yMax - yMin);
-            REAL m22 = -2 / (zMax - zMin);
+            double m00 = 2 / (xMax - xMin);
+            double m11 = 2 / (yMax - yMin);
+            double m22 = -2 / (zMax - zMin);
 
-            REAL m03 = -(xMax + xMin) / (xMax - xMin);
-            REAL m13 = -(yMax + yMin) / (yMax - yMin);
-            REAL m23 = -(zMax + zMin) / (zMax - zMin);
+            double m03 = -(xMax + xMin) / (xMax - xMin);
+            double m13 = -(yMax + yMin) / (yMax - yMin);
+            double m23 = -(zMax + zMin) / (zMax - zMin);
 
             return new Matrix4x4d(
                 new[,]
@@ -513,18 +509,18 @@ namespace Essence.Geometry.Core.Double
         /// <param name="zMin">Plano Z de corte (> 0).</param>
         /// <param name="zMax">Plano Z de corte (> 0).</param>
         /// <returns></returns>
-        public static Matrix4x4d InvOrto(REAL xMin, REAL xMax,
-                                         REAL yMin, REAL yMax,
-                                         REAL zMin, REAL zMax)
+        public static Matrix4x4d InvOrto(double xMin, double xMax,
+                                         double yMin, double yMax,
+                                         double zMin, double zMax)
         {
-            REAL m00 = (xMax - xMin) / 2;
-            REAL m03 = (xMax + xMin) / 2;
+            double m00 = (xMax - xMin) / 2;
+            double m03 = (xMax + xMin) / 2;
 
-            REAL m11 = (yMax - yMin) / 2;
-            REAL m13 = (yMax + yMin) / 2;
+            double m11 = (yMax - yMin) / 2;
+            double m13 = (yMax + yMin) / 2;
 
-            REAL m22 = -(zMax - zMin) / 2;
-            REAL m23 = (zMax + zMin) / 2;
+            double m22 = -(zMax - zMin) / 2;
+            double m23 = (zMax + zMin) / 2;
 
             return new Matrix4x4d(
                 new[,]
@@ -543,11 +539,11 @@ namespace Essence.Geometry.Core.Double
         /// <param name="aspecto">Ratio de aspecto que determina la direccion X (ancho / alto).</param>
         /// <param name="zMin">Distancia del punto de vista al plano de corte mas cercano (> 0).</param>
         /// <param name="zMax">Distancia del punto de vista al plano de corte mas lejano (> 0).</param>
-        public static Matrix4x4d Frustum(REAL campoDeVistaY,
-                                         REAL aspecto,
-                                         REAL zMin, REAL zMax)
+        public static Matrix4x4d Frustum(double campoDeVistaY,
+                                         double aspecto,
+                                         double zMin, double zMax)
         {
-            REAL range = zMin * (REAL)Math.Tan(campoDeVistaY / 2);
+            double range = zMin * (double)Math.Tan(campoDeVistaY / 2);
 
             return Frustum(-range * aspecto, range * aspecto,
                            -range, range,
@@ -564,18 +560,18 @@ namespace Essence.Geometry.Core.Double
         /// <param name="zMin">Plano Z de corte (> 0).</param>
         /// <param name="zMax">Plano Z de corte (> 0).</param>
         /// <returns></returns>
-        public static Matrix4x4d Frustum(REAL xMin, REAL xMax,
-                                         REAL yMin, REAL yMax,
-                                         REAL zMin, REAL zMax)
+        public static Matrix4x4d Frustum(double xMin, double xMax,
+                                         double yMin, double yMax,
+                                         double zMin, double zMax)
         {
-            REAL m00 = (2 * zMin) / (xMax - xMin);
-            REAL m02 = (xMax + xMin) / (xMax - xMin);
+            double m00 = (2 * zMin) / (xMax - xMin);
+            double m02 = (xMax + xMin) / (xMax - xMin);
 
-            REAL m11 = (2 * zMin) / (yMax - yMin);
-            REAL m12 = (yMax + yMin) / (yMax - yMin);
+            double m11 = (2 * zMin) / (yMax - yMin);
+            double m12 = (yMax + yMin) / (yMax - yMin);
 
-            REAL m22 = -(zMax + zMin) / (zMax - zMin);
-            REAL m23 = -(2 * zMax * zMin) / (zMax - zMin);
+            double m22 = -(zMax + zMin) / (zMax - zMin);
+            double m23 = -(2 * zMax * zMin) / (zMax - zMin);
 
             return new Matrix4x4d(
                 new[,]
@@ -597,18 +593,18 @@ namespace Essence.Geometry.Core.Double
         /// <param name="zMin">Plano Z de corte (> 0).</param>
         /// <param name="zMax">Plano Z de corte (> 0).</param>
         /// <returns></returns>
-        public static Matrix4x4d InvFrustum(REAL xMin, REAL xMax,
-                                            REAL yMin, REAL yMax,
-                                            REAL zMin, REAL zMax)
+        public static Matrix4x4d InvFrustum(double xMin, double xMax,
+                                            double yMin, double yMax,
+                                            double zMin, double zMax)
         {
-            REAL m00 = (xMax - xMin) / (2 * zMin);
-            REAL m03 = (xMax + xMin) / (2 * zMin);
+            double m00 = (xMax - xMin) / (2 * zMin);
+            double m03 = (xMax + xMin) / (2 * zMin);
 
-            REAL m11 = (yMax - yMin) / (2 * zMin);
-            REAL m13 = (yMax + yMin) / (2 * zMin);
+            double m11 = (yMax - yMin) / (2 * zMin);
+            double m13 = (yMax + yMin) / (2 * zMin);
 
-            REAL m32 = -(zMax - zMin) / (2 * zMax * zMin);
-            REAL m33 = (zMax + zMin) / (2 * zMax * zMin);
+            double m32 = -(zMax - zMin) / (2 * zMax * zMin);
+            double m33 = (zMax + zMin) / (2 * zMax * zMin);
 
             return new Matrix4x4d(
                 new[,]

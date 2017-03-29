@@ -1,5 +1,3 @@
-#region License
-
 // Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
 using Essence.Geometry.Core.Double;
 using REAL = System.Double;
 
@@ -23,7 +19,7 @@ namespace Essence.Geometry.Intersection
 {
     public class IntrPoint2
     {
-        public IntrPoint2(REAL param0, REAL param1, Point2d point)
+        public IntrPoint2(double param0, double param1, Point2d point)
         {
             this.Param0 = param0;
             this.Param1 = param1;
@@ -31,10 +27,10 @@ namespace Essence.Geometry.Intersection
         }
 
         /// <summary>Parametro respecto del elemento 0.</summary>
-        public readonly REAL Param0;
+        public readonly double Param0;
 
         /// <summary>Parametro respecto del elemento 1.</summary>
-        public readonly REAL Param1;
+        public readonly double Param1;
 
         /// <summary>Punto.</summary>
         public readonly Point2d Point;

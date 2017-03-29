@@ -1,4 +1,18 @@
-﻿using Essence.Util.Math.Double;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using Essence.Util.Math.Double;
 using java.lang;
 using REAL = System.Double;
 
@@ -6,7 +20,7 @@ namespace Essence.Maths.Double.Curves
 {
     public class PolynomialCurve1 : SimpleCurve1
     {
-        public PolynomialCurve1(Polynomial poly, REAL t0, REAL t1)
+        public PolynomialCurve1(Polynomial poly, double t0, double t1)
         {
             this.poly = poly;
 
@@ -15,10 +29,10 @@ namespace Essence.Maths.Double.Curves
 
         #region private
 
-        private REAL GetT0L(REAL t)
+        private double GetT0L(double t)
         {
             t = t.Clamp(this.TMin, this.TMax);
-            REAL t01 = this.ttransform.Get(t);
+            double t01 = this.ttransform.Get(t);
             return t01;
         }
 
@@ -51,8 +65,8 @@ namespace Essence.Maths.Double.Curves
             }
         }
 
-        private REAL tmin;
-        private REAL tmax;
+        private double tmin;
+        private double tmax;
 
         /// <summary>Transformacion que se aplica sobre el parametro.</summary>
         private Transform1 ttransform;
@@ -66,44 +80,44 @@ namespace Essence.Maths.Double.Curves
 
         #region ICurve1
 
-        public override REAL TMin
+        public override double TMin
         {
             get { return this.tmin; }
         }
 
-        public override REAL TMax
+        public override double TMax
         {
             get { return this.tmax; }
         }
 
-        public override void SetTInterval(REAL tmin, REAL tmax)
+        public override void SetTInterval(double tmin, double tmax)
         {
             this.tmin = tmin;
             this.tmax = tmax;
             this.ttransform = new Transform1(this.tmin, this.tmax, 0, this.tmax - this.tmin);
         }
 
-        public override REAL GetPosition(REAL t)
+        public override double GetPosition(double t)
         {
-            REAL tt = this.GetT0L(t);
+            double tt = this.GetT0L(t);
             return this.GetPoly(0).Evaluate(tt);
         }
 
-        public override REAL GetFirstDerivative(REAL t)
+        public override double GetFirstDerivative(double t)
         {
-            REAL tt = this.GetT0L(t);
+            double tt = this.GetT0L(t);
             return this.GetPoly(1).Evaluate(tt);
         }
 
-        public override REAL GetSecondDerivative(REAL t)
+        public override double GetSecondDerivative(double t)
         {
-            REAL tt = this.GetT0L(t);
+            double tt = this.GetT0L(t);
             return this.GetPoly(2).Evaluate(tt);
         }
 
-        public override REAL GetThirdDerivative(REAL t)
+        public override double GetThirdDerivative(double t)
         {
-            REAL tt = this.GetT0L(t);
+            double tt = this.GetT0L(t);
             return this.GetPoly(3).Evaluate(tt);
         }
 

@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Collections;
@@ -64,7 +60,7 @@ namespace Essence.Geometry.Core.Int
             get { return new Point2i(0, 1); }
         }
 
-        public Point2i(INT x, INT y)
+        public Point2i(int x, int y)
         {
             this.X = x;
             this.Y = y;
@@ -96,19 +92,19 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>Property X.</summary>
-        public readonly INT X;
+        public readonly int X;
 
         /// <summary>Property Y.</summary>
-        public readonly INT Y;
+        public readonly int Y;
 
         #region operators
 
         /// <summary>
         ///     Casting a REAL[].
         /// </summary>
-        public static explicit operator INT[](Point2i v)
+        public static explicit operator int[](Point2i v)
         {
-            return new INT[] { v.X, v.Y };
+            return new int[] { v.X, v.Y };
         }
 
         public static Point2i operator +(Point2i p, Vector2i v)
@@ -140,7 +136,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        public INT this[int i]
+        public int this[int i]
         {
             get
             {
@@ -182,8 +178,8 @@ namespace Essence.Geometry.Core.Int
             get
             {
                 return ((this.X >= 0)
-                            ? ((this.Y >= 0) ? 0 : 3)
-                            : ((this.Y >= 0) ? 1 : 2));
+                    ? ((this.Y >= 0) ? 0 : 3)
+                    : ((this.Y >= 0) ? 1 : 2));
             }
         }
 
@@ -206,34 +202,34 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        public REAL Distance2To(Point2i p2)
+        public double Distance2To(Point2i p2)
         {
             return MathUtils.Cuad(p2.X - this.X) + MathUtils.Cuad(p2.Y - this.Y);
         }
 
         [Pure]
-        public REAL DistanceTo(Point2i p2)
+        public double DistanceTo(Point2i p2)
         {
-            return (REAL)Math.Sqrt(this.Distance2To(p2));
+            return (double)Math.Sqrt(this.Distance2To(p2));
         }
 
         [Pure]
-        public Point2i Lerp(Point2i p2, REAL alpha)
+        public Point2i Lerp(Point2i p2, double alpha)
         {
             return this.Lineal(p2, 1 - alpha, alpha);
         }
 
         [Pure]
-        public REAL InvLerp(Point2i p2, Point2i pLerp)
+        public double InvLerp(Point2i p2, Point2i pLerp)
         {
             Vector2i v12 = p2.Sub(this);
             return v12.Proy(pLerp.Sub(this));
         }
 
         [Pure]
-        public Point2i Lineal(Point2i p2, REAL alpha, REAL beta)
+        public Point2i Lineal(Point2i p2, double alpha, double beta)
         {
-            return new Point2i((INT)(alpha * this.X + beta * p2.X), (INT)(alpha * this.Y + beta * p2.Y));
+            return new Point2i((int)(alpha * this.X + beta * p2.X), (int)(alpha * this.Y + beta * p2.Y));
         }
 
         #region parse
@@ -276,8 +272,8 @@ namespace Essence.Geometry.Core.Int
         {
             Contract.Requires(s != null);
 
-            INT[] ret;
-            if (!VectorUtils.TryParse(s, 2, out ret, INT.TryParse, provider, vstyle, style))
+            int[] ret;
+            if (!VectorUtils.TryParse(s, 2, out ret, int.TryParse, provider, vstyle, style))
             {
                 result = Zero;
                 return false;
@@ -294,7 +290,7 @@ namespace Essence.Geometry.Core.Int
         ///     Comprueba si son iguales.
         /// </summary>
         [Pure]
-        private bool Equals(INT x, INT y)
+        private bool Equals(int x, int y)
         {
             return this.X == x && this.Y == y;
         }
@@ -360,7 +356,7 @@ namespace Essence.Geometry.Core.Int
                 }
             }
 
-            return VectorUtils.ToString(provider, format, (INT[])this);
+            return VectorUtils.ToString(provider, format, (int[])this);
         }
 
         #endregion
@@ -423,7 +419,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        IPoint IPoint.Lerp(IPoint p2, REAL alpha)
+        IPoint IPoint.Lerp(IPoint p2, double alpha)
         {
             if (p2 is Point2i)
             {
@@ -433,7 +429,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        REAL IPoint.InvLerp(IPoint p2, IPoint pLerp)
+        double IPoint.InvLerp(IPoint p2, IPoint pLerp)
         {
             if (p2 is Point2i)
             {
@@ -447,7 +443,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         [Pure]
-        IPoint IPoint.Lineal(IPoint p2, REAL alpha, REAL beta)
+        IPoint IPoint.Lineal(IPoint p2, double alpha, double beta)
         {
             if (p2 is Point2i)
             {
@@ -477,7 +473,7 @@ namespace Essence.Geometry.Core.Int
         #region IEpsilonEquatable<IPoint>
 
         [Pure]
-        bool IEpsilonEquatable<IPoint>.EpsilonEquals(IPoint other, REAL epsilon)
+        bool IEpsilonEquatable<IPoint>.EpsilonEquals(IPoint other, double epsilon)
         {
             if (other is Point2i)
             {

@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Collections.Generic;
@@ -134,9 +130,9 @@ namespace Essence.Geometry.Algorithms
 
         #region RadialDistance
 
-        public static void RadialDistance(this IEnumerable<Point2d> points, REAL tol, Action<Point2d> result)
+        public static void RadialDistance(this IEnumerable<Point2d> points, double tol, Action<Point2d> result)
         {
-            REAL tol2 = tol * tol;
+            double tol2 = tol * tol;
 
             if (tol2.EpsilonEquals(0))
             {
@@ -180,9 +176,9 @@ namespace Essence.Geometry.Algorithms
             }
         }
 
-        public static IEnumerable<Point2d> RadialDistance(this IEnumerable<Point2d> points, REAL tol)
+        public static IEnumerable<Point2d> RadialDistance(this IEnumerable<Point2d> points, double tol)
         {
-            REAL tol2 = tol * tol;
+            double tol2 = tol * tol;
 
             if (tol2.EpsilonEquals(0))
             {
@@ -192,7 +188,7 @@ namespace Essence.Geometry.Algorithms
             return RadialDistanceSafe(points, tol2);
         }
 
-        private static IEnumerable<Point2d> RadialDistanceSafe(this IEnumerable<Point2d> points, REAL tol2)
+        private static IEnumerable<Point2d> RadialDistanceSafe(this IEnumerable<Point2d> points, double tol2)
         {
             IEnumerator<Point2d> enumer = points.GetEnumerator();
             if (!enumer.MoveNext())
@@ -231,7 +227,7 @@ namespace Essence.Geometry.Algorithms
 
         #region PerpendicularDistance
 
-        public static void PerpendicularDistance(this IEnumerable<Point2d> points, REAL tol, uint repeat, Action<Point2d> result)
+        public static void PerpendicularDistance(this IEnumerable<Point2d> points, double tol, uint repeat, Action<Point2d> result)
         {
             Contract.Requires(repeat > 1);
 
@@ -257,11 +253,11 @@ namespace Essence.Geometry.Algorithms
             PerpendicularDistance(points, tol, result, out removed);
         }
 
-        public static void PerpendicularDistance(this IEnumerable<Point2d> points, REAL tol, Action<Point2d> result, out int removed)
+        public static void PerpendicularDistance(this IEnumerable<Point2d> points, double tol, Action<Point2d> result, out int removed)
         {
             removed = 0;
 
-            REAL tol2 = tol * tol; // squared distance tolerance
+            double tol2 = tol * tol; // squared distance tolerance
 
             // validate input and check if simplification required
             if (tol2.EpsilonEquals(0))
@@ -332,7 +328,7 @@ namespace Essence.Geometry.Algorithms
             }
         }
 
-        public static IEnumerable<Point2d> PerpendicularDistance(this IEnumerable<Point2d> points, REAL tol, uint repeat)
+        public static IEnumerable<Point2d> PerpendicularDistance(this IEnumerable<Point2d> points, double tol, uint repeat)
         {
             Contract.Requires(repeat > 1);
 
@@ -360,9 +356,9 @@ namespace Essence.Geometry.Algorithms
             }
         }
 
-        public static IEnumerable<Point2d> PerpendicularDistance(this IEnumerable<Point2d> points, REAL tol)
+        public static IEnumerable<Point2d> PerpendicularDistance(this IEnumerable<Point2d> points, double tol)
         {
-            REAL tol2 = tol * tol; // squared distance tolerance
+            double tol2 = tol * tol; // squared distance tolerance
 
             // validate input and check if simplification required
             if (tol2.EpsilonEquals(0))
@@ -372,7 +368,7 @@ namespace Essence.Geometry.Algorithms
             return PerpendicularDistanceSafe(points, tol);
         }
 
-        private static IEnumerable<Point2d> PerpendicularDistanceSafe(this IEnumerable<Point2d> points, REAL tol2)
+        private static IEnumerable<Point2d> PerpendicularDistanceSafe(this IEnumerable<Point2d> points, double tol2)
         {
             IEnumerator<Point2d> enumer = points.GetEnumerator();
             if (!enumer.MoveNext())
@@ -438,14 +434,14 @@ namespace Essence.Geometry.Algorithms
         // Reumann-Witkam - Shifts a strip along the polyline and removes points that
         // fall outside
 
-        public static void ReumannWitkam(this IEnumerable<Point2d> points, REAL tol, Action<Point2d> result)
+        public static void ReumannWitkam(this IEnumerable<Point2d> points, double tol, Action<Point2d> result)
         {
             ReumannWitkam(points, false, tol, result);
         }
 
-        public static void ReumannWitkam(this IEnumerable<Point2d> points, bool cerrado, REAL tol, Action<Point2d> result)
+        public static void ReumannWitkam(this IEnumerable<Point2d> points, bool cerrado, double tol, Action<Point2d> result)
         {
-            REAL tol2 = tol * tol; // squared distance tolerance
+            double tol2 = tol * tol; // squared distance tolerance
 
             // validate input and check if simplification required
             if (tol2.EpsilonEquals(0))
@@ -519,14 +515,14 @@ namespace Essence.Geometry.Algorithms
             }
         }
 
-        public static IEnumerable<Point2d> ReumannWitkam(this IEnumerable<Point2d> points, REAL tol)
+        public static IEnumerable<Point2d> ReumannWitkam(this IEnumerable<Point2d> points, double tol)
         {
             return ReumannWitkam(points, false, tol);
         }
 
-        public static IEnumerable<Point2d> ReumannWitkam(this IEnumerable<Point2d> points, bool cerrado, REAL tol)
+        public static IEnumerable<Point2d> ReumannWitkam(this IEnumerable<Point2d> points, bool cerrado, double tol)
         {
-            REAL tol2 = tol * tol; // squared distance tolerance
+            double tol2 = tol * tol; // squared distance tolerance
 
             // validate input and check if simplification required
             if (tol2.EpsilonEquals(0))
@@ -536,7 +532,7 @@ namespace Essence.Geometry.Algorithms
             return ReumannWitkamSafe(points, cerrado, tol2);
         }
 
-        private static IEnumerable<Point2d> ReumannWitkamSafe(this IEnumerable<Point2d> points, bool cerrado, REAL tol2)
+        private static IEnumerable<Point2d> ReumannWitkamSafe(this IEnumerable<Point2d> points, bool cerrado, double tol2)
         {
             IEnumerator<Point2d> enumer = points.GetEnumerator();
             if (!enumer.MoveNext())
@@ -606,10 +602,10 @@ namespace Essence.Geometry.Algorithms
 
         // Opheim - A constrained version of Reumann-Witkam
 
-        public static void Opheim(this IEnumerable<Point2d> points, REAL minTol, REAL maxTol, Action<Point2d> result)
+        public static void Opheim(this IEnumerable<Point2d> points, double minTol, double maxTol, Action<Point2d> result)
         {
-            REAL minTol2 = minTol * minTol; // squared minimum distance tolerance
-            REAL maxTol2 = maxTol * maxTol; // squared maximum distance tolerance
+            double minTol2 = minTol * minTol; // squared minimum distance tolerance
+            double maxTol2 = maxTol * maxTol; // squared maximum distance tolerance
 
             // validate input and check if simplification required
             if (minTol2.EpsilonEquals(0) || maxTol2.EpsilonEquals(0))
@@ -680,10 +676,10 @@ namespace Essence.Geometry.Algorithms
             result(pj);
         }
 
-        public static IEnumerable<Point2d> Opheim(this IEnumerable<Point2d> points, REAL minTol, REAL maxTol)
+        public static IEnumerable<Point2d> Opheim(this IEnumerable<Point2d> points, double minTol, double maxTol)
         {
-            REAL minTol2 = minTol * minTol; // squared minimum distance tolerance
-            REAL maxTol2 = maxTol * maxTol; // squared maximum distance tolerance
+            double minTol2 = minTol * minTol; // squared minimum distance tolerance
+            double maxTol2 = maxTol * maxTol; // squared maximum distance tolerance
 
             // validate input and check if simplification required
             if (minTol2.EpsilonEquals(0) || maxTol2.EpsilonEquals(0))
@@ -693,7 +689,7 @@ namespace Essence.Geometry.Algorithms
             return OpheimSafe(points, minTol2, maxTol2);
         }
 
-        private static IEnumerable<Point2d> OpheimSafe(this IEnumerable<Point2d> points, REAL minTol2, REAL maxTol2)
+        private static IEnumerable<Point2d> OpheimSafe(this IEnumerable<Point2d> points, double minTol2, double maxTol2)
         {
             IEnumerator<Point2d> enumer = points.GetEnumerator();
             if (!enumer.MoveNext())
@@ -756,13 +752,13 @@ namespace Essence.Geometry.Algorithms
 
         #endregion Opheim
 
-        public static REAL ray_distance2(Point2d r1, Point2d r2, Point2d p)
+        public static double ray_distance2(Point2d r1, Point2d r2, Point2d p)
         {
             Vector2d v = r2 - r1; // vector r1 --> r2
             Vector2d w = p - r1; // vector r1 --> p
 
-            REAL cv = v.Dot(v); // squared length of v
-            REAL cw = w.Dot(v); // project w onto v
+            double cv = v.Dot(v); // squared length of v
+            double cw = w.Dot(v); // project w onto v
 
             if (cw <= 0)
             {
@@ -775,46 +771,46 @@ namespace Essence.Geometry.Algorithms
             {
                 return point_distance2(p, r1);
             }
-            REAL fraction = cw / cv;
+            double fraction = cw / cv;
 
             Point2d proj = r1.Lerp(r2, fraction); // p projected onto ray (r1, r2)
 
             return point_distance2(p, proj);
         }
 
-        public static REAL line_distance2(Point2d l1, Point2d l2, Point2d p)
+        public static double line_distance2(Point2d l1, Point2d l2, Point2d p)
         {
             Vector2d v = l2 - l1; // vector l1 --> l2
             Vector2d w = p - l1; // vector l1 --> p
 
-            REAL cv = v.Dot(v); // squared length of v
-            REAL cw = w.Dot(v); // project w onto v
+            double cv = v.Dot(v); // squared length of v
+            double cw = w.Dot(v); // project w onto v
 
             // avoid problems with divisions when value_type is an integer type
             if (cv.EpsilonEquals(0))
             {
                 return point_distance2(p, l1);
             }
-            REAL fraction = cw / cv;
+            double fraction = cw / cv;
 
             Point2d proj = l1.Lerp(l2, fraction); // p projected onto line (l1, l2)
 
             return point_distance2(p, proj);
         }
 
-        public static REAL segment_distance2(Point2d s1, Point2d s2, Point2d p)
+        public static double segment_distance2(Point2d s1, Point2d s2, Point2d p)
         {
             Vector2d v = s2 - s1; // vector s1 --> s2
             Vector2d w = p - s1; // vector s1 --> p
 
-            REAL cw = w.Dot(v); // project w onto v
+            double cw = w.Dot(v); // project w onto v
             if (cw <= 0)
             {
                 // projection of w lies to the left of s1
                 return point_distance2(p, s1);
             }
 
-            REAL cv = v.Dot(v); // squared length of v
+            double cv = v.Dot(v); // squared length of v
             if (cv <= cw)
             {
                 // projection of w lies to the right of s2
@@ -826,14 +822,14 @@ namespace Essence.Geometry.Algorithms
             {
                 return point_distance2(p, s1);
             }
-            REAL fraction = cw / cv;
+            double fraction = cw / cv;
 
             Point2d proj = s1.Lerp(s2, fraction); // p projected onto segement (s1, s2)
 
             return point_distance2(p, proj);
         }
 
-        public static REAL point_distance2(Point2d p1, Point2d p2)
+        public static double point_distance2(Point2d p1, Point2d p2)
         {
             return p1.Distance2To(p2);
         }

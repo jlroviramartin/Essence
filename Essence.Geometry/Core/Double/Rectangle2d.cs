@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
 using REAL = System.Double;
 
 namespace Essence.Geometry.Core.Double
 {
     public class Rectangle2d
     {
-        public Rectangle2d(REAL x, REAL y, REAL dx, REAL dy)
+        public Rectangle2d(double x, double y, double dx, double dy)
         {
             this.X = x;
             this.Y = y;
@@ -30,7 +26,7 @@ namespace Essence.Geometry.Core.Double
             this.DY = dy;
         }
 
-        public REAL X, Y;
-        public REAL DX, DY;
+        public double X, Y;
+        public double DX, DY;
     }
 }

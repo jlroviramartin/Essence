@@ -1,4 +1,18 @@
-﻿using System;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using Essence.Util;
 using Essence.Util.Events;
 using Essence.Util.Logs;
@@ -13,12 +27,12 @@ namespace Essence.View.Controls.Menus
         #region private
 
         /// <summary>
-        /// Asociation entre un <c>ToolStripItem</c> y una <c>IProperty</c>.
+        ///     Asociation entre un <c>ToolStripItem</c> y una <c>IProperty</c>.
         /// </summary>
         private new class Link : TSIRenderComponentUI<IProperty, LabelValueToolStrip>.Link
         {
             /// <summary>
-            /// Crea una asociacion.
+            ///     Crea una asociacion.
             /// </summary>
             public static void Build(LabelValueToolStrip tsItem, IProperty item, TSIContext context)
             {
@@ -32,7 +46,7 @@ namespace Essence.View.Controls.Menus
             }
 
             /// <summary>
-            /// Escucha el evento <c>TSItem.ValueModified</c>.
+            ///     Escucha el evento <c>TSItem.ValueModified</c>.
             /// </summary>
             private void TSItem_ValueModified(object sender, EventArgs args)
             {
@@ -45,7 +59,7 @@ namespace Essence.View.Controls.Menus
             }
 
             /// <summary>
-            /// Escucha el evento <c>Property.PropertyChanged</c>.
+            ///     Escucha el evento <c>Property.PropertyChanged</c>.
             /// </summary>
             private void Property_PropertyChanged(object sender, PropertyChangedExEventArgs args)
             {

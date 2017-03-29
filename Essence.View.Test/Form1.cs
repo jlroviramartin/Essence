@@ -1,4 +1,18 @@
-﻿using System;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -19,7 +33,7 @@ namespace Essence.View.Test
             FormViewAsTableControl formView = new FormViewAsTableControl();
 
             ReflectionFormModel refFormModel = new ReflectionFormModel();
-            refFormModel.FormType = typeof (Prueba);
+            refFormModel.FormType = typeof(Prueba);
             refFormModel.FormObject = new Prueba();
             formView.FormModel = refFormModel;
 
@@ -81,7 +95,7 @@ namespace Essence.View.Test
         [DisplayName("Dato 5")]
         [Description("Este es el dato 5")]
         [Category("UltraAdvanced")]
-        [RefList(typeof (GetItemsDato5))]
+        [RefList(typeof(GetItemsDato5))]
         public string Dato5
         {
             get { return this.dato5; }
@@ -94,7 +108,7 @@ namespace Essence.View.Test
         [Description("Este es el dato 6")]
         [Category("UltraAdvanced")]
         [Format("F2")]
-        [RefList(typeof (GetItemsDato6))]
+        [RefList(typeof(GetItemsDato6))]
         public double Dato6
         {
             get { return this.dato6; }

@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Collections;
@@ -46,8 +42,8 @@ namespace Essence.Geometry.Core.Double
         /// <summary>Name of the property W.</summary>
         public const string _W = "W";
 
-        private const REAL ZERO_TOLERANCE = MathUtils.ZERO_TOLERANCE;
-        private const REAL EPSILON = MathUtils.EPSILON;
+        private const double ZERO_TOLERANCE = MathUtils.ZERO_TOLERANCE;
+        private const double EPSILON = MathUtils.EPSILON;
 
         /// <summary>Tuple zero.</summary>
         public static Point4d Zero
@@ -85,7 +81,7 @@ namespace Essence.Geometry.Core.Double
             get { return new Point4d(0, 0, 0, 1); }
         }
 
-        public Point4d(REAL x, REAL y, REAL z, REAL w)
+        public Point4d(double x, double y, double z, double w)
         {
             this.X = x;
             this.Y = y;
@@ -125,25 +121,25 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>Property X.</summary>
-        public readonly REAL X;
+        public readonly double X;
 
         /// <summary>Property Y.</summary>
-        public readonly REAL Y;
+        public readonly double Y;
 
         /// <summary>Property Z.</summary>
-        public readonly REAL Z;
+        public readonly double Z;
 
         /// <summary>Property W.</summary>
-        public readonly REAL W;
+        public readonly double W;
 
         #region operators
 
         /// <summary>
         ///     Casting a REAL[].
         /// </summary>
-        public static explicit operator REAL[](Point4d v)
+        public static explicit operator double[](Point4d v)
         {
-            return new REAL[] { v.X, v.Y, v.Z, v.W };
+            return new double[] { v.X, v.Y, v.Z, v.W };
         }
 
         public static Point4d operator +(Point4d p, Vector4d v)
@@ -175,7 +171,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         [Pure]
-        public REAL this[int i]
+        public double this[int i]
         {
             get
             {
@@ -209,7 +205,7 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public bool IsNaN
         {
-            get { return REAL.IsNaN(this.X) || REAL.IsNaN(this.Y) || REAL.IsNaN(this.Z) || REAL.IsNaN(this.W); }
+            get { return double.IsNaN(this.X) || double.IsNaN(this.Y) || double.IsNaN(this.Z) || double.IsNaN(this.W); }
         }
 
         /// <summary>
@@ -218,7 +214,7 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public bool IsInfinity
         {
-            get { return REAL.IsInfinity(this.X) || REAL.IsInfinity(this.Y) || REAL.IsInfinity(this.Z) || REAL.IsInfinity(this.W); }
+            get { return double.IsInfinity(this.X) || double.IsInfinity(this.Y) || double.IsInfinity(this.Z) || double.IsInfinity(this.W); }
         }
 
         /// <summary>
@@ -249,32 +245,32 @@ namespace Essence.Geometry.Core.Double
         }
 
         [Pure]
-        public REAL Distance2To(Point4d p2)
+        public double Distance2To(Point4d p2)
         {
             return (MathUtils.Cuad(p2.X - this.X) + MathUtils.Cuad(p2.Y - this.Y) + MathUtils.Cuad(p2.Z - this.Z) + MathUtils.Cuad(p2.W - this.W));
         }
 
         [Pure]
-        public REAL DistanceTo(Point4d p2)
+        public double DistanceTo(Point4d p2)
         {
-            return (REAL)Math.Sqrt(this.Distance2To(p2));
+            return (double)Math.Sqrt(this.Distance2To(p2));
         }
 
         [Pure]
-        public Point4d Lerp(Point4d p2, REAL alpha)
+        public Point4d Lerp(Point4d p2, double alpha)
         {
             return this.Lineal(p2, 1 - alpha, alpha);
         }
 
         [Pure]
-        public REAL InvLerp(Point4d p2, Point4d p3)
+        public double InvLerp(Point4d p2, Point4d p3)
         {
             Vector4d v12 = p2.Sub(this);
             return v12.Proy(p3.Sub(this));
         }
 
         [Pure]
-        public Point4d Lineal(Point4d p2, REAL alpha, REAL beta)
+        public Point4d Lineal(Point4d p2, double alpha, double beta)
         {
             return new Point4d(alpha * this.X + beta * p2.X, alpha * this.Y + beta * p2.Y, alpha * this.Z + beta * p2.Z, alpha * this.W + beta * p2.W);
         }
@@ -319,8 +315,8 @@ namespace Essence.Geometry.Core.Double
         {
             Contract.Requires(s != null);
 
-            REAL[] ret;
-            if (!VectorUtils.TryParse(s, 4, out ret, REAL.TryParse, provider, vstyle, style))
+            double[] ret;
+            if (!VectorUtils.TryParse(s, 4, out ret, double.TryParse, provider, vstyle, style))
             {
                 result = Zero;
                 return false;
@@ -341,7 +337,7 @@ namespace Essence.Geometry.Core.Double
         ///     Comprueba si son casi iguales.
         /// </summary>
         [Pure]
-        private bool EpsilonEquals(REAL x, REAL y, REAL z, REAL w, REAL epsilon = ZERO_TOLERANCE)
+        private bool EpsilonEquals(double x, double y, double z, double w, double epsilon = ZERO_TOLERANCE)
         {
             return this.X.EpsilonEquals(x, epsilon) && this.Y.EpsilonEquals(y, epsilon) && this.Z.EpsilonEquals(z, epsilon) && this.W.EpsilonEquals(w, epsilon);
         }
@@ -388,9 +384,9 @@ namespace Essence.Geometry.Core.Double
         #region IEpsilonEquatable
 
         [Pure]
-        public bool EpsilonEquals(Point4d other, REAL epsilon = EPSILON)
+        public bool EpsilonEquals(Point4d other, double epsilon = EPSILON)
         {
-            return this.EpsilonEquals(other.X, other.Y, other.Z, other.W, (REAL)epsilon);
+            return this.EpsilonEquals(other.X, other.Y, other.Z, other.W, (double)epsilon);
         }
 
         #endregion
@@ -419,7 +415,7 @@ namespace Essence.Geometry.Core.Double
                 }
             }
 
-            return VectorUtils.ToString(provider, format, (REAL[])this);
+            return VectorUtils.ToString(provider, format, (double[])this);
         }
 
         #endregion
@@ -474,19 +470,19 @@ namespace Essence.Geometry.Core.Double
         }
 
         [Pure]
-        IPoint IPoint.Lerp(IPoint p2, REAL alpha)
+        IPoint IPoint.Lerp(IPoint p2, double alpha)
         {
             return this.Lerp(p2.ToPoint4d(), alpha);
         }
 
         [Pure]
-        REAL IPoint.InvLerp(IPoint p2, IPoint pLerp)
+        double IPoint.InvLerp(IPoint p2, IPoint pLerp)
         {
             return this.InvLerp(p2.ToPoint4d(), pLerp.ToPoint4d());
         }
 
         [Pure]
-        IPoint IPoint.Lineal(IPoint p2, REAL alpha, REAL beta)
+        IPoint IPoint.Lineal(IPoint p2, double alpha, double beta)
         {
             return this.Lineal(p2.ToPoint4d(), alpha, beta);
         }
@@ -524,7 +520,7 @@ namespace Essence.Geometry.Core.Double
         #region IEpsilonEquatable<IPoint>
 
         [Pure]
-        bool IEpsilonEquatable<IPoint>.EpsilonEquals(IPoint other, REAL epsilon)
+        bool IEpsilonEquatable<IPoint>.EpsilonEquals(IPoint other, double epsilon)
         {
             return this.EpsilonEquals(other.ToPoint4d(), epsilon);
         }

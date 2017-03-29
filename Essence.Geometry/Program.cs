@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using Essence.Geometry.Core.Double;
 using Essence.Maths.Double;
@@ -51,10 +47,10 @@ namespace Essence.Maths
         {
             double t01 = this.Project01(pnt);
             double t = (t01.EpsilonEquals(0)
-                            ? this.t0
-                            : (t01.EpsilonEquals(1)
-                                   ? this.t1
-                                   : this.t0 + (this.t1 - this.t0) * t01));
+                ? this.t0
+                : (t01.EpsilonEquals(1)
+                    ? this.t1
+                    : this.t0 + (this.t1 - this.t0) * t01));
             return t;
         }
 
@@ -62,10 +58,10 @@ namespace Essence.Maths
         {
             // Se normaliza la estacion.
             double t01 = (t.EpsilonEquals(this.t0)
-                              ? 0
-                              : (t.EpsilonEquals(this.t1)
-                                     ? 1
-                                     : (t - this.t0) / (this.t1 - this.t0)));
+                ? 0
+                : (t.EpsilonEquals(this.t1)
+                    ? 1
+                    : (t - this.t0) / (this.t1 - this.t0)));
 
             pnt = this.Evaluate01(t01);
             normal = this.normal;

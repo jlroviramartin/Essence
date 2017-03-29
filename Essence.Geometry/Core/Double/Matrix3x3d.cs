@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Diagnostics.Contracts;
@@ -76,9 +72,9 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public Matrix3x3d(REAL m00, REAL m01, REAL m02,
-                          REAL m10, REAL m11, REAL m12,
-                          REAL m20, REAL m21, REAL m22)
+        public Matrix3x3d(double m00, double m01, double m02,
+                          double m10, double m11, double m12,
+                          double m20, double m21, double m22)
         {
             this.Set(m00, m01, m02,
                      m10, m11, m12,
@@ -89,7 +85,7 @@ namespace Essence.Geometry.Core.Double
         ///     Constructor.
         /// </summary>
         /// <param name="items">Elementos.</param>
-        public Matrix3x3d(REAL[] items)
+        public Matrix3x3d(double[] items)
         {
             this.Set(items);
         }
@@ -98,7 +94,7 @@ namespace Essence.Geometry.Core.Double
         ///     Constructor.
         /// </summary>
         /// <param name="items">Elementos.</param>
-        public Matrix3x3d(REAL[,] items)
+        public Matrix3x3d(double[,] items)
         {
             this.Set(items);
         }
@@ -169,7 +165,7 @@ namespace Essence.Geometry.Core.Double
         public Point2d Mul(Point2d p)
         {
             // NOTE: un punto sigue siendo un punto, se normaliza: w == 1.
-            REAL d = this.M20 * p.X + this.M21 * p.Y + this.M22;
+            double d = this.M20 * p.X + this.M21 * p.Y + this.M22;
             return new Point2d((p.X * this.M00 + p.Y * this.M01 + this.M02) / d,
                                (p.X * this.M10 + p.Y * this.M11 + this.M12) / d);
         }
@@ -204,14 +200,14 @@ namespace Essence.Geometry.Core.Double
 
         public Vector2d PreMul(Vector2d v)
         {
-            REAL d = v.X * this.M02 + v.Y * this.M12;
+            double d = v.X * this.M02 + v.Y * this.M12;
             return new Vector2d((v.X * this.M00 + v.Y * this.M10) / d,
                                 (v.X * this.M01 + v.Y * this.M11) / d);
         }
 
         public Point2d PreMul(Point2d p)
         {
-            REAL d = p.X * this.M02 + p.Y * this.M12 + this.M22;
+            double d = p.X * this.M02 + p.Y * this.M12 + this.M22;
             return new Point2d((p.X * this.M00 + p.Y * this.M10 + this.M20) / d,
                                (p.X * this.M01 + p.Y * this.M11 + this.M21) / d);
         }
@@ -267,7 +263,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Operacion multiplicacion: mat * valor.
         /// </summary>
-        public static Matrix3x3d operator *(Matrix3x3d mat, REAL v)
+        public static Matrix3x3d operator *(Matrix3x3d mat, double v)
         {
             Matrix3x3d matrizOut = mat.Clone();
             matrizOut.Mul(v);
@@ -277,7 +273,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Operacion multiplicacion: valor * mat.
         /// </summary>
-        public static Matrix3x3d operator *(REAL v, Matrix3x3d mat)
+        public static Matrix3x3d operator *(double v, Matrix3x3d mat)
         {
             Matrix3x3d matrizOut = mat.Clone();
             matrizOut.Mul(v);
@@ -287,7 +283,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Operacion division: mat / valor.
         /// </summary>
-        public static Matrix3x3d operator /(Matrix3x3d mat, REAL v)
+        public static Matrix3x3d operator /(Matrix3x3d mat, double v)
         {
             Matrix3x3d matrizOut = mat.Clone();
             matrizOut.Div(v);
@@ -311,7 +307,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Casting a REAL[].
         /// </summary>
-        public static explicit operator REAL[](Matrix3x3d m)
+        public static explicit operator double[](Matrix3x3d m)
         {
             return new[]
             {
@@ -324,7 +320,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Casting a REAL[,].
         /// </summary>
-        public static explicit operator REAL[,](Matrix3x3d m)
+        public static explicit operator double[,](Matrix3x3d m)
         {
             return new[,]
             {
@@ -369,9 +365,9 @@ namespace Essence.Geometry.Core.Double
         {
             get
             {
-                return REAL.IsNaN(this.M00) || REAL.IsNaN(this.M01) || REAL.IsNaN(this.M02)
-                       || REAL.IsNaN(this.M10) || REAL.IsNaN(this.M11) || REAL.IsNaN(this.M12)
-                       || REAL.IsNaN(this.M20) || REAL.IsNaN(this.M21) || REAL.IsNaN(this.M22);
+                return double.IsNaN(this.M00) || double.IsNaN(this.M01) || double.IsNaN(this.M02)
+                       || double.IsNaN(this.M10) || double.IsNaN(this.M11) || double.IsNaN(this.M12)
+                       || double.IsNaN(this.M20) || double.IsNaN(this.M21) || double.IsNaN(this.M22);
             }
         }
 
@@ -382,9 +378,9 @@ namespace Essence.Geometry.Core.Double
         {
             get
             {
-                return REAL.IsInfinity(this.M00) || REAL.IsInfinity(this.M01) || REAL.IsInfinity(this.M02)
-                       || REAL.IsInfinity(this.M10) || REAL.IsInfinity(this.M11) || REAL.IsInfinity(this.M12)
-                       || REAL.IsInfinity(this.M20) || REAL.IsInfinity(this.M21) || REAL.IsInfinity(this.M22);
+                return double.IsInfinity(this.M00) || double.IsInfinity(this.M01) || double.IsInfinity(this.M02)
+                       || double.IsInfinity(this.M10) || double.IsInfinity(this.M11) || double.IsInfinity(this.M12)
+                       || double.IsInfinity(this.M20) || double.IsInfinity(this.M21) || double.IsInfinity(this.M22);
             }
         }
 
@@ -421,8 +417,8 @@ namespace Essence.Geometry.Core.Double
         {
             get
             {
-                REAL determinante = this.Determinant;
-                if (REAL.IsNaN(determinante) || REAL.IsInfinity(determinante))
+                double determinante = this.Determinant;
+                if (double.IsNaN(determinante) || double.IsInfinity(determinante))
                 {
                     return false;
                 }
@@ -444,7 +440,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="i">Fila.</param>
         /// <param name="j">Columna.</param>
         /// <returns>Elemento.</returns>
-        public REAL this[int i, int j]
+        public double this[int i, int j]
         {
             get
             {
@@ -544,17 +540,17 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Elementos fila 0.
         /// </summary>
-        public REAL M00, M01, M02;
+        public double M00, M01, M02;
 
         /// <summary>
         ///     Elementos fila 1.
         /// </summary>
-        public REAL M10, M11, M12;
+        public double M10, M11, M12;
 
         /// <summary>
         ///     Elementos fila 2.
         /// </summary>
-        public REAL M20, M21, M22;
+        public double M20, M21, M22;
 
         #endregion
 
@@ -563,9 +559,9 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Establece los elementos.
         /// </summary>
-        public void Set(REAL m00, REAL m01, REAL m02,
-                        REAL m10, REAL m11, REAL m12,
-                        REAL m20, REAL m21, REAL m22)
+        public void Set(double m00, double m01, double m02,
+                        double m10, double m11, double m12,
+                        double m20, double m21, double m22)
         {
             this.M00 = m00;
             this.M01 = m01;
@@ -582,7 +578,7 @@ namespace Essence.Geometry.Core.Double
         ///     Establece a <c>elementos</c>.
         /// </summary>
         /// <param name="items">Elementos.</param>
-        public void Set(REAL[] items)
+        public void Set(double[] items)
         {
             Contract.Requires((items != null)
                               && (items.GetLength(0) == this.Rows * this.Columns));
@@ -596,7 +592,7 @@ namespace Essence.Geometry.Core.Double
         ///     Establece a <c>elementos</c>.
         /// </summary>
         /// <param name="items">Elementos.</param>
-        public void Set(REAL[,] items)
+        public void Set(double[,] items)
         {
             Contract.Requires((items != null) && (items.GetLength(0) == this.Rows)
                               && (items.GetLength(1) == this.Columns));
@@ -726,7 +722,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Operacion multiplicacion: this = this * valor.
         /// </summary>
-        public void Mul(REAL v)
+        public void Mul(double v)
         {
             this.Mul(this, v);
         }
@@ -734,7 +730,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Operacion multiplicacion: this = mat * valor.
         /// </summary>
-        public void Mul(Matrix3x3d mat, REAL v)
+        public void Mul(Matrix3x3d mat, double v)
         {
             Contract.Requires(mat != null);
 
@@ -746,7 +742,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Operacion division: this = this / valor.
         /// </summary>
-        public void Div(REAL v)
+        public void Div(double v)
         {
             this.Div(this, v);
         }
@@ -754,7 +750,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Operacion division: this = mat / valor.
         /// </summary>
-        public void Div(Matrix3x3d mat, REAL v)
+        public void Div(Matrix3x3d mat, double v)
         {
             Contract.Requires(mat != null);
 
@@ -862,7 +858,7 @@ namespace Essence.Geometry.Core.Double
         /// </summary>
         public void Inv(Matrix3x3d mat)
         {
-            REAL s = mat.Determinant;
+            double s = mat.Determinant;
             if (s.EpsilonZero())
             {
                 throw new Exception("SingularMatrixException");
@@ -883,7 +879,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Operacion determinante.
         /// </summary>
-        public REAL Determinant
+        public double Determinant
         {
             get
             {
@@ -910,10 +906,10 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Comprueba si son casi iguales.
         /// </summary>
-        private bool EpsilonEquals(REAL m00, REAL m01, REAL m02,
-                                   REAL m10, REAL m11, REAL m12,
-                                   REAL m20, REAL m21, REAL m22,
-                                   REAL epsilon)
+        private bool EpsilonEquals(double m00, double m01, double m02,
+                                   double m10, double m11, double m12,
+                                   double m20, double m21, double m22,
+                                   double epsilon)
         {
             return (this.M00.EpsilonEquals(m00, epsilon)
                     && this.M01.EpsilonEquals(m01, epsilon)
@@ -976,7 +972,7 @@ namespace Essence.Geometry.Core.Double
 
         #region IEpsilonEquatable<MATRIX>
 
-        public bool EpsilonEquals(Matrix3x3d mat, REAL epsilon = MathUtils.EPSILON)
+        public bool EpsilonEquals(Matrix3x3d mat, double epsilon = MathUtils.EPSILON)
         {
             if (mat == null)
             {
@@ -986,7 +982,7 @@ namespace Essence.Geometry.Core.Double
             return this.EpsilonEquals(mat.M00, mat.M01, mat.M02,
                                       mat.M10, mat.M11, mat.M12,
                                       mat.M20, mat.M21, mat.M22,
-                                      (REAL)epsilon);
+                                      (double)epsilon);
         }
 
         #endregion
@@ -1008,7 +1004,7 @@ namespace Essence.Geometry.Core.Double
             VectorFormatInfo vfi = null;
             if (provider != null)
             {
-                vfi = (VectorFormatInfo)provider.GetFormat(typeof (VectorFormatInfo));
+                vfi = (VectorFormatInfo)provider.GetFormat(typeof(VectorFormatInfo));
             }
             if (vfi == null)
             {
@@ -1037,12 +1033,12 @@ namespace Essence.Geometry.Core.Double
 
         public Matrix3x3d(SerializationInfo info, StreamingContext context)
         {
-            this.Set((REAL[])info.GetValue(ITEMS, typeof (REAL[])));
+            this.Set((double[])info.GetValue(ITEMS, typeof(double[])));
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(ITEMS, (REAL[])this);
+            info.AddValue(ITEMS, (double[])this);
         }
 
         #endregion

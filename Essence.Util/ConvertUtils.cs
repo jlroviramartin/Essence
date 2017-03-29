@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Runtime.InteropServices;
@@ -41,12 +37,12 @@ namespace Essence.Util
 
         public static T ChangeType<T>(this object obj)
         {
-            return (T)Convert.ChangeType(obj, typeof (T));
+            return (T)Convert.ChangeType(obj, typeof(T));
         }
 
         public static T ChangeType<T>(this object obj, IFormatProvider provider)
         {
-            return (T)Convert.ChangeType(obj, typeof (T), provider);
+            return (T)Convert.ChangeType(obj, typeof(T), provider);
         }
 
         public static bool ToBoolean(this IConvertible convertible)
@@ -131,7 +127,7 @@ namespace Essence.Util
 
         public static object ToType<T>(this IConvertible convertible)
         {
-            return convertible.ToType(typeof (T), null);
+            return convertible.ToType(typeof(T), null);
         }
 
         #endregion

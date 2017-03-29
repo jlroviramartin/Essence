@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using Essence.Geometry.Core.Double;
 using Essence.Geometry.Geom2D;
@@ -31,7 +27,7 @@ namespace Essence.Geometry.Intersection
         }
 
         /// <summary>Obtiene/establece el error máximo en el calculo de intersecciones.</summary>
-        public REAL Error { get; set; }
+        public double Error { get; set; }
 
         /// <summary>Obtiene/establece el segmento 1º.</summary>
         public Line2d Item0 { get; set; }
@@ -50,7 +46,7 @@ namespace Essence.Geometry.Intersection
 
         public bool Find()
         {
-            REAL[] parameter = new REAL[2];
+            double[] parameter = new double[2];
             IntersectionType intersectionType = Classify(this.Item0.Origin, this.Item0.Direction,
                                                          this.Item1.Origin, this.Item1.Direction,
                                                          parameter, this.Error);
@@ -71,8 +67,8 @@ namespace Essence.Geometry.Intersection
                 case IntersectionType.LINE:
                 {
                     // Proyectamos en 'Line0' el origen de 'Line1'.
-                    REAL param0 = this.Item0.Project(this.Item1.Origin);
-                    REAL param1 = param0 + 1;
+                    double param0 = this.Item0.Project(this.Item1.Origin);
+                    double param1 = param0 + 1;
 
                     Point2d pt0 = this.Item0.Evaluate(param0);
                     Point2d pt1 = this.Item0.Evaluate(param1);
@@ -95,7 +91,7 @@ namespace Essence.Geometry.Intersection
             return this.IntersectionType != IntersectionType.EMPTY;
         }
 
-        internal static IntersectionType Classify(Point2d p0, Vector2d d0, Point2d p1, Vector2d d1, REAL[] s, REAL error)
+        internal static IntersectionType Classify(Point2d p0, Vector2d d0, Point2d p1, Vector2d d1, double[] s, double error)
         {
             // The intersection of two lines is a solution to P0+s0*D0 = P1+s1*D1.
             // Rewrite this as s0*D0 - s1*D1 = P1 - P0 = Q.  If D0.Dot(Perp(D1)) = 0,
@@ -107,15 +103,15 @@ namespace Essence.Geometry.Intersection
 
             Vector2d originDiff = p1 - p0;
 
-            REAL d0DotPerpD1 = d0.DotPerpRight(d1);
+            double d0DotPerpD1 = d0.DotPerpRight(d1);
             if (!d0DotPerpD1.EpsilonEquals(0.0, error))
             {
                 // Lines intersect in a single point.
                 if (s != null)
                 {
-                    REAL invD0DotPerpD1 = 1.0 / d0DotPerpD1;
-                    REAL diffDotPerpD0 = originDiff.DotPerpRight(d0);
-                    REAL diffDotPerpD1 = originDiff.DotPerpRight(d1);
+                    double invD0DotPerpD1 = 1.0 / d0DotPerpD1;
+                    double diffDotPerpD0 = originDiff.DotPerpRight(d0);
+                    double diffDotPerpD1 = originDiff.DotPerpRight(d1);
                     s[0] = diffDotPerpD1 * invD0DotPerpD1;
                     s[1] = diffDotPerpD0 * invD0DotPerpD1;
                 }
@@ -125,7 +121,7 @@ namespace Essence.Geometry.Intersection
             // Lines are parallel.
             originDiff = originDiff.Unit;
 
-            REAL diffNDotPerpD1 = originDiff.DotPerpRight(d1);
+            double diffNDotPerpD1 = originDiff.DotPerpRight(d1);
             if (diffNDotPerpD1.EpsilonEquals(0.0, error))
             {
                 // Lines are colinear.

@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
 using System;
 using REAL = System.Double;
 
@@ -28,10 +24,10 @@ namespace Essence.Geometry.Core.Double
         /// </summary>
         /// <param name="r">Angulo en radianes.</param>
         /// <returns>Matriz de rotacion.</returns>
-        public static Matrix2x2d Rotate(REAL r)
+        public static Matrix2x2d Rotate(double r)
         {
-            REAL c = (REAL)Math.Cos(r);
-            REAL s = (REAL)Math.Sin(r);
+            double c = (double)Math.Cos(r);
+            double s = (double)Math.Sin(r);
             return new Matrix2x2d(
                 c, -s,
                 s, c);
@@ -43,7 +39,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="ex">Escala x.</param>
         /// <param name="ey">Escala y.</param>
         /// <returns>Matriz de escala.</returns>
-        public static Matrix2x2d Scale(REAL ex, REAL ey)
+        public static Matrix2x2d Scale(double ex, double ey)
         {
             return new Matrix2x2d(
                 ex, 0,
@@ -59,7 +55,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="r">Rotación en radianes.</param>
         /// <param name="e">Escala.</param>
         /// <returns>Matriz de traslacion, rotacion y escala.</returns>
-        public static Matrix2x2d RotateScale(REAL r, Vector2d e)
+        public static Matrix2x2d RotateScale(double r, Vector2d e)
         {
             return RotateScale(r, e.X, e.Y);
         }
@@ -72,10 +68,10 @@ namespace Essence.Geometry.Core.Double
         /// <param name="ex">Escala x.</param>
         /// <param name="ey">Escala y.</param>
         /// <returns>Matriz de traslacion, rotacion y escala.</returns>
-        public static Matrix2x2d RotateScale(REAL r, REAL ex, REAL ey)
+        public static Matrix2x2d RotateScale(double r, double ex, double ey)
         {
-            REAL s = (REAL)Math.Sin(r);
-            REAL c = (REAL)Math.Cos(r);
+            double s = (double)Math.Sin(r);
+            double c = (double)Math.Cos(r);
             return new Matrix2x2d(
                 c * ex, -ey * s,
                 ex * s, c * ey);

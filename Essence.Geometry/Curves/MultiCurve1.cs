@@ -1,4 +1,18 @@
-﻿using System.Diagnostics.Contracts;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System.Diagnostics.Contracts;
 using org.apache.commons.math3.analysis.integration;
 using UnaryFunction = System.Func<double, double>;
 using REAL = System.Double;
@@ -9,27 +23,27 @@ namespace Essence.Maths.Double.Curves
     {
         public abstract int SegmentsCount { get; }
 
-        public abstract REAL GetTMin(int indice);
+        public abstract double GetTMin(int indice);
 
-        public abstract REAL GetTMax(int indice);
+        public abstract double GetTMax(int indice);
 
         #region Position and derivatives
 
-        protected abstract REAL GetPosition(int index, REAL t);
+        protected abstract double GetPosition(int index, double t);
 
-        protected virtual REAL GetFirstDerivative(int index, REAL t)
+        protected virtual double GetFirstDerivative(int index, double t)
         {
             UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(index, tt), 1, 5);
             return fdx(t);
         }
 
-        protected virtual REAL GetSecondDerivative(int index, REAL t)
+        protected virtual double GetSecondDerivative(int index, double t)
         {
             UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(index, tt), 2, 5);
             return fdx(t);
         }
 
-        protected virtual REAL GetThirdDerivative(int index, REAL t)
+        protected virtual double GetThirdDerivative(int index, double t)
         {
             UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(index, tt), 3, 5);
             return fdx(t);
@@ -39,7 +53,7 @@ namespace Essence.Maths.Double.Curves
 
         #region Differential geometric quantities
 
-        protected virtual REAL GetLength(int index, REAL tInSegment0, REAL tInSegment1)
+        protected virtual double GetLength(int index, double tInSegment0, double tInSegment1)
         {
             Contract.Assert(tInSegment0 <= tInSegment1);
 
@@ -47,14 +61,14 @@ namespace Essence.Maths.Double.Curves
             return iintegral.integrate(IntegralMaxEval, new DelegateUnivariateFunction(t => this.GetSpeed(index, t)), tInSegment0, tInSegment1);
         }
 
-        protected virtual REAL GetSpeed(int index, REAL tInSegment)
+        protected virtual double GetSpeed(int index, double tInSegment)
         {
             return this.GetFirstDerivative(index, tInSegment);
         }
 
         #endregion
 
-        protected abstract void FindIndex(REAL t, out int index, out REAL tInSegment);
+        protected abstract void FindIndex(double t, out int index, out double tInSegment);
 
         #region private
 
@@ -74,14 +88,14 @@ namespace Essence.Maths.Double.Curves
         {
             int numSegmentos = this.SegmentsCount;
 
-            this.lengths = new REAL[numSegmentos];
-            this.accLengths = new REAL[numSegmentos];
+            this.lengths = new double[numSegmentos];
+            this.accLengths = new double[numSegmentos];
 
             // Arc lengths and accumulative arc length of the segments.
-            REAL longitudAcum = 0;
+            double longitudAcum = 0;
             for (int i = 0; i < numSegmentos; i++)
             {
-                REAL longitud = this.GetLength(i, this.GetTMin(i), this.GetTMax(i));
+                double longitud = this.GetLength(i, this.GetTMin(i), this.GetTMax(i));
                 longitudAcum += longitud;
 
                 this.lengths[i] = longitud;
@@ -90,10 +104,10 @@ namespace Essence.Maths.Double.Curves
         }
 
         /// <summary>Longitudes.</summary>
-        private REAL[] lengths;
+        private double[] lengths;
 
         /// <summary>Longitudes acumuladas.</summary>
-        private REAL[] accLengths;
+        private double[] accLengths;
 
         /// <summary>Número máximo de evaluaciones para el cálculo de la integral.</summary>
         private const int IntegralMaxEval = 1000;
@@ -102,57 +116,57 @@ namespace Essence.Maths.Double.Curves
 
         #region ICurve1
 
-        public virtual REAL TMin
+        public virtual double TMin
         {
             get { return this.GetTMin(0); }
         }
 
-        public virtual REAL TMax
+        public virtual double TMax
         {
             get { return this.GetTMax(this.SegmentsCount - 1); }
         }
 
-        public virtual void SetTInterval(REAL tmin, REAL tmax)
+        public virtual void SetTInterval(double tmin, double tmax)
         {
         }
 
-        public virtual REAL GetPosition(REAL t)
+        public virtual double GetPosition(double t)
         {
             int index;
-            REAL tInSegment;
+            double tInSegment;
             this.FindIndex(t, out index, out tInSegment);
 
             return this.GetPosition(index, tInSegment);
         }
 
-        public virtual REAL GetFirstDerivative(REAL t)
+        public virtual double GetFirstDerivative(double t)
         {
             int index;
-            REAL tInSegment;
+            double tInSegment;
             this.FindIndex(t, out index, out tInSegment);
 
             return this.GetFirstDerivative(index, tInSegment);
         }
 
-        public virtual REAL GetSecondDerivative(REAL t)
+        public virtual double GetSecondDerivative(double t)
         {
             int index;
-            REAL tInSegment;
+            double tInSegment;
             this.FindIndex(t, out index, out tInSegment);
 
             return this.GetSecondDerivative(index, tInSegment);
         }
 
-        public virtual REAL GetThirdDerivative(REAL t)
+        public virtual double GetThirdDerivative(double t)
         {
             int index;
-            REAL tInSegment;
+            double tInSegment;
             this.FindIndex(t, out index, out tInSegment);
 
             return this.GetThirdDerivative(index, tInSegment);
         }
 
-        public virtual REAL TotalLength
+        public virtual double TotalLength
         {
             get
             {
@@ -161,7 +175,7 @@ namespace Essence.Maths.Double.Curves
             }
         }
 
-        public virtual REAL GetLength(REAL t0, REAL t1)
+        public virtual double GetLength(double t0, double t1)
         {
             Contract.Assert(t1 >= t0);
 
@@ -178,11 +192,11 @@ namespace Essence.Maths.Double.Curves
             this.EnsureLengthsEvaluated();
 
             int index0, index1;
-            REAL tInSegment0, tInSegment1;
+            double tInSegment0, tInSegment1;
             this.FindIndex(t0, out index0, out tInSegment0);
             this.FindIndex(t1, out index1, out tInSegment1);
 
-            REAL longitud;
+            double longitud;
             if (index0 != index1)
             {
                 // Add on partial first segment.
@@ -209,10 +223,10 @@ namespace Essence.Maths.Double.Curves
             return longitud;
         }
 
-        public virtual REAL GetSpeed(REAL t)
+        public virtual double GetSpeed(double t)
         {
             int index;
-            REAL tInSegment;
+            double tInSegment;
             this.FindIndex(t, out index, out tInSegment);
 
             return this.GetSpeed(index, tInSegment);

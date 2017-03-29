@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using Essence.Geometry.Core.Double;
@@ -31,19 +27,19 @@ namespace Essence.Geometry.Test.Geom3D
         [TestMethod]
         public void TestEvaluatAndProject()
         {
-            Action<Triangle3d, REAL, REAL> test01 = (tri, u, v) =>
+            Action<Triangle3d, double, double> test01 = (tri, u, v) =>
             {
                 Point3d p = tri.Evaluate01(u, v);
-                REAL[] uv = tri.Project01(p);
+                double[] uv = tri.Project01(p);
                 Assert.IsTrue(u.EpsilonEquals(uv[0]) && v.EpsilonEquals(uv[1]));
                 Point3d p2 = tri.Evaluate01(uv[0], uv[1]);
                 Assert.IsTrue(p.EpsilonEquals(p2));
             };
 
-            Action<Triangle3d, REAL, REAL> testBar = (tri, u, v) =>
+            Action<Triangle3d, double, double> testBar = (tri, u, v) =>
             {
                 Point3d p = tri.EvaluateBar(u, v);
-                REAL[] uvw = tri.ProjectBar(p);
+                double[] uvw = tri.ProjectBar(p);
                 Assert.IsTrue(u.EpsilonEquals(uvw[0]) && v.EpsilonEquals(uvw[1]) && (1 - u - v).EpsilonEquals(uvw[2]));
                 Point3d p2 = tri.EvaluateBar(uvw[0], uvw[1], uvw[2]);
                 Assert.IsTrue(p.EpsilonEquals(p2));

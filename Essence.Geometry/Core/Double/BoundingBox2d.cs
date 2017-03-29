@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Diagnostics.Contracts;
@@ -33,7 +29,7 @@ namespace Essence.Geometry.Core.Double
         public const string _YMIN = "YMin";
         public const string _YMAX = "YMax";
 
-        public static BoundingBox2d FromCoords(REAL x1, REAL y1, REAL x2, REAL y2)
+        public static BoundingBox2d FromCoords(double x1, double y1, double x2, double y2)
         {
             if (x1 > x2)
             {
@@ -47,7 +43,7 @@ namespace Essence.Geometry.Core.Double
             return new BoundingBox2d(x1, x2, y1, y2);
         }
 
-        public static BoundingBox2d FromExtents(REAL x, REAL y, REAL dx, REAL dy)
+        public static BoundingBox2d FromExtents(double x, double y, double dx, double dy)
         {
             return FromCoords(x, y, x + dx, y + dy);
         }
@@ -60,7 +56,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Rectangulo infinito.
         /// </summary>
-        public static BoundingBox2d Infinity = new BoundingBox2d(REAL.NegativeInfinity, REAL.PositiveInfinity, REAL.NegativeInfinity, REAL.PositiveInfinity);
+        public static BoundingBox2d Infinity = new BoundingBox2d(double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity);
 
         /// <summary>
         ///     Une todos los rectangulos.
@@ -96,7 +92,7 @@ namespace Essence.Geometry.Core.Double
             return ret;
         }
 
-        public BoundingBox2d(REAL xMin, REAL xMax, REAL yMin, REAL yMax)
+        public BoundingBox2d(double xMin, double xMax, double yMin, double yMax)
         {
             this.XMin = xMin;
             this.XMax = xMax;
@@ -165,12 +161,12 @@ namespace Essence.Geometry.Core.Double
             get { return new Vector2d(this.DX, this.DY); }
         }
 
-        public REAL DX
+        public double DX
         {
             get { return this.XMax - this.XMin; }
         }
 
-        public REAL DY
+        public double DY
         {
             get { return this.YMax - this.YMin; }
         }
@@ -188,7 +184,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="rec">Rectangulo.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si lo toca.</returns>
-        public bool Touch(BoundingBox2d rec, REAL epsilon = MathUtils.EPSILON)
+        public bool Touch(BoundingBox2d rec, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.Touch(this.XMin, this.XMax, rec.XMin, rec.XMax, epsilon)
                    || RangeUtils.Touch(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon);
@@ -200,7 +196,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="p">Punto.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si lo toca.</returns>
-        public bool Touch(Point2d p, REAL epsilon = MathUtils.EPSILON)
+        public bool Touch(Point2d p, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.TouchPoint(this.XMin, this.XMax, p.X, epsilon)
                    || RangeUtils.TouchPoint(this.YMin, this.YMax, p.Y, epsilon);
@@ -212,7 +208,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="rec">Rectangulo.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si lo contiene completamente.</returns>
-        public bool Contains(BoundingBox2d rec, REAL epsilon = MathUtils.EPSILON)
+        public bool Contains(BoundingBox2d rec, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.Contains(this.XMin, this.XMax, rec.XMin, rec.XMax, epsilon)
                    && RangeUtils.Contains(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon);
@@ -224,7 +220,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="p">Punto.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si lo contiene completamente.</returns>
-        public bool Contains(Point2d p, REAL epsilon = MathUtils.EPSILON)
+        public bool Contains(Point2d p, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.ContainsPoint(this.XMin, this.XMax, p.X, epsilon)
                    && RangeUtils.ContainsPoint(this.YMin, this.YMax, p.Y, epsilon);
@@ -236,7 +232,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="rec">Rectangulo.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si existe intersección.</returns>
-        public bool IntersectsWith(BoundingBox2d rec, REAL epsilon = MathUtils.EPSILON)
+        public bool IntersectsWith(BoundingBox2d rec, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.IntersectsWith(this.XMin, this.XMax, rec.XMin, rec.XMax, epsilon)
                    && RangeUtils.IntersectsWith(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon);
@@ -248,10 +244,10 @@ namespace Essence.Geometry.Core.Double
         /// <param name="point">Punto.</param>
         public BoundingBox2d Union(Point2d point)
         {
-            REAL rxMin, rxMax;
+            double rxMin, rxMax;
             RangeUtils.Union(this.XMin, this.XMax, point.X, out rxMin, out rxMax);
 
-            REAL ryMin, ryMax;
+            double ryMin, ryMax;
             RangeUtils.Union(this.YMin, this.YMax, point.Y, out ryMin, out ryMax);
 
             return new BoundingBox2d(rxMin, rxMax, ryMin, ryMax);
@@ -263,10 +259,10 @@ namespace Essence.Geometry.Core.Double
         /// <param name="rec">Rectangulo.</param>
         public BoundingBox2d Union(BoundingBox2d rec)
         {
-            REAL rxMin, rxMax;
+            double rxMin, rxMax;
             RangeUtils.Union(this.XMin, this.XMax, rec.XMin, rec.XMax, out rxMin, out rxMax);
 
-            REAL ryMin, ryMax;
+            double ryMin, ryMax;
             RangeUtils.Union(this.YMin, this.YMax, rec.YMin, rec.YMax, out ryMin, out ryMax);
 
             return new BoundingBox2d(rxMin, rxMax, ryMin, ryMax);
@@ -278,14 +274,14 @@ namespace Essence.Geometry.Core.Double
         /// <param name="rec">Rectangulo.</param>
         public BoundingBox2d Intersect(BoundingBox2d rec)
         {
-            REAL rxMin, rxMax;
+            double rxMin, rxMax;
             RangeUtils.Intersect(this.XMin, this.XMax, rec.XMin, rec.XMax, out rxMin, out rxMax);
             if (RangeUtils.IsEmpty(rxMin, rxMax))
             {
                 return Empty;
             }
 
-            REAL ryMin, ryMax;
+            double ryMin, ryMax;
             RangeUtils.Intersect(this.YMin, this.YMax, rec.YMin, rec.YMax, out ryMin, out ryMax);
             if (RangeUtils.IsEmpty(ryMin, ryMax))
             {
@@ -299,7 +295,7 @@ namespace Essence.Geometry.Core.Double
         ///     Amplia el recubrimiento en cada coordenada.
         /// </summary>
         /// <param name="d">Ancho y alto.</param>
-        public BoundingBox2d Inflate(REAL d)
+        public BoundingBox2d Inflate(double d)
         {
             return this.Inflate(d, d);
         }
@@ -309,7 +305,7 @@ namespace Essence.Geometry.Core.Double
         /// </summary>
         /// <param name="dx">Ancho.</param>
         /// <param name="dy">Alto.</param>
-        public BoundingBox2d Inflate(REAL dx, REAL dy)
+        public BoundingBox2d Inflate(double dx, double dy)
         {
             return new BoundingBox2d(this.XMin - dx, this.XMax + dx, this.YMin - dy, this.YMax + dy);
         }
@@ -323,7 +319,7 @@ namespace Essence.Geometry.Core.Double
         ///     Si el indice esta fuera de rango lanza la
         ///     excepción: <c>IndexOutOfRangeException</c>.
         /// </exception>
-        public REAL GetMin(int i)
+        public double GetMin(int i)
         {
             switch (i)
             {
@@ -345,7 +341,7 @@ namespace Essence.Geometry.Core.Double
         ///     Si el indice esta fuera de rango lanza la
         ///     excepción: <c>IndexOutOfRangeException</c>.
         /// </exception>
-        public REAL GetMax(int i)
+        public double GetMax(int i)
         {
             switch (i)
             {
@@ -358,17 +354,17 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        public readonly REAL XMin;
-        public readonly REAL XMax;
+        public readonly double XMin;
+        public readonly double XMax;
 
-        public readonly REAL YMin;
-        public readonly REAL YMax;
+        public readonly double YMin;
+        public readonly double YMax;
 
         #region private
 
-        private bool EpsilonEquals(REAL xmin, REAL xmax,
-                                   REAL ymin, REAL ymax,
-                                   REAL epsilon)
+        private bool EpsilonEquals(double xmin, double xmax,
+                                   double ymin, double ymax,
+                                   double epsilon)
         {
             return RangeUtils.EpsilonEquals(this.XMin, this.XMax, xmin, xmax, epsilon)
                    && RangeUtils.EpsilonEquals(this.YMin, this.YMax, ymin, ymax, epsilon);
@@ -418,7 +414,7 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public bool EpsilonEquals(BoundingBox2d other, double epsilon = MathUtils.EPSILON)
         {
-            return this.EpsilonEquals(other.XMin, other.XMax, other.YMin, other.YMax, (REAL)epsilon);
+            return this.EpsilonEquals(other.XMin, other.XMax, other.YMin, other.YMax, (double)epsilon);
         }
 
         #endregion

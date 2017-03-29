@@ -1,4 +1,18 @@
-﻿using System;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
@@ -15,7 +29,7 @@ namespace Essence.Util
         {
             Contract.Assert((genericTypeDefinition != null) && genericTypeDefinition.IsGenericTypeDefinition);
             Type genericType = genericTypeDefinition.MakeGenericType(typeArguments);
-            Contract.Assert((genericType != null) && typeof (T).IsAssignableFrom(genericType));
+            Contract.Assert((genericType != null) && typeof(T).IsAssignableFrom(genericType));
 
             return (T)Activator.CreateInstance(genericType);
         }
@@ -23,7 +37,7 @@ namespace Essence.Util
         public static T New<T>(this Type type)
             where T : class
         {
-            Contract.Assert((type == null) || typeof (T).IsAssignableFrom(type));
+            Contract.Assert((type == null) || typeof(T).IsAssignableFrom(type));
             return (type != null) ? (T)Activator.CreateInstance(type) : null;
         }
 
@@ -33,17 +47,17 @@ namespace Essence.Util
         }
 
         /// <summary>
-        /// Crea una instancia del la clase indicada, completamente vacia.
+        ///     Crea una instancia del la clase indicada, completamente vacia.
         /// </summary>
         /// <typeparam name="T">Tipo de la clase a crear instancia.</typeparam>
         /// <returns>Instancia.</returns>
         public static T NewEmpty<T>()
         {
-            return (T)FormatterServices.GetSafeUninitializedObject(typeof (T));
+            return (T)FormatterServices.GetSafeUninitializedObject(typeof(T));
         }
 
         /// <summary>
-        /// Crea una instancia del la clase indicada, completamente vacia.
+        ///     Crea una instancia del la clase indicada, completamente vacia.
         /// </summary>
         /// <returns>Instancia.</returns>
         public static object NewEmpty(this Type type)
@@ -80,7 +94,7 @@ namespace Essence.Util
         /// <returns>Indica si es Nullable.</returns>
         public static bool IsNullable(this Type type)
         {
-            return (type.IsGenericType && !type.IsGenericTypeDefinition && (typeof (Nullable<>) == type.GetGenericTypeDefinition()));
+            return (type.IsGenericType && !type.IsGenericTypeDefinition && (typeof(Nullable<>) == type.GetGenericTypeDefinition()));
         }
 
         /// <summary>
@@ -141,24 +155,24 @@ namespace Essence.Util
         /// </summary>
         private static readonly Dictionary<TypeCode, Type> typeCodeToTypeMap = new Dictionary<TypeCode, Type>
         {
-            { TypeCode.Boolean, typeof (bool) },
-            { TypeCode.Byte, typeof (byte) },
-            { TypeCode.Char, typeof (char) },
-            { TypeCode.DateTime, typeof (DateTime) },
-            { TypeCode.DBNull, typeof (DBNull) },
-            { TypeCode.Decimal, typeof (decimal) },
-            { TypeCode.Double, typeof (double) },
+            { TypeCode.Boolean, typeof(bool) },
+            { TypeCode.Byte, typeof(byte) },
+            { TypeCode.Char, typeof(char) },
+            { TypeCode.DateTime, typeof(DateTime) },
+            { TypeCode.DBNull, typeof(DBNull) },
+            { TypeCode.Decimal, typeof(decimal) },
+            { TypeCode.Double, typeof(double) },
             { TypeCode.Empty, null },
-            { TypeCode.Int16, typeof (short) },
-            { TypeCode.Int32, typeof (int) },
-            { TypeCode.Int64, typeof (long) },
-            { TypeCode.Object, typeof (object) },
-            { TypeCode.SByte, typeof (sbyte) },
-            { TypeCode.Single, typeof (float) },
-            { TypeCode.String, typeof (string) },
-            { TypeCode.UInt16, typeof (ushort) },
-            { TypeCode.UInt32, typeof (uint) },
-            { TypeCode.UInt64, typeof (ulong) }
+            { TypeCode.Int16, typeof(short) },
+            { TypeCode.Int32, typeof(int) },
+            { TypeCode.Int64, typeof(long) },
+            { TypeCode.Object, typeof(object) },
+            { TypeCode.SByte, typeof(sbyte) },
+            { TypeCode.Single, typeof(float) },
+            { TypeCode.String, typeof(string) },
+            { TypeCode.UInt16, typeof(ushort) },
+            { TypeCode.UInt32, typeof(uint) },
+            { TypeCode.UInt64, typeof(ulong) }
         };
 
         /// <summary>

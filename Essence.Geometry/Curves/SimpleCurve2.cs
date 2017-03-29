@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Diagnostics.Contracts;
@@ -117,7 +113,8 @@ namespace Essence.Maths.Double.Curves
         }
 
         public virtual double GetCurvature(double t)
-        { // https://en.wikipedia.org/wiki/Curvature
+        {
+            // https://en.wikipedia.org/wiki/Curvature
             Vector2d der1 = this.GetFirstDerivative(t);
             double speed2 = der1.LengthCuad;
 

@@ -1,11 +1,25 @@
-﻿using System.Windows.Forms;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System.Windows.Forms;
 
 namespace Essence.View.Forms
 {
     public class LabelValueControl : TableLayoutPanel
     {
         /// <summary>
-        /// Contructor.
+        ///     Contructor.
         /// </summary>
         public LabelValueControl()
         {
@@ -15,7 +29,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Control etiqueta.
+        ///     Control etiqueta.
         /// </summary>
         public Label LabelControl
         {
@@ -23,7 +37,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Etiqueta.
+        ///     Etiqueta.
         /// </summary>
         public string Label
         {
@@ -36,7 +50,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Ancho del control etiqueta.
+        ///     Ancho del control etiqueta.
         /// </summary>
         public int LabelWidth
         {
@@ -45,7 +59,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Control valor.
+        ///     Control valor.
         /// </summary>
         public TextBox ValueControl
         {
@@ -53,7 +67,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Valor.
+        ///     Valor.
         /// </summary>
         public string Value
         {
@@ -62,7 +76,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Ancho del control valor.
+        ///     Ancho del control valor.
         /// </summary>
         public int ValueWidth
         {
@@ -71,7 +85,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Indica que el valor es editable.
+        ///     Indica que el valor es editable.
         /// </summary>
         public bool ValueIsEditable
         {
@@ -124,9 +138,9 @@ namespace Essence.View.Forms
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
+        /// <summary>
+        ///     Required method for Designer support - do not modify
+        ///     the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -163,9 +177,9 @@ namespace Essence.View.Forms
         #endregion
 
         /// <summary>
-        /// Required designer variable.
+        ///     Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private readonly System.ComponentModel.IContainer components = null;
 
         private System.Windows.Forms.Label label;
         private System.Windows.Forms.TextBox textBox;

@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using Essence.Geometry.Geom2D;
@@ -33,7 +29,7 @@ namespace Essence.Geometry.Intersection
         }
 
         /// <summary>Obtiene/establece el error máximo en el calculo de intersecciones.</summary>
-        public REAL Error { get; set; }
+        public double Error { get; set; }
 
         /// <summary>Obtiene/establece el segmento 1º.</summary>
         public Segment2d Item0 { get; set; }
@@ -52,7 +48,7 @@ namespace Essence.Geometry.Intersection
 
         public bool Find()
         {
-            REAL[] parameters = new REAL[2];
+            double[] parameters = new double[2];
             IntersectionType intersectionType = IntrLine2dLine2d.Classify(this.Item0.P0, this.Item0.Direction,
                                                                           this.Item1.P0, this.Item1.Direction,
                                                                           parameters, this.Error);
@@ -81,8 +77,8 @@ namespace Essence.Geometry.Intersection
                 case IntersectionType.LINE:
                 {
                     // Proyectamos en 'Item0' los extremos de 'Item1'.
-                    REAL param0 = this.Item0.Proyect0L(this.Item1.P0, false);
-                    REAL param1 = this.Item0.Proyect0L(this.Item1.P1, false);
+                    double param0 = this.Item0.Proyect0L(this.Item1.P0, false);
+                    double param1 = this.Item0.Proyect0L(this.Item1.P1, false);
 
                     // Si ambos caen fuera, no hay interseccion.
                     if (Math.Max(param0, param1).EpsilonL(0, this.Error) || Math.Min(param0, param1).EpsilonG(this.Item0.Length, this.Error))

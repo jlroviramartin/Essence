@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using Essence.Geometry.Core.Double;
@@ -161,11 +157,11 @@ namespace Essence.Geometry.Geom3D
         /// </summary>
         /// <param name="p">Punto.</param>
         /// <returns>Parametro [-Inf, Inf].</returns>
-        public REAL[] Project(Point3d p)
+        public double[] Project(Point3d p)
         {
             Vector3d diff = (p - this.Origin);
 
-            REAL u, v;
+            double u, v;
             if (this.IsOrthonormal)
             {
                 //REAL w = this.Normal.Dot(diff);
@@ -174,7 +170,7 @@ namespace Essence.Geometry.Geom3D
             }
             else
             {
-                REAL w;
+                double w;
                 Geom3DUtils.Resolve(this.DX, this.DY, this.Normal, diff, out u, out v, out w);
             }
             return new[] { u, v };
@@ -186,7 +182,7 @@ namespace Essence.Geometry.Geom3D
         /// <param name="u">Parametro [-Inf, Inf].</param>
         /// <param name="v">Parametro [-Inf, Inf].</param>
         /// <returns>Punto.</returns>
-        public Point3d Evaluate(REAL u, REAL v)
+        public Point3d Evaluate(double u, double v)
         {
             return this.Origin + u * this.DX + v * this.DY;
         }
@@ -196,13 +192,13 @@ namespace Essence.Geometry.Geom3D
         /// <summary>
         ///     Distancia (con signo) de un punto a la linea.
         /// </summary>
-        public REAL Distance(Point3d p, out Point3d closestPoint)
+        public double Distance(Point3d p, out Point3d closestPoint)
         {
             Vector3d normal = this.Normal;
-            REAL c = this.Constant;
+            double c = this.Constant;
 
             //REAL signedDistance = normal.Dot((VECTOR)p) - c = normal.Dot(p - this.Origin) = normal.Dot(p) - normal.Dot(this.Origin);
-            REAL signedDistance = normal.X * p.X + normal.Y * p.Y + normal.Z * p.Z - c;
+            double signedDistance = normal.X * p.X + normal.Y * p.Y + normal.Z * p.Z - c;
             closestPoint = p - signedDistance * normal;
             return signedDistance;
         }
@@ -210,13 +206,13 @@ namespace Essence.Geometry.Geom3D
         /// <summary>
         ///     Distancia (con signo) de un punto a la linea.
         /// </summary>
-        public REAL Distance(Point3d p)
+        public double Distance(Point3d p)
         {
             Vector3d normal = this.Normal;
-            REAL c = this.Constant;
+            double c = this.Constant;
 
             //REAL signedDistance = normal.Dot((VECTOR)p) - c = normal.Dot(p - this.Origin) = normal.Dot(p) - normal.Dot(this.Origin);
-            REAL signedDistance = normal.X * p.X + normal.Y * p.Y + normal.Z * p.Z - c;
+            double signedDistance = normal.X * p.X + normal.Y * p.Y + normal.Z * p.Z - c;
             return signedDistance;
         }
 
@@ -235,7 +231,7 @@ namespace Essence.Geometry.Geom3D
         /// </summary>
         public PlaneSide WhichSide(Point3d p)
         {
-            REAL distance = this.Distance(p);
+            double distance = this.Distance(p);
 
             if (distance.EpsilonZero())
             {
@@ -265,7 +261,7 @@ namespace Essence.Geometry.Geom3D
         }
 
         private Vector3d normal;
-        private REAL constant;
+        private double constant;
         private bool isOrthonormal;
         private bool isDegenerate;
         private Evaluated evaluated = Evaluated.None;

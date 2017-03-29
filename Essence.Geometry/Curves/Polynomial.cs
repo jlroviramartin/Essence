@@ -1,4 +1,18 @@
-﻿using System;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using Essence.Util.Math;
 using Essence.Util.Math.Double;
 using java.lang;
@@ -15,9 +29,9 @@ namespace Essence.Maths.Double.Curves
         /// </summary>
         /// <param name="degree"></param>
         /// <returns></returns>
-        public static Polynomial Monomial(int degree, REAL c = 1)
+        public static Polynomial Monomial(int degree, double c = 1)
         {
-            REAL[] coeffs = new REAL[degree + 1];
+            double[] coeffs = new double[degree + 1];
 
             for (int i = 0; i < degree; i++)
             {
@@ -46,14 +60,14 @@ namespace Essence.Maths.Double.Curves
             return buf;
         }
 
-        public Polynomial(params REAL[] coeffs)
+        public Polynomial(params double[] coeffs)
         {
             this.coefficients = coeffs;
         }
 
         public const string COEFFICIENTS = "coefficients";
 
-        public REAL this[int i]
+        public double this[int i]
         {
             get { return this.coefficients[i]; }
         }
@@ -87,9 +101,9 @@ namespace Essence.Maths.Double.Curves
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
-        public REAL Evaluate(REAL x)
+        public double Evaluate(double x)
         {
-            REAL buf = this.coefficients[this.Degree];
+            double buf = this.coefficients[this.Degree];
 
             for (int i = this.Degree - 1; i >= 0; i--)
             {
@@ -107,7 +121,7 @@ namespace Essence.Maths.Double.Curves
         {
             this.Clean();
 
-            REAL n = this.coefficients[this.Degree];
+            double n = this.coefficients[this.Degree];
             if (!n.EpsilonEquals(1))
             {
                 n = 1 / n;
@@ -128,14 +142,14 @@ namespace Essence.Maths.Double.Curves
             {
             }
 
-            REAL[] coeffs = new REAL[i + 1];
+            double[] coeffs = new double[i + 1];
 
             for (int k = 0; k <= i; k++)
             {
                 coeffs[k] = this.coefficients[k];
             }
 
-            this.coefficients = (REAL[])coeffs.Clone();
+            this.coefficients = (double[])coeffs.Clone();
         }
 
         /// <summary>
@@ -145,7 +159,7 @@ namespace Essence.Maths.Double.Curves
         /// <returns></returns>
         public Polynomial Derivative()
         {
-            REAL[] buf = new REAL[this.Degree];
+            double[] buf = new double[this.Degree];
 
             for (int i = 0; i < buf.Length; i++)
             {
@@ -166,12 +180,12 @@ namespace Essence.Maths.Double.Curves
         /// <returns></returns>
         public Polynomial Integral()
         {
-            REAL[] buf = new REAL[this.Degree + 2];
+            double[] buf = new double[this.Degree + 2];
             buf[0] = 0; // this value can be arbitrary, in fact
 
             for (int i = 1; i < buf.Length; i++)
             {
-                REAL c = this.coefficients[i - 1] / i;
+                double c = this.coefficients[i - 1] / i;
                 if (!c.EpsilonEquals(0))
                 {
                     buf[i] = c;
@@ -183,7 +197,7 @@ namespace Essence.Maths.Double.Curves
 
         #region private
 
-        private REAL[] coefficients;
+        private double[] coefficients;
 
         #endregion
 
@@ -204,8 +218,8 @@ namespace Essence.Maths.Double.Curves
             int degree = Math.Max(this.Degree, polynomial.Degree);
             for (int i = 0; i <= degree; i++)
             {
-                REAL a = ((i <= this.Degree) ? this[i] : 0);
-                REAL b = ((i <= polynomial.Degree) ? polynomial[i] : 0);
+                double a = ((i <= this.Degree) ? this[i] : 0);
+                double b = ((i <= polynomial.Degree) ? polynomial[i] : 0);
                 if (!a.Equals(b))
                 {
                     return false;
@@ -293,8 +307,8 @@ namespace Essence.Maths.Double.Curves
             int degree = Math.Max(this.Degree, polynomial.Degree);
             for (int i = 0; i <= degree; i++)
             {
-                REAL a = ((i <= this.Degree) ? this[i] : 0);
-                REAL b = ((i <= polynomial.Degree) ? polynomial[i] : 0);
+                double a = ((i <= this.Degree) ? this[i] : 0);
+                double b = ((i <= polynomial.Degree) ? polynomial[i] : 0);
                 if (!a.EpsilonEquals(b, epsilon))
                 {
                     return false;
@@ -310,7 +324,7 @@ namespace Essence.Maths.Double.Curves
         public object Clone()
         {
             Polynomial copia = (Polynomial)this.MemberwiseClone();
-            copia.coefficients = new REAL[this.coefficients.Length];
+            copia.coefficients = new double[this.coefficients.Length];
             for (int i = 0; i <= this.Degree; i++)
             {
                 copia.coefficients[i] = this[i];

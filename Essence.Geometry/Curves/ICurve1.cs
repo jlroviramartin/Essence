@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,38 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
 using REAL = System.Double;
 
 namespace Essence.Maths.Double.Curves
 {
     public interface ICurve1
     {
-        REAL TMin { get; }
+        double TMin { get; }
 
-        REAL TMax { get; }
+        double TMax { get; }
 
-        void SetTInterval(REAL tmin, REAL tmax);
+        void SetTInterval(double tmin, double tmax);
 
         #region Position and derivatives
 
-        REAL GetPosition(REAL t);
+        double GetPosition(double t);
 
-        REAL GetFirstDerivative(REAL t);
+        double GetFirstDerivative(double t);
 
-        REAL GetSecondDerivative(REAL t);
+        double GetSecondDerivative(double t);
 
-        REAL GetThirdDerivative(REAL t);
+        double GetThirdDerivative(double t);
 
         #endregion
 
         #region Differential geometric quantities
 
-        REAL TotalLength { get; }
+        double TotalLength { get; }
 
-        REAL GetLength(REAL t0, REAL t1);
+        double GetLength(double t0, double t1);
 
-        REAL GetSpeed(REAL t);
+        double GetSpeed(double t);
 
         #endregion
     }

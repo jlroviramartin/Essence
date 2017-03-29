@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Collections.Generic;
@@ -119,7 +115,7 @@ namespace SmartWeakEvent
                     MethodInfo targetMethod = d.Method;
                     HandlerEntry wd = new HandlerEntry(this, targetInstance, targetMethod);
                     DynamicMethod dynamicMethod = GetInvoker(targetMethod);
-                    wd.WrappingDelegate = dynamicMethod.CreateDelegate(typeof (T), wd);
+                    wd.WrappingDelegate = dynamicMethod.CreateDelegate(typeof(T), wd);
                     this.AddToRaiseDelegate(wd.WrappingDelegate);
                 }
                 else
@@ -217,8 +213,8 @@ namespace SmartWeakEvent
 
         #region Code Generation
 
-        private static readonly MethodInfo getTargetMethod = typeof (HandlerEntry).GetMethod("get_TargetInstance");
-        private static readonly MethodInfo calledWhileDeadMethod = typeof (HandlerEntry).GetMethod("CalledWhenDead");
+        private static readonly MethodInfo getTargetMethod = typeof(HandlerEntry).GetMethod("get_TargetInstance");
+        private static readonly MethodInfo calledWhileDeadMethod = typeof(HandlerEntry).GetMethod("CalledWhenDead");
 
         private static readonly Dictionary<MethodInfo, DynamicMethod> invokerMethods = new Dictionary<MethodInfo, DynamicMethod>();
 
@@ -233,20 +229,20 @@ namespace SmartWeakEvent
                 }
             }
 
-            if (method.DeclaringType.GetCustomAttributes(typeof (CompilerGeneratedAttribute), false).Length != 0)
+            if (method.DeclaringType.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Length != 0)
             {
                 throw new ArgumentException("Cannot create weak event to anonymous method with closure.");
             }
 
             ParameterInfo[] parameters = method.GetParameters();
             Type[] dynamicMethodParameterTypes = new Type[parameters.Length + 1];
-            dynamicMethodParameterTypes[0] = typeof (HandlerEntry);
+            dynamicMethodParameterTypes[0] = typeof(HandlerEntry);
             for (int i = 0; i < parameters.Length; i++)
             {
                 dynamicMethodParameterTypes[i + 1] = parameters[i].ParameterType;
             }
 
-            dynamicMethod = new DynamicMethod("FastSmartWeakEvent", typeof (void), dynamicMethodParameterTypes, typeof (HandlerEntry), true);
+            dynamicMethod = new DynamicMethod("FastSmartWeakEvent", typeof(void), dynamicMethodParameterTypes, typeof(HandlerEntry), true);
             ILGenerator il = dynamicMethod.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);
             il.EmitCall(OpCodes.Call, getTargetMethod, null);

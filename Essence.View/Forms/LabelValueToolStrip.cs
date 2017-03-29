@@ -1,4 +1,18 @@
-﻿using System;
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -7,7 +21,7 @@ namespace Essence.View.Forms
     public class LabelValueToolStrip : ToolStripControlHost
     {
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
         public LabelValueToolStrip()
             : base(new LabelValueControl())
@@ -16,7 +30,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Control interno.
+        ///     Control interno.
         /// </summary>
         public new LabelValueControl Control
         {
@@ -24,7 +38,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Etiqueta.
+        ///     Etiqueta.
         /// </summary>
         public string Label
         {
@@ -33,7 +47,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Ancho del control etiqueta.
+        ///     Ancho del control etiqueta.
         /// </summary>
         public int LabelWidth
         {
@@ -42,7 +56,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Valor.
+        ///     Valor.
         /// </summary>
         public string Value
         {
@@ -51,7 +65,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Ancho del control valor.
+        ///     Ancho del control valor.
         /// </summary>
         public int ValueWidth
         {
@@ -60,7 +74,7 @@ namespace Essence.View.Forms
         }
 
         /// <summary>
-        /// Indica que el valor es editable.
+        ///     Indica que el valor es editable.
         /// </summary>
         public bool ValueIsEditable
         {

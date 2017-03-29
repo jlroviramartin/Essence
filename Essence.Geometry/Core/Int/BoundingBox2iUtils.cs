@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
 using INT = System.Int32;
 using SysMath = System.Math;
 
@@ -23,12 +19,12 @@ namespace Essence.Geometry.Core.Int
 {
     public static class BoundingBox2iUtils
     {
-        public static bool IsEmpty(INT xMin, INT xMax)
+        public static bool IsEmpty(int xMin, int xMax)
         {
             return xMax < xMin;
         }
 
-        public static void Union(INT xMin, INT xMax, INT y, out INT zMin, out INT zMax)
+        public static void Union(int xMin, int xMax, int y, out int zMin, out int zMax)
         {
             // Si [xMin, xMax] es vacio -> [zMin, zMax] = [y, y]
             if (IsEmpty(xMin, xMax))
@@ -42,7 +38,7 @@ namespace Essence.Geometry.Core.Int
             zMax = SysMath.Max(xMax, y);
         }
 
-        public static void Union(INT xMin, INT xMax, INT yMin, INT yMax, out INT zMin, out INT zMax)
+        public static void Union(int xMin, int xMax, int yMin, int yMax, out int zMin, out int zMax)
         {
             // Si [xMin, xMax] es vacio -> [zMin, zMax] = [yMin, yMax]
             if (IsEmpty(xMin, xMax))
@@ -65,7 +61,7 @@ namespace Essence.Geometry.Core.Int
             zMax = SysMath.Max(xMax, yMax);
         }
 
-        public static void Intersect(INT xMin, INT xMax, INT yMin, INT yMax, out INT zMin, out INT zMax)
+        public static void Intersect(int xMin, int xMax, int yMin, int yMax, out int zMin, out int zMax)
         {
             // Si [xMin, xMax] es vacio -> [zMin, zMax] = vacio ( [xMin, xMax] )
             if (IsEmpty(xMin, xMax))
@@ -87,7 +83,7 @@ namespace Essence.Geometry.Core.Int
             zMax = SysMath.Min(xMax, yMax);
         }
 
-        public static bool IntersectsWith(INT xMin, INT xMax, INT yMin, INT yMax)
+        public static bool IntersectsWith(int xMin, int xMax, int yMin, int yMax)
         {
             // Si [xMin, xMax] es vacio -> no hay interseccion.
             if (IsEmpty(xMin, xMax))
@@ -104,7 +100,7 @@ namespace Essence.Geometry.Core.Int
             return SysMath.Max(xMin, yMin) <= (SysMath.Min(xMax, yMax));
         }
 
-        public static bool ContainsPoint(INT xMin, INT xMax, INT y)
+        public static bool ContainsPoint(int xMin, int xMax, int y)
         {
             // Si [xMin, xMax] es vacio -> no lo contiene.
             if (IsEmpty(xMin, xMax))
@@ -115,7 +111,7 @@ namespace Essence.Geometry.Core.Int
             return ((xMin <= y) && (y <= xMax));
         }
 
-        public static bool Contains(INT xMin, INT xMax, INT yMin, INT yMax)
+        public static bool Contains(int xMin, int xMax, int yMin, int yMax)
         {
             // Si [xMin, xMax] es vacio -> no lo contiene.
             if (IsEmpty(xMin, xMax))
@@ -132,7 +128,7 @@ namespace Essence.Geometry.Core.Int
             return ((xMin <= yMin) && (yMax <= xMax));
         }
 
-        public static bool TouchPoint(INT xMin, INT xMax, INT y)
+        public static bool TouchPoint(int xMin, int xMax, int y)
         {
             // Si [xMin, xMax] es vacio -> no lo toca.
             if (IsEmpty(xMin, xMax))
@@ -143,7 +139,7 @@ namespace Essence.Geometry.Core.Int
             return ((xMin == y) || (xMin == y));
         }
 
-        public static bool Touch(INT xMin, INT xMax, INT yMin, INT yMax)
+        public static bool Touch(int xMin, int xMax, int yMin, int yMax)
         {
             // Si [xMin, xMax] es vacio -> no lo toca.
             if (IsEmpty(xMin, xMax))
@@ -160,7 +156,7 @@ namespace Essence.Geometry.Core.Int
             return ((xMin == yMin) || (xMin == yMax) || (xMax == yMin) || (xMax == yMax));
         }
 
-        public static bool Equals(INT xMin, INT xMax, INT yMin, INT yMax)
+        public static bool Equals(int xMin, int xMax, int yMin, int yMax)
         {
             if (IsEmpty(xMin, xMax))
             {

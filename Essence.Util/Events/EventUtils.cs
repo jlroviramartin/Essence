@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Diagnostics;
@@ -170,15 +166,15 @@ namespace Essence.Util.Events
             // Only instance methods are supported.
             Contract.Requires(!delEventHandler.Method.IsStatic && delEventHandler.Target != null);
 
-            Type wehType = typeof (WeakEventHandler<,,>).MakeGenericType(
+            Type wehType = typeof(WeakEventHandler<,,>).MakeGenericType(
                 delEventHandler.Method.DeclaringType,
-                typeof (TEventHandler),
-                typeof (TEventArgs));
+                typeof(TEventHandler),
+                typeof(TEventArgs));
 
             ConstructorInfo wehConstructor = wehType.GetConstructor(new[]
             {
-                typeof (TEventHandler),
-                typeof (UnregisterCallback<TEventHandler>)
+                typeof(TEventHandler),
+                typeof(UnregisterCallback<TEventHandler>)
             });
             Contract.Assert(wehConstructor != null);
 
@@ -199,26 +195,26 @@ namespace Essence.Util.Events
         internal static void TestValidHandler<THandler, TArgs>()
             where TArgs : EventArgs
         {
-            if (!typeof (THandler).IsSubclassOf(typeof (Delegate)))
+            if (!typeof(THandler).IsSubclassOf(typeof(Delegate)))
             {
                 throw new ArgumentException("THandler must be a delegate type");
             }
-            MethodInfo invoke = typeof (THandler).GetMethod("Invoke");
+            MethodInfo invoke = typeof(THandler).GetMethod("Invoke");
             if (invoke == null || invoke.GetParameters().Length != 2)
             {
                 throw new ArgumentException("THandler must be a delegate type taking 2 parameters");
             }
             ParameterInfo senderParameter = invoke.GetParameters()[0];
-            if (senderParameter.ParameterType != typeof (object))
+            if (senderParameter.ParameterType != typeof(object))
             {
                 throw new ArgumentException("The first delegate parameter must be of type 'object'");
             }
             ParameterInfo argsParameter = invoke.GetParameters()[1];
-            if (!(typeof (TArgs).IsAssignableFrom(argsParameter.ParameterType)))
+            if (!(typeof(TArgs).IsAssignableFrom(argsParameter.ParameterType)))
             {
                 throw new ArgumentException("The second delegate parameter must be derived from type 'EventArgs'");
             }
-            if (invoke.ReturnType != typeof (void))
+            if (invoke.ReturnType != typeof(void))
             {
                 throw new ArgumentException("The delegate return type must be void.");
             }
@@ -289,8 +285,8 @@ namespace Essence.Util.Events
                 Delegate delEventHandler = (Delegate)(object)eventHandler;
 
                 this.targetRef = new WeakReference(delEventHandler.Target);
-                this.openHandler = (OpenEventHandler)Delegate.CreateDelegate(typeof (OpenEventHandler), null, delEventHandler.Method);
-                this.handler = (TEventHandler)(object)Delegate.CreateDelegate(typeof (TEventHandler), this, invokeMth);
+                this.openHandler = (OpenEventHandler)Delegate.CreateDelegate(typeof(OpenEventHandler), null, delEventHandler.Method);
+                this.handler = (TEventHandler)(object)Delegate.CreateDelegate(typeof(TEventHandler), this, invokeMth);
                 this.unregister = unregister;
             }
 
@@ -340,7 +336,7 @@ namespace Essence.Util.Events
             private readonly TEventHandler handler;
             private UnregisterCallback<TEventHandler> unregister;
 
-            private static readonly MethodInfo invokeMth = typeof (WeakEventHandler<T, TEventHandler, TEventArgs>).GetMethod("Invoke");
+            private static readonly MethodInfo invokeMth = typeof(WeakEventHandler<T, TEventHandler, TEventArgs>).GetMethod("Invoke");
 
             #endregion
 

@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
 #region Alias
 
 using REAL = System.Double;
@@ -26,27 +22,27 @@ namespace Essence.Util.Math.Double
 {
     public static class RangeUtils
     {
-        public static bool IsValid(REAL aMin, REAL aMax)
+        public static bool IsValid(double aMin, double aMax)
         {
-            return !(REAL.IsNaN(aMin) || REAL.IsNaN(aMax));
+            return !(double.IsNaN(aMin) || double.IsNaN(aMax));
         }
 
-        public static bool IsEmpty(REAL aMin, REAL aMax, REAL epsilon = MathUtils.EPSILON)
+        public static bool IsEmpty(double aMin, double aMax, double epsilon = MathUtils.EPSILON)
         {
             return aMax.EpsilonL(aMin, epsilon);
         }
 
-        public static bool IsZero(REAL aMin, REAL aMax, REAL epsilon = MathUtils.EPSILON)
+        public static bool IsZero(double aMin, double aMax, double epsilon = MathUtils.EPSILON)
         {
             return aMax.EpsilonEquals(aMin, epsilon);
         }
 
-        public static bool IsInfinity(REAL aMin, REAL aMax)
+        public static bool IsInfinity(double aMin, double aMax)
         {
-            return REAL.IsInfinity(aMin) || REAL.IsInfinity(aMax);
+            return double.IsInfinity(aMin) || double.IsInfinity(aMax);
         }
 
-        public static void Union(REAL aMin, REAL aMax, REAL y, out REAL zMin, out REAL zMax)
+        public static void Union(double aMin, double aMax, double y, out double zMin, out double zMax)
         {
             // Si [aMin, aMax] es vacio -> [zMin, zMax] = [y, y]
             if (IsEmpty(aMin, aMax))
@@ -60,7 +56,7 @@ namespace Essence.Util.Math.Double
             zMax = System.Math.Max(aMax, y);
         }
 
-        public static void Union(REAL aMin, REAL aMax, REAL bMin, REAL bMax, out REAL zMin, out REAL zMax)
+        public static void Union(double aMin, double aMax, double bMin, double bMax, out double zMin, out double zMax)
         {
             // Si [aMin, aMax] es vacio -> [zMin, zMax] = [bMin, bMax]
             if (IsEmpty(aMin, aMax))
@@ -83,7 +79,7 @@ namespace Essence.Util.Math.Double
             zMax = System.Math.Max(aMax, bMax);
         }
 
-        public static void Intersect(REAL aMin, REAL aMax, REAL bMin, REAL bMax, out REAL zMin, out REAL zMax)
+        public static void Intersect(double aMin, double aMax, double bMin, double bMax, out double zMin, out double zMax)
         {
             // Si [aMin, aMax] es vacio -> [zMin, zMax] = vacio ( [aMin, aMax] )
             if (IsEmpty(aMin, aMax))
@@ -105,7 +101,7 @@ namespace Essence.Util.Math.Double
             zMax = System.Math.Min(aMax, bMax);
         }
 
-        public static bool IntersectsWith(REAL aMin, REAL aMax, REAL bMin, REAL bMax, REAL epsilon = MathUtils.EPSILON)
+        public static bool IntersectsWith(double aMin, double aMax, double bMin, double bMax, double epsilon = MathUtils.EPSILON)
         {
             // Si [aMin, aMax] es vacio -> no hay interseccion.
             if (IsEmpty(aMin, aMax))
@@ -122,7 +118,7 @@ namespace Essence.Util.Math.Double
             return System.Math.Max(aMin, bMin).EpsilonLE(System.Math.Min(aMax, bMax), epsilon);
         }
 
-        public static bool ContainsPoint(REAL aMin, REAL aMax, REAL y, REAL epsilon = MathUtils.EPSILON)
+        public static bool ContainsPoint(double aMin, double aMax, double y, double epsilon = MathUtils.EPSILON)
         {
             // Si [aMin, aMax] es vacio -> no lo contiene.
             if (IsEmpty(aMin, aMax))
@@ -133,7 +129,7 @@ namespace Essence.Util.Math.Double
             return y.EpsilonBetweenClosed(aMin, aMax, epsilon);
         }
 
-        public static bool Contains(REAL aMin, REAL aMax, REAL bMin, REAL bMax, REAL epsilon = MathUtils.EPSILON)
+        public static bool Contains(double aMin, double aMax, double bMin, double bMax, double epsilon = MathUtils.EPSILON)
         {
             // Si [aMin, aMax] es vacio -> no lo contiene.
             if (IsEmpty(aMin, aMax))
@@ -150,7 +146,7 @@ namespace Essence.Util.Math.Double
             return aMin.EpsilonLE(bMin, epsilon) && bMax.EpsilonLE(aMax, epsilon);
         }
 
-        public static bool TouchPoint(REAL aMin, REAL aMax, REAL y, REAL epsilon = MathUtils.EPSILON)
+        public static bool TouchPoint(double aMin, double aMax, double y, double epsilon = MathUtils.EPSILON)
         {
             // Si [aMin, aMax] es vacio -> no lo toca.
             if (IsEmpty(aMin, aMax))
@@ -161,7 +157,7 @@ namespace Essence.Util.Math.Double
             return aMin.EpsilonEquals(y, epsilon) || aMin.EpsilonEquals(y, epsilon);
         }
 
-        public static bool Touch(REAL aMin, REAL aMax, REAL bMin, REAL bMax, REAL epsilon = MathUtils.EPSILON)
+        public static bool Touch(double aMin, double aMax, double bMin, double bMax, double epsilon = MathUtils.EPSILON)
         {
             // Si [aMin, aMax] es vacio -> no lo toca.
             if (IsEmpty(aMin, aMax))
@@ -178,7 +174,7 @@ namespace Essence.Util.Math.Double
             return aMin.EpsilonEquals(bMin, epsilon) || aMin.EpsilonEquals(bMax, epsilon) || aMax.EpsilonEquals(bMin, epsilon) || aMax.EpsilonEquals(bMax, epsilon);
         }
 
-        public static bool Equals(REAL aMin, REAL aMax, REAL bMin, REAL bMax)
+        public static bool Equals(double aMin, double aMax, double bMin, double bMax)
         {
             if (IsEmpty(aMin, aMax))
             {
@@ -192,7 +188,7 @@ namespace Essence.Util.Math.Double
             return (aMin == bMin) || (aMax == bMax);
         }
 
-        public static bool EpsilonEquals(REAL aMin, REAL aMax, REAL bMin, REAL bMax, REAL epsilon = MathUtils.EPSILON)
+        public static bool EpsilonEquals(double aMin, double aMax, double bMin, double bMax, double epsilon = MathUtils.EPSILON)
         {
             if (IsEmpty(aMin, aMax))
             {

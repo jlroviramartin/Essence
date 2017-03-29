@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Diagnostics.Contracts;
@@ -108,7 +104,7 @@ namespace Essence.Geometry.Geom3D
         /// <summary>
         ///     Area del triangulo.
         /// </summary>
-        public REAL Area
+        public double Area
         {
             get
             {
@@ -117,7 +113,7 @@ namespace Essence.Geometry.Geom3D
                     this.evaluated |= Evaluated.Area;
 
                     // https://en.wikipedia.org/wiki/Cross_product#Properties
-                    REAL l = this.VX.Cross(this.VY).Length;
+                    double l = this.VX.Cross(this.VY).Length;
                     this.area = l / 2;
                 }
                 return this.area;
@@ -149,7 +145,7 @@ namespace Essence.Geometry.Geom3D
         /// <param name="u">Parametro u: segun el vector unitario 'vertice1 - vertice0'.</param>
         /// <param name="v">Parametro v: segun el vector unitario 'vertice2 - vertice0'.</param>
         /// <returns></returns>
-        public Point3d Evaluate01(REAL u, REAL v)
+        public Point3d Evaluate01(double u, double v)
         {
             Contract.Assert((u + v).EpsilonLE(1));
             return (this.P0 + this.VX * u + this.VY * v);
@@ -160,11 +156,11 @@ namespace Essence.Geometry.Geom3D
         /// </summary>
         /// <param name="p">Punto.</param>
         /// <returns>Parametros u, v.</returns>
-        public REAL[] Project01(Point3d p)
+        public double[] Project01(Point3d p)
         {
             Vector3d po = (p - this.P0);
 
-            REAL u, v, w;
+            double u, v, w;
             Geom3DUtils.Resolve(this.VX, this.VY, this.Normal, po, out u, out v, out w);
 
             return new[] { u, v };
@@ -173,7 +169,7 @@ namespace Essence.Geometry.Geom3D
         /// <summary>
         ///     Evalua las coordenadas baricentricas del triangulo.
         /// </summary>
-        public Point3d EvaluateBar(REAL u, REAL v)
+        public Point3d EvaluateBar(double u, double v)
         {
             return this.EvaluateBar(u, v, 1 - u - v);
         }
@@ -182,7 +178,7 @@ namespace Essence.Geometry.Geom3D
         ///     Evalua las coordenadas baricentricas del triangulo.
         ///     NOTA: <![CDATA[u + v + w = 1]]>
         /// </summary>
-        public Point3d EvaluateBar(REAL u, REAL v, REAL w)
+        public Point3d EvaluateBar(double u, double v, double w)
         {
             Contract.Assert((u + v + w).EpsilonEquals(1));
             return new Point3d(this.P0.X * u + this.P1.X * v + this.P2.X * w,
@@ -193,9 +189,9 @@ namespace Essence.Geometry.Geom3D
         /// <summary>
         ///     Localiza las coordenadas baricentricas del triangulo.
         /// </summary>
-        public REAL[] ProjectBar(Point3d p)
+        public double[] ProjectBar(Point3d p)
         {
-            REAL v, w, u;
+            double v, w, u;
             this.ProjectBar(p, out u, out v, out w);
             return new[] { u, v, w };
         }
@@ -203,17 +199,17 @@ namespace Essence.Geometry.Geom3D
         /// <summary>
         ///     Localiza las coordenadas baricentricas del triangulo.
         /// </summary>
-        public void ProjectBar(Point3d p, out REAL u, out REAL v, out REAL w)
+        public void ProjectBar(Point3d p, out double u, out double v, out double w)
         {
             Vector3d v0 = this.VX;
             Vector3d v1 = this.VY;
             Vector3d v2 = p - this.P0;
-            REAL d00 = v0.Dot(v0);
-            REAL d01 = v0.Dot(v1);
-            REAL d11 = v1.Dot(v1);
-            REAL d20 = v2.Dot(v0);
-            REAL d21 = v2.Dot(v1);
-            REAL denom = d00 * d11 - d01 * d01;
+            double d00 = v0.Dot(v0);
+            double d01 = v0.Dot(v1);
+            double d11 = v1.Dot(v1);
+            double d20 = v2.Dot(v0);
+            double d21 = v2.Dot(v1);
+            double denom = d00 * d11 - d01 * d01;
 
             v = (d11 * d20 - d01 * d21) / denom;
             w = (d00 * d21 - d01 * d20) / denom;
@@ -254,7 +250,7 @@ namespace Essence.Geometry.Geom3D
 
         #region private
 
-        private REAL area;
+        private double area;
         private Vector3d normal;
 
         private Evaluated evaluated = Evaluated.None;

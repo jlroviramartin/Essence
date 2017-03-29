@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using Essence.Util.Math;
 using System;
@@ -41,19 +37,19 @@ namespace Essence.Geometry.Core
         ///     Longitud o modulo del vector.
         /// </summary>
         [Pure]
-        REAL Length { get; }
+        double Length { get; }
 
         /// <summary>
         ///     Longitud o modulo del vector al cuadrado.
         /// </summary>
         [Pure]
-        REAL LengthCuad { get; }
+        double LengthCuad { get; }
 
         /// <summary>
         ///     Longitud L1 (de Manhattan).
         /// </summary>
         [Pure]
-        REAL LengthL1 { get; }
+        double LengthL1 { get; }
 
         [Pure]
         IVector Add(IVector v2);
@@ -62,10 +58,10 @@ namespace Essence.Geometry.Core
         IVector Sub(IVector v2);
 
         [Pure]
-        IVector Mul(REAL c);
+        IVector Mul(double c);
 
         [Pure]
-        IVector Div(REAL c);
+        IVector Div(double c);
 
         /// <summary>
         ///     Operacion multiplicacion componente a componente: v1 * v2.
@@ -91,19 +87,19 @@ namespace Essence.Geometry.Core
         ///     Cuando alpha=1, resultado=v2.
         /// </summary>
         [Pure]
-        IVector Lerp(IVector v2, REAL alpha);
+        IVector Lerp(IVector v2, double alpha);
 
         /// <summary>
         ///     Operacion inversa a la interpolacion: (v3 - v1) = (v2 - v1) * alpha.
         /// </summary>
         [Pure]
-        REAL InvLerp(IVector v2, IVector vLerp);
+        double InvLerp(IVector v2, IVector vLerp);
 
         /// <summary>
         ///     Operacion combinacion lineal: alpha * v1 + beta * v2.
         /// </summary>
         [Pure]
-        IVector Lineal(IVector v2, REAL alpha, REAL beta);
+        IVector Lineal(IVector v2, double alpha, double beta);
 
         /// <summary>
         ///     Operacion producto escalar (dot): v1 · v2.
@@ -121,7 +117,7 @@ namespace Essence.Geometry.Core
         ///     Si <c>v1</c> esta normalizado, es la proyeccion de <c>v2</c> sobre <c>v1</c>.
         /// </summary>
         [Pure]
-        REAL Dot(IVector v2);
+        double Dot(IVector v2);
 
         /// <summary>
         ///     Proyeccion del vector <c>v2</c> sobre <c>v1</c>.
@@ -136,7 +132,7 @@ namespace Essence.Geometry.Core
         /// ]]></pre>
         /// </summary>
         [Pure]
-        REAL Proy(IVector v2);
+        double Proy(IVector v2);
 
         /// <summary>
         ///     Proyeccion del vector <c>v2</c> sobre <c>v1</c>.

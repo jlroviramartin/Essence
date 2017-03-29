@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Collections.Generic;
@@ -127,78 +123,78 @@ namespace Essence.Util.Test
         public void Test1()
         {
             DictionaryOfType<string> dictionary = new DictionaryOfType<string>();
-            dictionary.Add(typeof (object), "object");
-            dictionary.Add(typeof (int), "int");
-            dictionary.Add(typeof (IA), "IA");
-            dictionary.Add(typeof (IAA), "IAA");
-            dictionary.Add(typeof (IAAA), "IAAA");
+            dictionary.Add(typeof(object), "object");
+            dictionary.Add(typeof(int), "int");
+            dictionary.Add(typeof(IA), "IA");
+            dictionary.Add(typeof(IAA), "IAA");
+            dictionary.Add(typeof(IAAA), "IAAA");
 
-            AreEqual(ToSet(dictionary.Get(typeof (object))), ToSet("object"));
+            AreEqual(ToSet(dictionary.Get(typeof(object))), ToSet("object"));
 
-            AreEqual(ToSet(dictionary.Get(typeof (IA))), ToSet("IA"));
-            AreEqual(ToSet(dictionary.Get(typeof (IB))), new HashSet<string>());
-            AreEqual(ToSet(dictionary.Get(typeof (IAA))), ToSet("IAA"));
-            AreEqual(ToSet(dictionary.Get(typeof (IAB))), ToSet("IA"));
-            AreEqual(ToSet(dictionary.Get(typeof (IAAA))), ToSet("IAAA"));
-            AreEqual(ToSet(dictionary.Get(typeof (IAAB))), ToSet("IAA", "IA"));
+            AreEqual(ToSet(dictionary.Get(typeof(IA))), ToSet("IA"));
+            AreEqual(ToSet(dictionary.Get(typeof(IB))), new HashSet<string>());
+            AreEqual(ToSet(dictionary.Get(typeof(IAA))), ToSet("IAA"));
+            AreEqual(ToSet(dictionary.Get(typeof(IAB))), ToSet("IA"));
+            AreEqual(ToSet(dictionary.Get(typeof(IAAA))), ToSet("IAAA"));
+            AreEqual(ToSet(dictionary.Get(typeof(IAAB))), ToSet("IAA", "IA"));
 
-            AreEqual(ToSet(dictionary.Get(typeof (A))), ToSet("IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (B))), ToSet("object"));
-            AreEqual(ToSet(dictionary.Get(typeof (AA))), ToSet("IAA", "IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (AB))), ToSet("IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (AAA))), ToSet("IAAA", "IAA", "IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (AAB))), ToSet("IAA", "IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(A))), ToSet("IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(B))), ToSet("object"));
+            AreEqual(ToSet(dictionary.Get(typeof(AA))), ToSet("IAA", "IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(AB))), ToSet("IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(AAA))), ToSet("IAAA", "IAA", "IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(AAB))), ToSet("IAA", "IA", "object"));
 
-            AreEqual(ToSet(dictionary.Get(typeof (SA))), ToSet("IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (SB))), ToSet("object"));
-            AreEqual(ToSet(dictionary.Get(typeof (SAA))), ToSet("IAA", "IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (SAB))), ToSet("IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (SAAA))), ToSet("IAAA", "IAA", "IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (SAAB))), ToSet("IAA", "IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SA))), ToSet("IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SB))), ToSet("object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SAA))), ToSet("IAA", "IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SAB))), ToSet("IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SAAA))), ToSet("IAAA", "IAA", "IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SAAB))), ToSet("IAA", "IA", "object"));
 
-            AreEqual(ToSet(dictionary.Get(typeof (E))), ToSet("int"));
-            AreEqual(ToSet(dictionary.Get(typeof (int))), ToSet("int"));
-            AreEqual(ToSet(dictionary.Get(typeof (int?))), ToSet("int"));
+            AreEqual(ToSet(dictionary.Get(typeof(E))), ToSet("int"));
+            AreEqual(ToSet(dictionary.Get(typeof(int))), ToSet("int"));
+            AreEqual(ToSet(dictionary.Get(typeof(int?))), ToSet("int"));
         }
 
         [TestMethod]
         public void Test2()
         {
             DictionaryOfType<string> dictionary = new DictionaryOfType<string>();
-            dictionary.Add(typeof (object), "object");
-            dictionary.Add(typeof (int), "int");
-            dictionary.Add(typeof (IA), "IA");
-            dictionary.Add(typeof (IAA), "IAA");
-            dictionary.Add(typeof (IAAA), "IAAA");
+            dictionary.Add(typeof(object), "object");
+            dictionary.Add(typeof(int), "int");
+            dictionary.Add(typeof(IA), "IA");
+            dictionary.Add(typeof(IAA), "IAA");
+            dictionary.Add(typeof(IAAA), "IAAA");
 
-            dictionary.Add(typeof (A), "A");
+            dictionary.Add(typeof(A), "A");
 
-            AreEqual(ToSet(dictionary.Get(typeof (object))), ToSet("object"));
+            AreEqual(ToSet(dictionary.Get(typeof(object))), ToSet("object"));
 
-            AreEqual(ToSet(dictionary.Get(typeof (IA))), ToSet("IA"));
-            AreEqual(ToSet(dictionary.Get(typeof (IB))), new HashSet<string>());
-            AreEqual(ToSet(dictionary.Get(typeof (IAA))), ToSet("IAA"));
-            AreEqual(ToSet(dictionary.Get(typeof (IAB))), ToSet("IA"));
-            AreEqual(ToSet(dictionary.Get(typeof (IAAA))), ToSet("IAAA"));
-            AreEqual(ToSet(dictionary.Get(typeof (IAAB))), ToSet("IAA", "IA"));
+            AreEqual(ToSet(dictionary.Get(typeof(IA))), ToSet("IA"));
+            AreEqual(ToSet(dictionary.Get(typeof(IB))), new HashSet<string>());
+            AreEqual(ToSet(dictionary.Get(typeof(IAA))), ToSet("IAA"));
+            AreEqual(ToSet(dictionary.Get(typeof(IAB))), ToSet("IA"));
+            AreEqual(ToSet(dictionary.Get(typeof(IAAA))), ToSet("IAAA"));
+            AreEqual(ToSet(dictionary.Get(typeof(IAAB))), ToSet("IAA", "IA"));
 
-            AreEqual(ToSet(dictionary.Get(typeof (A))), ToSet("A"));
-            AreEqual(ToSet(dictionary.Get(typeof (B))), ToSet("object"));
-            AreEqual(ToSet(dictionary.Get(typeof (AA))), ToSet("IAA", "IA", "A"));
-            AreEqual(ToSet(dictionary.Get(typeof (AB))), ToSet("IA", "A"));
-            AreEqual(ToSet(dictionary.Get(typeof (AAA))), ToSet("IAAA", "IAA", "IA", "A"));
-            AreEqual(ToSet(dictionary.Get(typeof (AAB))), ToSet("IAA", "IA", "A"));
+            AreEqual(ToSet(dictionary.Get(typeof(A))), ToSet("A"));
+            AreEqual(ToSet(dictionary.Get(typeof(B))), ToSet("object"));
+            AreEqual(ToSet(dictionary.Get(typeof(AA))), ToSet("IAA", "IA", "A"));
+            AreEqual(ToSet(dictionary.Get(typeof(AB))), ToSet("IA", "A"));
+            AreEqual(ToSet(dictionary.Get(typeof(AAA))), ToSet("IAAA", "IAA", "IA", "A"));
+            AreEqual(ToSet(dictionary.Get(typeof(AAB))), ToSet("IAA", "IA", "A"));
 
-            AreEqual(ToSet(dictionary.Get(typeof (SA))), ToSet("IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (SB))), ToSet("object"));
-            AreEqual(ToSet(dictionary.Get(typeof (SAA))), ToSet("IAA", "IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (SAB))), ToSet("IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (SAAA))), ToSet("IAAA", "IAA", "IA", "object"));
-            AreEqual(ToSet(dictionary.Get(typeof (SAAB))), ToSet("IAA", "IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SA))), ToSet("IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SB))), ToSet("object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SAA))), ToSet("IAA", "IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SAB))), ToSet("IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SAAA))), ToSet("IAAA", "IAA", "IA", "object"));
+            AreEqual(ToSet(dictionary.Get(typeof(SAAB))), ToSet("IAA", "IA", "object"));
 
-            AreEqual(ToSet(dictionary.Get(typeof (E))), ToSet("int"));
-            AreEqual(ToSet(dictionary.Get(typeof (int))), ToSet("int"));
-            AreEqual(ToSet(dictionary.Get(typeof (int?))), ToSet("int"));
+            AreEqual(ToSet(dictionary.Get(typeof(E))), ToSet("int"));
+            AreEqual(ToSet(dictionary.Get(typeof(int))), ToSet("int"));
+            AreEqual(ToSet(dictionary.Get(typeof(int?))), ToSet("int"));
         }
     }
 }

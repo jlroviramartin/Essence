@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Linq;
@@ -38,36 +34,36 @@ namespace Essence.Util.Test
             Assert.IsFalse(TypeUtils.IsNull<int>(0));
             Assert.IsFalse(TypeUtils.IsNull<object>(new object()));
 
-            Assert.IsTrue(TypeUtils.NullAdmitted(typeof (int?)));
-            Assert.IsTrue(TypeUtils.NullAdmitted(typeof (DayOfWeek?)));
-            Assert.IsTrue(TypeUtils.NullAdmitted(typeof (object)));
+            Assert.IsTrue(TypeUtils.NullAdmitted(typeof(int?)));
+            Assert.IsTrue(TypeUtils.NullAdmitted(typeof(DayOfWeek?)));
+            Assert.IsTrue(TypeUtils.NullAdmitted(typeof(object)));
 
-            Assert.IsFalse(TypeUtils.NullAdmitted(typeof (int)));
-            Assert.IsFalse(TypeUtils.NullAdmitted(typeof (DayOfWeek)));
+            Assert.IsFalse(TypeUtils.NullAdmitted(typeof(int)));
+            Assert.IsFalse(TypeUtils.NullAdmitted(typeof(DayOfWeek)));
 
-            Assert.IsTrue(TypeUtils.IsNullable(typeof (int?)));
-            Assert.IsTrue(TypeUtils.IsNullable(typeof (DayOfWeek?)));
+            Assert.IsTrue(TypeUtils.IsNullable(typeof(int?)));
+            Assert.IsTrue(TypeUtils.IsNullable(typeof(DayOfWeek?)));
 
-            Assert.IsFalse(TypeUtils.IsNullable(typeof (int)));
-            Assert.IsFalse(TypeUtils.IsNullable(typeof (DayOfWeek)));
-            Assert.IsFalse(TypeUtils.IsNullable(typeof (object)));
+            Assert.IsFalse(TypeUtils.IsNullable(typeof(int)));
+            Assert.IsFalse(TypeUtils.IsNullable(typeof(DayOfWeek)));
+            Assert.IsFalse(TypeUtils.IsNullable(typeof(object)));
 
-            Assert.IsTrue(TypeUtils.IsNullableEnum(typeof (DayOfWeek?)));
+            Assert.IsTrue(TypeUtils.IsNullableEnum(typeof(DayOfWeek?)));
 
-            Assert.IsFalse(TypeUtils.IsNullableEnum(typeof (int?)));
-            Assert.IsFalse(TypeUtils.IsNullableEnum(typeof (int)));
-            Assert.IsFalse(TypeUtils.IsNullableEnum(typeof (DayOfWeek)));
-            Assert.IsFalse(TypeUtils.IsNullableEnum(typeof (object)));
+            Assert.IsFalse(TypeUtils.IsNullableEnum(typeof(int?)));
+            Assert.IsFalse(TypeUtils.IsNullableEnum(typeof(int)));
+            Assert.IsFalse(TypeUtils.IsNullableEnum(typeof(DayOfWeek)));
+            Assert.IsFalse(TypeUtils.IsNullableEnum(typeof(object)));
         }
 
         [TestMethod]
         public void Test2()
         {
-            Assert.IsFalse(TypeUtils.NullAdmitted(typeof (Nullable<>)));
-            Assert.IsFalse(TypeUtils.NullAdmitted(typeof (Comparison<>)));
+            Assert.IsFalse(TypeUtils.NullAdmitted(typeof(Nullable<>)));
+            Assert.IsFalse(TypeUtils.NullAdmitted(typeof(Comparison<>)));
 
-            Assert.IsFalse(TypeUtils.IsNullable(typeof (Nullable<>)));
-            Assert.IsFalse(TypeUtils.IsNullable(typeof (Comparison<>)));
+            Assert.IsFalse(TypeUtils.IsNullable(typeof(Nullable<>)));
+            Assert.IsFalse(TypeUtils.IsNullable(typeof(Comparison<>)));
         }
 
         public interface IA
@@ -85,8 +81,8 @@ namespace Essence.Util.Test
         [TestMethod]
         public void Test3()
         {
-            Assert.AreEqual(typeof (A).GetInterfaces().Aggregate("", (a, b) => (!string.IsNullOrEmpty(a) ? (a + " ; ") : "") + b.Name), "IA");
-            Assert.AreEqual(typeof (B).GetInterfaces().Aggregate("", (a, b) => (!string.IsNullOrEmpty(a) ? (a + " ; ") : "") + b.Name), "IA");
+            Assert.AreEqual(typeof(A).GetInterfaces().Aggregate("", (a, b) => (!string.IsNullOrEmpty(a) ? (a + " ; ") : "") + b.Name), "IA");
+            Assert.AreEqual(typeof(B).GetInterfaces().Aggregate("", (a, b) => (!string.IsNullOrEmpty(a) ? (a + " ; ") : "") + b.Name), "IA");
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿#region License
-
-// Copyright 2017 Jose Luis Rovira Martin
+﻿// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#endregion
 
 using System;
 using System.Diagnostics.Contracts;
@@ -31,7 +27,7 @@ namespace Essence.Geometry.Core.Int
         public const string _YMIN = "YMin";
         public const string _YMAX = "YMax";
 
-        public static BoundingBox2i FromCoords(INT x1, INT y1, INT x2, INT y2)
+        public static BoundingBox2i FromCoords(int x1, int y1, int x2, int y2)
         {
             if (x1 > x2)
             {
@@ -45,7 +41,7 @@ namespace Essence.Geometry.Core.Int
             return new BoundingBox2i(x1, x2, y1, y2);
         }
 
-        public static BoundingBox2i FromExtents(INT x, INT y, INT dx, INT dy)
+        public static BoundingBox2i FromExtents(int x, int y, int dx, int dy)
         {
             return FromCoords(x, y, x + dx, y + dy);
         }
@@ -89,7 +85,7 @@ namespace Essence.Geometry.Core.Int
             return ret;
         }
 
-        public BoundingBox2i(INT xMin, INT xMax, INT yMin, INT yMax)
+        public BoundingBox2i(int xMin, int xMax, int yMin, int yMax)
         {
             this.XMin = xMin;
             this.XMax = xMax;
@@ -128,12 +124,12 @@ namespace Essence.Geometry.Core.Int
             get { return new Vector2i(this.DX, this.DY); }
         }
 
-        public INT DX
+        public int DX
         {
             get { return this.XMax - this.XMin; }
         }
 
-        public INT DY
+        public int DY
         {
             get { return this.YMax - this.YMin; }
         }
@@ -206,10 +202,10 @@ namespace Essence.Geometry.Core.Int
         /// <param name="point">Punto.</param>
         public BoundingBox2i Union(Point2i point)
         {
-            INT rxMin, rxMax;
+            int rxMin, rxMax;
             BoundingBox2iUtils.Union(this.XMin, this.XMax, point.X, out rxMin, out rxMax);
 
-            INT ryMin, ryMax;
+            int ryMin, ryMax;
             BoundingBox2iUtils.Union(this.YMin, this.YMax, point.Y, out ryMin, out ryMax);
 
             return new BoundingBox2i(rxMin, rxMax, ryMin, ryMax);
@@ -221,10 +217,10 @@ namespace Essence.Geometry.Core.Int
         /// <param name="rec">Rectangulo.</param>
         public BoundingBox2i Union(BoundingBox2i rec)
         {
-            INT rxMin, rxMax;
+            int rxMin, rxMax;
             BoundingBox2iUtils.Union(this.XMin, this.XMax, rec.XMin, rec.XMax, out rxMin, out rxMax);
 
-            INT ryMin, ryMax;
+            int ryMin, ryMax;
             BoundingBox2iUtils.Union(this.YMin, this.YMax, rec.YMin, rec.YMax, out ryMin, out ryMax);
 
             return new BoundingBox2i(rxMin, rxMax, ryMin, ryMax);
@@ -236,10 +232,10 @@ namespace Essence.Geometry.Core.Int
         /// <param name="rec">Rectangulo.</param>
         public BoundingBox2i Intersect(BoundingBox2i rec)
         {
-            INT rxMin, rxMax;
+            int rxMin, rxMax;
             BoundingBox2iUtils.Intersect(this.XMin, this.XMax, rec.XMin, rec.XMax, out rxMin, out rxMax);
 
-            INT ryMin, ryMax;
+            int ryMin, ryMax;
             BoundingBox2iUtils.Intersect(this.YMin, this.YMax, rec.YMin, rec.YMax, out ryMin, out ryMax);
 
             return new BoundingBox2i(rxMin, rxMax, ryMin, ryMax);
@@ -249,7 +245,7 @@ namespace Essence.Geometry.Core.Int
         ///     Amplia el recubrimiento en cada coordenada.
         /// </summary>
         /// <param name="d">Ancho y alto.</param>
-        public BoundingBox2i Inflate(INT d)
+        public BoundingBox2i Inflate(int d)
         {
             return this.Inflate(d, d);
         }
@@ -259,7 +255,7 @@ namespace Essence.Geometry.Core.Int
         /// </summary>
         /// <param name="dx">Ancho.</param>
         /// <param name="dy">Alto.</param>
-        public BoundingBox2i Inflate(INT dx, INT dy)
+        public BoundingBox2i Inflate(int dx, int dy)
         {
             return new BoundingBox2i(this.XMin - dx, this.XMax + dx, this.YMin - dy, this.YMax + dy);
         }
@@ -273,7 +269,7 @@ namespace Essence.Geometry.Core.Int
         ///     Si el indice esta fuera de rango lanza la
         ///     excepción: <c>IndexOutOfRangeException</c>.
         /// </exception>
-        public INT GetMin(int i)
+        public int GetMin(int i)
         {
             switch (i)
             {
@@ -295,7 +291,7 @@ namespace Essence.Geometry.Core.Int
         ///     Si el indice esta fuera de rango lanza la
         ///     excepción: <c>IndexOutOfRangeException</c>.
         /// </exception>
-        public INT GetMax(int i)
+        public int GetMax(int i)
         {
             switch (i)
             {
@@ -308,11 +304,11 @@ namespace Essence.Geometry.Core.Int
             }
         }
 
-        public readonly INT XMin;
-        public readonly INT XMax;
+        public readonly int XMin;
+        public readonly int XMax;
 
-        public readonly INT YMin;
-        public readonly INT YMax;
+        public readonly int YMin;
+        public readonly int YMax;
 
         #region object
 
