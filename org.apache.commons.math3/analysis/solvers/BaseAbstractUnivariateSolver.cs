@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,59 +16,57 @@
  * limitations under the License.
  */
 
-using org.apache.commons.math3.analysis.util;
-using org.apache.commons.math3.util;
-using org.apache.commons.math3.analysis.exception;
-using MathUtils = System.Math;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+    using MaxCountExceededException = org.apache.commons.math3.exception.MaxCountExceededException;
+    using NoBracketingException = org.apache.commons.math3.exception.NoBracketingException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+    using NumberIsTooLargeException = org.apache.commons.math3.exception.NumberIsTooLargeException;
+    using NullArgumentException = org.apache.commons.math3.exception.NullArgumentException;
+    using IntegerSequence = org.apache.commons.math3.util.IntegerSequence;
+    using MathUtils = org.apache.commons.math3.util.MathUtils;
+
     /// <summary>
     /// Provide a default implementation for several functions useful to generic
     /// solvers.
+    /// The default values for relative and function tolerances are 1e-14
+    /// and 1e-15, respectively. It is however highly recommended to not
+    /// rely on the default, but rather carefully consider values that match
+    /// user's expectations, as well as the specifics of each implementation.
     /// </summary>
     /// @param <FUNC> Type of function to solve.
     /// 
-    /// @since 2.0
-    /// @version $Id: BaseAbstractUnivariateSolver.java 1455194 2013-03-11 15:45:54Z luc $ </param>
-    public abstract class BaseAbstractUnivariateSolver<FUNC> : BaseUnivariateSolver<FUNC> where FUNC : UnivariateFunction
+    /// @since 2.0 </param>
+    public abstract class BaseAbstractUnivariateSolver<FUNC> : BaseUnivariateSolver<FUNC> where FUNC : org.apache.commons.math3.analysis.UnivariateFunction
     {
         /// <summary>
         /// Default relative accuracy. </summary>
         private const double DEFAULT_RELATIVE_ACCURACY = 1e-14;
-
         /// <summary>
         /// Default function value accuracy. </summary>
         private const double DEFAULT_FUNCTION_VALUE_ACCURACY = 1e-15;
-
         /// <summary>
         /// Function value accuracy. </summary>
         private readonly double functionValueAccuracy;
-
         /// <summary>
         /// Absolute accuracy. </summary>
         private readonly double absoluteAccuracy;
-
         /// <summary>
         /// Relative accuracy. </summary>
         private readonly double relativeAccuracy;
-
         /// <summary>
         /// Evaluations counter. </summary>
-        private readonly Incrementor evaluations = new Incrementor();
-
+        private IntegerSequence.Incrementor evaluations;
         /// <summary>
         /// Lower end of search interval. </summary>
         private double searchMin;
-
         /// <summary>
         /// Higher end of search interval. </summary>
         private double searchMax;
-
         /// <summary>
         /// Initial guess. </summary>
         private double searchStart;
-
         /// <summary>
         /// Function to solve. </summary>
         private FUNC function;
@@ -76,8 +75,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// Construct a solver with given absolute accuracy.
         /// </summary>
         /// <param name="absoluteAccuracy"> Maximum absolute error. </param>
-        protected internal BaseAbstractUnivariateSolver(double absoluteAccuracy)
-            : this(DEFAULT_RELATIVE_ACCURACY, absoluteAccuracy, DEFAULT_FUNCTION_VALUE_ACCURACY)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected BaseAbstractUnivariateSolver(final double absoluteAccuracy)
+        protected internal BaseAbstractUnivariateSolver(double absoluteAccuracy) : this(DEFAULT_RELATIVE_ACCURACY, absoluteAccuracy, DEFAULT_FUNCTION_VALUE_ACCURACY)
         {
         }
 
@@ -86,8 +86,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         /// <param name="relativeAccuracy"> Maximum relative error. </param>
         /// <param name="absoluteAccuracy"> Maximum absolute error. </param>
-        protected internal BaseAbstractUnivariateSolver(double relativeAccuracy, double absoluteAccuracy)
-            : this(relativeAccuracy, absoluteAccuracy, DEFAULT_FUNCTION_VALUE_ACCURACY)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected BaseAbstractUnivariateSolver(final double relativeAccuracy, final double absoluteAccuracy)
+        protected internal BaseAbstractUnivariateSolver(double relativeAccuracy, double absoluteAccuracy) : this(relativeAccuracy, absoluteAccuracy, DEFAULT_FUNCTION_VALUE_ACCURACY)
         {
         }
 
@@ -97,67 +98,63 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="relativeAccuracy"> Maximum relative error. </param>
         /// <param name="absoluteAccuracy"> Maximum absolute error. </param>
         /// <param name="functionValueAccuracy"> Maximum function value error. </param>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected BaseAbstractUnivariateSolver(final double relativeAccuracy, final double absoluteAccuracy, final double functionValueAccuracy)
         protected internal BaseAbstractUnivariateSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy)
         {
             this.absoluteAccuracy = absoluteAccuracy;
             this.relativeAccuracy = relativeAccuracy;
             this.functionValueAccuracy = functionValueAccuracy;
+            this.evaluations = IntegerSequence.Incrementor.Create();
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
-        public virtual int MaxEvaluations
+        public virtual int GetMaxEvaluations()
         {
-            get { return this.evaluations.MaximalCount; }
+            return evaluations.GetMaximalCount();
         }
-
         /// <summary>
         /// {@inheritDoc} </summary>
-        public virtual int Evaluations
+        public virtual int GetEvaluations()
         {
-            get { return this.evaluations.Count; }
+            return evaluations.GetCount();
         }
-
         /// <returns> the lower end of the search interval. </returns>
-        public virtual double Min
+        public virtual double GetMin()
         {
-            get { return this.searchMin; }
+            return searchMin;
         }
-
         /// <returns> the higher end of the search interval. </returns>
-        public virtual double Max
+        public virtual double GetMax()
         {
-            get { return this.searchMax; }
+            return searchMax;
         }
-
         /// <returns> the initial guess. </returns>
-        public virtual double StartValue
+        public virtual double GetStartValue()
         {
-            get { return this.searchStart; }
+            return searchStart;
         }
-
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public virtual double AbsoluteAccuracy
+        public virtual double GetAbsoluteAccuracy()
         {
-            get { return this.absoluteAccuracy; }
+            return absoluteAccuracy;
         }
-
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public virtual double RelativeAccuracy
+        public virtual double GetRelativeAccuracy()
         {
-            get { return this.relativeAccuracy; }
+            return relativeAccuracy;
         }
-
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-        public virtual double FunctionValueAccuracy
+        public virtual double GetFunctionValueAccuracy()
         {
-            get { return this.functionValueAccuracy; }
+            return functionValueAccuracy;
         }
 
         /// <summary>
@@ -169,8 +166,8 @@ namespace org.apache.commons.math3.analysis.solvers
         /// is exceeded. </exception>
         protected internal virtual double ComputeObjectiveValue(double point)
         {
-            this.IncrementEvaluationCount();
-            return this.function.Value(point);
+            IncrementEvaluationCount();
+            return function.Value(point);
         }
 
         /// <summary>
@@ -187,15 +184,14 @@ namespace org.apache.commons.math3.analysis.solvers
         protected internal virtual void Setup(int maxEval, FUNC f, double min, double max, double startValue)
         {
             // Checks.
-            MyUtils.CheckNotNull(f);
+            MathUtils.CheckNotNull(f);
 
             // Reset.
-            this.searchMin = min;
-            this.searchMax = max;
-            this.searchStart = startValue;
-            this.function = f;
-            this.evaluations.MaximalCount = maxEval;
-            this.evaluations.ResetCount();
+            searchMin = min;
+            searchMax = max;
+            searchStart = startValue;
+            function = f;
+            evaluations = evaluations.WithMaximalCount(maxEval).withStart(0);
         }
 
         /// <summary>
@@ -203,24 +199,24 @@ namespace org.apache.commons.math3.analysis.solvers
         public virtual double Solve(int maxEval, FUNC f, double min, double max, double startValue)
         {
             // Initialization.
-            this.Setup(maxEval, f, min, max, startValue);
+            Setup(maxEval, f, min, max, startValue);
 
             // Perform computation.
-            return this.DoSolve();
+            return DoSolve();
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
         public virtual double Solve(int maxEval, FUNC f, double min, double max)
         {
-            return this.Solve(maxEval, f, min, max, min + 0.5 * (max - min));
+            return Solve(maxEval, f, min, max, min + 0.5 * (max - min));
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
         public virtual double Solve(int maxEval, FUNC f, double startValue)
         {
-            return this.Solve(maxEval, f, double.NaN, double.NaN, startValue);
+            return Solve(maxEval, f, Double.NaN, Double.NaN, startValue);
         }
 
         /// <summary>
@@ -241,9 +237,11 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="upper"> Upper endpoint. </param>
         /// <returns> {@code true} if the function values have opposite signs at the
         /// given points. </returns>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected boolean isBracketing(final double lower, final double upper)
         protected internal virtual bool IsBracketing(double lower, double upper)
         {
-            return UnivariateSolverUtils.IsBracketing(this.function, lower, upper);
+            return UnivariateSolverUtils.IsBracketing(function, lower, upper);
         }
 
         /// <summary>
@@ -253,6 +251,8 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="mid"> Second number. </param>
         /// <param name="end"> Third number. </param>
         /// <returns> {@code true} if the arguments form an increasing sequence. </returns>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected boolean isSequence(final double start, final double mid, final double end)
         protected internal virtual bool IsSequence(double start, double mid, double end)
         {
             return UnivariateSolverUtils.IsSequence(start, mid, end);
@@ -264,6 +264,8 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="lower"> Lower endpoint. </param>
         /// <param name="upper"> Upper endpoint. </param>
         /// <exception cref="NumberIsTooLargeException"> if {@code lower >= upper}. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected void verifyInterval(final double lower, final double upper) throws org.apache.commons.math3.exception.NumberIsTooLargeException
         protected internal virtual void VerifyInterval(double lower, double upper)
         {
             UnivariateSolverUtils.VerifyInterval(lower, upper);
@@ -277,6 +279,8 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="upper"> Upper endpoint. </param>
         /// <exception cref="NumberIsTooLargeException"> if {@code lower >= initial} or
         /// {@code initial >= upper}. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected void verifySequence(final double lower, final double initial, final double upper) throws org.apache.commons.math3.exception.NumberIsTooLargeException
         protected internal virtual void VerifySequence(double lower, double initial, double upper)
         {
             UnivariateSolverUtils.VerifySequence(lower, initial, upper);
@@ -291,9 +295,11 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <exception cref="NullArgumentException"> if the function has not been set. </exception>
         /// <exception cref="NoBracketingException"> if the function has the same sign at
         /// the endpoints. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected void verifyBracketing(final double lower, final double upper) throws org.apache.commons.math3.exception.NullArgumentException, org.apache.commons.math3.exception.NoBracketingException
         protected internal virtual void VerifyBracketing(double lower, double upper)
         {
-            UnivariateSolverUtils.VerifyBracketing(this.function, lower, upper);
+            UnivariateSolverUtils.VerifyBracketing(function, lower, upper);
         }
 
         /// <summary>
@@ -309,12 +315,13 @@ namespace org.apache.commons.math3.analysis.solvers
         {
             try
             {
-                this.evaluations.IncrementCount();
+                evaluations.Increment();
             }
             catch (MaxCountExceededException e)
             {
-                throw new TooManyEvaluationsException(e.Max);
+                throw new TooManyEvaluationsException(e.GetMax());
             }
         }
     }
+
 }

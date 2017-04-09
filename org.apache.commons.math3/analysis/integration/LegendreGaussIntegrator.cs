@@ -1,3 +1,6 @@
+﻿/// Apache Commons Math 3.6.1
+using System;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,13 +17,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using System;
-using org.apache.commons.math3.analysis.exception;
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.integration
 {
+
+    using MathIllegalArgumentException = org.apache.commons.math3.exception.MathIllegalArgumentException;
+    using MaxCountExceededException = org.apache.commons.math3.exception.MaxCountExceededException;
+    using NotStrictlyPositiveException = org.apache.commons.math3.exception.NotStrictlyPositiveException;
+    using NumberIsTooSmallException = org.apache.commons.math3.exception.NumberIsTooSmallException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+    using LocalizedFormats = org.apache.commons.math3.exception.util.LocalizedFormats;
+    using FastMath = org.apache.commons.math3.util.FastMath;
+
     /// <summary>
     /// Implements the <a href="http://mathworld.wolfram.com/Legendre-GaussQuadrature.html">
     /// Legendre-Gauss</a> quadrature formula.
@@ -44,15 +51,15 @@ namespace org.apache.commons.math3.analysis.integration
     /// &prod; (x-x<sub>k</sub>)/(x<sub>i</sub>-x<sub>k</sub>) for k != i.
     /// </para>
     /// <para>
-    /// @version $Id: LegendreGaussIntegrator.java 1455194 2013-03-11 15:45:54Z luc $
     /// @since 1.2
     /// </para>
     /// </summary>
     /// @deprecated As of 3.1 (to be removed in 4.0). Please use
     /// <seealso cref="IterativeLegendreGaussIntegrator"/> instead. 
-    //[Obsolete("As of 3.1 (to be removed in 4.0). Please use")]
+    [Obsolete("As of 3.1 (to be removed in 4.0). Please use")]
     public class LegendreGaussIntegrator : BaseAbstractUnivariateIntegrator
     {
+
         /// <summary>
         /// Abscissas for the 2 points method. </summary>
         private static readonly double[] ABSCISSAS_2 = new double[] { -1.0 / FastMath.Sqrt(3.0), 1.0 / FastMath.Sqrt(3.0) };
@@ -105,30 +112,32 @@ namespace org.apache.commons.math3.analysis.integration
         /// is not strictly positive </exception>
         /// <exception cref="NumberIsTooSmallException"> if maximal number of iterations
         /// is lesser than or equal to the minimal number of iterations </exception>
-        public LegendreGaussIntegrator(int n, double relativeAccuracy, double absoluteAccuracy, int minimalIterationCount, int maximalIterationCount)
-            : base(relativeAccuracy, absoluteAccuracy, minimalIterationCount, maximalIterationCount)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public LegendreGaussIntegrator(final int n, final double relativeAccuracy, final double absoluteAccuracy, final int minimalIterationCount, final int maximalIterationCount) throws org.apache.commons.math3.exception.MathIllegalArgumentException, org.apache.commons.math3.exception.NotStrictlyPositiveException, org.apache.commons.math3.exception.NumberIsTooSmallException
+        public LegendreGaussIntegrator(int n, double relativeAccuracy, double absoluteAccuracy, int minimalIterationCount, int maximalIterationCount) : base(relativeAccuracy, absoluteAccuracy, minimalIterationCount, maximalIterationCount)
         {
             switch (n)
             {
-                case 2:
-                    this.abscissas = ABSCISSAS_2;
-                    this.weights = WEIGHTS_2;
-                    break;
-                case 3:
-                    this.abscissas = ABSCISSAS_3;
-                    this.weights = WEIGHTS_3;
-                    break;
-                case 4:
-                    this.abscissas = ABSCISSAS_4;
-                    this.weights = WEIGHTS_4;
-                    break;
-                case 5:
-                    this.abscissas = ABSCISSAS_5;
-                    this.weights = WEIGHTS_5;
-                    break;
-                default:
-                    throw new MathIllegalArgumentException("LocalizedFormats.N_POINTS_GAUSS_LEGENDRE_INTEGRATOR_NOT_SUPPORTED", n, 2, 5);
+            case 2 :
+                abscissas = ABSCISSAS_2;
+                weights = WEIGHTS_2;
+                break;
+            case 3 :
+                abscissas = ABSCISSAS_3;
+                weights = WEIGHTS_3;
+                break;
+            case 4 :
+                abscissas = ABSCISSAS_4;
+                weights = WEIGHTS_4;
+                break;
+            case 5 :
+                abscissas = ABSCISSAS_5;
+                weights = WEIGHTS_5;
+                break;
+            default :
+                throw new MathIllegalArgumentException(LocalizedFormats.N_POINTS_GAUSS_LEGENDRE_INTEGRATOR_NOT_SUPPORTED, n, 2, 5);
             }
+
         }
 
         /// <summary>
@@ -137,8 +146,9 @@ namespace org.apache.commons.math3.analysis.integration
         /// <param name="relativeAccuracy"> relative accuracy of the result </param>
         /// <param name="absoluteAccuracy"> absolute accuracy of the result </param>
         /// <exception cref="MathIllegalArgumentException"> if number of points is out of [2; 5] </exception>
-        public LegendreGaussIntegrator(int n, double relativeAccuracy, double absoluteAccuracy)
-            : this(n, relativeAccuracy, absoluteAccuracy, DEFAULT_MIN_ITERATIONS_COUNT, DEFAULT_MAX_ITERATIONS_COUNT)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public LegendreGaussIntegrator(final int n, final double relativeAccuracy, final double absoluteAccuracy) throws org.apache.commons.math3.exception.MathIllegalArgumentException
+        public LegendreGaussIntegrator(int n, double relativeAccuracy, double absoluteAccuracy) : this(n, relativeAccuracy, absoluteAccuracy, DEFAULT_MIN_ITERATIONS_COUNT, DEFAULT_MAX_ITERATIONS_COUNT)
         {
         }
 
@@ -152,8 +162,9 @@ namespace org.apache.commons.math3.analysis.integration
         /// is not strictly positive </exception>
         /// <exception cref="NumberIsTooSmallException"> if maximal number of iterations
         /// is lesser than or equal to the minimal number of iterations </exception>
-        public LegendreGaussIntegrator(int n, int minimalIterationCount, int maximalIterationCount)
-            : this(n, DEFAULT_RELATIVE_ACCURACY, DEFAULT_ABSOLUTE_ACCURACY, minimalIterationCount, maximalIterationCount)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public LegendreGaussIntegrator(final int n, final int minimalIterationCount, final int maximalIterationCount) throws org.apache.commons.math3.exception.MathIllegalArgumentException
+        public LegendreGaussIntegrator(int n, int minimalIterationCount, int maximalIterationCount) : this(n, DEFAULT_RELATIVE_ACCURACY, DEFAULT_ABSOLUTE_ACCURACY, minimalIterationCount, maximalIterationCount)
         {
         }
 
@@ -161,31 +172,41 @@ namespace org.apache.commons.math3.analysis.integration
         /// {@inheritDoc} </summary>
         protected internal override double DoIntegrate()
         {
+
             // compute first estimate with a single step
-            double oldt = this.Stage(1);
+            double oldt = Stage(1);
 
             int n = 2;
             while (true)
             {
+
                 // improve integral with a larger number of steps
-                double t = this.Stage(n);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double t = stage(n);
+                double t = Stage(n);
 
                 // estimate error
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double delta = org.apache.commons.math3.util.FastMath.abs(t - oldt);
                 double delta = FastMath.Abs(t - oldt);
-                double limit = FastMath.Max(this.AbsoluteAccuracy, this.RelativeAccuracy * (FastMath.Abs(oldt) + FastMath.Abs(t)) * 0.5);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double limit = org.apache.commons.math3.util.FastMath.max(getAbsoluteAccuracy(), getRelativeAccuracy() * (org.apache.commons.math3.util.FastMath.abs(oldt) + org.apache.commons.math3.util.FastMath.abs(t)) * 0.5);
+                double limit = FastMath.Max(GetAbsoluteAccuracy(), GetRelativeAccuracy() * (FastMath.Abs(oldt) + FastMath.Abs(t)) * 0.5);
 
                 // check convergence
-                if ((this.iterations.Count + 1 >= this.MinimalIterationCount) && (delta <= limit))
+                if ((GetIterations() + 1 >= GetMinimalIterationCount()) && (delta <= limit))
                 {
                     return t;
                 }
 
                 // prepare next iteration
-                double ratio = FastMath.Min(4, FastMath.Pow(delta / limit, 0.5 / this.abscissas.Length));
+                double ratio = FastMath.min(4, FastMath.Pow(delta / limit, 0.5 / abscissas.Length));
                 n = FastMath.Max((int)(ratio * n), n + 1);
                 oldt = t;
-                this.iterations.IncrementCount();
+                IncrementCount();
+
             }
+
         }
 
         /// <summary>
@@ -194,25 +215,35 @@ namespace org.apache.commons.math3.analysis.integration
         /// <returns> the value of n-th stage integral </returns>
         /// <exception cref="TooManyEvaluationsException"> if the maximum number of evaluations
         /// is exceeded. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: private double stage(final int n) throws org.apache.commons.math3.exception.TooManyEvaluationsException
         private double Stage(int n)
         {
+
             // set up the step for the current stage
-            double step = (this.Max - this.Min) / n;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double step = (getMax() - getMin()) / n;
+            double step = (GetMax() - GetMin()) / n;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double halfStep = step / 2.0;
             double halfStep = step / 2.0;
 
             // integrate over all elementary steps
-            double midPoint = this.Min + halfStep;
+            double midPoint = GetMin() + halfStep;
             double sum = 0.0;
             for (int i = 0; i < n; ++i)
             {
-                for (int j = 0; j < this.abscissas.Length; ++j)
+                for (int j = 0; j < abscissas.Length; ++j)
                 {
-                    sum += this.weights[j] * this.ComputeObjectiveValue(midPoint + halfStep * this.abscissas[j]);
+                    sum += weights[j] * ComputeObjectiveValue(midPoint + halfStep * abscissas[j]);
                 }
                 midPoint += step;
             }
 
             return halfStep * sum;
+
         }
+
     }
+
 }

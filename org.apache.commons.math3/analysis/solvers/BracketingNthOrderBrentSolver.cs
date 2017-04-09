@@ -1,4 +1,6 @@
+﻿/// Apache Commons Math 3.6.1
 using System;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,13 +17,18 @@ using System;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using org.apache.commons.math3.analysis.exception;
-using org.apache.commons.math3.analysis.util;
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+
+    using MathInternalError = org.apache.commons.math3.exception.MathInternalError;
+    using NoBracketingException = org.apache.commons.math3.exception.NoBracketingException;
+    using NumberIsTooLargeException = org.apache.commons.math3.exception.NumberIsTooLargeException;
+    using NumberIsTooSmallException = org.apache.commons.math3.exception.NumberIsTooSmallException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+    using FastMath = org.apache.commons.math3.util.FastMath;
+    using Precision = org.apache.commons.math3.util.Precision;
+
     /// <summary>
     /// This class implements a modification of the <a
     /// href="http://mathworld.wolfram.com/BrentsMethod.html"> Brent algorithm</a>.
@@ -32,14 +39,14 @@ namespace org.apache.commons.math3.analysis.solvers
     ///   to user specified <seealso cref="AllowedSolution"/>,</li>
     ///   <li>the maximal order for the invert polynomial root search is
     ///   user-specified instead of being invert quadratic only</li>
-    /// </ul>
     /// </para>
-    /// The given interval must bracket the root.
+    /// </ul><para>
+    /// The given interval must bracket the root.</para>
     /// 
-    /// @version $Id: BracketingNthOrderBrentSolver.java 1379560 2012-08-31 19:40:30Z erans $
     /// </summary>
     public class BracketingNthOrderBrentSolver : AbstractUnivariateSolver, BracketedUnivariateSolver<UnivariateFunction>
     {
+
         /// <summary>
         /// Default absolute accuracy. </summary>
         private const double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
@@ -67,8 +74,7 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <summary>
         /// Construct a solver with default accuracy and maximal order (1e-6 and 5 respectively)
         /// </summary>
-        public BracketingNthOrderBrentSolver()
-            : this(DEFAULT_ABSOLUTE_ACCURACY, DEFAULT_MAXIMAL_ORDER)
+        public BracketingNthOrderBrentSolver() : this(DEFAULT_ABSOLUTE_ACCURACY, DEFAULT_MAXIMAL_ORDER)
         {
         }
 
@@ -78,8 +84,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
         /// <param name="maximalOrder"> maximal order. </param>
         /// <exception cref="NumberIsTooSmallException"> if maximal order is lower than 2 </exception>
-        public BracketingNthOrderBrentSolver(double absoluteAccuracy, int maximalOrder)
-            : base(absoluteAccuracy)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public BracketingNthOrderBrentSolver(final double absoluteAccuracy, final int maximalOrder) throws org.apache.commons.math3.exception.NumberIsTooSmallException
+        public BracketingNthOrderBrentSolver(double absoluteAccuracy, int maximalOrder) : base(absoluteAccuracy)
         {
             if (maximalOrder < 2)
             {
@@ -96,8 +103,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
         /// <param name="maximalOrder"> maximal order. </param>
         /// <exception cref="NumberIsTooSmallException"> if maximal order is lower than 2 </exception>
-        public BracketingNthOrderBrentSolver(double relativeAccuracy, double absoluteAccuracy, int maximalOrder)
-            : base(relativeAccuracy, absoluteAccuracy)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public BracketingNthOrderBrentSolver(final double relativeAccuracy, final double absoluteAccuracy, final int maximalOrder) throws org.apache.commons.math3.exception.NumberIsTooSmallException
+        public BracketingNthOrderBrentSolver(double relativeAccuracy, double absoluteAccuracy, int maximalOrder) : base(relativeAccuracy, absoluteAccuracy)
         {
             if (maximalOrder < 2)
             {
@@ -115,8 +123,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="functionValueAccuracy"> Function value accuracy. </param>
         /// <param name="maximalOrder"> maximal order. </param>
         /// <exception cref="NumberIsTooSmallException"> if maximal order is lower than 2 </exception>
-        public BracketingNthOrderBrentSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy, int maximalOrder)
-            : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public BracketingNthOrderBrentSolver(final double relativeAccuracy, final double absoluteAccuracy, final double functionValueAccuracy, final int maximalOrder) throws org.apache.commons.math3.exception.NumberIsTooSmallException
+        public BracketingNthOrderBrentSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy, int maximalOrder) : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy)
         {
             if (maximalOrder < 2)
             {
@@ -129,9 +138,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <summary>
         /// Get the maximal order. </summary>
         /// <returns> maximal order </returns>
-        public virtual int MaximalOrder
+        public virtual int GetMaximalOrder()
         {
-            get { return this.maximalOrder; }
+            return maximalOrder;
         }
 
         /// <summary>
@@ -140,24 +149,28 @@ namespace org.apache.commons.math3.analysis.solvers
         protected internal override double DoSolve()
         {
             // prepare arrays with the first points
-            double[] x = new double[this.maximalOrder + 1];
-            double[] y = new double[this.maximalOrder + 1];
-            x[0] = this.Min;
-            x[1] = this.StartValue;
-            x[2] = this.Max;
-            this.VerifySequence(x[0], x[1], x[2]);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double[] x = new double[maximalOrder + 1];
+            double[] x = new double[maximalOrder + 1];
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double[] y = new double[maximalOrder + 1];
+            double[] y = new double[maximalOrder + 1];
+            x[0] = GetMin();
+            x[1] = GetStartValue();
+            x[2] = GetMax();
+            VerifySequence(x[0], x[1], x[2]);
 
             // evaluate initial guess
-            y[1] = this.ComputeObjectiveValue(x[1]);
-            if (MyUtils.Equals(y[1], 0.0, 1))
+            y[1] = ComputeObjectiveValue(x[1]);
+            if (Precision.Equals(y[1], 0.0, 1))
             {
                 // return the initial guess if it is a perfect root.
                 return x[1];
             }
 
             // evaluate first  endpoint
-            y[0] = this.ComputeObjectiveValue(x[0]);
-            if (MyUtils.Equals(y[0], 0.0, 1))
+            y[0] = ComputeObjectiveValue(x[0]);
+            if (Precision.Equals(y[0], 0.0, 1))
             {
                 // return the first endpoint if it is a perfect root.
                 return x[0];
@@ -167,15 +180,18 @@ namespace org.apache.commons.math3.analysis.solvers
             int signChangeIndex;
             if (y[0] * y[1] < 0)
             {
+
                 // reduce interval if it brackets the root
                 nbPoints = 2;
                 signChangeIndex = 1;
+
             }
             else
             {
+
                 // evaluate second endpoint
-                y[2] = this.ComputeObjectiveValue(x[2]);
-                if (MyUtils.Equals(y[2], 0.0, 1))
+                y[2] = ComputeObjectiveValue(x[2]);
+                if (Precision.Equals(y[2], 0.0, 1))
                 {
                     // return the second endpoint if it is a perfect root.
                     return x[2];
@@ -191,9 +207,12 @@ namespace org.apache.commons.math3.analysis.solvers
                 {
                     throw new NoBracketingException(x[0], x[2], y[0], y[2]);
                 }
+
             }
 
             // prepare a work array for inverse polynomial interpolation
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double[] tmpX = new double[x.length];
             double[] tmpX = new double[x.Length];
 
             // current tightest bracketing of the root
@@ -209,25 +228,28 @@ namespace org.apache.commons.math3.analysis.solvers
             // search loop
             while (true)
             {
+
                 // check convergence of bracketing interval
-                double xTol = this.AbsoluteAccuracy + this.RelativeAccuracy * FastMath.Max(FastMath.Abs(xA), FastMath.Abs(xB));
-                if (((xB - xA) <= xTol) || (FastMath.Max(absYA, absYB) < this.FunctionValueAccuracy))
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double xTol = getAbsoluteAccuracy() + getRelativeAccuracy() * org.apache.commons.math3.util.FastMath.max(org.apache.commons.math3.util.FastMath.abs(xA), org.apache.commons.math3.util.FastMath.abs(xB));
+                double xTol = GetAbsoluteAccuracy() + GetRelativeAccuracy() * FastMath.Max(FastMath.Abs(xA), FastMath.Abs(xB));
+                if (((xB - xA) <= xTol) || (FastMath.Max(absYA, absYB) < GetFunctionValueAccuracy()))
                 {
-                    switch (this.allowed)
+                    switch (allowed)
                     {
-                        case AllowedSolution.ANY_SIDE:
-                            return absYA < absYB ? xA : xB;
-                        case AllowedSolution.LEFT_SIDE:
-                            return xA;
-                        case AllowedSolution.RIGHT_SIDE:
-                            return xB;
-                        case AllowedSolution.BELOW_SIDE:
-                            return (yA <= 0) ? xA : xB;
-                        case AllowedSolution.ABOVE_SIDE:
-                            return (yA < 0) ? xB : xA;
-                        default:
-                            // this should never happen
-                            throw new MathInternalError();
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.ANY_SIDE:
+                        return absYA < absYB ? xA : xB;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.LEFT_SIDE:
+                        return xA;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.RIGHT_SIDE:
+                        return xB;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.BELOW_SIDE:
+                        return (yA <= 0) ? xA : xB;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.ABOVE_SIDE:
+                        return (yA < 0) ? xB : xA;
+                    default :
+                        // this should never happen
+                        throw new MathInternalError();
                     }
                 }
 
@@ -236,16 +258,28 @@ namespace org.apache.commons.math3.analysis.solvers
                 if (agingA >= MAXIMAL_AGING)
                 {
                     // we keep updating the high bracket, try to compensate this
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int p = agingA - MAXIMAL_AGING;
                     int p = agingA - MAXIMAL_AGING;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double weightA = (1 << p) - 1;
                     double weightA = (1 << p) - 1;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double weightB = p + 1;
                     double weightB = p + 1;
                     targetY = (weightA * yA - weightB * REDUCTION_FACTOR * yB) / (weightA + weightB);
                 }
                 else if (agingB >= MAXIMAL_AGING)
                 {
                     // we keep updating the low bracket, try to compensate this
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int p = agingB - MAXIMAL_AGING;
                     int p = agingB - MAXIMAL_AGING;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double weightA = p + 1;
                     double weightA = p + 1;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double weightB = (1 << p) - 1;
                     double weightB = (1 << p) - 1;
                     targetY = (weightB * yB - weightA * REDUCTION_FACTOR * yA) / (weightA + weightB);
                 }
@@ -261,9 +295,10 @@ namespace org.apache.commons.math3.analysis.solvers
                 int end = nbPoints;
                 do
                 {
+
                     // guess a value for current target, using inverse polynomial interpolation
                     Array.Copy(x, start, tmpX, start, end - start);
-                    nextX = this.GuessX(targetY, tmpX, y, start, end);
+                    nextX = GuessX(targetY, tmpX, y, start, end);
 
                     if (!((nextX > xA) && (nextX < xB)))
                     {
@@ -284,8 +319,10 @@ namespace org.apache.commons.math3.analysis.solvers
                         }
 
                         // we need to do one more attempt
-                        nextX = double.NaN;
+                        nextX = Double.NaN;
+
                     }
+
                 } while (double.IsNaN(nextX) && (end - start > 1));
 
                 if (double.IsNaN(nextX))
@@ -297,8 +334,10 @@ namespace org.apache.commons.math3.analysis.solvers
                 }
 
                 // evaluate the function at the guessed root
-                double nextY = this.ComputeObjectiveValue(nextX);
-                if (MyUtils.Equals(nextY, 0.0, 1))
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double nextY = computeObjectiveValue(nextX);
+                double nextY = ComputeObjectiveValue(nextX);
+                if (Precision.Equals(nextY, 0.0, 1))
                 {
                     // we have found an exact root, since it is not an approximation
                     // we don't need to bother about the allowed solutions setting
@@ -307,15 +346,18 @@ namespace org.apache.commons.math3.analysis.solvers
 
                 if ((nbPoints > 2) && (end - start != nbPoints))
                 {
+
                     // we have been forced to ignore some points to keep bracketing,
                     // they are probably too far from the root, drop them from now on
                     nbPoints = end - start;
                     Array.Copy(x, start, x, 0, nbPoints);
                     Array.Copy(y, start, y, 0, nbPoints);
                     signChangeIndex -= start;
+
                 }
                 else if (nbPoints == x.Length)
                 {
+
                     // we have to drop one point in order to insert the new one
                     nbPoints--;
 
@@ -327,6 +369,7 @@ namespace org.apache.commons.math3.analysis.solvers
                         Array.Copy(y, 1, y, 0, nbPoints);
                         --signChangeIndex;
                     }
+
                 }
 
                 // insert the last computed point
@@ -358,8 +401,11 @@ namespace org.apache.commons.math3.analysis.solvers
 
                     // update the sign change index
                     signChangeIndex++;
+
                 }
+
             }
+
         }
 
         /// <summary>
@@ -376,11 +422,16 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="start"> start index of the points to consider (inclusive) </param>
         /// <param name="end"> end index of the points to consider (exclusive) </param>
         /// <returns> guessed root (will be a NaN if two points share the same y) </returns>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: private double guessX(final double targetY, final double[] x, final double[] y, final int start, final int end)
         private double GuessX(double targetY, double[] x, double[] y, int start, int end)
         {
+
             // compute Q Newton coefficients by divided differences
             for (int i = start; i < end - 1; ++i)
             {
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int delta = i + 1 - start;
                 int delta = i + 1 - start;
                 for (int j = end - 1; j > i; --j)
                 {
@@ -396,6 +447,7 @@ namespace org.apache.commons.math3.analysis.solvers
             }
 
             return x0;
+
         }
 
         /// <summary>
@@ -413,5 +465,7 @@ namespace org.apache.commons.math3.analysis.solvers
             this.allowed = allowedSolution;
             return base.Solve(maxEval, f, min, max, startValue);
         }
+
     }
+
 }

@@ -27,6 +27,7 @@ namespace Essence.Maths
         }
     }
 
+#if false
     public class Line
     {
         public Line(Point2d p0, double t0, Point2d p1, double t1, double normal, double radio)
@@ -190,7 +191,6 @@ namespace Essence.Maths
     {
     }
 
-#if false
     public class EllipseArc2d
     {
         private double angle0;

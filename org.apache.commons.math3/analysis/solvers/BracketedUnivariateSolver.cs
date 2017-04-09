@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,6 +18,7 @@
 
 namespace org.apache.commons.math3.analysis.solvers
 {
+
     /// <summary>
     /// Interface for {@link UnivariateSolver (univariate real) root-finding
     /// algorithms} that maintain a bracketed solution. There are several advantages
@@ -40,10 +42,10 @@ namespace org.apache.commons.math3.analysis.solvers
     /// @param <FUNC> Type of function to solve.
     /// </param>
     /// <seealso cref= AllowedSolution
-    /// @since 3.0
-    /// @version $Id: BracketedUnivariateSolver.java 1364387 2012-07-22 18:14:11Z tn $ </seealso>
-    public interface BracketedUnivariateSolver<FUNC> : BaseUnivariateSolver<FUNC> where FUNC : UnivariateFunction
+    /// @since 3.0 </seealso>
+    public interface BracketedUnivariateSolver<FUNC> : BaseUnivariateSolver<FUNC> where FUNC : org.apache.commons.math3.analysis.UnivariateFunction
     {
+
         /// <summary>
         /// Solve for a zero in the given interval.
         /// A solver may require that the interval brackets a single zero root.
@@ -82,5 +84,7 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <exception cref="org.apache.commons.math3.exception.TooManyEvaluationsException"> if
         /// the allowed number of evaluations is exceeded. </exception>
         double Solve(int maxEval, FUNC f, double min, double max, double startValue, AllowedSolution allowedSolution);
+
     }
+
 }

@@ -59,9 +59,12 @@
     <Compile Include="Curves\ClothoidArc2.cs" />
     <Compile Include="Curves\ComposedCurve1.cs" />
     <Compile Include="Curves\ComposedCurve2.cs" />
+    <Compile Include="Curves\CurveEvaluator2.cs" />
     <Compile Include="Curves\DelegateUnivariateFunction.cs" />
+    <Compile Include="Curves\DisplacedCurve2.cs" />
     <Compile Include="Curves\ICurve1.cs" />
     <Compile Include="Curves\ICurve2.cs" />
+    <Compile Include="Curves\Const1.cs" />
     <Compile Include="Curves\Line1.cs" />
     <Compile Include="Curves\Line2.cs" />
     <Compile Include="Curves\MultiCurve1.cs" />

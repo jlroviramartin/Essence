@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,10 +16,13 @@
  * limitations under the License.
  */
 
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+    using FastMath = org.apache.commons.math3.util.FastMath;
+    using NoBracketingException = org.apache.commons.math3.exception.NoBracketingException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+
     /// <summary>
     /// Implements the <em>Secant</em> method for root-finding (approximating a
     /// zero of a univariate real function). The solution that is maintained is
@@ -36,18 +40,17 @@ namespace org.apache.commons.math3.analysis.solvers
     /// <seealso cref="IllinoisSolver <em>Illinois</em>"/> algorithm or the
     /// <seealso cref="PegasusSolver <em>Pegasus</em>"/> algorithm.</para>
     /// 
-    /// @version $Id: SecantSolver.java 1379560 2012-08-31 19:40:30Z erans $
     /// </summary>
     public class SecantSolver : AbstractUnivariateSolver
     {
+
         /// <summary>
         /// Default absolute accuracy. </summary>
         protected internal const double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
 
         /// <summary>
         /// Construct a solver with default accuracy (1e-6). </summary>
-        public SecantSolver()
-            : base(DEFAULT_ABSOLUTE_ACCURACY)
+        public SecantSolver() : base(DEFAULT_ABSOLUTE_ACCURACY)
         {
         }
 
@@ -55,8 +58,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// Construct a solver.
         /// </summary>
         /// <param name="absoluteAccuracy"> absolute accuracy </param>
-        public SecantSolver(double absoluteAccuracy)
-            : base(absoluteAccuracy)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public SecantSolver(final double absoluteAccuracy)
+        public SecantSolver(double absoluteAccuracy) : base(absoluteAccuracy)
         {
         }
 
@@ -65,8 +69,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         /// <param name="relativeAccuracy"> relative accuracy </param>
         /// <param name="absoluteAccuracy"> absolute accuracy </param>
-        public SecantSolver(double relativeAccuracy, double absoluteAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public SecantSolver(final double relativeAccuracy, final double absoluteAccuracy)
+        public SecantSolver(double relativeAccuracy, double absoluteAccuracy) : base(relativeAccuracy, absoluteAccuracy)
         {
         }
 
@@ -75,10 +80,10 @@ namespace org.apache.commons.math3.analysis.solvers
         protected internal override sealed double DoSolve()
         {
             // Get initial solution
-            double x0 = this.Min;
-            double x1 = this.Max;
-            double f0 = this.ComputeObjectiveValue(x0);
-            double f1 = this.ComputeObjectiveValue(x1);
+            double x0 = GetMin();
+            double x1 = GetMax();
+            double f0 = ComputeObjectiveValue(x0);
+            double f1 = ComputeObjectiveValue(x1);
 
             // If one of the bounds is the exact root, return it. Since these are
             // not under-approximations or over-approximations, we can return them
@@ -93,19 +98,29 @@ namespace org.apache.commons.math3.analysis.solvers
             }
 
             // Verify bracketing of initial solution.
-            this.VerifyBracketing(x0, x1);
+            VerifyBracketing(x0, x1);
 
             // Get accuracies.
-            double ftol = this.FunctionValueAccuracy;
-            double atol = this.AbsoluteAccuracy;
-            double rtol = this.RelativeAccuracy;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double ftol = getFunctionValueAccuracy();
+            double ftol = GetFunctionValueAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double atol = getAbsoluteAccuracy();
+            double atol = GetAbsoluteAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double rtol = getRelativeAccuracy();
+            double rtol = GetRelativeAccuracy();
 
             // Keep finding better approximations.
             while (true)
             {
                 // Calculate the next approximation.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
                 double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
-                double fx = this.ComputeObjectiveValue(x);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double fx = computeObjectiveValue(x);
+                double fx = ComputeObjectiveValue(x);
 
                 // If the new approximation is the exact root, return it. Since
                 // this is not an under-approximation or an over-approximation,
@@ -137,5 +152,7 @@ namespace org.apache.commons.math3.analysis.solvers
                 }
             }
         }
+
     }
+
 }

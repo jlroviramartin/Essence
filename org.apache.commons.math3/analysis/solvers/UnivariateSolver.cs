@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,16 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+
     /// <summary>
     /// Interface for (univariate real) root-finding algorithms.
     /// Implementations will search for only one zero in the given interval.
     /// 
-    /// @version $Id: UnivariateSolver.java 1364387 2012-07-22 18:14:11Z tn $
     /// </summary>
     public interface UnivariateSolver : BaseUnivariateSolver<UnivariateFunction>
     {
     }
+
 }

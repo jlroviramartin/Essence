@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,7 +26,6 @@ namespace org.apache.commons.math3.analysis.solvers
     /// Implementations will search for only one zero in the given interval.
     /// 
     /// @since 3.1
-    /// @version $Id: UnivariateDifferentiableSolver.java 1383441 2012-09-11 14:56:39Z luc $
     /// </summary>
     public interface UnivariateDifferentiableSolver : BaseUnivariateSolver<UnivariateDifferentiableFunction>
     {

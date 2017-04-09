@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,7 +30,6 @@ namespace org.apache.commons.math3.analysis.solvers
     /// functions.
     /// 
     /// @since 3.1
-    /// @version $Id: NewtonRaphsonSolver.java 1383441 2012-09-11 14:56:39Z luc $
     /// </summary>
     public class NewtonRaphsonSolver : AbstractUnivariateDifferentiableSolver
     {
@@ -63,10 +63,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// if the maximum evaluation count is exceeded. </exception>
         /// <exception cref="org.apache.commons.math3.exception.NumberIsTooLargeException">
         /// if {@code min >= max}. </exception>
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
 //ORIGINAL LINE: @Override public double solve(int maxEval, final org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction f, final double min, final double max) throws org.apache.commons.math3.exception.TooManyEvaluationsException
-//JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
-        public override double Solve(int maxEval, UnivariateDifferentiableFunction f, double min, double max)
+        public virtual double Solve(int maxEval, UnivariateDifferentiableFunction f, double min, double max)
         {
             return base.Solve(maxEval, f, UnivariateSolverUtils.Midpoint(min, max));
         }
@@ -74,16 +73,14 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <summary>
         /// {@inheritDoc}
         /// </summary>
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: @Override protected double doSolve() throws org.apache.commons.math3.exception.TooManyEvaluationsException
         protected internal override double DoSolve()
         {
 //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
 //ORIGINAL LINE: final double startValue = getStartValue();
-            double startValue = StartValue;
+            double startValue = GetStartValue();
 //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
 //ORIGINAL LINE: final double absoluteAccuracy = getAbsoluteAccuracy();
-            double absoluteAccuracy = AbsoluteAccuracy;
+            double absoluteAccuracy = GetAbsoluteAccuracy();
 
             double x0 = startValue;
             double x1;
@@ -92,8 +89,8 @@ namespace org.apache.commons.math3.analysis.solvers
 //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
 //ORIGINAL LINE: final org.apache.commons.math3.analysis.differentiation.DerivativeStructure y0 = computeObjectiveValueAndDerivative(x0);
                 DerivativeStructure y0 = ComputeObjectiveValueAndDerivative(x0);
-                x1 = x0 - (y0.Value / y0.getPartialDerivative(1));
-                if (FastMath.abs(x1 - x0) <= absoluteAccuracy)
+                x1 = x0 - (y0.GetValue() / y0.GetPartialDerivative(1));
+                if (FastMath.Abs(x1 - x0) <= absoluteAccuracy)
                 {
                     return x1;
                 }

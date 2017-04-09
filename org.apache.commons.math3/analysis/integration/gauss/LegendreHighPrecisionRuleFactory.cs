@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,26 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using System;
-
 namespace org.apache.commons.math3.analysis.integration.gauss
 {
 
 
-    /*using DimensionMismatchException = org.apache.commons.math3.exception.DimensionMismatchException;
-    using Pair = org.apache.commons.math3.util.Pair;*/
+    using DimensionMismatchException = org.apache.commons.math3.exception.DimensionMismatchException;
+    using Pair = org.apache.commons.math3.util.Pair;
 
     /// <summary>
     /// Factory that creates Gauss-type quadrature rule using Legendre polynomials.
     /// In this implementation, the lower and upper bounds of the natural interval
     /// of integration are -1 and 1, respectively.
     /// The Legendre polynomials are evaluated using the recurrence relation
-    /// presented in <a href="http://en.wikipedia.org/wiki/Abramowitz_and_Stegun"
+    /// presented in <a href="http://en.wikipedia.org/wiki/Abramowitz_and_Stegun">
     /// Abramowitz and Stegun, 1964</a>.
     /// 
     /// @since 3.1
-    /// @version $Id: LegendreHighPrecisionRuleFactory.java 1455194 2013-03-11 15:45:54Z luc $
     /// </summary>
     public class LegendreHighPrecisionRuleFactory : BaseRuleFactory<decimal>
     {
@@ -68,25 +65,33 @@ namespace org.apache.commons.math3.analysis.integration.gauss
 
         /// <summary>
         /// {@inheritDoc} </summary>
-        protected internal override Tuple<decimal[], BigDecimal[]> ComputeRule(int numberOfPoints)
+        protected internal override Pair<decimal[], BigDecimal[]> ComputeRule(int numberOfPoints)
         {
 
             if (numberOfPoints == 1)
             {
                 // Break recursion.
-                return new Tuple<decimal[], BigDecimal[]>(new decimal[] { decimal.Zero }, new decimal[] { two });
+                return new Pair<decimal[], BigDecimal[]>(new decimal[] { decimal.Zero }, new decimal[] { two });
             }
 
             // Get previous rule.
             // If it has not been computed yet it will trigger a recursive call
             // to this method.
-            decimal[] previousPoints = GetRuleInternal(numberOfPoints - 1).Item1;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal[] previousPoints = getRuleInternal(numberOfPoints - 1).getFirst();
+            decimal[] previousPoints = GetRuleInternal(numberOfPoints - 1).GetFirst();
 
             // Compute next rule.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal[] points = new java.math.BigDecimal[numberOfPoints];
             decimal[] points = new decimal[numberOfPoints];
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal[] weights = new java.math.BigDecimal[numberOfPoints];
             decimal[] weights = new decimal[numberOfPoints];
 
             // Find i-th root of P[n+1] by bracketing.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int iMax = numberOfPoints / 2;
             int iMax = numberOfPoints / 2;
             for (int i = 0; i < iMax; i++)
             {
@@ -104,8 +109,14 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                 decimal pb = b;
                 for (int j = 1; j < numberOfPoints; j++)
                 {
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal b_two_j_p_1 = new java.math.BigDecimal(2 * j + 1, mContext);
                     decimal b_two_j_p_1 = new decimal(2 * j + 1, mContext);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal b_j = new java.math.BigDecimal(j, mContext);
                     decimal b_j = new decimal(j, mContext);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal b_j_p_1 = new java.math.BigDecimal(j + 1, mContext);
                     decimal b_j_p_1 = new decimal(j + 1, mContext);
 
                     // Compute P[j+1](a)
@@ -150,8 +161,14 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                     pc = c;
                     for (int j = 1; j < numberOfPoints; j++)
                     {
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal b_two_j_p_1 = new java.math.BigDecimal(2 * j + 1, mContext);
                         decimal b_two_j_p_1 = new decimal(2 * j + 1, mContext);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal b_j = new java.math.BigDecimal(j, mContext);
                         decimal b_j = new decimal(j, mContext);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal b_j_p_1 = new java.math.BigDecimal(j + 1, mContext);
                         decimal b_j_p_1 = new decimal(j + 1, mContext);
 
                         // Compute P[j+1](c)
@@ -183,6 +200,8 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                         c = a.add(b, mContext).multiply(oneHalf, mContext);
                     }
                 }
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal nP = new java.math.BigDecimal(numberOfPoints, mContext);
                 decimal nP = new decimal(numberOfPoints, mContext);
                 decimal tmp1 = pmc.subtract(c.multiply(pc, mContext), mContext);
                 tmp1 = tmp1 * nP;
@@ -195,6 +214,8 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                 points[i] = c;
                 weights[i] = tmp2;
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int idx = numberOfPoints - i - 1;
                 int idx = numberOfPoints - i - 1;
                 points[idx] = c.negate(mContext);
                 weights[idx] = tmp2;
@@ -208,7 +229,11 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                 decimal pmc = decimal.One;
                 for (int j = 1; j < numberOfPoints; j += 2)
                 {
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal b_j = new java.math.BigDecimal(j, mContext);
                     decimal b_j = new decimal(j, mContext);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal b_j_p_1 = new java.math.BigDecimal(j + 1, mContext);
                     decimal b_j_p_1 = new decimal(j + 1, mContext);
 
                     // pmc = -j * pmc / (j + 1);
@@ -218,6 +243,8 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                 }
 
                 // 2 / pow(numberOfPoints * pmc, 2);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final java.math.BigDecimal nP = new java.math.BigDecimal(numberOfPoints, mContext);
                 decimal nP = new decimal(numberOfPoints, mContext);
                 decimal tmp1 = pmc.multiply(nP, mContext);
                 tmp1 = tmp1.pow(2, mContext);
@@ -227,7 +254,7 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                 weights[iMax] = tmp2;
             }
 
-            return new Tuple<decimal[], BigDecimal[]>(points, weights);
+            return new Pair<decimal[], BigDecimal[]>(points, weights);
         }
     }
 

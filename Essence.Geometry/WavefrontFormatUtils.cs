@@ -185,6 +185,18 @@ namespace Essence.Maths
             return wf;
         }
 
+        public static WavefrontFormat DrawVectors(this WavefrontFormat wf,
+                                                  string color,
+                                                  IEnumerable<Tuple<Point2d, Vector2d>> vectors)
+        {
+            wf.UseMaterial(color);
+            foreach (Tuple<Point2d, Vector2d> tuple in vectors)
+            {
+                wf.AddLines(new[] { tuple.Item1, tuple.Item1 + tuple.Item2 });
+            }
+            return wf;
+        }
+
         public static WavefrontFormat DrawClotho(this WavefrontFormat wf,
                                                  string color,
                                                  ClothoidArc2 arc)
@@ -219,22 +231,8 @@ namespace Essence.Maths
                 ComposedCurve2 composed = (ComposedCurve2)curve;
                 foreach (ICurve2 segment in composed.GetSegments())
                 {
-                    /*Point2d pt = segment.GetPosition(segment.TMin);
-                    wf.DrawFigure(color, WaveFigure.X, pt, 1);
-                    wf.DrawString(color, pt, FontFamily.GenericSerif, FontStyle.Regular, 1000, "" + (i++));*/
-
-                    //if (segment is CircleArc2)
-                    {
-                        wf.AddLines(MathUtils.For(segment.TMin, segment.TMax, count).Select(segment.GetPosition), false);
-                    }
+                    wf.AddLines(MathUtils.For(segment.TMin, segment.TMax, count).Select(segment.GetPosition), false);
                 }
-
-                /*if (!curve.IsClosed)
-                {
-                    Point2d pt = curve.GetPosition(curve.TMax);
-                    wf.DrawFigure(color, WaveFigure.X, pt, 1);
-                    wf.DrawString(color, pt, FontFamily.GenericSerif, FontStyle.Regular, 1000, "" + (i++));
-                }*/
             }
             else
             {
@@ -295,51 +293,51 @@ namespace Essence.Maths
                 }
                 case WaveFigure.Rectangle:
                 {
-                    wf.AddLines(new Point2d[]
+                    wf.AddLines(new[]
                     {
-                        point.Add(new Point2d(size, size)),
-                        point.Add(new Point2d(-size, size)),
-                        point.Add(new Point2d(-size, -size)),
-                        point.Add(new Point2d(size, -size)),
+                        point.Add(new Vector2d(size, size)),
+                        point.Add(new Vector2d(-size, size)),
+                        point.Add(new Vector2d(-size, -size)),
+                        point.Add(new Vector2d(size, -size)),
                     }, true);
                     break;
                 }
                 case WaveFigure.Diamond:
                 {
-                    wf.AddLines(new Point2d[]
+                    wf.AddLines(new[]
                     {
-                        point.Add(new Point2d(0, size)),
-                        point.Add(new Point2d(-size, 0)),
-                        point.Add(new Point2d(0, -size)),
-                        point.Add(new Point2d(size, 0)),
+                        point.Add(new Vector2d(0, size)),
+                        point.Add(new Vector2d(-size, 0)),
+                        point.Add(new Vector2d(0, -size)),
+                        point.Add(new Vector2d(size, 0)),
                     }, true);
                     break;
                 }
                 case WaveFigure.Plus:
                 {
-                    wf.AddLines(new Point2d[]
+                    wf.AddLines(new[]
                     {
-                        point.Add(new Point2d(0, size)),
-                        point.Add(new Point2d(0, -size)),
+                        point.Add(new Vector2d(0, size)),
+                        point.Add(new Vector2d(0, -size)),
                     }, false);
-                    wf.AddLines(new Point2d[]
+                    wf.AddLines(new[]
                     {
-                        point.Add(new Point2d(size, 0)),
-                        point.Add(new Point2d(-size, 0)),
+                        point.Add(new Vector2d(size, 0)),
+                        point.Add(new Vector2d(-size, 0)),
                     }, false);
                     break;
                 }
                 case WaveFigure.X:
                 {
-                    wf.AddLines(new Point2d[]
+                    wf.AddLines(new[]
                     {
-                        point.Add(new Point2d(size, size)),
-                        point.Add(new Point2d(-size, -size)),
+                        point.Add(new Vector2d(size, size)),
+                        point.Add(new Vector2d(-size, -size)),
                     }, false);
-                    wf.AddLines(new Point2d[]
+                    wf.AddLines(new[]
                     {
-                        point.Add(new Point2d(-size, size)),
-                        point.Add(new Point2d(size, -size)),
+                        point.Add(new Vector2d(-size, size)),
+                        point.Add(new Vector2d(size, -size)),
                     }, false);
                     break;
                 }

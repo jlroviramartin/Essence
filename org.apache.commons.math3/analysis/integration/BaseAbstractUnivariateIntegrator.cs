@@ -1,3 +1,6 @@
+﻿/// Apache Commons Math 3.6.1
+using System;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,22 +17,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using org.apache.commons.math3.analysis.exception;
-using org.apache.commons.math3.analysis.solvers;
-using org.apache.commons.math3.analysis.util;
-using org.apache.commons.math3.util;
-
 namespace org.apache.commons.math3.analysis.integration
 {
+
+    using UnivariateSolverUtils = org.apache.commons.math3.analysis.solvers.UnivariateSolverUtils;
+    using MathIllegalArgumentException = org.apache.commons.math3.exception.MathIllegalArgumentException;
+    using MaxCountExceededException = org.apache.commons.math3.exception.MaxCountExceededException;
+    using NotStrictlyPositiveException = org.apache.commons.math3.exception.NotStrictlyPositiveException;
+    using NullArgumentException = org.apache.commons.math3.exception.NullArgumentException;
+    using NumberIsTooSmallException = org.apache.commons.math3.exception.NumberIsTooSmallException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+    using IntegerSequence = org.apache.commons.math3.util.IntegerSequence;
+    using MathUtils = org.apache.commons.math3.util.MathUtils;
+
     /// <summary>
     /// Provide a default implementation for several generic functions.
     /// 
-    /// @version $Id: BaseAbstractUnivariateIntegrator.java 1455194 2013-03-11 15:45:54Z luc $
     /// @since 1.2
     /// </summary>
     public abstract class BaseAbstractUnivariateIntegrator : UnivariateIntegrator
     {
+
         /// <summary>
         /// Default absolute accuracy. </summary>
         public const double DEFAULT_ABSOLUTE_ACCURACY = 1.0e-15;
@@ -48,7 +56,13 @@ namespace org.apache.commons.math3.analysis.integration
 
         /// <summary>
         /// The iteration count. </summary>
-        protected internal readonly Incrementor iterations;
+        /// @deprecated as of 3.6, this field has been replaced with <seealso cref="#incrementCount()"/> 
+        [Obsolete("as of 3.6, this field has been replaced with <seealso cref=\"#incrementCount()\"/>")]
+        protected internal org.apache.commons.math3.util.Incrementor iterations;
+
+        /// <summary>
+        /// The iteration count. </summary>
+        private IntegerSequence.Incrementor count;
 
         /// <summary>
         /// Maximum absolute error. </summary>
@@ -64,7 +78,7 @@ namespace org.apache.commons.math3.analysis.integration
 
         /// <summary>
         /// The functions evaluation count. </summary>
-        private readonly Incrementor evaluations;
+        private IntegerSequence.Incrementor evaluations;
 
         /// <summary>
         /// Function to integrate. </summary>
@@ -103,7 +117,9 @@ namespace org.apache.commons.math3.analysis.integration
         ///       the "reasonable value" varies widely for different algorithms. Users are
         ///       advised to use the default value supplied by the algorithm.</li>
         /// </ul>
-        /// </para> </summary>
+        /// 
+        /// </para>
+        /// </summary>
         /// <param name="relativeAccuracy"> relative accuracy of the result </param>
         /// <param name="absoluteAccuracy"> absolute accuracy of the result </param>
         /// <param name="minimalIterationCount"> minimum number of iterations </param>
@@ -112,8 +128,11 @@ namespace org.apache.commons.math3.analysis.integration
         /// is not strictly positive </exception>
         /// <exception cref="NumberIsTooSmallException"> if maximal number of iterations
         /// is lesser than or equal to the minimal number of iterations </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected BaseAbstractUnivariateIntegrator(final double relativeAccuracy, final double absoluteAccuracy, final int minimalIterationCount, final int maximalIterationCount) throws org.apache.commons.math3.exception.NotStrictlyPositiveException, org.apache.commons.math3.exception.NumberIsTooSmallException
         protected internal BaseAbstractUnivariateIntegrator(double relativeAccuracy, double absoluteAccuracy, int minimalIterationCount, int maximalIterationCount)
         {
+
             // accuracy settings
             this.relativeAccuracy = relativeAccuracy;
             this.absoluteAccuracy = absoluteAccuracy;
@@ -128,19 +147,25 @@ namespace org.apache.commons.math3.analysis.integration
                 throw new NumberIsTooSmallException(maximalIterationCount, minimalIterationCount, false);
             }
             this.minimalIterationCount = minimalIterationCount;
-            this.iterations = new Incrementor();
-            this.iterations.MaximalCount = maximalIterationCount;
+            this.count = IntegerSequence.Incrementor.Create().withMaximalCount(maximalIterationCount);
+
+//JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
+//ORIGINAL LINE: @SuppressWarnings("deprecation") org.apache.commons.math3.util.Incrementor wrapped = org.apache.commons.math3.util.Incrementor.wrap(count);
+            org.apache.commons.math3.util.Incrementor wrapped = org.apache.commons.math3.util.Incrementor.Wrap(count);
+            this.iterations = wrapped;
 
             // prepare evaluations counter, but do not set it yet
-            this.evaluations = new Incrementor();
+            evaluations = IntegerSequence.Incrementor.Create();
+
         }
 
         /// <summary>
         /// Construct an integrator with given accuracies. </summary>
         /// <param name="relativeAccuracy"> relative accuracy of the result </param>
         /// <param name="absoluteAccuracy"> absolute accuracy of the result </param>
-        protected internal BaseAbstractUnivariateIntegrator(double relativeAccuracy, double absoluteAccuracy)
-            : this(relativeAccuracy, absoluteAccuracy, DEFAULT_MIN_ITERATIONS_COUNT, DEFAULT_MAX_ITERATIONS_COUNT)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected BaseAbstractUnivariateIntegrator(final double relativeAccuracy, final double absoluteAccuracy)
+        protected internal BaseAbstractUnivariateIntegrator(double relativeAccuracy, double absoluteAccuracy) : this(relativeAccuracy, absoluteAccuracy, DEFAULT_MIN_ITERATIONS_COUNT, DEFAULT_MAX_ITERATIONS_COUNT)
         {
         }
 
@@ -152,63 +177,72 @@ namespace org.apache.commons.math3.analysis.integration
         /// is not strictly positive </exception>
         /// <exception cref="NumberIsTooSmallException"> if maximal number of iterations
         /// is lesser than or equal to the minimal number of iterations </exception>
-        protected internal BaseAbstractUnivariateIntegrator(int minimalIterationCount, int maximalIterationCount)
-            : this(DEFAULT_RELATIVE_ACCURACY, DEFAULT_ABSOLUTE_ACCURACY, minimalIterationCount, maximalIterationCount)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected BaseAbstractUnivariateIntegrator(final int minimalIterationCount, final int maximalIterationCount) throws org.apache.commons.math3.exception.NotStrictlyPositiveException, org.apache.commons.math3.exception.NumberIsTooSmallException
+        protected internal BaseAbstractUnivariateIntegrator(int minimalIterationCount, int maximalIterationCount) : this(DEFAULT_RELATIVE_ACCURACY, DEFAULT_ABSOLUTE_ACCURACY, minimalIterationCount, maximalIterationCount)
         {
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
-        public virtual double RelativeAccuracy
+        public virtual double GetRelativeAccuracy()
         {
-            get { return this.relativeAccuracy; }
+            return relativeAccuracy;
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
-        public virtual double AbsoluteAccuracy
+        public virtual double GetAbsoluteAccuracy()
         {
-            get { return this.absoluteAccuracy; }
+            return absoluteAccuracy;
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
-        public virtual int MinimalIterationCount
+        public virtual int GetMinimalIterationCount()
         {
-            get { return this.minimalIterationCount; }
+            return minimalIterationCount;
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
-        public virtual int MaximalIterationCount
+        public virtual int GetMaximalIterationCount()
         {
-            get { return this.iterations.MaximalCount; }
+            return count.GetMaximalCount();
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
-        public virtual int Evaluations
+        public virtual int GetEvaluations()
         {
-            get { return this.evaluations.Count; }
+            return evaluations.GetCount();
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
-        public virtual int Iterations
+        public virtual int GetIterations()
         {
-            get { return this.iterations.Count; }
+            return count.GetCount();
+        }
+
+        /// <summary>
+        /// Increment the number of iterations. </summary>
+        /// <exception cref="MaxCountExceededException"> if the number of iterations
+        /// exceeds the allowed maximum number </exception>
+        protected internal virtual void IncrementCount()
+        {
+            count.Increment();
         }
 
         /// <returns> the lower bound. </returns>
-        protected internal virtual double Min
+        protected internal virtual double GetMin()
         {
-            get { return this.min; }
+            return min;
         }
-
         /// <returns> the upper bound. </returns>
-        protected internal virtual double Max
+        protected internal virtual double GetMax()
         {
-            get { return this.max; }
+            return max;
         }
 
         /// <summary>
@@ -218,17 +252,19 @@ namespace org.apache.commons.math3.analysis.integration
         /// <returns> the objective function value at specified point. </returns>
         /// <exception cref="TooManyEvaluationsException"> if the maximal number of function
         /// evaluations is exceeded. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected double computeObjectiveValue(final double point) throws org.apache.commons.math3.exception.TooManyEvaluationsException
         protected internal virtual double ComputeObjectiveValue(double point)
         {
             try
             {
-                this.evaluations.IncrementCount();
+                evaluations.Increment();
             }
             catch (MaxCountExceededException e)
             {
-                throw new TooManyEvaluationsException(e.Max);
+                throw new TooManyEvaluationsException(e.GetMax());
             }
-            return this.function.Value(point);
+            return function.Value(point);
         }
 
         /// <summary>
@@ -242,30 +278,37 @@ namespace org.apache.commons.math3.analysis.integration
         /// <param name="upper"> the upper bound for the interval </param>
         /// <exception cref="NullArgumentException"> if {@code f} is {@code null}. </exception>
         /// <exception cref="MathIllegalArgumentException"> if {@code min >= max}. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected void setup(final int maxEval, final org.apache.commons.math3.analysis.UnivariateFunction f, final double lower, final double upper) throws org.apache.commons.math3.exception.NullArgumentException, org.apache.commons.math3.exception.MathIllegalArgumentException
         protected internal virtual void Setup(int maxEval, UnivariateFunction f, double lower, double upper)
         {
+
             // Checks.
-            MyUtils.CheckNotNull(f);
+            MathUtils.CheckNotNull(f);
             UnivariateSolverUtils.VerifyInterval(lower, upper);
 
             // Reset.
-            this.min = lower;
-            this.max = upper;
-            this.function = f;
-            this.evaluations.MaximalCount = maxEval;
-            this.evaluations.ResetCount();
-            this.iterations.ResetCount();
+            min = lower;
+            max = upper;
+            function = f;
+            evaluations = evaluations.WithMaximalCount(maxEval).withStart(0);
+            count = count.WithStart(0);
+
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public double integrate(final int maxEval, final org.apache.commons.math3.analysis.UnivariateFunction f, final double lower, final double upper) throws org.apache.commons.math3.exception.TooManyEvaluationsException, org.apache.commons.math3.exception.MaxCountExceededException, org.apache.commons.math3.exception.MathIllegalArgumentException, org.apache.commons.math3.exception.NullArgumentException
         public virtual double Integrate(int maxEval, UnivariateFunction f, double lower, double upper)
         {
+
             // Initialization.
-            this.Setup(maxEval, f, lower, upper);
+            Setup(maxEval, f, lower, upper);
 
             // Perform computation.
-            return this.DoIntegrate();
+            return DoIntegrate();
+
         }
 
         /// <summary>
@@ -278,5 +321,7 @@ namespace org.apache.commons.math3.analysis.integration
         /// <exception cref="MaxCountExceededException"> if the maximum iteration count is exceeded
         /// or the integrator detects convergence problems otherwise </exception>
         protected internal abstract double DoIntegrate();
+
     }
+
 }

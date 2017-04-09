@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,13 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using org.apache.commons.math3.analysis.exception;
-using org.apache.commons.math3.analysis.integration.gauss;
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.integration
 {
+
+    using GaussIntegratorFactory = org.apache.commons.math3.analysis.integration.gauss.GaussIntegratorFactory;
+    using GaussIntegrator = org.apache.commons.math3.analysis.integration.gauss.GaussIntegrator;
+    using MathIllegalArgumentException = org.apache.commons.math3.exception.MathIllegalArgumentException;
+    using MaxCountExceededException = org.apache.commons.math3.exception.MaxCountExceededException;
+    using NotStrictlyPositiveException = org.apache.commons.math3.exception.NotStrictlyPositiveException;
+    using NumberIsTooSmallException = org.apache.commons.math3.exception.NumberIsTooSmallException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+    using LocalizedFormats = org.apache.commons.math3.exception.util.LocalizedFormats;
+    using FastMath = org.apache.commons.math3.util.FastMath;
+
     /// <summary>
     /// This algorithm divides the integration interval into equally-sized
     /// sub-interval and on each of them performs a
@@ -35,15 +42,14 @@ namespace org.apache.commons.math3.analysis.integration
     /// <a href="http://en.wikipedia.org/w/index.php?title=Numerical_integration#Integrals_over_infinite_intervals">
     ///  here</a> should be avoided when using this class.
     /// 
-    /// @version $Id: IterativeLegendreGaussIntegrator.java 1499765 2013-07-04 14:24:11Z erans $
     /// @since 3.1
     /// </summary>
+
     public class IterativeLegendreGaussIntegrator : BaseAbstractUnivariateIntegrator
     {
         /// <summary>
         /// Factory that computes the points and weights. </summary>
         private static readonly GaussIntegratorFactory FACTORY = new GaussIntegratorFactory();
-
         /// <summary>
         /// Number of integration points (per interval). </summary>
         private readonly int numberOfPoints;
@@ -60,14 +66,15 @@ namespace org.apache.commons.math3.analysis.integration
         /// or number of points are not strictly positive. </exception>
         /// <exception cref="NumberIsTooSmallException"> if maximal number of iterations
         /// is smaller than or equal to the minimal number of iterations. </exception>
-        public IterativeLegendreGaussIntegrator(int n, double relativeAccuracy, double absoluteAccuracy, int minimalIterationCount, int maximalIterationCount)
-            : base(relativeAccuracy, absoluteAccuracy, minimalIterationCount, maximalIterationCount)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public IterativeLegendreGaussIntegrator(final int n, final double relativeAccuracy, final double absoluteAccuracy, final int minimalIterationCount, final int maximalIterationCount) throws org.apache.commons.math3.exception.NotStrictlyPositiveException, org.apache.commons.math3.exception.NumberIsTooSmallException
+        public IterativeLegendreGaussIntegrator(int n, double relativeAccuracy, double absoluteAccuracy, int minimalIterationCount, int maximalIterationCount) : base(relativeAccuracy, absoluteAccuracy, minimalIterationCount, maximalIterationCount)
         {
             if (n <= 0)
             {
-                throw new NotStrictlyPositiveException("LocalizedFormats.NUMBER_OF_POINTS", n);
+                throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_POINTS, n);
             }
-            this.numberOfPoints = n;
+           numberOfPoints = n;
         }
 
         /// <summary>
@@ -77,8 +84,9 @@ namespace org.apache.commons.math3.analysis.integration
         /// <param name="relativeAccuracy"> Relative accuracy of the result. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy of the result. </param>
         /// <exception cref="NotStrictlyPositiveException"> if {@code n < 1}. </exception>
-        public IterativeLegendreGaussIntegrator(int n, double relativeAccuracy, double absoluteAccuracy)
-            : this(n, relativeAccuracy, absoluteAccuracy, DEFAULT_MIN_ITERATIONS_COUNT, DEFAULT_MAX_ITERATIONS_COUNT)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public IterativeLegendreGaussIntegrator(final int n, final double relativeAccuracy, final double absoluteAccuracy) throws org.apache.commons.math3.exception.NotStrictlyPositiveException
+        public IterativeLegendreGaussIntegrator(int n, double relativeAccuracy, double absoluteAccuracy) : this(n, relativeAccuracy, absoluteAccuracy, DEFAULT_MIN_ITERATIONS_COUNT, DEFAULT_MAX_ITERATIONS_COUNT)
         {
         }
 
@@ -93,8 +101,9 @@ namespace org.apache.commons.math3.analysis.integration
         /// <exception cref="NumberIsTooSmallException"> if maximal number of iterations
         /// is smaller than or equal to the minimal number of iterations. </exception>
         /// <exception cref="NotStrictlyPositiveException"> if {@code n < 1}. </exception>
-        public IterativeLegendreGaussIntegrator(int n, int minimalIterationCount, int maximalIterationCount)
-            : this(n, DEFAULT_RELATIVE_ACCURACY, DEFAULT_ABSOLUTE_ACCURACY, minimalIterationCount, maximalIterationCount)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public IterativeLegendreGaussIntegrator(final int n, final int minimalIterationCount, final int maximalIterationCount) throws org.apache.commons.math3.exception.NotStrictlyPositiveException, org.apache.commons.math3.exception.NumberIsTooSmallException
+        public IterativeLegendreGaussIntegrator(int n, int minimalIterationCount, int maximalIterationCount) : this(n, DEFAULT_RELATIVE_ACCURACY, DEFAULT_ABSOLUTE_ACCURACY, minimalIterationCount, maximalIterationCount)
         {
         }
 
@@ -103,29 +112,37 @@ namespace org.apache.commons.math3.analysis.integration
         protected internal override double DoIntegrate()
         {
             // Compute first estimate with a single step.
-            double oldt = this.Stage(1);
+            double oldt = Stage(1);
 
             int n = 2;
             while (true)
             {
                 // Improve integral with a larger number of steps.
-                double t = this.Stage(n);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double t = stage(n);
+                double t = Stage(n);
 
                 // Estimate the error.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double delta = org.apache.commons.math3.util.FastMath.abs(t - oldt);
                 double delta = FastMath.Abs(t - oldt);
-                double limit = FastMath.Max(this.AbsoluteAccuracy, this.RelativeAccuracy * (FastMath.Abs(oldt) + FastMath.Abs(t)) * 0.5);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double limit = org.apache.commons.math3.util.FastMath.max(getAbsoluteAccuracy(), getRelativeAccuracy() * (org.apache.commons.math3.util.FastMath.abs(oldt) + org.apache.commons.math3.util.FastMath.abs(t)) * 0.5);
+                double limit = FastMath.Max(GetAbsoluteAccuracy(), GetRelativeAccuracy() * (FastMath.Abs(oldt) + FastMath.Abs(t)) * 0.5);
 
                 // check convergence
-                if (this.iterations.Count + 1 >= this.MinimalIterationCount && delta <= limit)
+                if (GetIterations() + 1 >= GetMinimalIterationCount() && delta <= limit)
                 {
                     return t;
                 }
 
                 // Prepare next iteration.
-                double ratio = FastMath.Min(4, FastMath.Pow(delta / limit, 0.5 / this.numberOfPoints));
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double ratio = org.apache.commons.math3.util.FastMath.min(4, org.apache.commons.math3.util.FastMath.pow(delta / limit, 0.5 / numberOfPoints));
+                double ratio = FastMath.Min(4, FastMath.Pow(delta / limit, 0.5 / numberOfPoints));
                 n = FastMath.Max((int)(ratio * n), n + 1);
                 oldt = t;
-                this.iterations.IncrementCount();
+                IncrementCount();
             }
         }
 
@@ -136,44 +153,60 @@ namespace org.apache.commons.math3.analysis.integration
         /// <returns> the value of n-th stage integral. </returns>
         /// <exception cref="TooManyEvaluationsException"> if the maximum number of evaluations
         /// is exceeded. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: private double stage(final int n) throws org.apache.commons.math3.exception.TooManyEvaluationsException
         private double Stage(int n)
         {
             // Function to be integrated is stored in the base class.
-            UnivariateFunction f = new UnivariateFunctionAnonymousInnerClassHelper(this);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.analysis.UnivariateFunction f = new org.apache.commons.math3.analysis.UnivariateFunction()
+            UnivariateFunction f = new UnivariateFunctionAnonymousInnerClass(this);
 
-            double min = this.Min;
-            double max = this.Max;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double min = getMin();
+            double min = GetMin();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double max = getMax();
+            double max = GetMax();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double step = (max - min) / n;
             double step = (max - min) / n;
 
             double sum = 0;
             for (int i = 0; i < n; i++)
             {
                 // Integrate over each sub-interval [a, b].
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double a = min + i * step;
                 double a = min + i * step;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double b = a + step;
                 double b = a + step;
-                GaussIntegrator g = FACTORY.Legendre(this.numberOfPoints, a, b);
-#if false
-                GaussIntegrator g = FACTORY.LegendreHighPrecision(this.numberOfPoints, a, b);
-#endif
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.analysis.integration.gauss.GaussIntegrator g = FACTORY.legendreHighPrecision(numberOfPoints, a, b);
+                GaussIntegrator g = FACTORY.LegendreHighPrecision(numberOfPoints, a, b);
                 sum += g.Integrate(f);
             }
 
             return sum;
         }
 
-        private class UnivariateFunctionAnonymousInnerClassHelper : UnivariateFunction
+        private class UnivariateFunctionAnonymousInnerClass : UnivariateFunction
         {
             private readonly IterativeLegendreGaussIntegrator outerInstance;
 
-            public UnivariateFunctionAnonymousInnerClassHelper(IterativeLegendreGaussIntegrator outerInstance)
+            public UnivariateFunctionAnonymousInnerClass(IterativeLegendreGaussIntegrator outerInstance)
             {
                 this.outerInstance = outerInstance;
             }
 
+                        /// <summary>
+                        /// {@inheritDoc} </summary>
             public virtual double Value(double x)
             {
-                return this.outerInstance.ComputeObjectiveValue(x);
+                return outerInstance.ComputeObjectiveValue(x);
             }
         }
     }
+
 }

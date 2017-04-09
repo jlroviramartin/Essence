@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,10 +16,9 @@
  * limitations under the License.
  */
 
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
     /// <summary>
     /// Implements the <em>Pegasus</em> method for root-finding (approximating
     /// a zero of a univariate real function). It is a modified
@@ -43,14 +43,13 @@ namespace org.apache.commons.math3.analysis.solvers
     /// 1972.</para>
     /// 
     /// @since 3.0
-    /// @version $Id: PegasusSolver.java 1364387 2012-07-22 18:14:11Z tn $
     /// </summary>
     public class PegasusSolver : BaseSecantSolver
     {
+
         /// <summary>
         /// Construct a solver with default accuracy (1e-6). </summary>
-        public PegasusSolver()
-            : base(DEFAULT_ABSOLUTE_ACCURACY, Method.PEGASUS)
+        public PegasusSolver() : base(DEFAULT_ABSOLUTE_ACCURACY, Method.PEGASUS)
         {
         }
 
@@ -58,8 +57,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// Construct a solver.
         /// </summary>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public PegasusSolver(double absoluteAccuracy)
-            : base(absoluteAccuracy, Method.PEGASUS)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public PegasusSolver(final double absoluteAccuracy)
+        public PegasusSolver(double absoluteAccuracy) : base(absoluteAccuracy, Method.PEGASUS)
         {
         }
 
@@ -68,8 +68,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         /// <param name="relativeAccuracy"> Relative accuracy. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public PegasusSolver(double relativeAccuracy, double absoluteAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy, Method.PEGASUS)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public PegasusSolver(final double relativeAccuracy, final double absoluteAccuracy)
+        public PegasusSolver(double relativeAccuracy, double absoluteAccuracy) : base(relativeAccuracy, absoluteAccuracy, Method.PEGASUS)
         {
         }
 
@@ -79,9 +80,11 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="relativeAccuracy"> Relative accuracy. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
         /// <param name="functionValueAccuracy"> Maximum function value error. </param>
-        public PegasusSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy, Method.PEGASUS)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public PegasusSolver(final double relativeAccuracy, final double absoluteAccuracy, final double functionValueAccuracy)
+        public PegasusSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy) : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy, Method.PEGASUS)
         {
         }
     }
+
 }

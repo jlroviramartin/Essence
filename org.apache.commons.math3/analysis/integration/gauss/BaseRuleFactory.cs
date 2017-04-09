@@ -1,3 +1,6 @@
+﻿/// Apache Commons Math 3.6.1
+using System.Collections.Generic;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,13 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using System;
-using System.Collections.Generic;
-using org.apache.commons.math3.analysis.exception;
-
 namespace org.apache.commons.math3.analysis.integration.gauss
 {
+
+    //using Pair = org.apache.commons.math3.util.Pair;
+    using org.apache.commons.math3.util;
+    using DimensionMismatchException = org.apache.commons.math3.exception.DimensionMismatchException;
+    using NotStrictlyPositiveException = org.apache.commons.math3.exception.NotStrictlyPositiveException;
+    using LocalizedFormats = org.apache.commons.math3.exception.util.LocalizedFormats;
+
     /// <summary>
     /// Base class for rules that determines the integration nodes and their
     /// weights.
@@ -29,17 +34,15 @@ namespace org.apache.commons.math3.analysis.integration.gauss
     /// @param <T> Type of the number used to represent the points and weights of
     /// the quadrature rules.
     /// 
-    /// @since 3.1
-    /// @version $Id: BaseRuleFactory.java 1455194 2013-03-11 15:45:54Z luc $ </param>
-    public abstract class BaseRuleFactory<T> where T : IConvertible
+    /// @since 3.1 </param>
+    public abstract class BaseRuleFactory<T> where T : Number
     {
         /// <summary>
         /// List of points and weights, indexed by the order of the rule. </summary>
-        private readonly IDictionary<int?, Tuple<T[], T[]>> pointsAndWeights = new SortedDictionary<int?, Tuple<T[], T[]>>();
-
+        private readonly IDictionary<int?, Pair<T[], T[]>> pointsAndWeights = new SortedDictionary<int?, Pair<T[], T[]>>();
         /// <summary>
         /// Cache for double-precision rules. </summary>
-        private readonly IDictionary<int?, Tuple<double[], double[]>> pointsAndWeightsDouble = new SortedDictionary<int?, Tuple<double[], double[]>>();
+        private readonly IDictionary<int?, Pair<double[], double[]>> pointsAndWeightsDouble = new SortedDictionary<int?, Pair<double[], double[]>>();
 
         /// <summary>
         /// Gets a copy of the quadrature rule with the given number of integration
@@ -50,30 +53,33 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// <exception cref="NotStrictlyPositiveException"> if {@code numberOfPoints < 1}. </exception>
         /// <exception cref="DimensionMismatchException"> if the elements of the rule pair do not
         /// have the same length. </exception>
-        public virtual Tuple<double[], double[]> GetRule(int numberOfPoints)
+        public virtual Pair<double[], double[]> GetRule(int numberOfPoints)
         {
+
             if (numberOfPoints <= 0)
             {
-                throw new NotStrictlyPositiveException("LocalizedFormats.NUMBER_OF_POINTS", numberOfPoints);
+                throw new NotStrictlyPositiveException(LocalizedFormats.NUMBER_OF_POINTS, numberOfPoints);
             }
 
             // Try to obtain the rule from the cache.
-            Tuple<double[], double[]> cached = this.pointsAndWeightsDouble[numberOfPoints];
+            Pair<double[], double[]> cached = pointsAndWeightsDouble[numberOfPoints];
 
             if (cached == null)
             {
                 // Rule not computed yet.
 
                 // Compute the rule.
-                Tuple<T[], T[]> rule = this.GetRuleInternal(numberOfPoints);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.util.Pair<T[], T[]> rule = getRuleInternal(numberOfPoints);
+                Pair<T[], T[]> rule = GetRuleInternal(numberOfPoints);
                 cached = ConvertToDouble(rule);
 
                 // Cache it.
-                this.pointsAndWeightsDouble[numberOfPoints] = cached;
+                pointsAndWeightsDouble[numberOfPoints] = cached;
             }
 
             // Return a copy.
-            return Tuple.Create((double[])cached.Item1.Clone(), (double[])cached.Item2.Clone());
+            return new Pair<double[], double[]>((double[])cached.GetFirst().Clone(), (double[])cached.GetSecond().Clone());
         }
 
         /// <summary>
@@ -86,16 +92,18 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// <returns> the points and weights corresponding to the given order. </returns>
         /// <exception cref="DimensionMismatchException"> if the elements of the rule pair do not
         /// have the same length. </exception>
-        protected internal virtual Tuple<T[], T[]> GetRuleInternal(int numberOfPoints)
+        protected internal virtual Pair<T[], T[]> GetRuleInternal(int numberOfPoints)
         {
             lock (this)
             {
-                Tuple<T[], T[]> rule = this.pointsAndWeights[numberOfPoints];
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.util.Pair<T[], T[]> rule = pointsAndWeights.get(numberOfPoints);
+                Pair<T[], T[]> rule = pointsAndWeights[numberOfPoints];
                 if (rule == null)
                 {
-                    this.AddRule(this.ComputeRule(numberOfPoints));
+                    AddRule(ComputeRule(numberOfPoints));
                     // The rule should be available now.
-                    return this.GetRuleInternal(numberOfPoints);
+                    return GetRuleInternal(numberOfPoints);
                 }
                 return rule;
             }
@@ -107,14 +115,14 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// <param name="rule"> Rule to be stored. </param>
         /// <exception cref="DimensionMismatchException"> if the elements of the pair do not
         /// have the same length. </exception>
-        protected internal virtual void AddRule(Tuple<T[], T[]> rule)
+        protected internal virtual void AddRule(Pair<T[], T[]> rule)
         {
-            if (rule.Item1.Length != rule.Item2.Length)
+            if (rule.GetFirst().Length != rule.GetSecond().Length)
             {
-                throw new DimensionMismatchException(rule.Item1.Length, rule.Item2.Length);
+                throw new DimensionMismatchException(rule.GetFirst().Length, rule.GetSecond().Length);
             }
 
-            this.pointsAndWeights[rule.Item1.Length] = rule;
+            pointsAndWeights[rule.GetFirst().Length] = rule;
         }
 
         /// <summary>
@@ -124,7 +132,7 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// <returns> the computed rule. </returns>
         /// <exception cref="DimensionMismatchException"> if the elements of the pair do not
         /// have the same length. </exception>
-        protected internal abstract Tuple<T[], T[]> ComputeRule(int numberOfPoints);
+        protected internal abstract Pair<T[], T[]> ComputeRule(int numberOfPoints);
 
         /// <summary>
         /// Converts the from the actual {@code Number} type to {@code double}
@@ -133,22 +141,33 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// weights of the quadrature rules. </param>
         /// <param name="rule"> Points and weights. </param>
         /// <returns> points and weights as {@code double}s. </returns>
-        private static Tuple<double[], double[]> ConvertToDouble<T>(Tuple<T[], T[]> rule) where T : IConvertible
+        private static Pair<double[], double[]> convertToDouble<T>(Pair<T[], T[]> rule) where T : Number
         {
-            T[] pT = rule.Item1;
-            T[] wT = rule.Item2;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final T[] pT = rule.getFirst();
+            T[] pT = rule.GetFirst();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final T[] wT = rule.getSecond();
+            T[] wT = rule.GetSecond();
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int len = pT.length;
             int len = pT.Length;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double[] pD = new double[len];
             double[] pD = new double[len];
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double[] wD = new double[len];
             double[] wD = new double[len];
 
             for (int i = 0; i < len; i++)
             {
-                pD[i] = (double)pT[i].ToDouble(null);
-                wD[i] = (double)wT[i].ToDouble(null);
+                pD[i] = pT[i].doubleValue();
+                wD[i] = wT[i].doubleValue();
             }
 
-            return Tuple.Create(pD, wD);
+            return new Pair<double[], double[]>(pD, wD);
         }
     }
+
 }

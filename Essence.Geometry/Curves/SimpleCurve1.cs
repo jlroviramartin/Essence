@@ -31,6 +31,13 @@ namespace Essence.Maths.Double.Curves
             get { return this.GetPosition(this.TMax); }
         }
 
+        #region private
+
+        /// <summary>Número máximo de evaluaciones para el cálculo de la integral.</summary>
+        private const int IntegralMaxEval = 1000;
+
+        #endregion
+
         #region ICurve1
 
         public virtual double TMin
@@ -102,13 +109,6 @@ namespace Essence.Maths.Double.Curves
         }
 
         #endregion
-
-        #endregion
-
-        #region private
-
-        /// <summary>Número máximo de evaluaciones para el cálculo de la integral.</summary>
-        private const int IntegralMaxEval = 1000;
 
         #endregion
     }

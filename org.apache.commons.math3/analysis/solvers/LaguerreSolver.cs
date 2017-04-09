@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 using System;
 
 /*
@@ -18,32 +19,30 @@ using System;
  */
 namespace org.apache.commons.math3.analysis.solvers
 {
-    using FastMath = System.Math;
 
-    /*using Complex = org.apache.commons.math3.complex.Complex;
-    using ComplexUtils = org.apache.commons.math3.complex.ComplexUtils;
     using PolynomialFunction = org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
+    using Complex = org.apache.commons.math3.complex.Complex;
+    using ComplexUtils = org.apache.commons.math3.complex.ComplexUtils;
     using NoBracketingException = org.apache.commons.math3.exception.NoBracketingException;
-    using NullArgumentException = org.apache.commons.math3.exception.NullArgumentException;
     using NoDataException = org.apache.commons.math3.exception.NoDataException;
-    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+    using NullArgumentException = org.apache.commons.math3.exception.NullArgumentException;
     using NumberIsTooLargeException = org.apache.commons.math3.exception.NumberIsTooLargeException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
     using LocalizedFormats = org.apache.commons.math3.exception.util.LocalizedFormats;
-    using FastMath = org.apache.commons.math3.util.FastMath;*/
+    using FastMath = org.apache.commons.math3.util.FastMath;
 
     /// <summary>
     /// Implements the <a href="http://mathworld.wolfram.com/LaguerresMethod.html">
     /// Laguerre's Method</a> for root finding of real coefficient polynomials.
     /// For reference, see
-    /// <quote>
-    ///  <b>A First Course in Numerical Analysis</b>
+    /// <blockquote>
+    ///  <b>A First Course in Numerical Analysis</b>,
     ///  ISBN 048641454X, chapter 8.
-    /// </quote>
+    /// </blockquote>
     /// Laguerre's method is global in the sense that it can start with any initial
     /// approximation and be able to solve all roots from that point.
     /// The algorithm requires a bracketing condition.
     /// 
-    /// @version $Id: LaguerreSolver.java 1422195 2012-12-15 06:45:18Z psteitz $
     /// @since 1.2
     /// </summary>
     public class LaguerreSolver : AbstractPolynomialSolver
@@ -118,14 +117,24 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         public override double DoSolve()
         {
-            double min = Min;
-            double max = Max;
-            double initial = StartValue;
-            double functionValueAccuracy = FunctionValueAccuracy;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double min = getMin();
+            double min = GetMin();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double max = getMax();
+            double max = GetMax();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double initial = getStartValue();
+            double initial = GetStartValue();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double functionValueAccuracy = getFunctionValueAccuracy();
+            double functionValueAccuracy = GetFunctionValueAccuracy();
 
             VerifySequence(min, initial, max);
 
             // Return the initial guess if it is good enough.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double yInitial = computeObjectiveValue(initial);
             double yInitial = ComputeObjectiveValue(initial);
             if (FastMath.Abs(yInitial) <= functionValueAccuracy)
             {
@@ -133,6 +142,8 @@ namespace org.apache.commons.math3.analysis.solvers
             }
 
             // Return the first endpoint if it is good enough.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double yMin = computeObjectiveValue(min);
             double yMin = ComputeObjectiveValue(min);
             if (FastMath.Abs(yMin) <= functionValueAccuracy)
             {
@@ -146,6 +157,8 @@ namespace org.apache.commons.math3.analysis.solvers
             }
 
             // Return the second endpoint if it is good enough.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double yMax = computeObjectiveValue(max);
             double yMax = ComputeObjectiveValue(max);
             if (FastMath.Abs(yMax) <= functionValueAccuracy)
             {
@@ -167,7 +180,7 @@ namespace org.apache.commons.math3.analysis.solvers
         /// Despite the bracketing condition, the root returned by
         /// <seealso cref="LaguerreSolver.ComplexSolver#solve(Complex[],Complex)"/> may
         /// not be a real zero inside {@code [min, max]}.
-        /// For example, <code>p(x) = x<sup>3</sup> + 1,</code>
+        /// For example, <code> p(x) = x<sup>3</sup> + 1, </code>
         /// with {@code min = -2}, {@code max = 2}, {@code initial = 0}.
         /// When it occurs, this code calls
         /// <seealso cref="LaguerreSolver.ComplexSolver#solveAll(Complex[],Complex)"/>
@@ -183,24 +196,30 @@ namespace org.apache.commons.math3.analysis.solvers
         [Obsolete("This method should not be part of the public API: It will")]
         public virtual double Laguerre(double lo, double hi, double fLo, double fHi)
         {
-            Complex[] c = ComplexUtils.convertToComplex(Coefficients);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex c[] = org.apache.commons.math3.complex.ComplexUtils.convertToComplex(getCoefficients());
+            Complex[] c = ComplexUtils.ConvertToComplex(GetCoefficients());
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex initial = new org.apache.commons.math3.complex.Complex(0.5 * (lo + hi), 0);
             Complex initial = new Complex(0.5 * (lo + hi), 0);
-            Complex z = ComplexSolver.Solve(c, initial);
-            if (ComplexSolver.IsRoot(lo, hi, z))
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex z = complexSolver.solve(c, initial);
+            Complex z = complexSolver.Solve(c, initial);
+            if (complexSolver.IsRoot(lo, hi, z))
             {
-                return z.Real;
+                return z.GetReal();
             }
             else
             {
-                double r = double.NaN;
+                double r = Double.NaN;
                 // Solve all roots and select the one we are seeking.
-                Complex[] root = ComplexSolver.SolveAll(c, initial);
+                Complex[] root = complexSolver.SolveAll(c, initial);
                 for (int i = 0; i < root.Length; i++)
                 {
-                    if (ComplexSolver.IsRoot(lo, hi, root[i]))
+                    if (complexSolver.IsRoot(lo, hi, root[i]))
                     {
-                        r = root[i].Real;
+                        r = root[i].GetReal();
                         break;
                     }
                 }
@@ -211,33 +230,54 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <summary>
         /// Find all complex roots for the polynomial with the given
         /// coefficients, starting from the given initial value.
-        /// <br/>
-        /// Note: This method is not part of the API of <seealso cref="BaseUnivariateSolver"/>.
+        /// <para>
+        /// Note: This method is not part of the API of <seealso cref="BaseUnivariateSolver"/>.</para>
         /// </summary>
         /// <param name="coefficients"> Polynomial coefficients. </param>
         /// <param name="initial"> Start value. </param>
-        /// <returns> the point at which the function value is zero. </returns>
+        /// <returns> the full set of complex roots of the polynomial </returns>
         /// <exception cref="org.apache.commons.math3.exception.TooManyEvaluationsException">
-        /// if the maximum number of evaluations is exceeded. </exception>
+        /// if the maximum number of evaluations is exceeded when solving for one of the roots </exception>
         /// <exception cref="NullArgumentException"> if the {@code coefficients} is
         /// {@code null}. </exception>
         /// <exception cref="NoDataException"> if the {@code coefficients} array is empty.
         /// @since 3.1 </exception>
         public virtual Complex[] SolveAllComplex(double[] coefficients, double initial)
         {
-            Setup(int.MaxValue, new PolynomialFunction(coefficients), double.NegativeInfinity, double.PositiveInfinity, initial);
-            return ComplexSolver.SolveAll(ComplexUtils.convertToComplex(coefficients), new Complex(initial, 0d));
+           return SolveAllComplex(coefficients, initial, int.MaxValue);
+        }
+
+        /// <summary>
+        /// Find all complex roots for the polynomial with the given
+        /// coefficients, starting from the given initial value.
+        /// <para>
+        /// Note: This method is not part of the API of <seealso cref="BaseUnivariateSolver"/>.</para>
+        /// </summary>
+        /// <param name="coefficients"> polynomial coefficients </param>
+        /// <param name="initial"> start value </param>
+        /// <param name="maxEval"> maximum number of evaluations </param>
+        /// <returns> the full set of complex roots of the polynomial </returns>
+        /// <exception cref="org.apache.commons.math3.exception.TooManyEvaluationsException">
+        /// if the maximum number of evaluations is exceeded when solving for one of the roots </exception>
+        /// <exception cref="NullArgumentException"> if the {@code coefficients} is
+        /// {@code null} </exception>
+        /// <exception cref="NoDataException"> if the {@code coefficients} array is empty
+        /// @since 3.5 </exception>
+        public virtual Complex[] SolveAllComplex(double[] coefficients, double initial, int maxEval)
+        {
+            Setup(maxEval, new PolynomialFunction(coefficients), double.NegativeInfinity, double.PositiveInfinity, initial);
+            return complexSolver.SolveAll(ComplexUtils.ConvertToComplex(coefficients), new Complex(initial, 0d));
         }
 
         /// <summary>
         /// Find a complex root for the polynomial with the given coefficients,
         /// starting from the given initial value.
-        /// <br/>
-        /// Note: This method is not part of the API of <seealso cref="BaseUnivariateSolver"/>.
+        /// <para>
+        /// Note: This method is not part of the API of <seealso cref="BaseUnivariateSolver"/>.</para>
         /// </summary>
         /// <param name="coefficients"> Polynomial coefficients. </param>
         /// <param name="initial"> Start value. </param>
-        /// <returns> the point at which the function value is zero. </returns>
+        /// <returns> a complex root of the polynomial </returns>
         /// <exception cref="org.apache.commons.math3.exception.TooManyEvaluationsException">
         /// if the maximum number of evaluations is exceeded. </exception>
         /// <exception cref="NullArgumentException"> if the {@code coefficients} is
@@ -246,8 +286,29 @@ namespace org.apache.commons.math3.analysis.solvers
         /// @since 3.1 </exception>
         public virtual Complex SolveComplex(double[] coefficients, double initial)
         {
-            Setup(int.MaxValue, new PolynomialFunction(coefficients), double.NegativeInfinity, double.PositiveInfinity, initial);
-            return ComplexSolver.Solve(ComplexUtils.convertToComplex(coefficients), new Complex(initial, 0d));
+           return SolveComplex(coefficients, initial, int.MaxValue);
+        }
+
+        /// <summary>
+        /// Find a complex root for the polynomial with the given coefficients,
+        /// starting from the given initial value.
+        /// <para>
+        /// Note: This method is not part of the API of <seealso cref="BaseUnivariateSolver"/>.</para>
+        /// </summary>
+        /// <param name="coefficients"> polynomial coefficients </param>
+        /// <param name="initial"> start value </param>
+        /// <param name="maxEval"> maximum number of evaluations </param>
+        /// <returns> a complex root of the polynomial </returns>
+        /// <exception cref="org.apache.commons.math3.exception.TooManyEvaluationsException">
+        /// if the maximum number of evaluations is exceeded </exception>
+        /// <exception cref="NullArgumentException"> if the {@code coefficients} is
+        /// {@code null} </exception>
+        /// <exception cref="NoDataException"> if the {@code coefficients} array is empty
+        /// @since 3.1 </exception>
+        public virtual Complex SolveComplex(double[] coefficients, double initial, int maxEval)
+        {
+            Setup(maxEval, new PolynomialFunction(coefficients), double.NegativeInfinity, double.PositiveInfinity, initial);
+            return complexSolver.Solve(ComplexUtils.ConvertToComplex(coefficients), new Complex(initial, 0d));
         }
 
         /// <summary>
@@ -255,11 +316,11 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         private class ComplexSolver
         {
-            private readonly LaguerreSolver OuterInstance;
+            private readonly LaguerreSolver outerInstance;
 
             public ComplexSolver(LaguerreSolver outerInstance)
             {
-                this.OuterInstance = outerInstance;
+                this.outerInstance = outerInstance;
             }
 
             /// <summary>
@@ -272,10 +333,10 @@ namespace org.apache.commons.math3.analysis.solvers
             /// <returns> {@code true} if z is a real zero. </returns>
             public virtual bool IsRoot(double min, double max, Complex z)
             {
-                if (outerInstance.IsSequence(min, z.Real, max))
+                if (outerInstance.IsSequence(min, z.GetReal(), max))
                 {
-                    double tolerance = FastMath.max(outerInstance.RelativeAccuracy * z.abs(), outerInstance.AbsoluteAccuracy);
-                    return (FastMath.abs(z.Imaginary) <= tolerance) || (z.abs() <= outerInstance.FunctionValueAccuracy);
+                    double tolerance = FastMath.Max(outerInstance.GetRelativeAccuracy() * z.Abs(), outerInstance.GetAbsoluteAccuracy());
+                    return (FastMath.Abs(z.GetImaginary()) <= tolerance) || (z.Abs() <= outerInstance.GetFunctionValueAccuracy());
                 }
                 return false;
             }
@@ -298,12 +359,16 @@ namespace org.apache.commons.math3.analysis.solvers
                 {
                     throw new NullArgumentException();
                 }
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int n = coefficients.length - 1;
                 int n = coefficients.Length - 1;
                 if (n == 0)
                 {
                     throw new NoDataException(LocalizedFormats.POLYNOMIAL);
                 }
                 // Coefficients for deflated polynomial.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex c[] = new org.apache.commons.math3.complex.Complex[n + 1];
                 Complex[] c = new Complex[n + 1];
                 for (int i = 0; i <= n; i++)
                 {
@@ -311,9 +376,13 @@ namespace org.apache.commons.math3.analysis.solvers
                 }
 
                 // Solve individual roots successively.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex root[] = new org.apache.commons.math3.complex.Complex[n];
                 Complex[] root = new Complex[n];
                 for (int i = 0; i < n; i++)
                 {
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex subarray[] = new org.apache.commons.math3.complex.Complex[n - i + 1];
                     Complex[] subarray = new Complex[n - i + 1];
                     Array.Copy(c, 0, subarray, 0, subarray.Length);
                     root[i] = Solve(subarray, initial);
@@ -324,7 +393,7 @@ namespace org.apache.commons.math3.analysis.solvers
                     {
                         oldc = c[j];
                         c[j] = newc;
-                        newc = oldc.add(newc.multiply(root[i]));
+                        newc = oldc.Add(newc.Multiply(root[i]));
                     }
                 }
 
@@ -350,17 +419,29 @@ namespace org.apache.commons.math3.analysis.solvers
                     throw new NullArgumentException();
                 }
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int n = coefficients.length - 1;
                 int n = coefficients.Length - 1;
                 if (n == 0)
                 {
                     throw new NoDataException(LocalizedFormats.POLYNOMIAL);
                 }
 
-                double absoluteAccuracy = outerInstance.AbsoluteAccuracy;
-                double relativeAccuracy = outerInstance.RelativeAccuracy;
-                double functionValueAccuracy = outerInstance.FunctionValueAccuracy;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double absoluteAccuracy = getAbsoluteAccuracy();
+                double absoluteAccuracy = outerInstance.GetAbsoluteAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double relativeAccuracy = getRelativeAccuracy();
+                double relativeAccuracy = outerInstance.GetRelativeAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double functionValueAccuracy = getFunctionValueAccuracy();
+                double functionValueAccuracy = outerInstance.GetFunctionValueAccuracy();
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex nC = new org.apache.commons.math3.complex.Complex(n, 0);
                 Complex nC = new Complex(n, 0);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex n1C = new org.apache.commons.math3.complex.Complex(n - 1, 0);
                 Complex n1C = new Complex(n - 1, 0);
 
                 Complex z = initial;
@@ -374,44 +455,62 @@ namespace org.apache.commons.math3.analysis.solvers
                     Complex d2v = Complex.ZERO;
                     for (int j = n - 1; j >= 0; j--)
                     {
-                        d2v = dv.add(z.multiply(d2v));
-                        dv = pv.add(z.multiply(dv));
-                        pv = coefficients[j].add(z.multiply(pv));
+                        d2v = dv.Add(z.Multiply(d2v));
+                        dv = pv.Add(z.Multiply(dv));
+                        pv = coefficients[j].Add(z.Multiply(pv));
                     }
-                    d2v = d2v.multiply(new Complex(2.0, 0.0));
+                    d2v = d2v.Multiply(new Complex(2.0, 0.0));
 
                     // Check for convergence.
-                    double tolerance = FastMath.max(relativeAccuracy * z.abs(), absoluteAccuracy);
-                    if ((z.subtract(oldz)).abs() <= tolerance)
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double tolerance = org.apache.commons.math3.util.FastMath.max(relativeAccuracy * z.abs(), absoluteAccuracy);
+                    double tolerance = FastMath.Max(relativeAccuracy * z.Abs(), absoluteAccuracy);
+                    if ((z.Subtract(oldz)).Abs() <= tolerance)
                     {
                         return z;
                     }
-                    if (pv.abs() <= functionValueAccuracy)
+                    if (pv.Abs() <= functionValueAccuracy)
                     {
                         return z;
                     }
 
                     // Now pv != 0, calculate the new approximation.
-                    Complex G = dv.divide(pv);
-                    Complex G2 = G.multiply(G);
-                    Complex H = G2.subtract(d2v.divide(pv));
-                    Complex delta = n1C.multiply((nC.multiply(H)).subtract(G2));
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex G = dv.divide(pv);
+                    Complex G = dv.Divide(pv);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex G2 = G.multiply(G);
+                    Complex G2 = G.Multiply(G);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex H = G2.subtract(d2v.divide(pv));
+                    Complex H = G2.Subtract(d2v.Divide(pv));
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex delta = n1C.multiply((nC.multiply(H)).subtract(G2));
+                    Complex delta = n1C.Multiply((nC.Multiply(H)).Subtract(G2));
                     // Choose a denominator larger in magnitude.
-                    Complex deltaSqrt = delta.sqrt();
-                    Complex dplus = G.add(deltaSqrt);
-                    Complex dminus = G.subtract(deltaSqrt);
-                    Complex denominator = dplus.abs() > dminus.abs() ? dplus : dminus;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex deltaSqrt = delta.sqrt();
+                    Complex deltaSqrt = delta.Sqrt();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex dplus = G.add(deltaSqrt);
+                    Complex dplus = G.Add(deltaSqrt);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex dminus = G.subtract(deltaSqrt);
+                    Complex dminus = G.Subtract(deltaSqrt);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final org.apache.commons.math3.complex.Complex denominator = dplus.abs() > dminus.abs() ? dplus : dminus;
+                    Complex denominator = dplus.Abs() > dminus.Abs() ? dplus : dminus;
                     // Perturb z if denominator is zero, for instance,
                     // p(x) = x^3 + 1, z = 0.
                     if (denominator.Equals(new Complex(0.0, 0.0)))
                     {
-                        z = z.add(new Complex(absoluteAccuracy, absoluteAccuracy));
+                        z = z.Add(new Complex(absoluteAccuracy, absoluteAccuracy));
                         oldz = new Complex(double.PositiveInfinity, double.PositiveInfinity);
                     }
                     else
                     {
                         oldz = z;
-                        z = z.subtract(nC.divide(denominator));
+                        z = z.Subtract(nC.Divide(denominator));
                     }
                     outerInstance.IncrementEvaluationCount();
                 }

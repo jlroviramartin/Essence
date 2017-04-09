@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,12 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using org.apache.commons.math3.analysis.exception;
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.integration
 {
+
+    using MathIllegalArgumentException = org.apache.commons.math3.exception.MathIllegalArgumentException;
+    using MaxCountExceededException = org.apache.commons.math3.exception.MaxCountExceededException;
+    using NotStrictlyPositiveException = org.apache.commons.math3.exception.NotStrictlyPositiveException;
+    using NumberIsTooLargeException = org.apache.commons.math3.exception.NumberIsTooLargeException;
+    using NumberIsTooSmallException = org.apache.commons.math3.exception.NumberIsTooSmallException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+    using FastMath = org.apache.commons.math3.util.FastMath;
+
     /// <summary>
     /// Implements the <a href="http://mathworld.wolfram.com/TrapezoidalRule.html">
     /// Trapezoid Rule</a> for integration of real univariate functions. For
@@ -28,11 +34,11 @@ namespace org.apache.commons.math3.analysis.integration
     /// <para>
     /// The function should be integrable.</para>
     /// 
-    /// @version $Id: TrapezoidIntegrator.java 1455194 2013-03-11 15:45:54Z luc $
     /// @since 1.2
     /// </summary>
     public class TrapezoidIntegrator : BaseAbstractUnivariateIntegrator
     {
+
         /// <summary>
         /// Maximum number of iterations for trapezoid. </summary>
         public const int TRAPEZOID_MAX_ITERATIONS_COUNT = 64;
@@ -54,8 +60,9 @@ namespace org.apache.commons.math3.analysis.integration
         /// is lesser than or equal to the minimal number of iterations </exception>
         /// <exception cref="NumberIsTooLargeException"> if maximal number of iterations
         /// is greater than <seealso cref="#TRAPEZOID_MAX_ITERATIONS_COUNT"/> </exception>
-        public TrapezoidIntegrator(double relativeAccuracy, double absoluteAccuracy, int minimalIterationCount, int maximalIterationCount)
-            : base(relativeAccuracy, absoluteAccuracy, minimalIterationCount, maximalIterationCount)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public TrapezoidIntegrator(final double relativeAccuracy, final double absoluteAccuracy, final int minimalIterationCount, final int maximalIterationCount) throws org.apache.commons.math3.exception.NotStrictlyPositiveException, org.apache.commons.math3.exception.NumberIsTooSmallException, org.apache.commons.math3.exception.NumberIsTooLargeException
+        public TrapezoidIntegrator(double relativeAccuracy, double absoluteAccuracy, int minimalIterationCount, int maximalIterationCount) : base(relativeAccuracy, absoluteAccuracy, minimalIterationCount, maximalIterationCount)
         {
             if (maximalIterationCount > TRAPEZOID_MAX_ITERATIONS_COUNT)
             {
@@ -74,8 +81,9 @@ namespace org.apache.commons.math3.analysis.integration
         /// is lesser than or equal to the minimal number of iterations </exception>
         /// <exception cref="NumberIsTooLargeException"> if maximal number of iterations
         /// is greater than <seealso cref="#TRAPEZOID_MAX_ITERATIONS_COUNT"/> </exception>
-        public TrapezoidIntegrator(int minimalIterationCount, int maximalIterationCount)
-            : base(minimalIterationCount, maximalIterationCount)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public TrapezoidIntegrator(final int minimalIterationCount, final int maximalIterationCount) throws org.apache.commons.math3.exception.NotStrictlyPositiveException, org.apache.commons.math3.exception.NumberIsTooSmallException, org.apache.commons.math3.exception.NumberIsTooLargeException
+        public TrapezoidIntegrator(int minimalIterationCount, int maximalIterationCount) : base(minimalIterationCount, maximalIterationCount)
         {
             if (maximalIterationCount > TRAPEZOID_MAX_ITERATIONS_COUNT)
             {
@@ -87,8 +95,7 @@ namespace org.apache.commons.math3.analysis.integration
         /// Construct a trapezoid integrator with default settings.
         /// (max iteration count set to <seealso cref="#TRAPEZOID_MAX_ITERATIONS_COUNT"/>)
         /// </summary>
-        public TrapezoidIntegrator()
-            : base(DEFAULT_MIN_ITERATIONS_COUNT, TRAPEZOID_MAX_ITERATIONS_COUNT)
+        public TrapezoidIntegrator() : base(DEFAULT_MIN_ITERATIONS_COUNT, TRAPEZOID_MAX_ITERATIONS_COUNT)
         {
         }
 
@@ -106,22 +113,37 @@ namespace org.apache.commons.math3.analysis.integration
         /// <returns> the value of n-th stage integral </returns>
         /// <exception cref="TooManyEvaluationsException"> if the maximal number of evaluations
         /// is exceeded. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: double stage(final BaseAbstractUnivariateIntegrator baseIntegrator, final int n) throws org.apache.commons.math3.exception.TooManyEvaluationsException
         internal virtual double Stage(BaseAbstractUnivariateIntegrator baseIntegrator, int n)
         {
+
             if (n == 0)
             {
-                double max = baseIntegrator.Max;
-                double min = baseIntegrator.Min;
-                this.s = 0.5 * (max - min) * (baseIntegrator.ComputeObjectiveValue(min) + baseIntegrator.ComputeObjectiveValue(max));
-                return this.s;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double max = baseIntegrator.getMax();
+                double max = baseIntegrator.GetMax();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double min = baseIntegrator.getMin();
+                double min = baseIntegrator.GetMin();
+                s = 0.5 * (max - min) * (baseIntegrator.ComputeObjectiveValue(min) + baseIntegrator.ComputeObjectiveValue(max));
+                return s;
             }
             else
             {
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final long np = 1L << (n-1);
                 long np = 1L << (n - 1); // number of new points in this stage
                 double sum = 0;
-                double max = baseIntegrator.Max;
-                double min = baseIntegrator.Min;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double max = baseIntegrator.getMax();
+                double max = baseIntegrator.GetMax();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double min = baseIntegrator.getMin();
+                double min = baseIntegrator.GetMin();
                 // spacing between adjacent new points
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double spacing = (max - min) / np;
                 double spacing = (max - min) / np;
                 double x = min + 0.5 * spacing; // the first new point
                 for (long i = 0; i < np; i++)
@@ -130,8 +152,8 @@ namespace org.apache.commons.math3.analysis.integration
                     x += spacing;
                 }
                 // add the new sum to previously calculated result
-                this.s = 0.5 * (this.s + sum * spacing);
-                return this.s;
+                s = 0.5 * (s + sum * spacing);
+                return s;
             }
         }
 
@@ -139,24 +161,36 @@ namespace org.apache.commons.math3.analysis.integration
         /// {@inheritDoc} </summary>
         protected internal override double DoIntegrate()
         {
-            double oldt = this.Stage(this, 0);
-            this.iterations.IncrementCount();
+
+            double oldt = Stage(this, 0);
+            IncrementCount();
             while (true)
             {
-                int i = this.iterations.Count;
-                double t = this.Stage(this, i);
-                if (i >= this.MinimalIterationCount)
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int i = getIterations();
+                int i = GetIterations();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double t = stage(this, i);
+                double t = Stage(this, i);
+                if (i >= GetMinimalIterationCount())
                 {
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double delta = org.apache.commons.math3.util.FastMath.abs(t - oldt);
                     double delta = FastMath.Abs(t - oldt);
-                    double rLimit = this.RelativeAccuracy * (FastMath.Abs(oldt) + FastMath.Abs(t)) * 0.5;
-                    if ((delta <= rLimit) || (delta <= this.AbsoluteAccuracy))
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double rLimit = getRelativeAccuracy() * (org.apache.commons.math3.util.FastMath.abs(oldt) + org.apache.commons.math3.util.FastMath.abs(t)) * 0.5;
+                    double rLimit = GetRelativeAccuracy() * (FastMath.Abs(oldt) + FastMath.Abs(t)) * 0.5;
+                    if ((delta <= rLimit) || (delta <= GetAbsoluteAccuracy()))
                     {
                         return t;
                     }
                 }
                 oldt = t;
-                this.iterations.IncrementCount();
+                IncrementCount();
             }
+
         }
+
     }
+
 }

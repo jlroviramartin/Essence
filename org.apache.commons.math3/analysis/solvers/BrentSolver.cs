@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,65 +15,73 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using org.apache.commons.math3.analysis.exception;
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+
+    using NoBracketingException = org.apache.commons.math3.exception.NoBracketingException;
+    using NumberIsTooLargeException = org.apache.commons.math3.exception.NumberIsTooLargeException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+    using FastMath = org.apache.commons.math3.util.FastMath;
+    using Precision = org.apache.commons.math3.util.Precision;
+
     /// <summary>
     /// This class implements the <a href="http://mathworld.wolfram.com/BrentsMethod.html">
     /// Brent algorithm</a> for finding zeros of real univariate functions.
     /// The function should be continuous but not necessarily smooth.
     /// The {@code solve} method returns a zero {@code x} of the function {@code f}
     /// in the given interval {@code [a, b]} to within a tolerance
-    /// {@code 6 eps abs(x) + t} where {@code eps} is the relative accuracy and
+    /// {@code 2 eps abs(x) + t} where {@code eps} is the relative accuracy and
     /// {@code t} is the absolute accuracy.
-    /// The given interval must bracket the root.
+    /// <para>The given interval must bracket the root.</para>
+    /// <para>
+    ///  The reference implementation is given in chapter 4 of
+    ///  <blockquote>
+    ///   <b>Algorithms for Minimization Without Derivatives</b>,
+    ///   <em>Richard P. Brent</em>,
+    ///   Dover, 2002
+    ///  </blockquote>
     /// 
-    /// @version $Id: BrentSolver.java 1379560 2012-08-31 19:40:30Z erans $
+    /// </para>
     /// </summary>
+    /// <seealso cref= BaseAbstractUnivariateSolver </seealso>
     public class BrentSolver : AbstractUnivariateSolver
     {
+
         /// <summary>
         /// Default absolute accuracy. </summary>
         private const double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
 
         /// <summary>
-        /// Construct a solver with default accuracy (1e-6).
+        /// Construct a solver with default absolute accuracy (1e-6).
         /// </summary>
-        public BrentSolver()
-            : this(DEFAULT_ABSOLUTE_ACCURACY)
+        public BrentSolver() : this(DEFAULT_ABSOLUTE_ACCURACY)
         {
         }
-
         /// <summary>
         /// Construct a solver.
         /// </summary>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public BrentSolver(double absoluteAccuracy)
-            : base(absoluteAccuracy)
+        public BrentSolver(double absoluteAccuracy) : base(absoluteAccuracy)
         {
         }
-
         /// <summary>
         /// Construct a solver.
         /// </summary>
         /// <param name="relativeAccuracy"> Relative accuracy. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public BrentSolver(double relativeAccuracy, double absoluteAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy)
+        public BrentSolver(double relativeAccuracy, double absoluteAccuracy) : base(relativeAccuracy, absoluteAccuracy)
         {
         }
-
         /// <summary>
         /// Construct a solver.
         /// </summary>
         /// <param name="relativeAccuracy"> Relative accuracy. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        /// <param name="functionValueAccuracy"> Function value accuracy. </param>
-        public BrentSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy)
+        /// <param name="functionValueAccuracy"> Function value accuracy.
+        /// </param>
+        /// <seealso cref= BaseAbstractUnivariateSolver#BaseAbstractUnivariateSolver(double,double,double) </seealso>
+        public BrentSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy) : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy)
         {
         }
 
@@ -81,22 +90,26 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         protected internal override double DoSolve()
         {
-            double min = this.Min;
-            double max = this.Max;
-            double initial = this.StartValue;
-            double functionValueAccuracy = this.FunctionValueAccuracy;
+            double min = GetMin();
+            double max = GetMax();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double initial = getStartValue();
+            double initial = GetStartValue();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double functionValueAccuracy = getFunctionValueAccuracy();
+            double functionValueAccuracy = GetFunctionValueAccuracy();
 
-            this.VerifySequence(min, initial, max);
+            VerifySequence(min, initial, max);
 
             // Return the initial guess if it is good enough.
-            double yInitial = this.ComputeObjectiveValue(initial);
+            double yInitial = ComputeObjectiveValue(initial);
             if (FastMath.Abs(yInitial) <= functionValueAccuracy)
             {
                 return initial;
             }
 
             // Return the first endpoint if it is good enough.
-            double yMin = this.ComputeObjectiveValue(min);
+            double yMin = ComputeObjectiveValue(min);
             if (FastMath.Abs(yMin) <= functionValueAccuracy)
             {
                 return min;
@@ -105,11 +118,11 @@ namespace org.apache.commons.math3.analysis.solvers
             // Reduce interval if min and initial bracket the root.
             if (yInitial * yMin < 0)
             {
-                return this.Brent(min, initial, yMin, yInitial);
+                return Brent(min, initial, yMin, yInitial);
             }
 
             // Return the second endpoint if it is good enough.
-            double yMax = this.ComputeObjectiveValue(max);
+            double yMax = ComputeObjectiveValue(max);
             if (FastMath.Abs(yMax) <= functionValueAccuracy)
             {
                 return max;
@@ -118,7 +131,7 @@ namespace org.apache.commons.math3.analysis.solvers
             // Reduce interval if initial and max bracket the root.
             if (yInitial * yMax < 0)
             {
-                return this.Brent(initial, max, yInitial, yMax);
+                return Brent(initial, max, yInitial, yMax);
             }
 
             throw new NoBracketingException(min, max, yMin, yMax);
@@ -128,11 +141,11 @@ namespace org.apache.commons.math3.analysis.solvers
         /// Search for a zero inside the provided interval.
         /// This implementation is based on the algorithm described at page 58 of
         /// the book
-        /// <quote>
-        ///  <b>Algorithms for Minimization Without Derivatives</b>
-        ///  <it>Richard P. Brent</it>
+        /// <blockquote>
+        ///  <b>Algorithms for Minimization Without Derivatives</b>,
+        ///  <it>Richard P. Brent</it>,
         ///  Dover 0-486-41998-3
-        /// </quote>
+        /// </blockquote>
         /// </summary>
         /// <param name="lo"> Lower bound of the search interval. </param>
         /// <param name="hi"> Higher bound of the search interval. </param>
@@ -150,8 +163,12 @@ namespace org.apache.commons.math3.analysis.solvers
             double d = b - a;
             double e = d;
 
-            double t = this.AbsoluteAccuracy;
-            double eps = this.RelativeAccuracy;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double t = getAbsoluteAccuracy();
+            double t = GetAbsoluteAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double eps = getRelativeAccuracy();
+            double eps = GetRelativeAccuracy();
 
             while (true)
             {
@@ -165,10 +182,14 @@ namespace org.apache.commons.math3.analysis.solvers
                     fc = fa;
                 }
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double tol = 2 * eps * org.apache.commons.math3.util.FastMath.abs(b) + t;
                 double tol = 2 * eps * FastMath.Abs(b) + t;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double m = 0.5 * (c - b);
                 double m = 0.5 * (c - b);
 
-                if (FastMath.Abs(m) <= tol || UnivariateSolverUtils.Equals(fb, 0))
+                if (FastMath.Abs(m) <= tol || Precision.Equals(fb, 0))
                 {
                     return b;
                 }
@@ -196,6 +217,8 @@ namespace org.apache.commons.math3.analysis.solvers
                     {
                         // Inverse quadratic interpolation.
                         q = fa / fc;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double r = fb / fc;
                         double r = fb / fc;
                         p = s * (2 * m * q * (q - r) - (b - a) * (r - 1));
                         q = (q - 1) * (r - 1) * (s - 1);
@@ -238,7 +261,7 @@ namespace org.apache.commons.math3.analysis.solvers
                 {
                     b -= tol;
                 }
-                fb = this.ComputeObjectiveValue(b);
+                fb = ComputeObjectiveValue(b);
                 if ((fb > 0 && fc > 0) || (fb <= 0 && fc <= 0))
                 {
                     c = a;
@@ -249,4 +272,5 @@ namespace org.apache.commons.math3.analysis.solvers
             }
         }
     }
+
 }

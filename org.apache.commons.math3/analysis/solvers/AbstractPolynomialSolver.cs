@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,53 +18,48 @@
 
 namespace org.apache.commons.math3.analysis.solvers
 {
+
     using PolynomialFunction = org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 
     /// <summary>
     /// Base class for solvers.
     /// 
     /// @since 3.0
-    /// @version $Id: AbstractPolynomialSolver.java 1364387 2012-07-22 18:14:11Z tn $
     /// </summary>
     public abstract class AbstractPolynomialSolver : BaseAbstractUnivariateSolver<PolynomialFunction>, PolynomialSolver
     {
         /// <summary>
         /// Function. </summary>
-        private PolynomialFunction PolynomialFunction;
+        private PolynomialFunction polynomialFunction;
 
         /// <summary>
         /// Construct a solver with given absolute accuracy.
         /// </summary>
         /// <param name="absoluteAccuracy"> Maximum absolute error. </param>
-//JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
 //ORIGINAL LINE: protected AbstractPolynomialSolver(final double absoluteAccuracy)
-        protected internal AbstractPolynomialSolver(double absoluteAccuracy)
-            : base(absoluteAccuracy)
+        protected internal AbstractPolynomialSolver(double absoluteAccuracy) : base(absoluteAccuracy)
         {
         }
-
         /// <summary>
         /// Construct a solver with given accuracies.
         /// </summary>
         /// <param name="relativeAccuracy"> Maximum relative error. </param>
         /// <param name="absoluteAccuracy"> Maximum absolute error. </param>
-//JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
 //ORIGINAL LINE: protected AbstractPolynomialSolver(final double relativeAccuracy, final double absoluteAccuracy)
-        protected internal AbstractPolynomialSolver(double relativeAccuracy, double absoluteAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy)
+        protected internal AbstractPolynomialSolver(double relativeAccuracy, double absoluteAccuracy) : base(relativeAccuracy, absoluteAccuracy)
         {
         }
-
         /// <summary>
         /// Construct a solver with given accuracies.
         /// </summary>
         /// <param name="relativeAccuracy"> Maximum relative error. </param>
         /// <param name="absoluteAccuracy"> Maximum absolute error. </param>
         /// <param name="functionValueAccuracy"> Maximum function value error. </param>
-//JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
 //ORIGINAL LINE: protected AbstractPolynomialSolver(final double relativeAccuracy, final double absoluteAccuracy, final double functionValueAccuracy)
-        protected internal AbstractPolynomialSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy)
+        protected internal AbstractPolynomialSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy) : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy)
         {
         }
 
@@ -73,13 +69,14 @@ namespace org.apache.commons.math3.analysis.solvers
         protected internal override void Setup(int maxEval, PolynomialFunction f, double min, double max, double startValue)
         {
             base.Setup(maxEval, f, min, max, startValue);
-            this.PolynomialFunction = f;
+            polynomialFunction = f;
         }
 
         /// <returns> the coefficients of the polynomial function. </returns>
-        protected internal virtual double[] Coefficients
+        protected internal virtual double[] GetCoefficients()
         {
-            get { return this.PolynomialFunction.Coefficients; }
+            return polynomialFunction.GetCoefficients();
         }
     }
+
 }

@@ -40,8 +40,8 @@ namespace Essence.Maths.Double.Curves
             Contract.Assert(l0_n < 0 && l1_n > 0);
 
             // Coordenadas en el punto (0) y (1) para una clotoide normalizada.
-            Vector2d p0_n = ClothoUtils.Clotho(l0_n, invertY, a);
-            Vector2d p1_n = ClothoUtils.Clotho(l1_n, invertY, a);
+            Point2d p0_n = ClothoUtils.Clotho(l0_n, invertY, a);
+            Point2d p1_n = ClothoUtils.Clotho(l1_n, invertY, a);
 
             // Diferencia de puntos en coordenadas reales.
             Vector2d v01 = point1.Sub(point0);

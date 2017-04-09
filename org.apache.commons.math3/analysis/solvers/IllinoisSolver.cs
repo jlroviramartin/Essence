@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,6 +18,8 @@
 
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+
     /// <summary>
     /// Implements the <em>Illinois</em> method for root-finding (approximating
     /// a zero of a univariate real function). It is a modified
@@ -38,14 +41,13 @@ namespace org.apache.commons.math3.analysis.solvers
     /// pages 168-174, Springer, 1971.</para>
     /// 
     /// @since 3.0
-    /// @version $Id: IllinoisSolver.java 1364387 2012-07-22 18:14:11Z tn $
     /// </summary>
     public class IllinoisSolver : BaseSecantSolver
     {
+
         /// <summary>
         /// Construct a solver with default accuracy (1e-6). </summary>
-        public IllinoisSolver()
-            : base(DEFAULT_ABSOLUTE_ACCURACY, Method.ILLINOIS)
+        public IllinoisSolver() : base(DEFAULT_ABSOLUTE_ACCURACY, Method.ILLINOIS)
         {
         }
 
@@ -53,8 +55,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// Construct a solver.
         /// </summary>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public IllinoisSolver(double absoluteAccuracy)
-            : base(absoluteAccuracy, Method.ILLINOIS)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public IllinoisSolver(final double absoluteAccuracy)
+        public IllinoisSolver(double absoluteAccuracy) : base(absoluteAccuracy, Method.ILLINOIS)
         {
         }
 
@@ -63,8 +66,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         /// <param name="relativeAccuracy"> Relative accuracy. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public IllinoisSolver(double relativeAccuracy, double absoluteAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy, Method.ILLINOIS)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public IllinoisSolver(final double relativeAccuracy, final double absoluteAccuracy)
+        public IllinoisSolver(double relativeAccuracy, double absoluteAccuracy) : base(relativeAccuracy, absoluteAccuracy, Method.ILLINOIS)
         {
         }
 
@@ -74,9 +78,11 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="relativeAccuracy"> Relative accuracy. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
         /// <param name="functionValueAccuracy"> Maximum function value error. </param>
-        public IllinoisSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy, Method.PEGASUS)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public IllinoisSolver(final double relativeAccuracy, final double absoluteAccuracy, final double functionValueAccuracy)
+        public IllinoisSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy) : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy, Method.PEGASUS)
         {
         }
     }
+
 }

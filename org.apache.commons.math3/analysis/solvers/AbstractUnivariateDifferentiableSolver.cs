@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,20 +28,19 @@ namespace org.apache.commons.math3.analysis.solvers
     /// solvers.
     /// 
     /// @since 3.1
-    /// @version $Id: AbstractUnivariateDifferentiableSolver.java 1455194 2013-03-11 15:45:54Z luc $
     /// </summary>
     public abstract class AbstractUnivariateDifferentiableSolver : BaseAbstractUnivariateSolver<UnivariateDifferentiableFunction>, UnivariateDifferentiableSolver
     {
 
         /// <summary>
         /// Function to solve. </summary>
-        private UnivariateDifferentiableFunction Function;
+        private UnivariateDifferentiableFunction function;
 
         /// <summary>
         /// Construct a solver with given absolute accuracy.
         /// </summary>
         /// <param name="absoluteAccuracy"> Maximum absolute error. </param>
-//JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
 //ORIGINAL LINE: protected AbstractUnivariateDifferentiableSolver(final double absoluteAccuracy)
         protected internal AbstractUnivariateDifferentiableSolver(double absoluteAccuracy) : base(absoluteAccuracy)
         {
@@ -52,7 +52,7 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="relativeAccuracy"> Maximum relative error. </param>
         /// <param name="absoluteAccuracy"> Maximum absolute error. </param>
         /// <param name="functionValueAccuracy"> Maximum function value error. </param>
-//JAVA TO C# CONVERTER WARNING: 'final' parameters are not allowed in .NET:
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
 //ORIGINAL LINE: protected AbstractUnivariateDifferentiableSolver(final double relativeAccuracy, final double absoluteAccuracy, final double functionValueAccuracy)
         protected internal AbstractUnivariateDifferentiableSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy) : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy)
         {
@@ -65,12 +65,10 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <returns> the objective function value and derivative at specified point. </returns>
         /// <exception cref="TooManyEvaluationsException">
         /// if the maximal number of evaluations is exceeded. </exception>
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: protected org.apache.commons.math3.analysis.differentiation.DerivativeStructure computeObjectiveValueAndDerivative(double point) throws org.apache.commons.math3.exception.TooManyEvaluationsException
         protected internal virtual DerivativeStructure ComputeObjectiveValueAndDerivative(double point)
         {
             IncrementEvaluationCount();
-            return Function.value(new DerivativeStructure(1, 1, 0, point));
+            return function.Value(new DerivativeStructure(1, 1, 0, point));
         }
 
         /// <summary>
@@ -79,7 +77,7 @@ namespace org.apache.commons.math3.analysis.solvers
         protected internal override void Setup(int maxEval, UnivariateDifferentiableFunction f, double min, double max, double startValue)
         {
             base.Setup(maxEval, f, min, max, startValue);
-            Function = f;
+            function = f;
         }
     }
 

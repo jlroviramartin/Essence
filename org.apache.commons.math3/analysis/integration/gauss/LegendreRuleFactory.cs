@@ -1,4 +1,6 @@
+﻿/// Apache Commons Math 3.6.1
 using System;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,51 +17,61 @@ using System;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using org.apache.commons.math3.analysis.util;
-
 namespace org.apache.commons.math3.analysis.integration.gauss
 {
+
+    using DimensionMismatchException = org.apache.commons.math3.exception.DimensionMismatchException;
+    //using Pair = org.apache.commons.math3.util.Pair;
+    using org.apache.commons.math3.util;
+
     /// <summary>
     /// Factory that creates Gauss-type quadrature rule using Legendre polynomials.
     /// In this implementation, the lower and upper bounds of the natural interval
     /// of integration are -1 and 1, respectively.
     /// The Legendre polynomials are evaluated using the recurrence relation
-    /// presented in <a href="http://en.wikipedia.org/wiki/Abramowitz_and_Stegun"
+    /// presented in <a href="http://en.wikipedia.org/wiki/Abramowitz_and_Stegun">
     /// Abramowitz and Stegun, 1964</a>.
     /// 
     /// @since 3.1
-    /// @version $Id: LegendreRuleFactory.java 1455194 2013-03-11 15:45:54Z luc $
     /// </summary>
-    public class LegendreRuleFactory : BaseRuleFactory<double>
+    public class LegendreRuleFactory : BaseRuleFactory<double?>
     {
         /// <summary>
         /// {@inheritDoc} </summary>
-        protected internal override Tuple<double[], double[]> ComputeRule(int numberOfPoints)
+        protected internal override Pair<double?[], Double[]> ComputeRule(int numberOfPoints)
         {
+
             if (numberOfPoints == 1)
             {
                 // Break recursion.
-                return new Tuple<double[], double[]>(new double[] { 0d }, new double[] { 2d });
+                return new Pair<double?[], Double[]>(new double?[] { 0d }, new double?[] { 2d });
             }
 
             // Get previous rule.
             // If it has not been computed yet it will trigger a recursive call
             // to this method.
-            double[] previousPoints = this.GetRuleInternal(numberOfPoints - 1).Item1;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final Nullable<double>[] previousPoints = getRuleInternal(numberOfPoints - 1).getFirst();
+            double?[] previousPoints = GetRuleInternal(numberOfPoints - 1).GetFirst();
 
             // Compute next rule.
-            double[] points = new double[numberOfPoints];
-            double[] weights = new double[numberOfPoints];
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final Nullable<double>[] points = new Nullable<double>[numberOfPoints];
+            double?[] points = new double?[numberOfPoints];
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final Nullable<double>[] weights = new Nullable<double>[numberOfPoints];
+            double?[] weights = new double?[numberOfPoints];
 
             // Find i-th root of P[n+1] by bracketing.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int iMax = numberOfPoints / 2;
             int iMax = numberOfPoints / 2;
             for (int i = 0; i < iMax; i++)
             {
                 // Lower-bound of the interval.
-                double a = (i == 0) ? - 1 : (double)previousPoints[i - 1];
+                double a = (i == 0) ? -1 : previousPoints[i - 1].Value;
                 // Upper-bound of the interval.
-                double b = (iMax == 1) ? 1 : (double)previousPoints[i];
+                double b = (iMax == 1) ? 1 : previousPoints[i].Value;
                 // P[j-1](a)
                 double pma = 1;
                 // P[j](a)
@@ -70,11 +82,19 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                 double pb = b;
                 for (int j = 1; j < numberOfPoints; j++)
                 {
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int two_j_p_1 = 2 * j + 1;
                     int two_j_p_1 = 2 * j + 1;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int j_p_1 = j + 1;
                     int j_p_1 = j + 1;
                     // P[j+1](a)
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double ppa = (two_j_p_1 * a * pa - j * pma) / j_p_1;
                     double ppa = (two_j_p_1 * a * pa - j * pma) / j_p_1;
                     // P[j+1](b)
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double ppb = (two_j_p_1 * b * pb - j * pmb) / j_p_1;
                     double ppb = (two_j_p_1 * b * pb - j * pmb) / j_p_1;
                     pma = pa;
                     pa = ppa;
@@ -91,12 +111,14 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                 bool done = false;
                 while (!done)
                 {
-                    done = b - a <= MyUtils.ULP(c);
+                    done = b - a <= Math.ulp(c);
                     pmc = 1;
                     pc = c;
                     for (int j = 1; j < numberOfPoints; j++)
                     {
                         // P[j+1](c)
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double ppc = ((2 * j + 1) * c * pc - j * pmc) / (j + 1);
                         double ppc = ((2 * j + 1) * c * pc - j * pmc) / (j + 1);
                         pmc = pc;
                         pc = ppc;
@@ -119,12 +141,18 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                         c = 0.5 * (a + b);
                     }
                 }
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double d = numberOfPoints * (pmc - c * pc);
                 double d = numberOfPoints * (pmc - c * pc);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double w = 2 * (1 - c * c) / (d * d);
                 double w = 2 * (1 - c * c) / (d * d);
 
                 points[i] = c;
                 weights[i] = w;
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int idx = numberOfPoints - i - 1;
                 int idx = numberOfPoints - i - 1;
                 points[idx] = -c;
                 weights[idx] = w;
@@ -140,14 +168,19 @@ namespace org.apache.commons.math3.analysis.integration.gauss
                 {
                     pmc = -j * pmc / (j + 1);
                 }
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double d = numberOfPoints * pmc;
                 double d = numberOfPoints * pmc;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double w = 2 / (d * d);
                 double w = 2 / (d * d);
 
                 points[iMax] = 0d;
                 weights[iMax] = w;
             }
 
-            return new Tuple<double[], double[]>(points, weights);
+            return new Pair<double?[], Double[]>(points, weights);
         }
     }
+
 }

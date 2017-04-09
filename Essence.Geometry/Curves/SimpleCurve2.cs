@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Diagnostics.Contracts;
 using Essence.Geometry.Core.Double;
 using Essence.Util.Math.Double;
@@ -33,6 +32,13 @@ namespace Essence.Maths.Double.Curves
         {
             get { return this.GetPosition(this.TMax); }
         }
+
+        #region private
+
+        /// <summary>Número máximo de evaluaciones para el cálculo de la integral.</summary>
+        private const int IntegralMaxEval = 1000;
+
+        #endregion
 
         #region ICurve2
 
@@ -149,13 +155,6 @@ namespace Essence.Maths.Double.Curves
         }
 
         #endregion
-
-        #endregion
-
-        #region private
-
-        /// <summary>Número máximo de evaluaciones para el cálculo de la integral.</summary>
-        private const int IntegralMaxEval = 1000;
 
         #endregion
     }

@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Essence.Geometry.Core.Double;
 using System;
 using System.Collections.Generic;
-using Essence.Geometry.Core.Double;
+using System.Diagnostics.Contracts;
+using Essence.Util.Math.Double;
 
 namespace Essence.Maths.Double.Curves
 {
@@ -127,8 +129,11 @@ namespace Essence.Maths.Double.Curves
             if (index < 0)
             {
                 index = ~index;
+                index--;
             }
             index = Essence.Util.Math.Int.MathUtils.Clamp(index, 0, this.segments.Count - 1);
+
+            Contract.Assert(t.EpsilonL(this.TMin) || t.EpsilonG(this.TMax) || (t.EpsilonGE(this.GetTMin(index)) && t.EpsilonLE(this.GetTMax(index))));
 
             tInSegment = t;
         }

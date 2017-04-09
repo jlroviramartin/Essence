@@ -1,4 +1,5 @@
-﻿using System;
+﻿/// Apache Commons Math 3.6.1
+using System;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,37 +17,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace org.apache.commons.math3.analysis
 {
+
     /// <summary>
     /// Extension of <seealso cref="UnivariateFunction"/> representing a differentiable univariate real function.
-    /// 
-    /// @version $Id: DifferentiableUnivariateFunction.java 1383845 2012-09-12 08:34:10Z luc $ </summary>
+    /// </summary>
     /// @deprecated as of 3.1 replaced by <seealso cref="org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction"/> 
-    //[Obsolete("as of 3.1 replaced by <seealso cref="org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction"/>")]
+    [Obsolete("as of 3.1 replaced by <seealso cref=\"org.apache.commons.math3.analysis.differentiation.UnivariateDifferentiableFunction\"/>")]
     public interface DifferentiableUnivariateFunction : UnivariateFunction
     {
+
         /// <summary>
         /// Returns the derivative of the function
         /// </summary>
         /// <returns>  the derivative function </returns>
         UnivariateFunction Derivative();
+
     }
 
-    public class DelegateDifferentiableUnivariateFunction : DelegateUnivariateFunction, DifferentiableUnivariateFunction
-    {
-        public DelegateDifferentiableUnivariateFunction(Func<double, double> func, Func<double, double> dfunc)
-            : base(func)
-        {
-            this.dfunc = dfunc;
-        }
-
-        private readonly Func<double, double> dfunc;
-
-        public UnivariateFunction Derivative()
-        {
-            return new DelegateUnivariateFunction(this.dfunc);
-        }
-    }
 }

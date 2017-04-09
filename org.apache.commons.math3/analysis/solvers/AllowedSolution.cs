@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,6 +18,8 @@
 
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+
     /// <summary>
     /// The kinds of solutions that a {@link BracketedUnivariateSolver
     /// (bracketed univariate real) root-finding algorithm} may accept as solutions.
@@ -35,8 +38,7 @@ namespace org.apache.commons.math3.analysis.solvers
     /// specific side the solution.</para>
     /// </summary>
     /// <seealso cref= BracketedUnivariateSolver
-    /// @since 3.0
-    /// @version $Id: AllowedSolution.java 1364387 2012-07-22 18:14:11Z tn $ </seealso>
+    /// @since 3.0 </seealso>
     public enum AllowedSolution
     {
         /// <summary>
@@ -77,5 +79,7 @@ namespace org.apache.commons.math3.analysis.solvers
         /// a root at x = x0, then the root-finding result s must satisfy f(s) &gt;= 0.
         /// </summary>
         ABOVE_SIDE
+
     }
+
 }

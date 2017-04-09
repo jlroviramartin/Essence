@@ -87,8 +87,8 @@ namespace Essence.Geometry.Intersection
                         return false;
                     }
 
-                    param0 = ComparableUtils.Clamp(param0, 0, this.Item0.Length);
-                    param1 = ComparableUtils.Clamp(param1, 0, this.Item0.Length);
+                    param0 = MathUtils.Clamp(param0, 0, this.Item0.Length);
+                    param1 = MathUtils.Clamp(param1, 0, this.Item0.Length);
 
                     // NOTA: caso especial, coinciden los extremos.
                     if (param0.EpsilonEquals(param1, this.Error))

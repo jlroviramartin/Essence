@@ -407,13 +407,13 @@ namespace Essence.Util.Math.Float
             return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
         }
 
-        public static IEnumerable<double> For(float i, float f, int c)
+        public static IEnumerable<double> For(float min, float max, int c)
         {
-            yield return i;
+            yield return min;
 
-            double tt = (f - i) / (c + 1);
+            double tt = (max - min) / (c + 1);
 
-            double t = i;
+            double t = min;
             while (c > 0)
             {
                 t += tt;
@@ -421,7 +421,7 @@ namespace Essence.Util.Math.Float
                 c--;
             }
 
-            yield return f;
+            yield return max;
         }
 
         public static bool Between(this float v, float a, float b)

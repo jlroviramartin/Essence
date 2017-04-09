@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,12 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using org.apache.commons.math3.analysis.util;
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+    using FastMath = org.apache.commons.math3.util.FastMath;
+    using NoBracketingException = org.apache.commons.math3.exception.NoBracketingException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+
     /// <summary>
     /// Implements the <a href="http://mathworld.wolfram.com/RiddersMethod.html">
     /// Ridders' Method</a> for root finding of real univariate functions. For
@@ -29,7 +31,6 @@ namespace org.apache.commons.math3.analysis.solvers
     /// <para>
     /// The function should be continuous but not necessarily smooth.</para>
     /// 
-    /// @version $Id: RiddersSolver.java 1379560 2012-08-31 19:40:30Z erans $
     /// @since 1.2
     /// </summary>
     public class RiddersSolver : AbstractUnivariateSolver
@@ -41,27 +42,22 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <summary>
         /// Construct a solver with default accuracy (1e-6).
         /// </summary>
-        public RiddersSolver()
-            : this(DEFAULT_ABSOLUTE_ACCURACY)
+        public RiddersSolver() : this(DEFAULT_ABSOLUTE_ACCURACY)
         {
         }
-
         /// <summary>
         /// Construct a solver.
         /// </summary>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public RiddersSolver(double absoluteAccuracy)
-            : base(absoluteAccuracy)
+        public RiddersSolver(double absoluteAccuracy) : base(absoluteAccuracy)
         {
         }
-
         /// <summary>
         /// Construct a solver.
         /// </summary>
         /// <param name="relativeAccuracy"> Relative accuracy. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public RiddersSolver(double relativeAccuracy, double absoluteAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy)
+        public RiddersSolver(double relativeAccuracy, double absoluteAccuracy) : base(relativeAccuracy, absoluteAccuracy)
         {
         }
 
@@ -70,15 +66,15 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         protected internal override double DoSolve()
         {
-            double min = this.Min;
-            double max = this.Max;
+            double min = GetMin();
+            double max = GetMax();
             // [x1, x2] is the bracketing interval in each iteration
             // x3 is the midpoint of [x1, x2]
             // x is the new root approximation and an endpoint of the new interval
             double x1 = min;
-            double y1 = this.ComputeObjectiveValue(x1);
+            double y1 = ComputeObjectiveValue(x1);
             double x2 = max;
-            double y2 = this.ComputeObjectiveValue(x2);
+            double y2 = ComputeObjectiveValue(x2);
 
             // check for zeros before verifying bracketing
             if (y1 == 0)
@@ -89,28 +85,48 @@ namespace org.apache.commons.math3.analysis.solvers
             {
                 return max;
             }
-            this.VerifyBracketing(min, max);
+            VerifyBracketing(min, max);
 
-            double absoluteAccuracy = this.AbsoluteAccuracy;
-            double functionValueAccuracy = this.FunctionValueAccuracy;
-            double relativeAccuracy = this.RelativeAccuracy;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double absoluteAccuracy = getAbsoluteAccuracy();
+            double absoluteAccuracy = GetAbsoluteAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double functionValueAccuracy = getFunctionValueAccuracy();
+            double functionValueAccuracy = GetFunctionValueAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double relativeAccuracy = getRelativeAccuracy();
+            double relativeAccuracy = GetRelativeAccuracy();
 
             double oldx = double.PositiveInfinity;
             while (true)
             {
                 // calculate the new root approximation
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double x3 = 0.5 * (x1 + x2);
                 double x3 = 0.5 * (x1 + x2);
-                double y3 = this.ComputeObjectiveValue(x3);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double y3 = computeObjectiveValue(x3);
+                double y3 = ComputeObjectiveValue(x3);
                 if (FastMath.Abs(y3) <= functionValueAccuracy)
                 {
                     return x3;
                 }
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double delta = 1 - (y1 * y2) / (y3 * y3);
                 double delta = 1 - (y1 * y2) / (y3 * y3); // delta > 1 due to bracketing
-                double correction = (MyUtils.Signum(y2) * MyUtils.Signum(y3)) * (x3 - x1) / FastMath.Sqrt(delta);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double correction = (org.apache.commons.math3.util.FastMath.signum(y2) * org.apache.commons.math3.util.FastMath.signum(y3)) * (x3 - x1) / org.apache.commons.math3.util.FastMath.sqrt(delta);
+                double correction = (FastMath.Signum(y2) * FastMath.Signum(y3)) * (x3 - x1) / FastMath.Sqrt(delta);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double x = x3 - correction;
                 double x = x3 - correction; // correction != 0
-                double y = this.ComputeObjectiveValue(x);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double y = computeObjectiveValue(x);
+                double y = ComputeObjectiveValue(x);
 
                 // check for convergence
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double tolerance = org.apache.commons.math3.util.FastMath.max(relativeAccuracy * org.apache.commons.math3.util.FastMath.abs(x), absoluteAccuracy);
                 double tolerance = FastMath.Max(relativeAccuracy * FastMath.Abs(x), absoluteAccuracy);
                 if (FastMath.Abs(x - oldx) <= tolerance)
                 {
@@ -123,9 +139,9 @@ namespace org.apache.commons.math3.analysis.solvers
 
                 // prepare the new interval for next iteration
                 // Ridders' method guarantees x1 < x < x2
-                if (correction > 0.0) // x1 < x < x3
-                {
-                    if (MyUtils.Signum(y1) + MyUtils.Signum(y) == 0.0)
+                if (correction > 0.0)
+                { // x1 < x < x3
+                    if (FastMath.Signum(y1) + FastMath.Signum(y) == 0.0)
                     {
                         x2 = x;
                         y2 = y;
@@ -137,10 +153,10 @@ namespace org.apache.commons.math3.analysis.solvers
                         y1 = y;
                         y2 = y3;
                     }
-                } // x3 < x < x2
+                }
                 else
-                {
-                    if (MyUtils.Signum(y2) + MyUtils.Signum(y) == 0.0)
+                { // x3 < x < x2
+                    if (FastMath.Signum(y2) + FastMath.Signum(y) == 0.0)
                     {
                         x1 = x;
                         y1 = y;
@@ -157,4 +173,5 @@ namespace org.apache.commons.math3.analysis.solvers
             }
         }
     }
+
 }

@@ -77,7 +77,7 @@ namespace Essence.Maths.Double.Curves
         /// </summary>
         public static CircleArc2 TwoPointsRadius(Point2d pt0, Point2d pt1, double radius, bool leftRule)
         {
-            Vector2d centro = EvaluateCenter(pt0, pt1, radius, leftRule);
+            Point2d centro = EvaluateCenter(pt0, pt1, radius, leftRule);
             return NewArc(pt0, pt1, centro, SysMath.Abs(radius), leftRule ? (radius < 0) : (radius > 0));
         }
 
@@ -146,7 +146,7 @@ namespace Essence.Maths.Double.Curves
         ///     Indica que no se puede calcular el
         ///     centro.
         /// </exception>
-        public static Vector2d EvaluateCenter(Point2d pt0, Point2d pt1, double radius, bool leftRule)
+        public static Point2d EvaluateCenter(Point2d pt0, Point2d pt1, double radius, bool leftRule)
         {
             // Vector direccion normalizado y longitud.
             Vector2d dir = pt1.Sub(pt0);
@@ -340,7 +340,7 @@ namespace Essence.Maths.Double.Curves
             double t1 = (d_b.X * (pm_b.Y - pm_a.Y) - d_b.Y * (pm_b.X - pm_a.X)) / div;
             //double t2 = (d_a.X * (pm_b.Y - pm_a.Y) - d_a.Y * (pm_b.X - pm_a.X)) / div;
 
-            return d_a.Mul(t1).Add(pm_a);
+            return pm_a.Add(d_a.Mul(t1));
         }
 
         #region private

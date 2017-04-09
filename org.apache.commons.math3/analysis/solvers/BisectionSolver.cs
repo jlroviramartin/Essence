@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,18 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+    using FastMath = org.apache.commons.math3.util.FastMath;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+
     /// <summary>
     /// Implements the <a href="http://mathworld.wolfram.com/Bisection.html">
     /// bisection algorithm</a> for finding zeros of univariate real functions.
     /// <para>
     /// The function should be continuous but not necessarily smooth.</para>
     /// 
-    /// @version $Id: BisectionSolver.java 1391927 2012-09-30 00:03:30Z erans $
     /// </summary>
     public class BisectionSolver : AbstractUnivariateSolver
     {
@@ -36,27 +37,22 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <summary>
         /// Construct a solver with default accuracy (1e-6).
         /// </summary>
-        public BisectionSolver()
-            : this(DEFAULT_ABSOLUTE_ACCURACY)
+        public BisectionSolver() : this(DEFAULT_ABSOLUTE_ACCURACY)
         {
         }
-
         /// <summary>
         /// Construct a solver.
         /// </summary>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public BisectionSolver(double absoluteAccuracy)
-            : base(absoluteAccuracy)
+        public BisectionSolver(double absoluteAccuracy) : base(absoluteAccuracy)
         {
         }
-
         /// <summary>
         /// Construct a solver.
         /// </summary>
         /// <param name="relativeAccuracy"> Relative accuracy. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public BisectionSolver(double relativeAccuracy, double absoluteAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy)
+        public BisectionSolver(double relativeAccuracy, double absoluteAccuracy) : base(relativeAccuracy, absoluteAccuracy)
         {
         }
 
@@ -65,10 +61,12 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         protected internal override double DoSolve()
         {
-            double min = this.Min;
-            double max = this.Max;
-            this.VerifyInterval(min, max);
-            double absoluteAccuracy = this.AbsoluteAccuracy;
+            double min = GetMin();
+            double max = GetMax();
+            VerifyInterval(min, max);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double absoluteAccuracy = getAbsoluteAccuracy();
+            double absoluteAccuracy = GetAbsoluteAccuracy();
             double m;
             double fm;
             double fmin;
@@ -76,8 +74,8 @@ namespace org.apache.commons.math3.analysis.solvers
             while (true)
             {
                 m = UnivariateSolverUtils.Midpoint(min, max);
-                fmin = this.ComputeObjectiveValue(min);
-                fm = this.ComputeObjectiveValue(m);
+                fmin = ComputeObjectiveValue(min);
+                fm = ComputeObjectiveValue(m);
 
                 if (fm * fmin > 0)
                 {
@@ -98,4 +96,5 @@ namespace org.apache.commons.math3.analysis.solvers
             }
         }
     }
+
 }

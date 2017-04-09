@@ -19,12 +19,30 @@ namespace Essence.Util.Collections
 {
     public static class EnumerableUtils
     {
-        public static IEnumerable<int> For(int i, int e, int inc = 1)
+        public static IEnumerable<int> For(int min, int max, int inc = 1)
         {
-            while (i < e)
+            while (min < max)
             {
-                yield return i;
-                i += inc;
+                yield return min;
+                min += inc;
+            }
+        }
+
+        public static IEnumerable<Tuple<T, T>> GroupIn2<T>(this IEnumerable<T> enumer)
+        {
+            using (IEnumerator<T> enumerator = enumer.GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                {
+                    yield break;
+                }
+                T first = enumerator.Current;
+                while (enumerator.MoveNext())
+                {
+                    T second = enumerator.Current;
+                    yield return Tuple.Create(first, second);
+                    first = second;
+                }
             }
         }
 

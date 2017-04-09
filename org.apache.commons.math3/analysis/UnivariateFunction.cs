@@ -1,4 +1,5 @@
-﻿/*
+﻿/// Apache Commons Math 3.6.1
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -14,21 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using System;
-
 namespace org.apache.commons.math3.analysis
 {
+
     /// <summary>
     /// An interface representing a univariate real function.
-    /// <br/>
+    /// <para>
     /// When a <em>user-defined</em> function encounters an error during
     /// evaluation, the <seealso cref="#value(double) value"/> method should throw a
-    /// <em>user-defined</em> unchecked exception.
-    /// <br/>
+    /// <em>user-defined</em> unchecked exception.</para>
+    /// <para>
     /// The following code excerpt shows the recommended way to do that using
     /// a root solver as an example, but the same construct is applicable to
-    /// ODE integrators or optimizers.
+    /// ODE integrators or optimizers.</para>
     /// 
     /// <pre>
     /// private static class LocalException extends RuntimeException {
@@ -66,7 +65,6 @@ namespace org.apache.commons.math3.analysis
     /// As shown, the exception is local to the user's code and it is guaranteed
     /// that Apache Commons Math will not catch it.
     /// 
-    /// @version $Id: UnivariateFunction.java 1364387 2012-07-22 18:14:11Z tn $
     /// </summary>
     public interface UnivariateFunction
     {
@@ -84,18 +82,4 @@ namespace org.apache.commons.math3.analysis
         double Value(double x);
     }
 
-    public class DelegateUnivariateFunction : UnivariateFunction
-    {
-        public DelegateUnivariateFunction(Func<double, double> func)
-        {
-            this.func = func;
-        }
-
-        private readonly Func<double, double> func;
-
-        public double Value(double x)
-        {
-            return this.func(x);
-        }
-    }
 }

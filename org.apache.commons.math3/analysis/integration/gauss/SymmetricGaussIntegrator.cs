@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,18 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using System;
-
 namespace org.apache.commons.math3.analysis.integration.gauss
 {
+
+    using DimensionMismatchException = org.apache.commons.math3.exception.DimensionMismatchException;
+    using NonMonotonicSequenceException = org.apache.commons.math3.exception.NonMonotonicSequenceException;
+    //using Pair = org.apache.commons.math3.util.Pair;
+    using org.apache.commons.math3.util;
+
     /// <summary>
     /// This class's implements <seealso cref="#integrate(UnivariateFunction) integrate"/>
     /// method assuming that the integral is symmetric about 0.
     /// This allows to reduce numerical errors.
     /// 
     /// @since 3.3
-    /// @version $Id: SymmetricGaussIntegrator.java 1509234 2013-08-01 13:48:57Z erans $
     /// </summary>
     public class SymmetricGaussIntegrator : GaussIntegrator
     {
@@ -39,8 +42,7 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// <exception cref="NonMonotonicSequenceException"> if the {@code points} are not
         /// sorted in increasing order. </exception>
         /// <exception cref="DimensionMismatchException"> if points and weights don't have the same length </exception>
-        public SymmetricGaussIntegrator(double[] points, double[] weights)
-            : base(points, weights)
+        public SymmetricGaussIntegrator(double[] points, double[] weights) : base(points, weights)
         {
         }
 
@@ -53,8 +55,7 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// sorted in increasing order.
         /// </exception>
         /// <seealso cref= #SymmetricGaussIntegrator(double[], double[]) </seealso>
-        public SymmetricGaussIntegrator(Tuple<double[], double[]> pointsAndWeights)
-            : this(pointsAndWeights.Item1, pointsAndWeights.Item2)
+        public SymmetricGaussIntegrator(Pair<double[], double[]> pointsAndWeights) : this(pointsAndWeights.GetFirst(), pointsAndWeights.GetSecond())
         {
         }
 
@@ -63,25 +64,41 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// </summary>
         public override double Integrate(UnivariateFunction f)
         {
-            int ruleLength = this.NumberOfPoints;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int ruleLength = getNumberOfPoints();
+            int ruleLength = GetNumberOfPoints();
 
             if (ruleLength == 1)
             {
-                return this.GetWeight(0) * f.Value(0d);
+                return GetWeight(0) * f.Value(0d);
             }
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final int iMax = ruleLength / 2;
             int iMax = ruleLength / 2;
             double s = 0;
             double c = 0;
             for (int i = 0; i < iMax; i++)
             {
-                double p = this.GetPoint(i);
-                double w = this.GetWeight(i);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double p = getPoint(i);
+                double p = GetPoint(i);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double w = getWeight(i);
+                double w = GetWeight(i);
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double f1 = f.value(p);
                 double f1 = f.Value(p);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double f2 = f.value(-p);
                 double f2 = f.Value(-p);
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double y = w * (f1 + f2) - c;
                 double y = w * (f1 + f2) - c;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double t = s + y;
                 double t = s + y;
 
                 c = (t - s) - y;
@@ -90,9 +107,15 @@ namespace org.apache.commons.math3.analysis.integration.gauss
 
             if (ruleLength % 2 != 0)
             {
-                double w = this.GetWeight(iMax);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double w = getWeight(iMax);
+                double w = GetWeight(iMax);
 
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double y = w * f.value(0d) - c;
                 double y = w * f.Value(0d) - c;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double t = s + y;
                 double t = s + y;
 
                 s = t;
@@ -101,4 +124,5 @@ namespace org.apache.commons.math3.analysis.integration.gauss
             return s;
         }
     }
+
 }

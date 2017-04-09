@@ -31,6 +31,14 @@ namespace Essence.Util.Math.Double
         /// <summary>Tolerancia a cero.</summary>
         public const double ZERO_TOLERANCE = (double)1e-08;
 
+        // NOTA: mejor utilizar Math.Round(double value, int decimals)
+        public static double Round(double value, int decimals)
+        {
+            Contract.Assert(decimals < round.Length);
+            double r = round[decimals];
+            return System.Math.Round(value * r) / r;
+        }
+
         public static void MinMax(double a, double b, out double min, out double max)
         {
             if (a > b)
@@ -409,13 +417,13 @@ namespace Essence.Util.Math.Double
             return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
         }
 
-        public static IEnumerable<double> For(double i, double f, int c)
+        public static IEnumerable<double> For(double min, double max, int c)
         {
-            yield return i;
+            yield return min;
 
-            double tt = (f - i) / (c + 1);
+            double tt = (max - min) / (c + 1);
 
-            double t = i;
+            double t = min;
             while (c > 0)
             {
                 t += tt;
@@ -423,7 +431,7 @@ namespace Essence.Util.Math.Double
                 c--;
             }
 
-            yield return f;
+            yield return max;
         }
 
         public static bool Between(this double v, double a, double b)
@@ -439,6 +447,18 @@ namespace Essence.Util.Math.Double
         public static int SafeSign(double v)
         {
             return ((v < 0) ? -1 : 1);
+        }
+
+        private static readonly double[] round;
+
+        static MathUtils()
+        {
+            round = new double[16];
+            round[0] = 1;
+            for (int i = 1; i < round.Length; i++)
+            {
+                round[i] = round[i - 1] * 10;
+            }
         }
 
         #region Inner clases

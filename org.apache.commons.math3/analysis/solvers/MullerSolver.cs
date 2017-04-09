@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,12 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using org.apache.commons.math3.analysis.util;
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+    using NoBracketingException = org.apache.commons.math3.exception.NoBracketingException;
+    using NumberIsTooLargeException = org.apache.commons.math3.exception.NumberIsTooLargeException;
+    using TooManyEvaluationsException = org.apache.commons.math3.exception.TooManyEvaluationsException;
+    using FastMath = org.apache.commons.math3.util.FastMath;
+
     /// <summary>
     /// This class implements the <a href="http://mathworld.wolfram.com/MullersMethod.html">
     /// Muller's Method</a> for root finding of real univariate functions. For
@@ -29,7 +32,8 @@ namespace org.apache.commons.math3.analysis.solvers
     /// Muller's method applies to both real and complex functions, but here we
     /// restrict ourselves to real functions.
     /// This class differs from <seealso cref="MullerSolver"/> in the way it avoids complex
-    /// operations.</para>
+    /// </para>
+    /// operations.</para><para>
     /// Muller's original method would have function evaluation at complex point.
     /// Since our f(x) is real, we have to find ways to avoid that. Bracketing
     /// condition is one way to go: by requiring bracketing in every iteration,
@@ -42,11 +46,11 @@ namespace org.apache.commons.math3.analysis.solvers
     /// <para>
     /// The formulas here use divided differences directly.</para>
     /// 
-    /// @version $Id: MullerSolver.java 1391927 2012-09-30 00:03:30Z erans $
     /// @since 1.2 </summary>
     /// <seealso cref= MullerSolver2 </seealso>
     public class MullerSolver : AbstractUnivariateSolver
     {
+
         /// <summary>
         /// Default absolute accuracy. </summary>
         private const double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
@@ -54,27 +58,22 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <summary>
         /// Construct a solver with default accuracy (1e-6).
         /// </summary>
-        public MullerSolver()
-            : this(DEFAULT_ABSOLUTE_ACCURACY)
+        public MullerSolver() : this(DEFAULT_ABSOLUTE_ACCURACY)
         {
         }
-
         /// <summary>
         /// Construct a solver.
         /// </summary>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public MullerSolver(double absoluteAccuracy)
-            : base(absoluteAccuracy)
+        public MullerSolver(double absoluteAccuracy) : base(absoluteAccuracy)
         {
         }
-
         /// <summary>
         /// Construct a solver.
         /// </summary>
         /// <param name="relativeAccuracy"> Relative accuracy. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
-        public MullerSolver(double relativeAccuracy, double absoluteAccuracy)
-            : base(relativeAccuracy, absoluteAccuracy)
+        public MullerSolver(double relativeAccuracy, double absoluteAccuracy) : base(relativeAccuracy, absoluteAccuracy)
         {
         }
 
@@ -83,40 +82,54 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         protected internal override double DoSolve()
         {
-            double min = this.Min;
-            double max = this.Max;
-            double initial = this.StartValue;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double min = getMin();
+            double min = GetMin();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double max = getMax();
+            double max = GetMax();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double initial = getStartValue();
+            double initial = GetStartValue();
 
-            double functionValueAccuracy = this.FunctionValueAccuracy;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double functionValueAccuracy = getFunctionValueAccuracy();
+            double functionValueAccuracy = GetFunctionValueAccuracy();
 
-            this.VerifySequence(min, initial, max);
+            VerifySequence(min, initial, max);
 
             // check for zeros before verifying bracketing
-            double fMin = this.ComputeObjectiveValue(min);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double fMin = computeObjectiveValue(min);
+            double fMin = ComputeObjectiveValue(min);
             if (FastMath.Abs(fMin) < functionValueAccuracy)
             {
                 return min;
             }
-            double fMax = this.ComputeObjectiveValue(max);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double fMax = computeObjectiveValue(max);
+            double fMax = ComputeObjectiveValue(max);
             if (FastMath.Abs(fMax) < functionValueAccuracy)
             {
                 return max;
             }
-            double fInitial = this.ComputeObjectiveValue(initial);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double fInitial = computeObjectiveValue(initial);
+            double fInitial = ComputeObjectiveValue(initial);
             if (FastMath.Abs(fInitial) < functionValueAccuracy)
             {
                 return initial;
             }
 
-            this.VerifyBracketing(min, max);
+            VerifyBracketing(min, max);
 
-            if (this.IsBracketing(min, initial))
+            if (IsBracketing(min, initial))
             {
-                return this.Solve(min, initial, fMin, fInitial);
+                return Solve(min, initial, fMin, fInitial);
             }
             else
             {
-                return this.Solve(initial, max, fInitial, fMax);
+                return Solve(initial, max, fInitial, fMax);
             }
         }
 
@@ -132,9 +145,15 @@ namespace org.apache.commons.math3.analysis.solvers
         /// the function to be solved has been exhausted. </exception>
         private double Solve(double min, double max, double fMin, double fMax)
         {
-            double relativeAccuracy = this.RelativeAccuracy;
-            double absoluteAccuracy = this.AbsoluteAccuracy;
-            double functionValueAccuracy = this.FunctionValueAccuracy;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double relativeAccuracy = getRelativeAccuracy();
+            double relativeAccuracy = GetRelativeAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double absoluteAccuracy = getAbsoluteAccuracy();
+            double absoluteAccuracy = GetAbsoluteAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double functionValueAccuracy = getFunctionValueAccuracy();
+            double functionValueAccuracy = GetFunctionValueAccuracy();
 
             // [x0, x2] is the bracketing interval in each iteration
             // x1 is the last approximation and an interpolation point in (x0, x2)
@@ -146,7 +165,7 @@ namespace org.apache.commons.math3.analysis.solvers
             double x2 = max;
             double y2 = fMax;
             double x1 = 0.5 * (x0 + x2);
-            double y1 = this.ComputeObjectiveValue(x1);
+            double y1 = ComputeObjectiveValue(x1);
 
             double oldx = double.PositiveInfinity;
             while (true)
@@ -155,19 +174,39 @@ namespace org.apache.commons.math3.analysis.solvers
                 // x0, x1, x2 and x is the zero of the interpolating parabola.
                 // Due to bracketing condition, this parabola must have two
                 // real roots and we choose one in [x0, x2] to be x.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double d01 = (y1 - y0) / (x1 - x0);
                 double d01 = (y1 - y0) / (x1 - x0);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double d12 = (y2 - y1) / (x2 - x1);
                 double d12 = (y2 - y1) / (x2 - x1);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double d012 = (d12 - d01) / (x2 - x0);
                 double d012 = (d12 - d01) / (x2 - x0);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double c1 = d01 + (x1 - x0) * d012;
                 double c1 = d01 + (x1 - x0) * d012;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double delta = c1 * c1 - 4 * y1 * d012;
                 double delta = c1 * c1 - 4 * y1 * d012;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double xplus = x1 + (-2.0 * y1) / (c1 + org.apache.commons.math3.util.FastMath.sqrt(delta));
                 double xplus = x1 + (-2.0 * y1) / (c1 + FastMath.Sqrt(delta));
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double xminus = x1 + (-2.0 * y1) / (c1 - org.apache.commons.math3.util.FastMath.sqrt(delta));
                 double xminus = x1 + (-2.0 * y1) / (c1 - FastMath.Sqrt(delta));
                 // xplus and xminus are two roots of parabola and at least
                 // one of them should lie in (x0, x2)
-                double x = this.IsSequence(x0, xplus, x2) ? xplus : xminus;
-                double y = this.ComputeObjectiveValue(x);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double x = isSequence(x0, xplus, x2) ? xplus : xminus;
+                double x = IsSequence(x0, xplus, x2) ? xplus : xminus;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double y = computeObjectiveValue(x);
+                double y = ComputeObjectiveValue(x);
 
                 // check for convergence
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double tolerance = org.apache.commons.math3.util.FastMath.max(relativeAccuracy * org.apache.commons.math3.util.FastMath.abs(x), absoluteAccuracy);
                 double tolerance = FastMath.Max(relativeAccuracy * FastMath.Abs(x), absoluteAccuracy);
                 if (FastMath.Abs(x - oldx) <= tolerance || FastMath.Abs(y) <= functionValueAccuracy)
                 {
@@ -193,8 +232,8 @@ namespace org.apache.commons.math3.analysis.solvers
                 else
                 {
                     double xm = 0.5 * (x0 + x2);
-                    double ym = this.ComputeObjectiveValue(xm);
-                    if (MyUtils.Signum(y0) + MyUtils.Signum(ym) == 0.0)
+                    double ym = ComputeObjectiveValue(xm);
+                    if (FastMath.Signum(y0) + FastMath.Signum(ym) == 0.0)
                     {
                         x2 = xm;
                         y2 = ym;
@@ -205,10 +244,11 @@ namespace org.apache.commons.math3.analysis.solvers
                         y0 = ym;
                     }
                     x1 = 0.5 * (x0 + x2);
-                    y1 = this.ComputeObjectiveValue(x1);
+                    y1 = ComputeObjectiveValue(x1);
                     oldx = double.PositiveInfinity;
                 }
             }
         }
     }
+
 }

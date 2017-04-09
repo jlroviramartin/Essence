@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,11 +16,13 @@
  * limitations under the License.
  */
 
-using org.apache.commons.math3.analysis.exception;
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+    using FastMath = org.apache.commons.math3.util.FastMath;
+    using ConvergenceException = org.apache.commons.math3.exception.ConvergenceException;
+    using MathInternalError = org.apache.commons.math3.exception.MathInternalError;
+
     /// <summary>
     /// Base class for all bracketing <em>Secant</em>-based methods for root-finding
     /// (approximating a zero of a univariate real function).
@@ -42,10 +45,12 @@ namespace org.apache.commons.math3.analysis.solvers
     /// implementation.</para>
     /// 
     /// @since 3.0
-    /// @version $Id: BaseSecantSolver.java 1455194 2013-03-11 15:45:54Z luc $
     /// </summary>
     public abstract class BaseSecantSolver : AbstractUnivariateSolver, BracketedUnivariateSolver<UnivariateFunction>
     {
+        //public abstract double Solve(int maxEval, FUNC f, double min, double max, double startValue, AllowedSolution allowedSolution);
+        //public abstract double Solve(int maxEval, FUNC f, double min, double max, AllowedSolution allowedSolution);
+
         /// <summary>
         /// Default absolute accuracy. </summary>
         protected internal const double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
@@ -63,8 +68,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// </summary>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
         /// <param name="method"> <em>Secant</em>-based root-finding method to use. </param>
-        protected internal BaseSecantSolver(double absoluteAccuracy, Method method)
-            : base(absoluteAccuracy)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected BaseSecantSolver(final double absoluteAccuracy, final Method method)
+        protected internal BaseSecantSolver(double absoluteAccuracy, Method method) : base(absoluteAccuracy)
         {
             this.allowed = AllowedSolution.ANY_SIDE;
             this.method = method;
@@ -76,8 +82,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="relativeAccuracy"> Relative accuracy. </param>
         /// <param name="absoluteAccuracy"> Absolute accuracy. </param>
         /// <param name="method"> <em>Secant</em>-based root-finding method to use. </param>
-        protected internal BaseSecantSolver(double relativeAccuracy, double absoluteAccuracy, Method method)
-            : base(relativeAccuracy, absoluteAccuracy)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected BaseSecantSolver(final double relativeAccuracy, final double absoluteAccuracy, final Method method)
+        protected internal BaseSecantSolver(double relativeAccuracy, double absoluteAccuracy, Method method) : base(relativeAccuracy, absoluteAccuracy)
         {
             this.allowed = AllowedSolution.ANY_SIDE;
             this.method = method;
@@ -90,8 +97,9 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="absoluteAccuracy"> Maximum absolute error. </param>
         /// <param name="functionValueAccuracy"> Maximum function value error. </param>
         /// <param name="method"> <em>Secant</em>-based root-finding method to use </param>
-        protected internal BaseSecantSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy, Method method)
-            : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: protected BaseSecantSolver(final double relativeAccuracy, final double absoluteAccuracy, final double functionValueAccuracy, final Method method)
+        protected internal BaseSecantSolver(double relativeAccuracy, double absoluteAccuracy, double functionValueAccuracy, Method method) : base(relativeAccuracy, absoluteAccuracy, functionValueAccuracy)
         {
             this.allowed = AllowedSolution.ANY_SIDE;
             this.method = method;
@@ -99,13 +107,17 @@ namespace org.apache.commons.math3.analysis.solvers
 
         /// <summary>
         /// {@inheritDoc} </summary>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public double solve(final int maxEval, final org.apache.commons.math3.analysis.UnivariateFunction f, final double min, final double max, final AllowedSolution allowedSolution)
         public virtual double Solve(int maxEval, UnivariateFunction f, double min, double max, AllowedSolution allowedSolution)
         {
-            return this.Solve(maxEval, f, min, max, min + 0.5 * (max - min), allowedSolution);
+            return Solve(maxEval, f, min, max, min + 0.5 * (max - min), allowedSolution);
         }
 
         /// <summary>
         /// {@inheritDoc} </summary>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public double solve(final int maxEval, final org.apache.commons.math3.analysis.UnivariateFunction f, final double min, final double max, final double startValue, final AllowedSolution allowedSolution)
         public virtual double Solve(int maxEval, UnivariateFunction f, double min, double max, double startValue, AllowedSolution allowedSolution)
         {
             this.allowed = allowedSolution;
@@ -114,9 +126,11 @@ namespace org.apache.commons.math3.analysis.solvers
 
         /// <summary>
         /// {@inheritDoc} </summary>
-        public override double Solve(int maxEval, UnivariateFunction f, double min, double max, double startValue)
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: @Override public double solve(final int maxEval, final org.apache.commons.math3.analysis.UnivariateFunction f, final double min, final double max, final double startValue)
+        public virtual double Solve(int maxEval, UnivariateFunction f, double min, double max, double startValue)
         {
-            return this.Solve(maxEval, f, min, max, startValue, AllowedSolution.ANY_SIDE);
+            return Solve(maxEval, f, min, max, startValue, AllowedSolution.ANY_SIDE);
         }
 
         /// <summary>
@@ -127,10 +141,10 @@ namespace org.apache.commons.math3.analysis.solvers
         protected internal override sealed double DoSolve()
         {
             // Get initial solution
-            double x0 = this.Min;
-            double x1 = this.Max;
-            double f0 = this.ComputeObjectiveValue(x0);
-            double f1 = this.ComputeObjectiveValue(x1);
+            double x0 = GetMin();
+            double x1 = GetMax();
+            double f0 = ComputeObjectiveValue(x0);
+            double f1 = ComputeObjectiveValue(x1);
 
             // If one of the bounds is the exact root, return it. Since these are
             // not under-approximations or over-approximations, we can return them
@@ -145,12 +159,18 @@ namespace org.apache.commons.math3.analysis.solvers
             }
 
             // Verify bracketing of initial solution.
-            this.VerifyBracketing(x0, x1);
+            VerifyBracketing(x0, x1);
 
             // Get accuracies.
-            double ftol = this.FunctionValueAccuracy;
-            double atol = this.AbsoluteAccuracy;
-            double rtol = this.RelativeAccuracy;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double ftol = getFunctionValueAccuracy();
+            double ftol = GetFunctionValueAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double atol = getAbsoluteAccuracy();
+            double atol = GetAbsoluteAccuracy();
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double rtol = getRelativeAccuracy();
+            double rtol = GetRelativeAccuracy();
 
             // Keep track of inverted intervals, meaning that the left bound is
             // larger than the right bound.
@@ -160,8 +180,12 @@ namespace org.apache.commons.math3.analysis.solvers
             while (true)
             {
                 // Calculate the next approximation.
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
                 double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
-                double fx = this.ComputeObjectiveValue(x);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double fx = computeObjectiveValue(x);
+                double fx = ComputeObjectiveValue(x);
 
                 // If the new approximation is the exact root, return it. Since
                 // this is not an under-approximation or an over-approximation,
@@ -182,25 +206,25 @@ namespace org.apache.commons.math3.analysis.solvers
                 }
                 else
                 {
-                    switch (this.method)
+                    switch (method)
                     {
-                        case BaseSecantSolver.Method.ILLINOIS:
-                            f0 *= 0.5;
-                            break;
-                        case BaseSecantSolver.Method.PEGASUS:
-                            f0 *= f1 / (f1 + fx);
-                            break;
-                        case Method.REGULA_FALSI:
-                            // Detect early that algorithm is stuck, instead of waiting
-                            // for the maximum number of iterations to be exceeded.
-                            if (x == x1)
-                            {
-                                throw new ConvergenceException();
-                            }
-                            break;
-                        default:
-                            // Should never happen.
-                            throw new MathInternalError();
+                    case org.apache.commons.math3.analysis.solvers.BaseSecantSolver.Method.ILLINOIS:
+                        f0 *= 0.5;
+                        break;
+                    case org.apache.commons.math3.analysis.solvers.BaseSecantSolver.Method.PEGASUS:
+                        f0 *= f1 / (f1 + fx);
+                        break;
+                    case org.apache.commons.math3.analysis.solvers.BaseSecantSolver.Method.REGULA_FALSI:
+                        // Detect early that algorithm is stuck, instead of waiting
+                        // for the maximum number of iterations to be exceeded.
+                        if (x == x1)
+                        {
+                            throw new ConvergenceException();
+                        }
+                        break;
+                    default:
+                        // Should never happen.
+                        throw new MathInternalError();
                     }
                 }
                 // Update from [x0, x1] to [x0, x].
@@ -212,36 +236,36 @@ namespace org.apache.commons.math3.analysis.solvers
                 // the root than we already are.
                 if (FastMath.Abs(f1) <= ftol)
                 {
-                    switch (this.allowed)
+                    switch (allowed)
                     {
-                        case AllowedSolution.ANY_SIDE:
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.ANY_SIDE:
+                        return x1;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.LEFT_SIDE:
+                        if (inverted)
+                        {
                             return x1;
-                        case AllowedSolution.LEFT_SIDE:
-                            if (inverted)
-                            {
-                                return x1;
-                            }
-                            break;
-                        case AllowedSolution.RIGHT_SIDE:
-                            if (!inverted)
-                            {
-                                return x1;
-                            }
-                            break;
-                        case AllowedSolution.BELOW_SIDE:
-                            if (f1 <= 0)
-                            {
-                                return x1;
-                            }
-                            break;
-                        case AllowedSolution.ABOVE_SIDE:
-                            if (f1 >= 0)
-                            {
-                                return x1;
-                            }
-                            break;
-                        default:
-                            throw new MathInternalError();
+                        }
+                        break;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.RIGHT_SIDE:
+                        if (!inverted)
+                        {
+                            return x1;
+                        }
+                        break;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.BELOW_SIDE:
+                        if (f1 <= 0)
+                        {
+                            return x1;
+                        }
+                        break;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.ABOVE_SIDE:
+                        if (f1 >= 0)
+                        {
+                            return x1;
+                        }
+                        break;
+                    default:
+                        throw new MathInternalError();
                     }
                 }
 
@@ -249,20 +273,20 @@ namespace org.apache.commons.math3.analysis.solvers
                 // are satisfied with the current approximation.
                 if (FastMath.Abs(x1 - x0) < FastMath.Max(rtol * FastMath.Abs(x1), atol))
                 {
-                    switch (this.allowed)
+                    switch (allowed)
                     {
-                        case AllowedSolution.ANY_SIDE:
-                            return x1;
-                        case AllowedSolution.LEFT_SIDE:
-                            return inverted ? x1 : x0;
-                        case AllowedSolution.RIGHT_SIDE:
-                            return inverted ? x0 : x1;
-                        case AllowedSolution.BELOW_SIDE:
-                            return (f1 <= 0) ? x1 : x0;
-                        case AllowedSolution.ABOVE_SIDE:
-                            return (f1 >= 0) ? x1 : x0;
-                        default:
-                            throw new MathInternalError();
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.ANY_SIDE:
+                        return x1;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.LEFT_SIDE:
+                        return inverted ? x1 : x0;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.RIGHT_SIDE:
+                        return inverted ? x0 : x1;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.BELOW_SIDE:
+                        return (f1 <= 0) ? x1 : x0;
+                    case org.apache.commons.math3.analysis.solvers.AllowedSolution.ABOVE_SIDE:
+                        return (f1 >= 0) ? x1 : x0;
+                    default:
+                        throw new MathInternalError();
                     }
                 }
             }
@@ -272,6 +296,7 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <em>Secant</em>-based root-finding methods. </summary>
         protected internal enum Method
         {
+
             /// <summary>
             /// The <seealso cref="RegulaFalsiSolver <em>Regula Falsi</em>"/> or
             /// <em>False Position</em> method.
@@ -285,6 +310,8 @@ namespace org.apache.commons.math3.analysis.solvers
             /// <summary>
             /// The <seealso cref="PegasusSolver <em>Pegasus</em>"/> method. </summary>
             PEGASUS
+
         }
     }
+
 }

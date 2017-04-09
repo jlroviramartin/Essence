@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,21 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using System;
-using System.Collections.Generic;
-using org.apache.commons.math3.analysis.exception;
-using FastMath = System.Math;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+    using NoBracketingException = org.apache.commons.math3.exception.NoBracketingException;
+    using NotStrictlyPositiveException = org.apache.commons.math3.exception.NotStrictlyPositiveException;
+    using NullArgumentException = org.apache.commons.math3.exception.NullArgumentException;
+    using NumberIsTooLargeException = org.apache.commons.math3.exception.NumberIsTooLargeException;
+    using LocalizedFormats = org.apache.commons.math3.exception.util.LocalizedFormats;
+    using FastMath = org.apache.commons.math3.util.FastMath;
+
     /// <summary>
     /// Utility routines for <seealso cref="UnivariateSolver"/> objects.
     /// 
-    /// @version $Id: UnivariateSolverUtils.java 1579346 2014-03-19 18:43:39Z erans $
     /// </summary>
-    public static class UnivariateSolverUtils
+    public class UnivariateSolverUtils
     {
+        /// <summary>
+        /// Class contains only static methods.
+        /// </summary>
+        private UnivariateSolverUtils()
+        {
+        }
+
         /// <summary>
         /// Convenience method to find a zero of a univariate real function.  A default
         /// solver is used.
@@ -44,10 +53,12 @@ namespace org.apache.commons.math3.analysis.solvers
         {
             if (function == null)
             {
-                throw new ArgumentNullException("LocalizedFormats.FUNCTION");
+                throw new NullArgumentException(LocalizedFormats.FUNCTION);
             }
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final UnivariateSolver solver = new BrentSolver();
             UnivariateSolver solver = new BrentSolver();
-            return solver.Solve(int.MaxValue, function, x0, x1);
+            return solver.solve(int.MaxValue, function, x0, x1);
         }
 
         /// <summary>
@@ -66,15 +77,18 @@ namespace org.apache.commons.math3.analysis.solvers
         {
             if (function == null)
             {
-                throw new ArgumentNullException("LocalizedFormats.FUNCTION");
+                throw new NullArgumentException(LocalizedFormats.FUNCTION);
             }
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final UnivariateSolver solver = new BrentSolver(absoluteAccuracy);
             UnivariateSolver solver = new BrentSolver(absoluteAccuracy);
-            return solver.Solve(int.MaxValue, function, x0, x1);
+            return solver.solve(int.MaxValue, function, x0, x1);
         }
 
         /// <summary>
         /// Force a root found by a non-bracketing solver to lie on a specified side,
-        /// as if the solver was a bracketing one. </summary>
+        /// as if the solver were a bracketing one.
+        /// </summary>
         /// <param name="maxEval"> maximal number of new evaluations of the function
         /// (evaluations already done for finding the root should have already been subtracted
         /// from this number) </param>
@@ -88,8 +102,11 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <returns> a root approximation, on the specified side of the exact root </returns>
         /// <exception cref="NoBracketingException"> if the function has the same sign at the
         /// endpoints. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public static double forceSide(final int maxEval, final org.apache.commons.math3.analysis.UnivariateFunction f, final BracketedUnivariateSolver<org.apache.commons.math3.analysis.UnivariateFunction> bracketing, final double baseRoot, final double min, final double max, final AllowedSolution allowedSolution) throws org.apache.commons.math3.exception.NoBracketingException
         public static double ForceSide(int maxEval, UnivariateFunction f, BracketedUnivariateSolver<UnivariateFunction> bracketing, double baseRoot, double min, double max, AllowedSolution allowedSolution)
         {
+
             if (allowedSolution == AllowedSolution.ANY_SIDE)
             {
                 // no further bracketing required
@@ -97,7 +114,9 @@ namespace org.apache.commons.math3.analysis.solvers
             }
 
             // find a very small interval bracketing the root
-            double step = FastMath.Max(bracketing.AbsoluteAccuracy, FastMath.Abs(baseRoot * bracketing.RelativeAccuracy));
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double step = org.apache.commons.math3.util.FastMath.max(bracketing.getAbsoluteAccuracy(), org.apache.commons.math3.util.FastMath.abs(baseRoot * bracketing.getRelativeAccuracy()));
+            double step = FastMath.max(bracketing.getAbsoluteAccuracy(), FastMath.Abs(baseRoot * bracketing.getRelativeAccuracy()));
             double xLo = FastMath.Max(min, baseRoot - step);
             double fLo = f.Value(xLo);
             double xHi = FastMath.Min(max, baseRoot + step);
@@ -105,6 +124,7 @@ namespace org.apache.commons.math3.analysis.solvers
             int remainingEval = maxEval - 2;
             while (remainingEval > 0)
             {
+
                 if ((fLo >= 0 && fHi <= 0) || (fLo <= 0 && fHi >= 0))
                 {
                     // compute the root on the selected side
@@ -160,23 +180,25 @@ namespace org.apache.commons.math3.analysis.solvers
                     fHi = f.Value(xHi);
                     remainingEval--;
                 }
+
             }
 
-            throw new NoBracketingException("LocalizedFormats.FAILED_BRACKETING", xLo, xHi, fLo, fHi, maxEval - remainingEval, maxEval, baseRoot, min, max);
+            throw new NoBracketingException(LocalizedFormats.FAILED_BRACKETING, xLo, xHi, fLo, fHi, maxEval - remainingEval, maxEval, baseRoot, min, max);
+
         }
 
         /// <summary>
         /// This method simply calls {@link #bracket(UnivariateFunction, double, double, double,
         /// double, double, int) bracket(function, initial, lowerBound, upperBound, q, r, maximumIterations)}
         /// with {@code q} and {@code r} set to 1.0 and {@code maximumIterations} set to {@code Integer.MAX_VALUE}.
-        /// <strong>Note: </strong> this method can take
-        /// <code>Integer.MAX_VALUE</code> iterations to throw a
-        /// <code>ConvergenceException.</code>  Unless you are confident that there
-        /// is a root between <code>lowerBound</code> and <code>upperBound</code>
-        /// near <code>initial,</code> it is better to use
-        /// {@link #bracket(UnivariateFunction, double, double, double, double,
-        /// double, int) bracket(function, initial, lowerBound, upperBound, q, r, maximumIterations)},
-        /// explicitly specifying the maximum number of iterations.</p>
+        /// <para>
+        /// <strong>Note: </strong> this method can take {@code Integer.MAX_VALUE}
+        /// iterations to throw a {@code ConvergenceException.}  Unless you are
+        /// confident that there is a root between {@code lowerBound} and
+        /// {@code upperBound} near {@code initial}, it is better to use
+        /// {@link #bracket(UnivariateFunction, double, double, double, double,double, int)
+        /// bracket(function, initial, lowerBound, upperBound, q, r, maximumIterations)},
+        /// explicitly specifying the maximum number of iterations.</para>
         /// </summary>
         /// <param name="function"> Function. </param>
         /// <param name="initial"> Initial midpoint of interval being expanded to
@@ -193,22 +215,22 @@ namespace org.apache.commons.math3.analysis.solvers
             return Bracket(function, initial, lowerBound, upperBound, 1.0, 1.0, int.MaxValue);
         }
 
-        /// <summary>
-        /// This method simply calls {@link #bracket(UnivariateFunction, double, double, double,
-        /// double, double, int) bracket(function, initial, lowerBound, upperBound, q, r, maximumIterations)}
-        /// with {@code q} and {@code r} set to 1.0. </summary>
-        /// <param name="function"> Function. </param>
-        /// <param name="initial"> Initial midpoint of interval being expanded to
-        /// bracket a root. </param>
-        /// <param name="lowerBound"> Lower bound (a is never lower than this value). </param>
-        /// <param name="upperBound"> Upper bound (b never is greater than this
-        /// value). </param>
-        /// <param name="maximumIterations"> Maximum number of iterations to perform </param>
-        /// <returns> a two element array holding a and b. </returns>
-        /// <exception cref="NoBracketingException"> if the algorithm fails to find a and b
-        /// satisfying the desired conditions. </exception>
-        /// <exception cref="NotStrictlyPositiveException"> if {@code maximumIterations <= 0}. </exception>
-        /// <exception cref="NullArgumentException"> if {@code function} is {@code null}. </exception>
+         /// <summary>
+         /// This method simply calls {@link #bracket(UnivariateFunction, double, double, double,
+         /// double, double, int) bracket(function, initial, lowerBound, upperBound, q, r, maximumIterations)}
+         /// with {@code q} and {@code r} set to 1.0. </summary>
+         /// <param name="function"> Function. </param>
+         /// <param name="initial"> Initial midpoint of interval being expanded to
+         /// bracket a root. </param>
+         /// <param name="lowerBound"> Lower bound (a is never lower than this value). </param>
+         /// <param name="upperBound"> Upper bound (b never is greater than this
+         /// value). </param>
+         /// <param name="maximumIterations"> Maximum number of iterations to perform </param>
+         /// <returns> a two element array holding a and b. </returns>
+         /// <exception cref="NoBracketingException"> if the algorithm fails to find a and b
+         /// satisfying the desired conditions. </exception>
+         /// <exception cref="NotStrictlyPositiveException"> if {@code maximumIterations <= 0}. </exception>
+         /// <exception cref="NullArgumentException"> if {@code function} is {@code null}. </exception>
         public static double[] Bracket(UnivariateFunction function, double initial, double lowerBound, double upperBound, int maximumIterations)
         {
             return Bracket(function, initial, lowerBound, upperBound, 1.0, 1.0, maximumIterations);
@@ -228,13 +250,14 @@ namespace org.apache.commons.math3.analysis.solvers
         /// \( \delta_{k+1} = r \delta_k + q, \delta_0 = 0\) and starting search with \( k=1 \).
         /// The algorithm stops when one of the following happens: <ul>
         /// <li> at least one positive and one negative value have been found --  success!</li>
-        /// <li> both endpoints have reached their respective limites -- NoBracketingException </li>
-        /// <li> {@code maximumIterations} iterations elapse -- NoBracketingException </li></ul></para>
+        /// <li> both endpoints have reached their respective limits -- NoBracketingException </li>
+        /// <li> {@code maximumIterations} iterations elapse -- NoBracketingException </li></ul>
+        /// </para>
         /// <para>
         /// If different signs are found at first iteration ({@code k=1}), then the returned
         /// interval will be \( [a, b] = [l_1, u_1] \). If different signs are found at a later
-        /// iteration ({code k>1}, then the returned interval will be either
-        /// \( [a, b] = [l_{k+1}, l_{k}] \) or ( [a, b] = [u_{k}, u_{k+1}] \). A root solver called
+        /// iteration {@code k>1}, then the returned interval will be either
+        /// \( [a, b] = [l_{k+1}, l_{k}] \) or \( [a, b] = [u_{k}, u_{k+1}] \). A root solver called
         /// with these parameters will therefore start with the smallest bracketing interval known
         /// at this step.
         /// </para>
@@ -242,7 +265,7 @@ namespace org.apache.commons.math3.analysis.solvers
         /// Interval expansion rate is tuned by changing the recurrence parameters {@code r} and
         /// {@code q}. When the multiplicative factor {@code r} is set to 1, the sequence is a
         /// simple arithmetic sequence with linear increase. When the multiplicative factor {@code r}
-        /// is larger than 1, the sequence has an asymtotically exponential rate. Note than the
+        /// is larger than 1, the sequence has an asymptotically exponential rate. Note than the
         /// additive parameter {@code q} should never be set to zero, otherwise the interval would
         /// degenerate to the single initial point for all values of {@code k}.
         /// </para>
@@ -274,11 +297,14 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="maximumIterations"> Maximum number of iterations to perform </param>
         /// <returns> a two element array holding the bracketing values. </returns>
         /// <exception cref="NoBracketingException"> if function cannot be bracketed in the search interval </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public static double[] bracket(final org.apache.commons.math3.analysis.UnivariateFunction function, final double initial, final double lowerBound, final double upperBound, final double q, final double r, final int maximumIterations) throws org.apache.commons.math3.exception.NoBracketingException
         public static double[] Bracket(UnivariateFunction function, double initial, double lowerBound, double upperBound, double q, double r, int maximumIterations)
         {
+
             if (function == null)
             {
-                throw new ArgumentNullException("LocalizedFormats.FUNCTION");
+                throw new NullArgumentException(LocalizedFormats.FUNCTION);
             }
             if (q <= 0)
             {
@@ -286,22 +312,31 @@ namespace org.apache.commons.math3.analysis.solvers
             }
             if (maximumIterations <= 0)
             {
-                throw new NotStrictlyPositiveException("LocalizedFormats.INVALID_MAX_ITERATIONS", maximumIterations);
+                throw new NotStrictlyPositiveException(LocalizedFormats.INVALID_MAX_ITERATIONS, maximumIterations);
             }
             VerifySequence(lowerBound, initial, upperBound);
 
             // initialize the recurrence
             double a = initial;
             double b = initial;
-            double fa = double.NaN;
-            double fb = double.NaN;
+            double fa = Double.NaN;
+            double fb = Double.NaN;
             double delta = 0;
 
-            for (int numIterations = 0; (numIterations < maximumIterations) && (a > lowerBound || b > upperBound); ++numIterations)
+            for (int numIterations = 0; (numIterations < maximumIterations) && (a > lowerBound || b < upperBound); ++numIterations)
             {
+
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double previousA = a;
                 double previousA = a;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double previousFa = fa;
                 double previousFa = fa;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double previousB = b;
                 double previousB = b;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double previousFb = fb;
                 double previousFb = fb;
 
                 delta = r * delta + q;
@@ -335,10 +370,12 @@ namespace org.apache.commons.math3.analysis.solvers
                         return new double[] { previousB, b };
                     }
                 }
+
             }
 
             // no bracketing found
             throw new NoBracketingException(a, b, fa, fb);
+
         }
 
         /// <summary>
@@ -363,13 +400,19 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <returns> {@code true} if the function values have opposite signs at the
         /// given points. </returns>
         /// <exception cref="NullArgumentException"> if {@code function} is {@code null}. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public static boolean isBracketing(org.apache.commons.math3.analysis.UnivariateFunction function, final double lower, final double upper) throws org.apache.commons.math3.exception.NullArgumentException
         public static bool IsBracketing(UnivariateFunction function, double lower, double upper)
         {
             if (function == null)
             {
-                throw new ArgumentNullException("LocalizedFormats.FUNCTION");
+                throw new NullArgumentException(LocalizedFormats.FUNCTION);
             }
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double fLo = function.value(lower);
             double fLo = function.Value(lower);
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double fHi = function.value(upper);
             double fHi = function.Value(upper);
             return (fLo >= 0 && fHi <= 0) || (fLo <= 0 && fHi >= 0);
         }
@@ -381,6 +424,8 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="mid"> Second number. </param>
         /// <param name="end"> Third number. </param>
         /// <returns> {@code true} if the arguments form an increasing sequence. </returns>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public static boolean isSequence(final double start, final double mid, final double end)
         public static bool IsSequence(double start, double mid, double end)
         {
             return (start < mid) && (mid < end);
@@ -392,11 +437,13 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="lower"> Lower endpoint. </param>
         /// <param name="upper"> Upper endpoint. </param>
         /// <exception cref="NumberIsTooLargeException"> if {@code lower >= upper}. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public static void verifyInterval(final double lower, final double upper) throws org.apache.commons.math3.exception.NumberIsTooLargeException
         public static void VerifyInterval(double lower, double upper)
         {
             if (lower >= upper)
             {
-                throw new NumberIsTooLargeException("LocalizedFormats.ENDPOINTS_NOT_AN_INTERVAL", lower, upper, false);
+                throw new NumberIsTooLargeException(LocalizedFormats.ENDPOINTS_NOT_AN_INTERVAL, lower, upper, false);
             }
         }
 
@@ -408,6 +455,8 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <param name="upper"> Upper endpoint. </param>
         /// <exception cref="NumberIsTooLargeException"> if {@code lower >= initial} or
         /// {@code initial >= upper}. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public static void verifySequence(final double lower, final double initial, final double upper) throws org.apache.commons.math3.exception.NumberIsTooLargeException
         public static void VerifySequence(double lower, double initial, double upper)
         {
             VerifyInterval(lower, initial);
@@ -424,11 +473,13 @@ namespace org.apache.commons.math3.analysis.solvers
         /// <exception cref="NoBracketingException"> if the function has the same sign at the
         /// endpoints. </exception>
         /// <exception cref="NullArgumentException"> if {@code function} is {@code null}. </exception>
+//JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
+//ORIGINAL LINE: public static void verifyBracketing(org.apache.commons.math3.analysis.UnivariateFunction function, final double lower, final double upper) throws org.apache.commons.math3.exception.NullArgumentException, org.apache.commons.math3.exception.NoBracketingException
         public static void VerifyBracketing(UnivariateFunction function, double lower, double upper)
         {
             if (function == null)
             {
-                throw new ArgumentNullException("LocalizedFormats.FUNCTION");
+                throw new NullArgumentException(LocalizedFormats.FUNCTION);
             }
             VerifyInterval(lower, upper);
             if (!IsBracketing(function, lower, upper))
@@ -437,4 +488,5 @@ namespace org.apache.commons.math3.analysis.solvers
             }
         }
     }
+
 }

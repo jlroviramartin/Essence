@@ -1,3 +1,6 @@
+﻿/// Apache Commons Math 3.6.1
+using System;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,19 +17,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using System;
-
 namespace org.apache.commons.math3.analysis.solvers
 {
+
+
     /// <summary>
     /// Interface for (univariate real) rootfinding algorithms.
     /// Implementations will search for only one zero in the given interval.
-    /// 
-    /// @version $Id: DifferentiableUnivariateSolver.java 1499808 2013-07-04 17:00:42Z sebb $ </summary>
+    /// </summary>
     /// @deprecated as of 3.1, replaced by <seealso cref="UnivariateDifferentiableSolver"/> 
-    //[Obsolete("as of 3.1, replaced by <seealso cref="UnivariateDifferentiableSolver"/>")]
+    [Obsolete("as of 3.1, replaced by <seealso cref=\"UnivariateDifferentiableSolver\"/>")]
     public interface DifferentiableUnivariateSolver : BaseUnivariateSolver<DifferentiableUnivariateFunction>
     {
     }
+
 }

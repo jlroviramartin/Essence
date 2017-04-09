@@ -1,3 +1,4 @@
+﻿/// Apache Commons Math 3.6.1
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -14,27 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using System;
-using org.apache.commons.math3.analysis.exception;
-using org.apache.commons.math3.util;
-
 namespace org.apache.commons.math3.analysis.integration.gauss
 {
+
+    using DimensionMismatchException = org.apache.commons.math3.exception.DimensionMismatchException;
+    using NonMonotonicSequenceException = org.apache.commons.math3.exception.NonMonotonicSequenceException;
+    using MathArrays = org.apache.commons.math3.util.MathArrays;
+    //using Pair = org.apache.commons.math3.util.Pair;
+    using org.apache.commons.math3.util;
+
     /// <summary>
     /// Class that implements the Gaussian rule for
     /// <seealso cref="#integrate(UnivariateFunction) integrating"/> a weighted
     /// function.
     /// 
     /// @since 3.1
-    /// @version $Id: GaussIntegrator.java 1500603 2013-07-08 08:31:49Z luc $
     /// </summary>
     public class GaussIntegrator
     {
         /// <summary>
         /// Nodes. </summary>
         private readonly double[] points;
-
         /// <summary>
         /// Nodes weights. </summary>
         private readonly double[] weights;
@@ -58,8 +59,8 @@ namespace org.apache.commons.math3.analysis.integration.gauss
 
             MathArrays.CheckOrder(points, MathArrays.OrderDirection.INCREASING, true, true);
 
-            this.points = (double[])points.Clone();
-            this.weights = (double[])weights.Clone();
+            this.points = points.Clone();
+            this.weights = weights.Clone();
         }
 
         /// <summary>
@@ -71,8 +72,7 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// sorted in increasing order.
         /// </exception>
         /// <seealso cref= #GaussIntegrator(double[], double[]) </seealso>
-        public GaussIntegrator(Tuple<double[], double[]> pointsAndWeights)
-            : this(pointsAndWeights.Item1, pointsAndWeights.Item2)
+        public GaussIntegrator(Pair<double[], double[]> pointsAndWeights) : this(pointsAndWeights.GetFirst(), pointsAndWeights.GetSecond())
         {
         }
 
@@ -89,11 +89,19 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         {
             double s = 0;
             double c = 0;
-            for (int i = 0; i < this.points.Length; i++)
+            for (int i = 0; i < points.Length; i++)
             {
-                double x = this.points[i];
-                double w = this.weights[i];
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double x = points[i];
+                double x = points[i];
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double w = weights[i];
+                double w = weights[i];
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double y = w * f.value(x) - c;
                 double y = w * f.Value(x) - c;
+//JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
+//ORIGINAL LINE: final double t = s + y;
                 double t = s + y;
                 c = (t - s) - y;
                 s = t;
@@ -103,9 +111,9 @@ namespace org.apache.commons.math3.analysis.integration.gauss
 
         /// <returns> the order of the integration rule (the number of integration
         /// points). </returns>
-        public virtual int NumberOfPoints
+        public virtual int GetNumberOfPoints()
         {
-            get { return this.points.Length; }
+            return points.Length;
         }
 
         /// <summary>
@@ -115,7 +123,7 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// <returns> the integration point. </returns>
         public virtual double GetPoint(int index)
         {
-            return this.points[index];
+            return points[index];
         }
 
         /// <summary>
@@ -125,7 +133,8 @@ namespace org.apache.commons.math3.analysis.integration.gauss
         /// <returns> the weight. </returns>
         public virtual double GetWeight(int index)
         {
-            return this.weights[index];
+            return weights[index];
         }
     }
+
 }
