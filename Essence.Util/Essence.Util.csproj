@@ -48,7 +48,10 @@
     <Compile Include="Converters\IParseable.cs" />
     <Compile Include="Converters\ICustomParser.cs" />
     <Compile Include="EmptyServiceProvider.cs" />
+    <Compile Include="FlagsUtils.cs" />
     <Compile Include="Math\ComparableUtils.cs" />
+    <Compile Include="Math\EpsilonEqualityComparer.cs" />
+    <Compile Include="Math\IEpsilonEqualityComparer.cs" />
     <Compile Include="PreventReentry.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Builders\HashCodeBuilder.cs" />
@@ -94,8 +97,8 @@
     <Compile Include="Events\ListenerManager_v2.cs" />
     <Compile Include="Events\PropertyChangedExEventArgs.cs" />
     <Compile Include="Events\RegisterCallback.cs" />
-    <Compile Include="Events\SmartWeakEvent\FastSmartWeakEvent.cs" />
-    <Compile Include="Events\SmartWeakEvent\SmartWeakEvent.cs" />
+    <Compile Include="Events\SmartWeakEvents\FastSmartWeakEvent.cs" />
+    <Compile Include="Events\SmartWeakEvents\SmartWeakEvent.cs" />
     <Compile Include="Events\UnregisterCallback.cs" />
     <Compile Include="Events\WeakEventHandler.cs" />
     <Compile Include="FilterBuilder.cs" />
@@ -125,6 +128,10 @@
     <Compile Include="PropertyUtils.cs" />
     <Compile Include="ProviderUtils.cs" />
     <Compile Include="Converters\StringConverter.cs" />
+    <Compile Include="RandomUtils.cs" />
+    <Compile Include="Services\EmptyServiceProvider.cs" />
+    <Compile Include="Services\JoinServiceProvider.cs" />
+    <Compile Include="Services\MapServiceProvider.cs" />
     <Compile Include="StringUtils.cs" />
     <Compile Include="TypeUtils.cs" />
     <Compile Include="WeakEvents\WeakEventHandlerManager.cs" />

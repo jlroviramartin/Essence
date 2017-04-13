@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Converters\StringConverterTest.cs" />
     <Compile Include="DictionaryOfTypeTest.cs" />
+    <Compile Include="FlagsUtilsTest.cs" />
     <Compile Include="ListenerManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeUtilsTest.cs" />

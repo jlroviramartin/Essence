@@ -13,7 +13,12 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Essence.Util.Events;
+using Essence.Util.Math;
+using Essence.Util.Math.Double;
 
 namespace Essence.Util.Properties
 {
@@ -24,7 +29,59 @@ namespace Essence.Util.Properties
             sender.NotifyPropertyChanged(new PropertyChangedExEventArgs(name, oldValue, value));
         }
 
-        #region Set classes
+        public static void Set<T>(this INotifyPropertyChangedEx_Helper @this,
+                                  ref T backingStore, T value,
+                                  [CallerMemberName] string name = "")
+        {
+            if (!EqualityComparer<T>.Default.Equals(backingStore, value))
+            {
+                T oldValue = backingStore;
+                backingStore = value;
+                @this.NotifyPropertyChanged(new PropertyChangedExEventArgs(name, oldValue, value));
+            }
+        }
+
+        public static void EpsilonSet<T>(this INotifyPropertyChangedEx_Helper @this,
+                                         ref T backingStore, T value, double epsilon = MathUtils.EPSILON,
+                                         [CallerMemberName] string name = "")
+        {
+            if (!EpsilonEqualityComparer<T>.Default.EpsilonEquals(backingStore, value, epsilon))
+            {
+                T oldValue = backingStore;
+                backingStore = value;
+                @this.NotifyPropertyChanged(new PropertyChangedExEventArgs(name, oldValue, value));
+            }
+        }
+
+        public static void Set<T>(this INotifyPropertyChanged @this,
+                                  ref T backingStore, T value,
+                                  Action<PropertyChangedEventArgs> onPropertyChanged,
+                                  [CallerMemberName] string name = "")
+        {
+            if (!EqualityComparer<T>.Default.Equals(backingStore, value))
+            {
+                T oldValue = backingStore;
+                backingStore = value;
+                onPropertyChanged(new PropertyChangedExEventArgs(name, oldValue, value));
+            }
+        }
+
+        public static void EpsilonSet<T>(this INotifyPropertyChanged @this,
+                                         ref T backingStore, T value,
+                                         Action<PropertyChangedEventArgs> onPropertyChanged,
+                                         double epsilon = MathUtils.EPSILON,
+                                         [CallerMemberName] string name = "")
+        {
+            if (!EpsilonEqualityComparer<T>.Default.EpsilonEquals(backingStore, value, epsilon))
+            {
+                T oldValue = backingStore;
+                backingStore = value;
+                onPropertyChanged(new PropertyChangedExEventArgs(name, oldValue, value));
+            }
+        }
+
+#if false
+        //#region Set classes
 
         /// <summary>
         ///     Establece la propiedad utilizando el operador <c>!=</c> para comprobar si
@@ -32,13 +89,13 @@ namespace Essence.Util.Properties
         ///     No se puede utilizar en estructuras.
         /// </summary>
         public static void SetCl<T>(this INotifyPropertyChangedEx_Helper @this,
-                                    string nombre, T oldValue, T value,
+                                    string name, T oldValue, T value,
                                     Action<T> setter) where T : class
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(new PropertyChangedExEventArgs(nombre, oldValue, value));
+                @this.NotifyPropertyChanged(new PropertyChangedExEventArgs(name, oldValue, value));
             }
         }
 
@@ -48,19 +105,19 @@ namespace Essence.Util.Properties
         ///     No se puede utilizar en estructuras.
         /// </summary>
         public static void SetEqCl<T>(this INotifyPropertyChangedEx_Helper @this,
-                                      string nombre, T oldValue, T value,
+                                      string name, T oldValue, T value,
                                       Action<T> setter) where T : class
         {
             if (!object.Equals(oldValue, value))
             {
                 setter(value);
-                @this.NotifyPropertyChanged(new PropertyChangedExEventArgs(nombre, oldValue, value));
+                @this.NotifyPropertyChanged(new PropertyChangedExEventArgs(name, oldValue, value));
             }
         }
 
-        #endregion Set classes
+        //#endregion Set classes
 
-        #region Set structs
+        //#region Set structs
 
         /// <summary>
         ///     Establece la propiedad utilizando el operador <c>!=</c> para comprobar si
@@ -68,13 +125,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>bool</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, bool oldValue, bool value,
+                                 string name, bool oldValue, bool value,
                                  Action<bool> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -84,13 +141,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>bool?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, bool? oldValue, bool? value,
+                                 string name, bool? oldValue, bool? value,
                                  Action<bool?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -100,13 +157,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>char</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, char oldValue, char value,
+                                 string name, char oldValue, char value,
                                  Action<char> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -116,13 +173,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>char?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, char? oldValue, char? value,
+                                 string name, char? oldValue, char? value,
                                  Action<char?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -132,13 +189,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>sbyte</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, sbyte oldValue, sbyte value,
+                                 string name, sbyte oldValue, sbyte value,
                                  Action<sbyte> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -148,13 +205,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>sbyte?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, sbyte? oldValue, sbyte? value,
+                                 string name, sbyte? oldValue, sbyte? value,
                                  Action<sbyte?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -164,13 +221,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>short</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, short oldValue, short value,
+                                 string name, short oldValue, short value,
                                  Action<short> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -180,13 +237,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>short?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, short? oldValue, short? value,
+                                 string name, short? oldValue, short? value,
                                  Action<short?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -196,13 +253,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>int</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, int oldValue, int value,
+                                 string name, int oldValue, int value,
                                  Action<int> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -212,13 +269,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>int?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, int? oldValue, int? value,
+                                 string name, int? oldValue, int? value,
                                  Action<int?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -228,13 +285,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>long</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, long oldValue, long value,
+                                 string name, long oldValue, long value,
                                  Action<long> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -244,13 +301,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>long?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, long? oldValue, long? value,
+                                 string name, long? oldValue, long? value,
                                  Action<long?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -260,13 +317,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>byte</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, byte oldValue, byte value,
+                                 string name, byte oldValue, byte value,
                                  Action<byte> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -276,13 +333,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>byte?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, byte? oldValue, byte? value,
+                                 string name, byte? oldValue, byte? value,
                                  Action<byte?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -292,13 +349,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>ushort</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, ushort oldValue, ushort value,
+                                 string name, ushort oldValue, ushort value,
                                  Action<ushort> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -308,13 +365,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>ushort?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, ushort? oldValue, ushort? value,
+                                 string name, ushort? oldValue, ushort? value,
                                  Action<ushort?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -324,13 +381,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>uint</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, uint oldValue, uint value,
+                                 string name, uint oldValue, uint value,
                                  Action<uint> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -340,13 +397,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>uint?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, uint? oldValue, uint? value,
+                                 string name, uint? oldValue, uint? value,
                                  Action<uint?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -356,13 +413,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>ulong</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, ulong oldValue, ulong value,
+                                 string name, ulong oldValue, ulong value,
                                  Action<ulong> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -372,13 +429,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>ulong?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, ulong? oldValue, ulong? value,
+                                 string name, ulong? oldValue, ulong? value,
                                  Action<ulong?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -388,13 +445,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>uint</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, float oldValue, float value,
+                                 string name, float oldValue, float value,
                                  Action<float> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -404,13 +461,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>uint?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, float? oldValue, float? value,
+                                 string name, float? oldValue, float? value,
                                  Action<float?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -420,13 +477,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>uint</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, double oldValue, double value,
+                                 string name, double oldValue, double value,
                                  Action<double> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -436,13 +493,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en <c>uint?</c>.
         /// </summary>
         public static void SetSt(this INotifyPropertyChangedEx_Helper @this,
-                                 string nombre, double? oldValue, double? value,
+                                 string name, double? oldValue, double? value,
                                  Action<double?> setter)
         {
             if (oldValue != value)
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -452,13 +509,13 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en estructuras.
         /// </summary>
         public static void SetSt<T>(this INotifyPropertyChangedEx_Helper @this,
-                                    string nombre, T oldValue, T value,
+                                    string name, T oldValue, T value,
                                     Action<T> setter) where T : struct
         {
             if (!oldValue.Equals(value))
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
@@ -468,22 +525,22 @@ namespace Essence.Util.Properties
         ///     Solo se puede utilizar en estructuras.
         /// </summary>
         public static void SetSt<T>(this INotifyPropertyChangedEx_Helper @this,
-                                    string nombre, T? oldValue, T? value,
+                                    string name, T? oldValue, T? value,
                                     Action<T?> setter) where T : struct
         {
             if (!object.Equals(oldValue, value))
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
 
-        #endregion Set structs
+        //#endregion Set structs
 
         /// <summary>
         /// </summary>
         public static void Set<T>(this INotifyPropertyChangedEx_Helper @this,
-                                  string nombre, T oldValue, T value,
+                                  string name, T oldValue, T value,
                                   Action<T> setter)
         {
             if (typeof(T).IsValueType)
@@ -491,7 +548,7 @@ namespace Essence.Util.Properties
                 if (!object.Equals(oldValue, value))
                 {
                     setter(value);
-                    @this.NotifyPropertyChanged(nombre, oldValue, value);
+                    @this.NotifyPropertyChanged(name, oldValue, value);
                 }
             }
             else
@@ -499,7 +556,7 @@ namespace Essence.Util.Properties
                 if (!object.ReferenceEquals(oldValue, value))
                 {
                     setter(value);
-                    @this.NotifyPropertyChanged(nombre, oldValue, value);
+                    @this.NotifyPropertyChanged(name, oldValue, value);
                 }
             }
         }
@@ -507,14 +564,15 @@ namespace Essence.Util.Properties
         /// <summary>
         /// </summary>
         public static void SetEq<T>(this INotifyPropertyChangedEx_Helper @this,
-                                    string nombre, T oldValue, T value,
+                                    string name, T oldValue, T value,
                                     Action<T> setter)
         {
             if (!object.Equals(oldValue, value))
             {
                 setter(value);
-                @this.NotifyPropertyChanged(nombre, oldValue, value);
+                @this.NotifyPropertyChanged(name, oldValue, value);
             }
         }
+#endif
     }
 }

@@ -19,7 +19,7 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace SmartWeakEvent
+namespace Essence.Util.Events.SmartWeakEvents
 {
     /// <summary>
     ///     A class for managing a weak event.

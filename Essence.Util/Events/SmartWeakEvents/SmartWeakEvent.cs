@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace SmartWeakEvent
+namespace Essence.Util.Events.SmartWeakEvents
 {
     /// <summary>
     ///     A class for managing a weak event.

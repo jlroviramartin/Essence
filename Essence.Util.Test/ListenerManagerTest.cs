@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Essence.Util.Collections;
 using Essence.Util.Events;
@@ -390,7 +389,7 @@ namespace Essence.Util.Test
             public C2 C2
             {
                 get { return this.c2; }
-                set { this.Set("C2", this.c2, value, v => this.c2 = v); }
+                set { this.Set(ref this.c2, value); }
             }
 
             private C2 c2;
@@ -413,7 +412,7 @@ namespace Essence.Util.Test
             public int V1
             {
                 get { return this.v1; }
-                set { this.Set("V1", this.v1, value, v => this.v1 = v); }
+                set { this.Set(ref this.v1, value); }
             }
 
             private int v1;
@@ -425,7 +424,7 @@ namespace Essence.Util.Test
             public int V2
             {
                 get { return this.v2; }
-                set { this.Set("V2", this.v2, value, v => this.v2 = v); }
+                set { this.Set(ref this.v2, value); }
             }
 
             private int v2;
@@ -459,7 +458,7 @@ namespace Essence.Util.Test
             public C3 C3
             {
                 get { return this.c3; }
-                set { this.Set("C3", this.c3, value, v => this.c3 = v); }
+                set { this.Set(ref this.c3, value); }
             }
 
             private C3 c3;
@@ -482,7 +481,7 @@ namespace Essence.Util.Test
             public int V1
             {
                 get { return this.v1; }
-                set { this.Set("V1", this.v1, value, v => this.v1 = v); }
+                set { this.Set(ref this.v1, value); }
             }
 
             private int v1;
@@ -494,7 +493,7 @@ namespace Essence.Util.Test
             public int V2
             {
                 get { return this.v2; }
-                set { this.Set("V2", this.v2, value, v => this.v2 = v); }
+                set { this.Set(ref this.v2, value); }
             }
 
             private int v2;
@@ -523,7 +522,7 @@ namespace Essence.Util.Test
             public int V1
             {
                 get { return this.v1; }
-                set { this.Set("V1", this.v1, value, v => this.v1 = v); }
+                set { this.Set(ref this.v1, value); }
             }
 
             private int v1;
@@ -535,7 +534,7 @@ namespace Essence.Util.Test
             public int V2
             {
                 get { return this.v2; }
-                set { this.Set("V2", this.v2, value, v => this.v2 = v); }
+                set { this.Set(ref this.v2, value); }
             }
 
             private int v2;
