@@ -12,19 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics.Contracts;
-
 namespace Essence.Geometry.Core
 {
-    public interface IColor3 : IColor
+    public interface ITransform3D
     {
-        [Pure]
-        IColorConvertible Red { get; }
+        IVector3D Transform(IVector3D v);
 
-        [Pure]
-        IColorConvertible Green { get; }
+        IPoint3D Transform(IPoint3D p);
 
-        [Pure]
-        IColorConvertible Blue { get; }
+        ITransform3D Concat(ITransform3D transform);
+
+        ITransform3D Inv { get; }
+
+        bool IsIdentity { get; }
     }
 }

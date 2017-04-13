@@ -12,19 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics.Contracts;
-
 namespace Essence.Geometry.Core
 {
-    public interface IColor3 : IColor
+    public sealed class Transform3DIdentity : Transform3D
     {
-        [Pure]
-        IColorConvertible Red { get; }
+        public static readonly Transform3DIdentity Instance = new Transform3DIdentity();
 
-        [Pure]
-        IColorConvertible Green { get; }
+        public override IVector3D Transform(IVector3D v)
+        {
+            return v;
+        }
 
-        [Pure]
-        IColorConvertible Blue { get; }
+        public override IPoint3D Transform(IPoint3D p)
+        {
+            return p;
+        }
+
+        public override ITransform3D Concat(ITransform3D transform)
+        {
+            return transform;
+        }
+
+        public override ITransform3D Inv
+        {
+            get { return this; }
+        }
+
+        public override bool IsIdentity
+        {
+            get { return true; }
+        }
     }
 }

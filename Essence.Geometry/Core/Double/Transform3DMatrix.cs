@@ -19,61 +19,61 @@ namespace Essence.Geometry.Core.Double
     /// <summary>
     ///     Trasnsformacion 2D a partir de una matriz.
     /// </summary>
-    public sealed class Transform2DMatrix : Transform2D
+    public sealed class Transform3DMatrix : Transform3D
     {
-        public Transform2DMatrix(Matrix3x3d matrix)
-            : this(new Matrix2x3d(matrix), true)
-        {
-        }
-
-        public Transform2DMatrix(Matrix2x3d matrix, bool share = true)
+        public Transform3DMatrix(Matrix4x4d matrix, bool share = true)
         {
             this.matrix = (share ? matrix : matrix.Clone());
         }
 
-        public Transform2DMatrix(double a, double b, double tx, double c, double d, double ty)
+        public Transform3DMatrix(double m00, double m01, double m02, double m03,
+                                 double m10, double m11, double m12, double m13,
+                                 double m20, double m21, double m22, double m23,
+                                 double m30, double m31, double m32, double m33)
         {
-            this.matrix = new Matrix2x3d(a, b, tx,
-                                         c, d, ty);
+            this.matrix = new Matrix4x4d(m00, m01, m02, m03,
+                                         m10, m11, m12, m13,
+                                         m20, m21, m22, m23,
+                                         m30, m31, m32, m33);
         }
 
-        public override IVector2D Transform(IVector2D v)
+        public override IVector3D Transform(IVector3D v)
         {
-            return this.matrix.Mul(v.ToVector2d());
+            return this.matrix.Mul(v.ToVector3d());
         }
 
-        public override IPoint2D Transform(IPoint2D p)
+        public override IPoint3D Transform(IPoint3D p)
         {
-            return this.matrix.Mul(p.ToPoint2d());
+            return this.matrix.Mul(p.ToPoint3d());
         }
 
-        public override ITransform2D Concat(ITransform2D transform)
+        public override ITransform3D Concat(ITransform3D transform)
         {
-            if (transform is Transform2DIdentity)
+            if (transform is Transform3DIdentity)
             {
                 return transform;
             }
 
-            Transform2DMatrix tmatrix = transform as Transform2DMatrix;
+            Transform3DMatrix tmatrix = transform as Transform3DMatrix;
             if (tmatrix == null)
             {
                 throw new NotImplementedException();
             }
 
-            Matrix2x3d result = this.matrix.Clone();
+            Matrix4x4d result = this.matrix.Clone();
             result.Mul(tmatrix.matrix);
-            return new Transform2DMatrix(result, true);
+            return new Transform3DMatrix(result, true);
         }
 
-        public override ITransform2D Inv
+        public override ITransform3D Inv
         {
             get
             {
                 if (this.inv == null)
                 {
-                    Matrix2x3d aux = this.matrix.Clone();
+                    Matrix4x4d aux = this.matrix.Clone();
                     aux.Inv();
-                    this.inv = new Transform2DMatrix(aux);
+                    this.inv = new Transform3DMatrix(aux);
                     this.inv.inv = this;
                 }
                 return this.inv;
@@ -85,15 +85,15 @@ namespace Essence.Geometry.Core.Double
             get { return this.matrix.IsIdentity; }
         }
 
-        public Matrix2x3d Matrix
+        public Matrix4x4d Matrix
         {
             get { return this.matrix; }
         }
 
         #region private
 
-        private readonly Matrix2x3d matrix;
-        private Transform2DMatrix inv;
+        private readonly Matrix4x4d matrix;
+        private Transform3DMatrix inv;
 
         #endregion
     }

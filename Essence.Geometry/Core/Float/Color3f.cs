@@ -14,6 +14,8 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using Essence.Util.Math;
+using Essence.Util.Math.Float;
 
 namespace Essence.Geometry.Core.Float
 {
@@ -33,6 +35,20 @@ namespace Essence.Geometry.Core.Float
             this.Red = red;
             this.Green = green;
             this.Blue = blue;
+        }
+
+        public bool Equals(Color3f other)
+        {
+            return this.Red == other.Red
+                   && this.Green == other.Green
+                   && this.Blue == other.Blue;
+        }
+
+        public bool EpsilonEquals(Color3f other, double epsilon)
+        {
+            return this.Red.EpsilonEquals(other.Red, (float)epsilon)
+                   && this.Green.EpsilonEquals(other.Green, (float)epsilon)
+                   && this.Blue.EpsilonEquals(other.Blue, (float)epsilon);
         }
 
         public readonly float Red;
@@ -86,6 +102,26 @@ namespace Essence.Geometry.Core.Float
         IColorConvertible IColor3.Blue
         {
             get { return new ByteColor(this.Blue); }
+        }
+
+        #endregion
+
+        #region IEpsilonEquatable<IPoint>
+
+        [Pure]
+        bool IEpsilonEquatable<IColor>.EpsilonEquals(IColor other, double epsilon)
+        {
+            return this.EpsilonEquals(other.ToColor3f(), epsilon);
+        }
+
+        #endregion
+
+        #region IEquatable<IPoint>
+
+        [Pure]
+        bool IEquatable<IColor>.Equals(IColor other)
+        {
+            return this.Equals(other.ToColor3f());
         }
 
         #endregion

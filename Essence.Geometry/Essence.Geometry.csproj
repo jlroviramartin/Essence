@@ -52,6 +52,13 @@
     <Compile Include="Core\Byte\Color4b.cs" />
     <Compile Include="Core\Byte\Color3b.cs" />
     <Compile Include="Core\ColorUtils.cs" />
+    <Compile Include="Core\Double\BoundingBox3d.cs" />
+    <Compile Include="Core\Double\Quaternion.cs" />
+    <Compile Include="Core\Double\Transform3DMatrix.cs" />
+    <Compile Include="Core\ITransform3D.cs" />
+    <Compile Include="Core\Light.cs" />
+    <Compile Include="Core\Transform3DIdentity.cs" />
+    <Compile Include="Core\Transform3D.cs" />
     <Compile Include="Curves\BaseCircle2.cs" />
     <Compile Include="Curves\Circle2.cs" />
     <Compile Include="Curves\CircleArc2.cs" />

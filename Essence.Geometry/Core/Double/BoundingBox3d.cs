@@ -22,7 +22,7 @@ using REAL = System.Double;
 
 namespace Essence.Geometry.Core.Double
 {
-    public struct BoundingBox2d : IEpsilonEquatable<BoundingBox2d>, IEquatable<BoundingBox2d>, IFormattable
+    public struct BoundingBox3d : IEpsilonEquatable<BoundingBox3d>, IEquatable<BoundingBox3d>, IFormattable
     {
         public const string _XMIN = "XMin";
         public const string _XMAX = "XMax";
@@ -30,7 +30,10 @@ namespace Essence.Geometry.Core.Double
         public const string _YMIN = "YMin";
         public const string _YMAX = "YMax";
 
-        public static BoundingBox2d FromCoords(double x1, double y1, double x2, double y2)
+        public const string _ZMIN = "ZMin";
+        public const string _ZMAX = "YMax";
+
+        public static BoundingBox3d FromCoords(double x1, double y1, double z1, double x2, double y2, double z2)
         {
             if (x1 > x2)
             {
@@ -40,45 +43,49 @@ namespace Essence.Geometry.Core.Double
             {
                 MiscUtils.Swap(ref y1, ref y2);
             }
+            if (z1 > z2)
+            {
+                MiscUtils.Swap(ref z1, ref z2);
+            }
 
-            return new BoundingBox2d(x1, x2, y1, y2);
+            return new BoundingBox3d(x1, x2, y1, y2, z1, z2);
         }
 
-        public static BoundingBox2d FromExtents(double x, double y, double dx, double dy)
+        public static BoundingBox3d FromExtents(double x, double y, double z, double dx, double dy, double dz)
         {
-            return FromCoords(x, y, x + dx, y + dy);
+            return FromCoords(x, y, z, x + dx, y + dy, z + dz);
         }
 
         /// <summary>
         ///     Rectangulo vacio.
         /// </summary>
-        public static readonly BoundingBox2d Empty = new BoundingBox2d(0, -1, 0, -1);
+        public static readonly BoundingBox3d Empty = new BoundingBox3d(0, -1, 0, -1, 0, -1);
 
         /// <summary>
         ///     Rectangulo infinito.
         /// </summary>
-        public static BoundingBox2d Infinity = new BoundingBox2d(double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity);
+        public static BoundingBox3d Infinity = new BoundingBox3d(double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity);
 
         /// <summary>
         ///     Une todos los rectangulos.
         /// </summary>
-        public static BoundingBox2d Union(params BoundingBox2d[] bboxes)
+        public static BoundingBox3d Union(params BoundingBox3d[] bboxes)
         {
-            return Union((IEnumerable<BoundingBox2d>)bboxes);
+            return Union((IEnumerable<BoundingBox3d>)bboxes);
         }
 
         /// <summary>
         ///     Une todos los rectangulos.
         /// </summary>
-        public static BoundingBox2d Union(IEnumerable<BoundingBox2d> bboxes)
+        public static BoundingBox3d Union(IEnumerable<BoundingBox3d> bboxes)
         {
-            using (IEnumerator<BoundingBox2d> enumer = bboxes.GetEnumerator())
+            using (IEnumerator<BoundingBox3d> enumer = bboxes.GetEnumerator())
             {
                 if (!enumer.MoveNext())
                 {
                     return Empty;
                 }
-                BoundingBox2d ret = enumer.Current;
+                BoundingBox3d ret = enumer.Current;
                 while (enumer.MoveNext())
                 {
                     ret = ret.Union(enumer.Current);
@@ -90,24 +97,24 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Une todos los puntos.
         /// </summary>
-        public static BoundingBox2d Union(params Point2d[] points)
+        public static BoundingBox3d Union(params Point3d[] points)
         {
-            return Union((IEnumerable<Point2d>)points);
+            return Union((IEnumerable<Point3d>)points);
         }
 
         /// <summary>
         ///     Une todos los puntos.
         /// </summary>
-        public static BoundingBox2d Union(IEnumerable<Point2d> points)
+        public static BoundingBox3d Union(IEnumerable<Point3d> points)
         {
-            using (IEnumerator<Point2d> enumer = points.GetEnumerator())
+            using (IEnumerator<Point3d> enumer = points.GetEnumerator())
             {
                 if (!enumer.MoveNext())
                 {
                     return Empty;
                 }
-                Point2d p = enumer.Current;
-                BoundingBox2d ret = new BoundingBox2d(p, p);
+                Point3d p = enumer.Current;
+                BoundingBox3d ret = new BoundingBox3d(p, p);
                 while (enumer.MoveNext())
                 {
                     ret = ret.Union(enumer.Current);
@@ -116,16 +123,18 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        public BoundingBox2d(double xMin, double xMax, double yMin, double yMax)
+        public BoundingBox3d(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax)
         {
             this.XMin = xMin;
             this.XMax = xMax;
             this.YMin = yMin;
             this.YMax = yMax;
+            this.ZMin = zMin;
+            this.ZMax = zMax;
         }
 
-        public BoundingBox2d(Point2d pMin, Point2d pMax)
-            : this(pMin.X, pMax.X, pMin.Y, pMax.Y)
+        public BoundingBox3d(Point3d pMin, Point3d pMax)
+            : this(pMin.X, pMax.X, pMin.Y, pMax.Y, pMin.Z, pMax.Z)
         {
         }
 
@@ -137,7 +146,8 @@ namespace Essence.Geometry.Core.Double
             get
             {
                 return RangeUtils.IsValid(this.XMin, this.XMax)
-                       && RangeUtils.IsValid(this.YMin, this.YMax);
+                       && RangeUtils.IsValid(this.YMin, this.YMax)
+                       && RangeUtils.IsValid(this.ZMin, this.ZMax);
             }
         }
 
@@ -149,7 +159,8 @@ namespace Essence.Geometry.Core.Double
             get
             {
                 return RangeUtils.IsEmpty(this.XMin, this.XMax)
-                       || RangeUtils.IsEmpty(this.YMin, this.YMax);
+                       || RangeUtils.IsEmpty(this.YMin, this.YMax)
+                       || RangeUtils.IsEmpty(this.ZMin, this.ZMax);
             }
         }
 
@@ -161,38 +172,46 @@ namespace Essence.Geometry.Core.Double
             get
             {
                 return RangeUtils.IsInfinity(this.XMin, this.XMax)
-                       || RangeUtils.IsInfinity(this.YMin, this.YMax);
+                       || RangeUtils.IsInfinity(this.YMin, this.YMax)
+                       || RangeUtils.IsInfinity(this.ZMin, this.ZMax);
             }
         }
 
         /// <summary>
         /// Devuelve todos los vertices ordenados por coordenada:
-        /// [Y, X] : [min, min], [min, max], [max, min], [max, max]
+        /// [Z, Y, X] : [min, min, min], [min, min, max], [min, max, min], [min, max, max],
+        ///             [max, min, min], [max, min, max], [max, max, min], [max, max, max]
         /// </summary>
-        public Point2d[] GetVertices()
+        public Point3d[] GetVertices()
         {
             if (this.IsEmpty)
             {
-                return new Point2d[0];
+                return new Point3d[0];
             }
             return new[]
             {
-                new Point2d(this.XMin, this.YMin),
-                new Point2d(this.XMax, this.YMin),
+                new Point3d(this.XMin, this.YMin, this.ZMin),
+                new Point3d(this.XMax, this.YMin, this.ZMin),
 
-                new Point2d(this.XMin, this.YMax),
-                new Point2d(this.XMax, this.YMax)
+                new Point3d(this.XMin, this.YMax, this.ZMin),
+                new Point3d(this.XMax, this.YMax, this.ZMin),
+
+                new Point3d(this.XMin, this.YMin, this.ZMax),
+                new Point3d(this.XMax, this.YMin, this.ZMax),
+
+                new Point3d(this.XMin, this.YMax, this.ZMax),
+                new Point3d(this.XMax, this.YMax, this.ZMax)
             };
         }
 
-        public Point2d Origin
+        public Point3d Origin
         {
-            get { return new Point2d(this.XMin, this.YMin); }
+            get { return new Point3d(this.XMin, this.YMin, this.ZMin); }
         }
 
-        public Vector2d Size
+        public Vector3d Size
         {
-            get { return new Vector2d(this.DX, this.DY); }
+            get { return new Vector3d(this.DX, this.DY, this.DZ); }
         }
 
         public double DX
@@ -203,6 +222,11 @@ namespace Essence.Geometry.Core.Double
         public double DY
         {
             get { return this.YMax - this.YMin; }
+        }
+
+        public double DZ
+        {
+            get { return this.ZMax - this.ZMin; }
         }
 
         /// <summary>
@@ -218,10 +242,11 @@ namespace Essence.Geometry.Core.Double
         /// <param name="rec">Rectangulo.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si lo toca.</returns>
-        public bool Touch(BoundingBox2d rec, double epsilon = MathUtils.EPSILON)
+        public bool Touch(BoundingBox3d rec, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.Touch(this.XMin, this.XMax, rec.XMin, rec.XMax, epsilon)
-                   || RangeUtils.Touch(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon);
+                   || RangeUtils.Touch(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon)
+                   || RangeUtils.Touch(this.ZMin, this.ZMax, rec.ZMin, rec.ZMax, epsilon);
         }
 
         /// <summary>
@@ -230,10 +255,11 @@ namespace Essence.Geometry.Core.Double
         /// <param name="p">Punto.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si lo toca.</returns>
-        public bool Touch(Point2d p, double epsilon = MathUtils.EPSILON)
+        public bool Touch(Point3d p, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.TouchPoint(this.XMin, this.XMax, p.X, epsilon)
-                   || RangeUtils.TouchPoint(this.YMin, this.YMax, p.Y, epsilon);
+                   || RangeUtils.TouchPoint(this.YMin, this.YMax, p.Y, epsilon)
+                   || RangeUtils.TouchPoint(this.ZMin, this.ZMax, p.Z, epsilon);
         }
 
         /// <summary>
@@ -242,10 +268,11 @@ namespace Essence.Geometry.Core.Double
         /// <param name="rec">Rectangulo.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si lo contiene completamente.</returns>
-        public bool Contains(BoundingBox2d rec, double epsilon = MathUtils.EPSILON)
+        public bool Contains(BoundingBox3d rec, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.Contains(this.XMin, this.XMax, rec.XMin, rec.XMax, epsilon)
-                   && RangeUtils.Contains(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon);
+                   && RangeUtils.Contains(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon)
+                   && RangeUtils.Contains(this.ZMin, this.ZMax, rec.ZMin, rec.ZMax, epsilon);
         }
 
         /// <summary>
@@ -254,10 +281,11 @@ namespace Essence.Geometry.Core.Double
         /// <param name="p">Punto.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si lo contiene completamente.</returns>
-        public bool Contains(Point2d p, double epsilon = MathUtils.EPSILON)
+        public bool Contains(Point3d p, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.ContainsPoint(this.XMin, this.XMax, p.X, epsilon)
-                   && RangeUtils.ContainsPoint(this.YMin, this.YMax, p.Y, epsilon);
+                   && RangeUtils.ContainsPoint(this.YMin, this.YMax, p.Y, epsilon)
+                   && RangeUtils.ContainsPoint(this.ZMin, this.ZMax, p.Z, epsilon);
         }
 
         /// <summary>
@@ -266,17 +294,18 @@ namespace Essence.Geometry.Core.Double
         /// <param name="rec">Rectangulo.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si existe intersección.</returns>
-        public bool IntersectsWith(BoundingBox2d rec, double epsilon = MathUtils.EPSILON)
+        public bool IntersectsWith(BoundingBox3d rec, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.IntersectsWith(this.XMin, this.XMax, rec.XMin, rec.XMax, epsilon)
-                   && RangeUtils.IntersectsWith(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon);
+                   && RangeUtils.IntersectsWith(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon)
+                   && RangeUtils.IntersectsWith(this.ZMin, this.ZMax, rec.ZMin, rec.ZMax, epsilon);
         }
 
         /// <summary>
         ///     Amplia el recubrimiento para que contenga al punto indicado.
         /// </summary>
         /// <param name="point">Punto.</param>
-        public BoundingBox2d Union(Point2d point)
+        public BoundingBox3d Union(Point3d point)
         {
             double rxMin, rxMax;
             RangeUtils.Union(this.XMin, this.XMax, point.X, out rxMin, out rxMax);
@@ -284,14 +313,17 @@ namespace Essence.Geometry.Core.Double
             double ryMin, ryMax;
             RangeUtils.Union(this.YMin, this.YMax, point.Y, out ryMin, out ryMax);
 
-            return new BoundingBox2d(rxMin, rxMax, ryMin, ryMax);
+            double rzMin, rzMax;
+            RangeUtils.Union(this.ZMin, this.ZMax, point.Z, out rzMin, out rzMax);
+
+            return new BoundingBox3d(rxMin, rxMax, ryMin, ryMax, rzMin, rzMax);
         }
 
         /// <summary>
         ///     Amplia el recubrimiento para que contenga al rectangulo indicado.
         /// </summary>
         /// <param name="rec">Rectangulo.</param>
-        public BoundingBox2d Union(BoundingBox2d rec)
+        public BoundingBox3d Union(BoundingBox3d rec)
         {
             double rxMin, rxMax;
             RangeUtils.Union(this.XMin, this.XMax, rec.XMin, rec.XMax, out rxMin, out rxMax);
@@ -299,14 +331,17 @@ namespace Essence.Geometry.Core.Double
             double ryMin, ryMax;
             RangeUtils.Union(this.YMin, this.YMax, rec.YMin, rec.YMax, out ryMin, out ryMax);
 
-            return new BoundingBox2d(rxMin, rxMax, ryMin, ryMax);
+            double rzMin, rzMax;
+            RangeUtils.Union(this.ZMin, this.ZMax, rec.ZMin, rec.ZMax, out rzMin, out rzMax);
+
+            return new BoundingBox3d(rxMin, rxMax, ryMin, ryMax, rzMin, rzMax);
         }
 
         /// <summary>
         ///     Interseccion entre los recubrimientos.
         /// </summary>
         /// <param name="rec">Rectangulo.</param>
-        public BoundingBox2d Intersect(BoundingBox2d rec)
+        public BoundingBox3d Intersect(BoundingBox3d rec)
         {
             double rxMin, rxMax;
             RangeUtils.Intersect(this.XMin, this.XMax, rec.XMin, rec.XMax, out rxMin, out rxMax);
@@ -322,16 +357,23 @@ namespace Essence.Geometry.Core.Double
                 return Empty;
             }
 
-            return new BoundingBox2d(rxMin, rxMax, ryMin, ryMax);
+            double rzMin, rzMax;
+            RangeUtils.Intersect(this.ZMin, this.ZMax, rec.ZMin, rec.ZMax, out rzMin, out rzMax);
+            if (RangeUtils.IsEmpty(rzMin, rzMax))
+            {
+                return Empty;
+            }
+
+            return new BoundingBox3d(rxMin, rxMax, ryMin, ryMax, rzMin, rzMax);
         }
 
         /// <summary>
         ///     Amplia el recubrimiento en cada coordenada.
         /// </summary>
         /// <param name="d">Ancho y alto.</param>
-        public BoundingBox2d Inflate(double d)
+        public BoundingBox3d Inflate(double d)
         {
-            return this.Inflate(d, d);
+            return this.Inflate(d, d, d);
         }
 
         /// <summary>
@@ -339,9 +381,9 @@ namespace Essence.Geometry.Core.Double
         /// </summary>
         /// <param name="dx">Ancho.</param>
         /// <param name="dy">Alto.</param>
-        public BoundingBox2d Inflate(double dx, double dy)
+        public BoundingBox3d Inflate(double dx, double dy, double dz)
         {
-            return new BoundingBox2d(this.XMin - dx, this.XMax + dx, this.YMin - dy, this.YMax + dy);
+            return new BoundingBox3d(this.XMin - dx, this.XMax + dx, this.YMin - dy, this.YMax + dy, this.ZMin - dz, this.ZMax + dz);
         }
 
         /// <summary>
@@ -361,6 +403,8 @@ namespace Essence.Geometry.Core.Double
                     return this.XMin;
                 case 1:
                     return this.YMin;
+                case 2:
+                    return this.ZMin;
                 default:
                     throw new IndexOutOfRangeException();
             }
@@ -383,6 +427,8 @@ namespace Essence.Geometry.Core.Double
                     return this.XMax;
                 case 1:
                     return this.YMax;
+                case 2:
+                    return this.ZMax;
                 default:
                     throw new IndexOutOfRangeException();
             }
@@ -394,14 +440,19 @@ namespace Essence.Geometry.Core.Double
         public readonly double YMin;
         public readonly double YMax;
 
+        public readonly double ZMin;
+        public readonly double ZMax;
+
         #region private
 
         private bool EpsilonEquals(double xmin, double xmax,
                                    double ymin, double ymax,
+                                   double zmin, double zmax,
                                    double epsilon)
         {
             return RangeUtils.EpsilonEquals(this.XMin, this.XMax, xmin, xmax, epsilon)
-                   && RangeUtils.EpsilonEquals(this.YMin, this.YMax, ymin, ymax, epsilon);
+                   && RangeUtils.EpsilonEquals(this.YMin, this.YMax, ymin, ymax, epsilon)
+                   && RangeUtils.EpsilonEquals(this.ZMin, this.ZMax, zmin, zmax, epsilon);
         }
 
         #endregion
@@ -417,12 +468,12 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public override bool Equals(object obj)
         {
-            if (!(obj is BoundingBox2d))
+            if (!(obj is BoundingBox3d))
             {
                 return false;
             }
 
-            return this.Equals((BoundingBox2d)obj);
+            return this.Equals((BoundingBox3d)obj);
         }
 
         [Pure]
@@ -437,6 +488,8 @@ namespace Essence.Geometry.Core.Double
                 hash = prime * hash + this.XMax.GetHashCode();
                 hash = prime * hash + this.YMin.GetHashCode();
                 hash = prime * hash + this.YMax.GetHashCode();
+                hash = prime * hash + this.ZMin.GetHashCode();
+                hash = prime * hash + this.ZMax.GetHashCode();
             }
             return hash;
         }
@@ -446,9 +499,9 @@ namespace Essence.Geometry.Core.Double
         #region IEpsilonEquatable<BOUNDINGBOX>
 
         [Pure]
-        public bool EpsilonEquals(BoundingBox2d other, double epsilon = MathUtils.EPSILON)
+        public bool EpsilonEquals(BoundingBox3d other, double epsilon = MathUtils.EPSILON)
         {
-            return this.EpsilonEquals(other.XMin, other.XMax, other.YMin, other.YMax, (double)epsilon);
+            return this.EpsilonEquals(other.XMin, other.XMax, other.YMin, other.YMax, other.ZMin, other.ZMax, (double)epsilon);
         }
 
         #endregion
@@ -456,10 +509,11 @@ namespace Essence.Geometry.Core.Double
         #region IEquatable<BOUNDINGBOX>
 
         [Pure]
-        public bool Equals(BoundingBox2d other)
+        public bool Equals(BoundingBox3d other)
         {
             return RangeUtils.Equals(this.XMin, this.XMax, other.XMin, other.XMax)
-                   && RangeUtils.Equals(this.YMin, this.YMax, other.YMin, other.YMax);
+                   && RangeUtils.Equals(this.YMin, this.YMax, other.YMin, other.YMax)
+                   && RangeUtils.Equals(this.ZMin, this.ZMax, other.ZMin, other.ZMax);
         }
 
         #endregion
@@ -474,11 +528,13 @@ namespace Essence.Geometry.Core.Double
             }
 
             return string.Format(provider,
-                                 "x: [{0} .. {1}], y: [{2} .. {3}]",
+                                 "x: [{0} .. {1}], y: [{2} .. {3}], z: [{4} .. {5}]",
                                  this.XMin.ToString(format, provider),
                                  this.XMax.ToString(format, provider),
                                  this.YMin.ToString(format, provider),
-                                 this.YMax.ToString(format, provider));
+                                 this.YMax.ToString(format, provider),
+                                 this.ZMin.ToString(format, provider),
+                                 this.ZMax.ToString(format, provider));
         }
 
         #endregion

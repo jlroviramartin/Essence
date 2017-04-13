@@ -167,6 +167,17 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
+        ///     Crea una matriz con la escala respecto a un punto de aplicacion.
+        /// </summary>
+        /// <param name="p">Punto de aplicacion.</param>
+        /// <param name="e">Escala.</param>
+        /// <returns>Matriz escala.</returns>
+        public static Matrix4x4d Scale(Point3d p, Vector3d e)
+        {
+            return Scale(p.X, p.Y, p.Z, e.X, e.Y, e.Z);
+        }
+
+        /// <summary>
         ///     Crea una matriz con la escala.
         /// </summary>
         /// <param name="ex">Escala x.</param>
@@ -179,6 +190,25 @@ namespace Essence.Geometry.Core.Double
                 ex, 0, 0, 0,
                 0, ey, 0, 0,
                 0, 0, ez, 0,
+                0, 0, 0, 1);
+        }
+
+        /// <summary>
+        ///     Crea una matriz con la escala respecto a un punto de aplicacion.
+        /// </summary>
+        /// <param name="px">Punto de aplicacion X.</param>
+        /// <param name="py">Punto de aplicacion Y.</param>
+        /// <param name="pz">Punto de aplicacion Z.</param>
+        /// <param name="ex">Escala x.</param>
+        /// <param name="ey">Escala y.</param>
+        /// <param name="ez">Escala z.</param>
+        /// <returns>Matriz escala.</returns>
+        public static Matrix4x4d Scale(double px, double py, double pz, double ex, double ey, double ez)
+        {
+            return new Matrix4x4d(
+                ex, 0, 0, px - ex * px,
+                0, ey, 0, py - ey * py,
+                0, 0, ez, pz - ez * pz,
                 0, 0, 0, 1);
         }
 

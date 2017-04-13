@@ -33,7 +33,12 @@ namespace Essence.Geometry.Core
 
         public ByteColor(float value)
         {
-            this.value = (byte)(value * 255).Clamp(0, 255);
+            this.value = FloatColor.GetByte(value);
+        }
+
+        public static float GetSingle(byte value)
+        {
+            return (float)value / 255f;
         }
 
         private readonly byte value;
@@ -45,7 +50,7 @@ namespace Essence.Geometry.Core
 
         public float ToSingle(IFormatProvider provider)
         {
-            return (float)this.value / 255f;
+            return GetSingle(this.value);
         }
     }
 
@@ -53,7 +58,7 @@ namespace Essence.Geometry.Core
     {
         public FloatColor(byte value)
         {
-            this.value = value / 255f;
+            this.value = ByteColor.GetSingle(value);
         }
 
         public FloatColor(float value)
@@ -61,11 +66,16 @@ namespace Essence.Geometry.Core
             this.value = value;
         }
 
+        public static byte GetByte(float value)
+        {
+            return (byte)(value * 255).Clamp(0, 255);
+        }
+
         private readonly float value;
 
         public byte ToByte(IFormatProvider provider)
         {
-            return (byte)(this.value * 255).Clamp(0, 255);
+            return GetByte(this.value);
         }
 
         public float ToSingle(IFormatProvider provider)
