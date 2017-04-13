@@ -54,7 +54,7 @@ namespace Essence.View.Test
         public int Dato1
         {
             get { return this.dato1; }
-            set { this.Set("Dato1", this.dato1, value, v => this.dato1 = v); }
+            set { this.Set(ref this.dato1, value); }
         }
 
         private int dato1;
@@ -65,7 +65,7 @@ namespace Essence.View.Test
         public double Dato2
         {
             get { return this.dato2; }
-            set { this.Set("Dato2", this.dato2, value, v => this.dato2 = v); }
+            set { this.Set(ref this.dato2, value); }
         }
 
         private double dato2;
@@ -76,7 +76,7 @@ namespace Essence.View.Test
         public string Dato3
         {
             get { return this.dato3; }
-            set { this.Set("Dato3", this.dato3, value, v => this.dato3 = v); }
+            set { this.Set(ref this.dato3, value); }
         }
 
         private string dato3;
@@ -87,7 +87,7 @@ namespace Essence.View.Test
         public Guid Dato4
         {
             get { return this.dato4; }
-            set { this.Set("Dato4", this.dato4, value, v => this.dato4 = v); }
+            set { this.Set(ref this.dato4, value); }
         }
 
         private Guid dato4;
@@ -99,7 +99,7 @@ namespace Essence.View.Test
         public string Dato5
         {
             get { return this.dato5; }
-            set { this.Set("Dato5", this.dato5, value, v => this.dato5 = v); }
+            set { this.Set(ref this.dato5, value); }
         }
 
         private string dato5 = "A";
@@ -112,7 +112,7 @@ namespace Essence.View.Test
         public double Dato6
         {
             get { return this.dato6; }
-            set { this.Set("Dato6", this.dato6, value, v => this.dato6 = v); }
+            set { this.Set(ref this.dato6, value); }
         }
 
         private double dato6;

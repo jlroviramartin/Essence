@@ -98,13 +98,13 @@ namespace Essence.View.Models
         public bool Enabled
         {
             get { return this.enabled; }
-            set { this.Set(ENABLED, this.enabled, value, x => this.enabled = x); }
+            set { this.Set(ref this.enabled, value); }
         }
 
         public bool Active
         {
             get { return this.active; }
-            set { this.Set(ACTIVE, this.active, value, x => this.active = x); }
+            set { this.Set(ref this.active, value); }
         }
 
         public void Invoke()

@@ -39,25 +39,25 @@ namespace Essence.View.Models
         public string Name
         {
             get { return this.name; }
-            set { this.Set(NAME, this.name, value, x => this.name = x); }
+            set { this.Set(ref this.name, value); }
         }
 
         public string NameUI
         {
             get { return this.nameUI; }
-            set { this.Set(NAME_UI, this.nameUI, value, x => this.nameUI = x); }
+            set { this.Set(ref this.nameUI, value); }
         }
 
         public string DescriptionUI
         {
             get { return this.descriptionUI; }
-            set { this.Set(DESCRIPTION_UI, this.descriptionUI, value, x => this.descriptionUI = x); }
+            set { this.Set(ref this.descriptionUI, value); }
         }
 
         public Icon IconUI
         {
             get { return this.iconUI; }
-            set { this.Set(ICON_UI, this.iconUI, value, x => this.iconUI = x); }
+            set { this.Set(ref this.iconUI, value); }
         }
 
         #endregion

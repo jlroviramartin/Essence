@@ -80,16 +80,16 @@ namespace Essence.View.Controls.Menus
 
             private void UpdateActions()
             {
-                ArrayList arr = new ArrayList(this.TSItem.DropDownItems);
+                ArrayList aux = new ArrayList(this.TSItem.DropDownItems);
 
                 this.context.Level++;
                 this.TSItem.DropDownItems.Clear();
                 this.TSItem.DropDownItems.AddRange(ToolStripItemRender.Instance.RenderRange(this.context, this.Item.Actions).ToArray());
                 this.context.Level--;
 
-                foreach (ToolStripItem tsItem in arr)
+                foreach (ToolStripItem tsi in aux)
                 {
-                    tsItem.Dispose();
+                    tsi.Dispose();
                 }
             }
 
@@ -102,11 +102,11 @@ namespace Essence.View.Controls.Menus
 
             protected override void OnUnsubscribeControlEvents(ToolStripDropDownItem tsItem)
             {
-                ArrayList arr = new ArrayList(tsItem.DropDownItems);
+                ArrayList aux = new ArrayList(tsItem.DropDownItems);
                 tsItem.DropDownItems.Clear();
-                foreach (ToolStripItem aux in arr)
+                foreach (ToolStripItem tsi in aux)
                 {
-                    aux.Dispose();
+                    tsi.Dispose();
                 }
 
                 base.OnUnsubscribeControlEvents(tsItem);

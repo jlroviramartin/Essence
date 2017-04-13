@@ -15,6 +15,7 @@
 using System;
 using System.Windows.Forms;
 using Essence.View.Controls;
+using Essence.View.Controls.Forms;
 using Essence.View.Models;
 using Essence.View.Views;
 using Action = Essence.View.Models.Action;
@@ -23,11 +24,18 @@ namespace Essence.View.Test
 {
     static class Program
     {
+        [STAThread]
+        internal static void Main(string[] args)
+        {
+            BootStrap bootStrap = new BootStrap("Essence.View.Test");
+            bootStrap.DefaultEnvironmentVariables();
+            bootStrap.Run(Main_2, args);
+        }
+
         /// <summary>
         ///     Punto de entrada principal para la aplicación.
         /// </summary>
-        [STAThread]
-        static void Main()
+        internal static void Main_2(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -73,8 +81,11 @@ namespace Essence.View.Test
             menuView.Components.Add(menu2);
             menuView.Components.Add(iproperty);
 
+            Drawing3DViewControl<Drawing3DOSGControl> drawing3DView = new Drawing3DViewControl<Drawing3DOSGControl>();
+
             dialog.AddView(menuView, DockConstraints.Top);
-            dialog.AddView(formView, DockConstraints.Fill);
+            dialog.AddView(drawing3DView, DockConstraints.Fill);
+            dialog.AddView(formView, DockConstraints.Bottom);
 
             Application.Run((Form)((IRefControl)dialog).Control);
         }

@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\osg.3.2.1.7\build\osg.props" Condition="Exists('..\..\packages\osg.3.2.1.7\build\osg.props')" />
+  <Import Project="..\..\packages\osgearth.2.6.5\build\osgearth.props" Condition="Exists('..\..\packages\osgearth.2.6.5\build\osgearth.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -12,6 +14,8 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -63,6 +67,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -91,6 +96,21 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\Common.targets" />
+  <Target Name="AfterBuild">
+    <CallTarget Targets="CopyFilesToOutput;" />
+  </Target>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\osgearth.2.6.5\build\osgearth.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgearth.2.6.5\build\osgearth.props'))" />
+    <Error Condition="!Exists('..\..\packages\osgearth.2.6.5\build\osgearth.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgearth.2.6.5\build\osgearth.targets'))" />
+    <Error Condition="!Exists('..\..\packages\osg.3.2.1.7\build\osg.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osg.3.2.1.7\build\osg.props'))" />
+    <Error Condition="!Exists('..\..\packages\osg.3.2.1.7\build\osg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osg.3.2.1.7\build\osg.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\osgearth.2.6.5\build\osgearth.targets" Condition="Exists('..\..\packages\osgearth.2.6.5\build\osgearth.targets')" />
+  <Import Project="..\..\packages\osg.3.2.1.7\build\osg.targets" Condition="Exists('..\..\packages\osg.3.2.1.7\build\osg.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -38,15 +38,15 @@ namespace Essence.View.Controls
         private void Components_ListChanged(object sender, ListEventArgs args)
         {
             // Se crea una copia para liberar despues los elementos.
-            ArrayList arr = new ArrayList(this.Control.Items);
+            ArrayList aux = new ArrayList(this.Control.Items);
 
             // Se vacia la barra de herramientas.
             this.Control.Items.Clear();
 
             // Se liberan.
-            foreach (ToolStripItem tsItem in arr)
+            foreach (ToolStripItem tsi in aux)
             {
-                tsItem.Dispose();
+                tsi.Dispose();
             }
 
             TSIContext context = new TSIContext();

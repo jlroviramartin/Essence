@@ -82,13 +82,13 @@ namespace Essence.View.Models
         public bool Enabled
         {
             get { return this.enabled; }
-            set { this.Set(ENABLED, this.enabled, value, x => this.enabled = x); }
+            set { this.Set(ref this.enabled, value); }
         }
 
         public bool Editable
         {
             get { return this.editable; }
-            set { this.Set(EDITABLE, this.editable, value, x => this.editable = x); }
+            set { this.Set(ref this.editable, value); }
         }
 
         #endregion

@@ -11,10 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-namespace Essence.View.Models
+namespace Essence.View.Controls.Osg
 {
-    public interface IListView
+    /// <summary>
+    /// Como se extiende la textura por los bordes.
+    /// </summary>
+    public enum TextureWrapMode
     {
+        Clamp,
+        ClampToBorder,
+        ClampToEdge,
+        MirroredRepeat,
+        Repeat
     }
 }

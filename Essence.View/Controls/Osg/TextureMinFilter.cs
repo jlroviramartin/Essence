@@ -11,10 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-namespace Essence.View.Models
+namespace Essence.View.Controls.Osg
 {
-    public interface ITreeView
+    /// <summary>
+    /// Filtro cuando se minimiza la textura.
+    /// </summary>
+    public enum TextureMinFilter
     {
+        Nearest,
+        Linear
     }
 }
