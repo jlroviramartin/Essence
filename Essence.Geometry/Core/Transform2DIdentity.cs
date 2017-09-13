@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Essence.Geometry.Core.Double;
+
 namespace Essence.Geometry.Core
 {
     public sealed class Transform2DIdentity : Transform2D
@@ -41,6 +43,11 @@ namespace Essence.Geometry.Core
         public override bool IsIdentity
         {
             get { return true; }
+        }
+
+        public override void GetMatrix(Matrix3x3d matrix)
+        {
+            matrix.SetIdentity();
         }
     }
 }

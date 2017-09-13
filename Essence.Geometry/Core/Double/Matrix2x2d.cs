@@ -19,7 +19,6 @@ using System.Runtime.Serialization;
 using Essence.Util.Builders;
 using Essence.Util.Math;
 using Essence.Util.Math.Double;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Core.Double
 {
@@ -759,7 +758,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEquatable<MATRIX>
+        #region IEquatable<Matrix2x2d>
 
         [Pure]
         public bool Equals(Matrix2x2d other)
@@ -775,7 +774,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEpsilonEquatable<MATRIX>
+        #region IEpsilonEquatable<Matrix2x2d>
 
         public bool EpsilonEquals(Matrix2x2d mat, double epsilon = MathUtils.EPSILON)
         {

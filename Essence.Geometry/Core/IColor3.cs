@@ -12,19 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics.Contracts;
-
 namespace Essence.Geometry.Core
 {
     public interface IColor3 : IColor
     {
-        [Pure]
-        IColorConvertible Red { get; }
-
-        [Pure]
-        IColorConvertible Green { get; }
-
-        [Pure]
-        IColorConvertible Blue { get; }
+        /// <summary>
+        /// This method gets the color.
+        /// </summary>
+        /// <param name="setter">Setter.</param>
+        void GetColor(IColorSetter3 setter);
     }
 }

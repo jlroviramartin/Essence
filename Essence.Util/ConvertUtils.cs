@@ -19,7 +19,6 @@ namespace Essence.Util
 {
     public static class ConvertUtils
     {
-        // TODO: LLevar a la libreria Util.
         public static void Swap<T>(ref T o1, ref T o2)
         {
             T tmp = o1;

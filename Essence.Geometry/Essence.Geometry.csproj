@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -28,6 +28,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="commons-math3-3.6.1">
@@ -48,13 +52,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\PolylineSimplification.cs" />
+    <Compile Include="ClipperLib\clipper.cs" />
     <Compile Include="Core\Axis.cs" />
     <Compile Include="Core\Byte\Color4b.cs" />
     <Compile Include="Core\Byte\Color3b.cs" />
+    <Compile Include="Core\Byte\ColorSetter.cs" />
     <Compile Include="Core\ColorUtils.cs" />
     <Compile Include="Core\Double\BoundingBox3d.cs" />
     <Compile Include="Core\Double\Quaternion.cs" />
+    <Compile Include="Core\Double\CoordinateSetter.cs" />
     <Compile Include="Core\Double\Transform3DMatrix.cs" />
+    <Compile Include="Core\Float\ColorSetter.cs" />
+    <Compile Include="Core\IColorSetter.cs" />
+    <Compile Include="Core\ICoordinateSetter.cs" />
+    <Compile Include="Core\Int\CoordinateSetter.cs" />
     <Compile Include="Core\ITransform3D.cs" />
     <Compile Include="Core\Light.cs" />
     <Compile Include="Core\Transform3DIdentity.cs" />
@@ -80,6 +91,12 @@
     <Compile Include="Curves\PolynomialCurve1.cs" />
     <Compile Include="Curves\SimpleCurve1.cs" />
     <Compile Include="Curves\SimpleCurve2.cs" />
+    <Compile Include="Graphics\IGraphicsContext2D.cs" />
+    <Compile Include="Graphics\IPathIterator2D.cs" />
+    <Compile Include="Graphics\IShape2D.cs" />
+    <Compile Include="Graphics\PathUtils.cs" />
+    <Compile Include="Graphics\SegmentType.cs" />
+    <Compile Include="Graphics\WindingRule.cs" />
     <Compile Include="Maths\Double\AngleUtils.cs" />
     <Compile Include="Core\Double\BoundingBox2d.cs" />
     <Compile Include="Core\Double\BoundingBox2dUtils.cs" />
@@ -145,6 +162,8 @@
     <Compile Include="Intersection\IntrSegment2dSegment2d.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Prueba.cs" />
+    <Compile Include="Prueba2.cs" />
     <Compile Include="WavefrontFormat.cs" />
     <Compile Include="WavefrontFormatGDIUtils.cs" />
     <Compile Include="WavefrontFormatUtils.cs" />

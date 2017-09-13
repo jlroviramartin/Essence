@@ -14,7 +14,6 @@
 
 using System;
 using Essence.Util.Math.Double;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Core.Double
 {

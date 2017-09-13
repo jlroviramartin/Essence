@@ -37,6 +37,40 @@ namespace Essence.Geometry.Core.Float
             this.Blue = blue;
         }
 
+        public Color3f(IColor3 c)
+        {
+            ColorSetter3f setter = new ColorSetter3f();
+            c.GetColor(setter);
+            this.Red = setter.C1;
+            this.Green = setter.C2;
+            this.Blue = setter.C3;
+        }
+
+        public Color3f(IColor c)
+        {
+            IColor3 c3 = c as IColor3;
+            if (c3 != null)
+            {
+                ColorSetter3f setter = new ColorSetter3f();
+                c3.GetColor(setter);
+                this.Red = setter.C1;
+                this.Green = setter.C2;
+                this.Blue = setter.C3;
+            }
+            else
+            {
+                if (c.Dim < 3)
+                {
+                    throw new Exception("Vector no valido");
+                }
+                ColorSetter3f setter = new ColorSetter3f();
+                c.GetColor(setter);
+                this.Red = setter.C1;
+                this.Green = setter.C2;
+                this.Blue = setter.C3;
+            }
+        }
+
         public bool Equals(Color3f other)
         {
             return this.Red == other.Red
@@ -51,6 +85,25 @@ namespace Essence.Geometry.Core.Float
                    && this.Blue.EpsilonEquals(other.Blue, (float)epsilon);
         }
 
+        [Pure]
+        public float this[int i]
+        {
+            get
+            {
+                switch (i)
+                {
+                    case 0:
+                        return this.Red;
+                    case 1:
+                        return this.Green;
+                    case 2:
+                        return this.Blue;
+                    default:
+                        throw new IndexOutOfRangeException();
+                }
+            }
+        }
+
         public readonly float Red;
         public readonly float Green;
         public readonly float Blue;
@@ -63,45 +116,18 @@ namespace Essence.Geometry.Core.Float
             get { return 3; }
         }
 
-        [Pure]
-        IColorConvertible IColor.this[int i]
+        void IColor.GetColor(IColorSetter setter)
         {
-            get
-            {
-                switch (i)
-                {
-                    case 0:
-                        return new ByteColor(this.Red);
-                    case 1:
-                        return new ByteColor(this.Green);
-                    case 2:
-                        return new ByteColor(this.Blue);
-                    default:
-                        throw new IndexOutOfRangeException();
-                }
-            }
+            setter.SetColor(this.Red, this.Green, this.Blue);
         }
 
         #endregion
 
         #region IColor3
 
-        [Pure]
-        IColorConvertible IColor3.Red
+        public void GetColor(IColorSetter3 setter)
         {
-            get { return new ByteColor(this.Red); }
-        }
-
-        [Pure]
-        IColorConvertible IColor3.Green
-        {
-            get { return new ByteColor(this.Green); }
-        }
-
-        [Pure]
-        IColorConvertible IColor3.Blue
-        {
-            get { return new ByteColor(this.Blue); }
+            setter.SetColor(this.Red, this.Green, this.Blue);
         }
 
         #endregion

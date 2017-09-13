@@ -12,24 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.Diagnostics.Contracts;
-using REAL = System.Double;
-
 namespace Essence.Geometry.Core
 {
     public interface IPoint4D : IPoint
     {
-        [Pure]
-        IConvertible X { get; }
-
-        [Pure]
-        IConvertible Y { get; }
-
-        [Pure]
-        IConvertible Z { get; }
-
-        [Pure]
-        IConvertible W { get; }
+        /// <summary>
+        /// This method gets the coordinates.
+        /// </summary>
+        /// <param name="setter">Setter.</param>
+        void GetCoordinates(ICoordinateSetter4D setter);
     }
 }

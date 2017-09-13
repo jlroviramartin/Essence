@@ -39,6 +39,43 @@ namespace Essence.Geometry.Core.Float
             this.Alpha = alpha;
         }
 
+        public Color4f(IColor4 c)
+        {
+            ColorSetter4f setter = new ColorSetter4f();
+            c.GetColor(setter);
+            this.Red = setter.C1;
+            this.Green = setter.C2;
+            this.Blue = setter.C3;
+            this.Alpha = setter.C3;
+        }
+
+        public Color4f(IColor c)
+        {
+            IColor3 c4 = c as IColor3;
+            if (c4 != null)
+            {
+                ColorSetter4f setter = new ColorSetter4f();
+                c4.GetColor(setter);
+                this.Red = setter.C1;
+                this.Green = setter.C2;
+                this.Blue = setter.C3;
+                this.Alpha = setter.C3;
+            }
+            else
+            {
+                if (c.Dim < 3)
+                {
+                    throw new Exception("Vector no valido");
+                }
+                ColorSetter4f setter = new ColorSetter4f();
+                c.GetColor(setter);
+                this.Red = setter.C1;
+                this.Green = setter.C2;
+                this.Blue = setter.C3;
+                this.Alpha = setter.C3;
+            }
+        }
+
         public bool Equals(Color4f other)
         {
             return this.Red == other.Red
@@ -55,6 +92,27 @@ namespace Essence.Geometry.Core.Float
                    && this.Alpha.EpsilonEquals(other.Alpha, (float)epsilon);
         }
 
+        [Pure]
+        public float this[int i]
+        {
+            get
+            {
+                switch (i)
+                {
+                    case 0:
+                        return this.Red;
+                    case 1:
+                        return this.Green;
+                    case 2:
+                        return this.Blue;
+                    case 3:
+                        return this.Alpha;
+                    default:
+                        throw new IndexOutOfRangeException();
+                }
+            }
+        }
+
         public readonly float Red;
         public readonly float Green;
         public readonly float Blue;
@@ -68,57 +126,18 @@ namespace Essence.Geometry.Core.Float
             get { return 4; }
         }
 
-        [Pure]
-        IColorConvertible IColor.this[int i]
+        void IColor.GetColor(IColorSetter setter)
         {
-            get
-            {
-                switch (i)
-                {
-                    case 0:
-                        return new ByteColor(this.Red);
-                    case 1:
-                        return new ByteColor(this.Green);
-                    case 2:
-                        return new ByteColor(this.Blue);
-                    case 3:
-                        return new ByteColor(this.Alpha);
-                    default:
-                        throw new IndexOutOfRangeException();
-                }
-            }
-        }
-
-        #endregion
-
-        #region IColor3
-
-        [Pure]
-        IColorConvertible IColor3.Red
-        {
-            get { return new FloatColor(this.Red); }
-        }
-
-        [Pure]
-        IColorConvertible IColor3.Green
-        {
-            get { return new FloatColor(this.Green); }
-        }
-
-        [Pure]
-        IColorConvertible IColor3.Blue
-        {
-            get { return new FloatColor(this.Blue); }
+            setter.SetColor(this.Red, this.Green, this.Blue, this.Alpha);
         }
 
         #endregion
 
         #region IColor4
 
-        [Pure]
-        IColorConvertible IColor4.Alpha
+        public void GetColor(IColorSetter4 setter)
         {
-            get { return new FloatColor(this.Alpha); }
+            setter.SetColor(this.Red, this.Green, this.Blue, this.Alpha);
         }
 
         #endregion

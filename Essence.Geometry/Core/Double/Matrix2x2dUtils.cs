@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Core.Double
 {

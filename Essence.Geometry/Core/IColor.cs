@@ -23,7 +23,10 @@ namespace Essence.Geometry.Core
         [Pure]
         int Dim { get; }
 
-        [Pure]
-        IColorConvertible this[int i] { get; }
+        /// <summary>
+        /// This method gets the color.
+        /// </summary>
+        /// <param name="setter">Setter.</param>
+        void GetColor(IColorSetter setter);
     }
 }

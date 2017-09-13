@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Essence.Geometry.Core.Double;
+
 namespace Essence.Geometry.Core
 {
     public interface ITransform3D
@@ -25,5 +27,11 @@ namespace Essence.Geometry.Core
         ITransform3D Inv { get; }
 
         bool IsIdentity { get; }
+
+        /// <summary>
+        /// This method gets the transform as a matrix.
+        /// </summary>
+        /// <param name="matrix">Matrix.</param>
+        void GetMatrix(Matrix4x4d matrix);
     }
 }

@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Diagnostics.Contracts;
 using Essence.Util.Math;
-using REAL = System.Double;
-using System;
 
 namespace Essence.Geometry.Core
 {
@@ -24,8 +23,11 @@ namespace Essence.Geometry.Core
         [Pure]
         int Dim { get; }
 
-        [Pure]
-        IConvertible this[int i] { get; }
+        /// <summary>
+        /// This method gets the coordinates.
+        /// </summary>
+        /// <param name="setter">Setter.</param>
+        void GetCoordinates(ICoordinateSetter setter);
 
         [Pure]
         IPoint Add(IVector v);

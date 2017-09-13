@@ -380,19 +380,25 @@ namespace Essence.Maths
             if (mat.Ambient != null)
             {
                 IColor3 c = mat.Ambient;
-                this.streamWriter.Write(string.Format(en_US, "  Ka {0:F3} {1:F3} {2:F3}", c.Red.ToSingle(), c.Green.ToSingle(), c.Blue.ToSingle()));
+                ColorSetter3b setter = new ColorSetter3b();
+                c.GetColor(setter);
+                this.streamWriter.Write(string.Format(en_US, "  Ka {0:F3} {1:F3} {2:F3}", setter.C1, setter.C2, setter.C3));
                 this.streamWriter.WriteLine();
             }
             if (mat.Diffuse != null)
             {
                 IColor3 c = mat.Diffuse;
-                this.streamWriter.Write(string.Format(en_US, "  Kd {0:F3} {1:F3} {2:F3}", c.Red.ToSingle(), c.Green.ToSingle(), c.Blue.ToSingle()));
+                ColorSetter3b setter = new ColorSetter3b();
+                c.GetColor(setter);
+                this.streamWriter.Write(string.Format(en_US, "  Kd {0:F3} {1:F3} {2:F3}", setter.C1, setter.C2, setter.C3));
                 this.streamWriter.WriteLine();
             }
             if (mat.Specular != null)
             {
                 IColor3 c = mat.Specular;
-                this.streamWriter.Write(string.Format(en_US, "  Ks {0:F3} {1:F3} {2:F3}", c.Red.ToSingle(), c.Green.ToSingle(), c.Blue.ToSingle()));
+                ColorSetter3b setter = new ColorSetter3b();
+                c.GetColor(setter);
+                this.streamWriter.Write(string.Format(en_US, "  Ks {0:F3} {1:F3} {2:F3}", setter.C1, setter.C2, setter.C3));
                 this.streamWriter.WriteLine();
             }
             this.streamWriter.Write(string.Format(en_US, "  illum {0}", (int)mat.Model));

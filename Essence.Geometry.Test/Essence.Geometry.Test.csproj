@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AssertEx.cs" />
     <Compile Include="Core\BoundingBox2dTest.cs" />
+    <Compile Include="Core\Point2dTest.cs" />
     <Compile Include="Curves\CircleArc2Test.cs" />
     <Compile Include="Curves\ClothoidArc2dTest.cs" />
     <Compile Include="Geom2D\Line2dTest.cs" />

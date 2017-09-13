@@ -19,7 +19,6 @@ using System.Runtime.Serialization;
 using Essence.Util.Builders;
 using Essence.Util.Math;
 using Essence.Util.Math.Double;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Core.Double
 {
@@ -636,6 +635,19 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
+        ///     Establece a <c>mat</c>.
+        /// </summary>
+        /// <param name="mat">Matriz.</param>
+        public void Set(Matrix2x3d mat)
+        {
+            Contract.Requires(mat != null);
+
+            this.Set(mat.M00, mat.M01, mat.M02,
+                     mat.M10, mat.M11, mat.M12,
+                     0, 0, 1);
+        }
+
+        /// <summary>
         ///     Establece la mat 3x3 con los vectores directores <c>vX, vY</c>.
         /// </summary>
         /// <param name="vX">Vector X.</param>
@@ -953,7 +965,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEquatable<MATRIX>
+        #region IEquatable<Matrix3x3d>
 
         [Pure]
         public bool Equals(Matrix3x3d other)
@@ -970,7 +982,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEpsilonEquatable<MATRIX>
+        #region IEpsilonEquatable<Matrix3x3d>
 
         public bool EpsilonEquals(Matrix3x3d mat, double epsilon = MathUtils.EPSILON)
         {

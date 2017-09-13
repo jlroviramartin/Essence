@@ -12,22 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Diagnostics.Contracts;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Core
 {
     public interface IVector3D : IVector
     {
-        [Pure]
-        IConvertible X { get; }
-
-        [Pure]
-        IConvertible Y { get; }
-
-        [Pure]
-        IConvertible Z { get; }
+        /// <summary>
+        /// This method gets the coordinates.
+        /// </summary>
+        /// <param name="setter">Setter.</param>
+        void GetCoordinates(ICoordinateSetter3D setter);
 
         /// <summary>
         ///     Operacion producto vectorial (cross) en 3D: v1 x v2.

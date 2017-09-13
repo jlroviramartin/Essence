@@ -15,7 +15,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using Essence.Util;
-using INT = System.Int32;
 
 namespace Essence.Geometry.Core.Int
 {

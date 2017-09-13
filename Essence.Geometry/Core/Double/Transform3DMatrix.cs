@@ -85,6 +85,11 @@ namespace Essence.Geometry.Core.Double
             get { return this.matrix.IsIdentity; }
         }
 
+        public override void GetMatrix(Matrix4x4d matrix)
+        {
+            matrix.Set(this.Matrix);
+        }
+
         public Matrix4x4d Matrix
         {
             get { return this.matrix; }

@@ -113,6 +113,7 @@ namespace Essence.Util.Collections
             }
 
             // Solo se guarda en cache las claves con resultado.
+            // TODO: MEJOR TODAS!!!
             if (result.Count > 0)
             {
                 this.cacheValues.Add(key, result.ToArray());

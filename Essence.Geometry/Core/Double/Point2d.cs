@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using Essence.Util.Math;
 using Essence.Util.Math.Double;
-using REAL = System.Double;
+using SysMath = System.Math;
 
 namespace Essence.Geometry.Core.Double
 {
@@ -71,8 +71,10 @@ namespace Essence.Geometry.Core.Double
 
         public Point2d(IPoint2D p)
         {
-            this.X = p.X.ToDouble(null);
-            this.Y = p.Y.ToDouble(null);
+            CoordinateSetter2d setter = new CoordinateSetter2d();
+            p.GetCoordinates(setter);
+            this.X = setter.X;
+            this.Y = setter.Y;
         }
 
         public Point2d(IPoint p)
@@ -80,17 +82,19 @@ namespace Essence.Geometry.Core.Double
             IPoint2D p2 = p as IPoint2D;
             if (p2 != null)
             {
-                this.X = p2.X.ToDouble(null);
-                this.Y = p2.Y.ToDouble(null);
+                CoordinateSetter2d setter = new CoordinateSetter2d();
+                p2.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
             }
             else
             {
                 if (p.Dim < 2)
-                {
                     throw new Exception("Punto no valido");
-                }
-                this.X = p[0].ToDouble(null);
-                this.Y = p[1].ToDouble(null);
+                CoordinateSetter2d setter = new CoordinateSetter2d();
+                p.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
             }
         }
 
@@ -291,7 +295,7 @@ namespace Essence.Geometry.Core.Double
         /// <returns>Angulo.</returns>
         public static double EvAngle(Point2d o, Point2d p1, Point2d p2)
         {
-            return Vector2d.EvAngle(p1 - o, p2 - o);
+            return (p1 - o).AngleTo(p2 - o);
         }
 
         #region parse
@@ -311,9 +315,7 @@ namespace Essence.Geometry.Core.Double
         {
             Point2d result;
             if (!TryParse(s, out result, provider, vstyle, style))
-            {
                 throw new Exception();
-            }
             return result;
         }
 
@@ -371,9 +373,7 @@ namespace Essence.Geometry.Core.Double
         public override bool Equals(object obj)
         {
             if (!(obj is Point2d))
-            {
                 return false;
-            }
 
             return this.Equals((Point2d)obj);
         }
@@ -423,9 +423,7 @@ namespace Essence.Geometry.Core.Double
             {
                 ICustomFormatter formatter = provider.GetFormat(this.GetType()) as ICustomFormatter;
                 if (formatter != null)
-                {
                     return formatter.Format(format, this, provider);
-                }
             }
 
             return VectorUtils.ToString(provider, format, (double[])this);
@@ -454,10 +452,9 @@ namespace Essence.Geometry.Core.Double
         //[Pure]
         //int Dim { get; }
 
-        [Pure]
-        IConvertible IPoint.this[int i]
+        void IPoint.GetCoordinates(ICoordinateSetter setter)
         {
-            get { return this[i]; }
+            setter.SetCoords(this.X, this.Y);
         }
 
         [Pure]
@@ -500,16 +497,9 @@ namespace Essence.Geometry.Core.Double
 
         #region IPoint2D
 
-        [Pure]
-        IConvertible IPoint2D.X
+        void IPoint2D.GetCoordinates(ICoordinateSetter2D setter)
         {
-            get { return this.X; }
-        }
-
-        [Pure]
-        IConvertible IPoint2D.Y
-        {
-            get { return this.Y; }
+            setter.SetCoords(this.X, this.Y);
         }
 
         #endregion
@@ -567,9 +557,7 @@ namespace Essence.Geometry.Core.Double
                 int i;
                 i = v1.X.CompareTo(v2.X);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.Y.CompareTo(v2.Y);
                 return i;
             }

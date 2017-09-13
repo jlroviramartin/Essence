@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Essence.Util.Math;
-using Essence.Util.Math.Double;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.Serialization;
-using REAL = System.Double;
+using Essence.Util.Math;
+using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
 namespace Essence.Geometry.Core.Double
@@ -77,8 +76,10 @@ namespace Essence.Geometry.Core.Double
 
         public Vector2d(IVector2D v)
         {
-            this.X = v.X.ToDouble(null);
-            this.Y = v.Y.ToDouble(null);
+            CoordinateSetter2d setter = new CoordinateSetter2d();
+            v.GetCoordinates(setter);
+            this.X = setter.X;
+            this.Y = setter.Y;
         }
 
         public Vector2d(IVector v)
@@ -86,17 +87,19 @@ namespace Essence.Geometry.Core.Double
             IVector2D v2 = v as IVector2D;
             if (v2 != null)
             {
-                this.X = v2.X.ToDouble(null);
-                this.Y = v2.Y.ToDouble(null);
+                CoordinateSetter2d setter = new CoordinateSetter2d();
+                v2.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
             }
             else
             {
                 if (v.Dim < 2)
-                {
                     throw new Exception("Vector no valido");
-                }
-                this.X = v[0].ToDouble(null);
-                this.Y = v[1].ToDouble(null);
+                CoordinateSetter2d setter = new CoordinateSetter2d();
+                v.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
             }
         }
 
@@ -256,9 +259,7 @@ namespace Essence.Geometry.Core.Double
             {
                 double len = this.Length;
                 if (len.EpsilonZero())
-                {
                     return Zero;
-                }
                 return this.Div(len);
             }
         }
@@ -361,7 +362,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Calcula el angulo de <c>this</c> respecto del eje X.
+        ///     Calcula el angulo de <c>this</c> respecto del eje X. Es lo mismo que 'new Vector2d(1, 0).AngleTo(v)'.
         ///     <pre><![CDATA[
         ///   ^           __
         ///   |          _/| this
@@ -386,6 +387,31 @@ namespace Essence.Geometry.Core.Double
             get { return (double)SysMath.Atan2(this.Y, this.X); }
         }
 
+        /// <summary>
+        ///     Calcula el angulo de <c>other</c> respecto de este vector.
+        ///     Angulo en radianes entre [-PI, PI].
+        ///     Es positivo si el giro es sentido horario [0, PI].
+        ///     Es negativo si el giro es sentido anti-horario [-PI, 0].
+        ///     <pre><![CDATA[
+        ///               __
+        ///              _/| other
+        ///            _/
+        ///          _/
+        ///        _/ __
+        ///      _/   |\ angulo +
+        ///    _/       |
+        ///   +          |
+        /// origen      |
+        ///       \_   /
+        ///         \_/  
+        ///           \_
+        ///             \_
+        ///               \|
+        ///              --| this
+        /// ]]></pre>
+        /// </summary>
+        /// <param name="other">Vector.</param>
+        /// <returns>Angulo.</returns>
         [Pure]
         public double AngleTo(Vector2d other)
         {
@@ -453,37 +479,6 @@ namespace Essence.Geometry.Core.Double
             return new Vector2d(v2.X * c - v2.Y * s, v2.X * s + v2.Y * c);
         }
 
-        /// <summary>
-        ///     Calcula el angulo de <c>v2</c> respecto de <c>v1</c>.
-        ///     Angulo en radianes entre [-PI, PI].
-        ///     Es positivo si el giro es sentido horario [0, PI].
-        ///     Es negativo si el giro es sentido anti-horario [-PI, 0].
-        ///     <pre><![CDATA[
-        ///               __
-        ///              _/| v2
-        ///            _/
-        ///          _/
-        ///        _/ __
-        ///      _/   |\ angulo +
-        ///    _/       |
-        ///   +          |
-        /// origen      |
-        ///       \_   /
-        ///         \_/  
-        ///           \_
-        ///             \_
-        ///               \|
-        ///              --| v1
-        /// ]]></pre>
-        /// </summary>
-        /// <param name="v1">Vector.</param>
-        /// <param name="v2">Vector.</param>
-        /// <returns>Angulo.</returns>
-        public static double EvAngle(Vector2d v1, Vector2d v2)
-        {
-            return (v2.Angle - v1.Angle);
-        }
-
         #region parse
 
         /// <summary>
@@ -501,9 +496,7 @@ namespace Essence.Geometry.Core.Double
         {
             Vector2d result;
             if (!TryParse(s, out result, provider, vstyle, style))
-            {
                 throw new Exception();
-            }
             return result;
         }
 
@@ -561,9 +554,7 @@ namespace Essence.Geometry.Core.Double
         public override bool Equals(object obj)
         {
             if (!(obj is Vector2d))
-            {
                 return false;
-            }
 
             return this.Equals((Vector2d)obj);
         }
@@ -613,9 +604,7 @@ namespace Essence.Geometry.Core.Double
             {
                 ICustomFormatter formatter = provider.GetFormat(this.GetType()) as ICustomFormatter;
                 if (formatter != null)
-                {
                     return formatter.Format(format, this, provider);
-                }
             }
 
             return VectorUtils.ToString(provider, format, (double[])this);
@@ -643,10 +632,9 @@ namespace Essence.Geometry.Core.Double
 
         //int Dim { get; }
 
-        [Pure]
-        IConvertible IVector.this[int i]
+        void IVector.GetCoordinates(ICoordinateSetter setter)
         {
-            get { return this[i]; }
+            setter.SetCoords(this.X, this.Y);
         }
 
         [Pure]
@@ -747,16 +735,9 @@ namespace Essence.Geometry.Core.Double
 
         #region IVector2D
 
-        [Pure]
-        IConvertible IVector2D.X
+        void IVector2D.GetCoordinates(ICoordinateSetter2D setter)
         {
-            get { return this.X; }
-        }
-
-        [Pure]
-        IConvertible IVector2D.Y
-        {
-            get { return this.Y; }
+            setter.SetCoords(this.X, this.Y);
         }
 
         [Pure]
@@ -820,9 +801,7 @@ namespace Essence.Geometry.Core.Double
                 int i;
                 i = v1.X.CompareTo(v2.X);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.Y.CompareTo(v2.Y);
                 return i;
             }
@@ -884,9 +863,7 @@ namespace Essence.Geometry.Core.Double
                 if (v1.IsZero)
                 {
                     if (v2.IsZero)
-                    {
                         return 0;
-                    }
                     return -1; // v2 es mayor.
                 }
                 else if (v2.IsZero)
@@ -902,44 +879,22 @@ namespace Essence.Geometry.Core.Double
                     // v1 esta encima.
                     double nv2 = this.normal.Dot(v2);
                     if (nv2 > 0)
-                    {
-                        // v2 esta encima.
                         return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
                     else if (nv2 < 0)
-                    {
-                        // v2 esta debajo.
                         return -1; // v2 es mayor.
-                    }
                     else
-                    {
-                        // Dot(this.direccion, v2) // Es +1 o -1
-
-                        // v2 esta alineado.
                         return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
                 }
                 else if (nv1 < 0)
                 {
                     // v1 esta debajo.
                     double nv2 = this.normal.Dot(v2);
                     if (nv2 > 0)
-                    {
-                        // v2 esta encima.
                         return 1; // v1 es mayor.
-                    }
                     else if (nv2 < 0)
-                    {
-                        // v2 esta debajo o alineado.
                         return this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
                     else
-                    {
-                        // Dot(this.direccion, v2) // Es +1 o -1
-
-                        // v2 esta alineado.
                         return 1;
-                    }
                 }
                 else // if (nv1 == 0)
                 {
@@ -948,22 +903,11 @@ namespace Essence.Geometry.Core.Double
                     // v1 esta alineado.
                     double nv2 = this.normal.Dot(v2);
                     if (nv2 > 0)
-                    {
-                        // v2 esta encima.
                         return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
                     else if (nv2 < 0)
-                    {
-                        // v2 esta debajo.
                         return -1;
-                    }
                     else
-                    {
-                        // Dot(this.direccion, v2); // Es +1 o -1
-
-                        // v2 esta alineado.
                         return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
                 }
             }
 

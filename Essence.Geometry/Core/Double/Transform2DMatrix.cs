@@ -85,6 +85,11 @@ namespace Essence.Geometry.Core.Double
             get { return this.matrix.IsIdentity; }
         }
 
+        public override void GetMatrix(Matrix3x3d matrix)
+        {
+            matrix.Set(this.Matrix);
+        }
+
         public Matrix2x3d Matrix
         {
             get { return this.matrix; }

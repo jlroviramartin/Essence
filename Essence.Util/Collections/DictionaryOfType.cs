@@ -57,10 +57,10 @@ namespace Essence.Util.Collections
                 }
             }
 
-            public bool IsRoot(Type key)
+            /*public bool IsRoot(Type key)
             {
                 return ((key.BaseType == null) && key.GetInterfaces().IsEmpty());
-            }
+            }*/
         }
 
         #endregion

@@ -19,8 +19,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.Serialization;
-using INT = System.Int32;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Core.Int
 {
@@ -67,8 +65,10 @@ namespace Essence.Geometry.Core.Int
 
         public Vector2i(IVector2D v)
         {
-            this.X = v.X.ToInt32(null);
-            this.Y = v.Y.ToInt32(null);
+            CoordinateSetter2i setter = new CoordinateSetter2i();
+            v.GetCoordinates(setter);
+            this.X = setter.X;
+            this.Y = setter.Y;
         }
 
         public Vector2i(IVector v)
@@ -76,17 +76,19 @@ namespace Essence.Geometry.Core.Int
             IVector2D v2 = v as IVector2D;
             if (v2 != null)
             {
-                this.X = v2.X.ToInt32(null);
-                this.Y = v2.Y.ToInt32(null);
+                CoordinateSetter2i setter = new CoordinateSetter2i();
+                v2.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
             }
             else
             {
                 if (v.Dim < 2)
-                {
                     throw new Exception("Vector no valido");
-                }
-                this.X = v[0].ToInt32(null);
-                this.Y = v[1].ToInt32(null);
+                CoordinateSetter2i setter = new CoordinateSetter2i();
+                v.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
             }
         }
 
@@ -317,9 +319,7 @@ namespace Essence.Geometry.Core.Int
         {
             Vector2i result;
             if (!TryParse(s, out result, provider, vstyle, style))
-            {
                 throw new Exception();
-            }
             return result;
         }
 
@@ -361,9 +361,7 @@ namespace Essence.Geometry.Core.Int
             {
                 double len = this.Length;
                 if (Essence.Util.Math.Double.MathUtils.EpsilonZero(len))
-                {
                     return Zero;
-                }
                 return this.Div(len);
             }
         }
@@ -403,9 +401,7 @@ namespace Essence.Geometry.Core.Int
         public override bool Equals(object obj)
         {
             if (!(obj is Vector2i))
-            {
                 return false;
-            }
 
             return this.Equals((Vector2i)obj);
         }
@@ -445,9 +441,7 @@ namespace Essence.Geometry.Core.Int
             {
                 ICustomFormatter formatter = provider.GetFormat(this.GetType()) as ICustomFormatter;
                 if (formatter != null)
-                {
                     return formatter.Format(format, this, provider);
-                }
             }
 
             return VectorUtils.ToString(provider, format, (int[])this);
@@ -475,10 +469,9 @@ namespace Essence.Geometry.Core.Int
 
         //int Dim { get; }
 
-        [Pure]
-        IConvertible IVector.this[int i]
+        void IVector.GetCoordinates(ICoordinateSetter setter)
         {
-            get { return this[i]; }
+            setter.SetCoords(this.X, this.Y);
         }
 
         [Pure]
@@ -500,9 +493,7 @@ namespace Essence.Geometry.Core.Int
         IVector IVector.Add(IVector v2)
         {
             if (v2 is Vector2i)
-            {
                 return this.Add((Vector2i)v2);
-            }
             return this.Add(new Vector2i(v2));
         }
 
@@ -510,9 +501,7 @@ namespace Essence.Geometry.Core.Int
         IVector IVector.Sub(IVector v2)
         {
             if (v2 is Vector2i)
-            {
                 return this.Add((Vector2i)v2);
-            }
             return this.Sub(new Vector2i(v2));
         }
 
@@ -532,9 +521,7 @@ namespace Essence.Geometry.Core.Int
         IVector IVector.SimpleMul(IVector v2)
         {
             if (v2 is Vector2i)
-            {
                 return this.SimpleMul((Vector2i)v2);
-            }
             return this.SimpleMul(new Vector2i(v2));
         }
 
@@ -554,9 +541,7 @@ namespace Essence.Geometry.Core.Int
         IVector IVector.Lerp(IVector v2, double alpha)
         {
             if (v2 is Vector2i)
-            {
                 return this.Lerp((Vector2i)v2, alpha);
-            }
             return this.Lerp(new Vector2i(v2), alpha);
         }
 
@@ -564,16 +549,10 @@ namespace Essence.Geometry.Core.Int
         double IVector.InvLerp(IVector v2, IVector vLerp)
         {
             if (v2 is Vector2i)
-            {
                 if (vLerp is Vector2i)
-                {
                     return this.InvLerp((Vector2i)v2, (Vector2i)vLerp);
-                }
                 else
-                {
                     return this.InvLerp((Vector2i)v2, new Vector2i(vLerp));
-                }
-            }
             return this.InvLerp(new Vector2i(v2), new Vector2i(vLerp));
         }
 
@@ -581,9 +560,7 @@ namespace Essence.Geometry.Core.Int
         IVector IVector.Lineal(IVector v2, double alpha, double beta)
         {
             if (v2 is Vector2i)
-            {
                 return this.Lineal((Vector2i)v2, alpha, beta);
-            }
             return this.Lineal(new Vector2i(v2), alpha, beta);
         }
 
@@ -591,9 +568,7 @@ namespace Essence.Geometry.Core.Int
         double IVector.Dot(IVector v2)
         {
             if (v2 is Vector2i)
-            {
                 return this.Dot((Vector2i)v2);
-            }
             return this.Dot(new Vector2i(v2));
         }
 
@@ -602,9 +577,7 @@ namespace Essence.Geometry.Core.Int
 
         {
             if (v2 is Vector2i)
-            {
                 return this.Proy((Vector2i)v2);
-            }
             return this.Proy(new Vector2i(v2));
         }
 
@@ -612,9 +585,7 @@ namespace Essence.Geometry.Core.Int
         IVector IVector.ProyV(IVector v2)
         {
             if (v2 is Vector2i)
-            {
                 return this.ProyV((Vector2i)v2);
-            }
             return this.ProyV(new Vector2i(v2));
         }
 
@@ -622,25 +593,16 @@ namespace Essence.Geometry.Core.Int
 
         #region IVector2D
 
-        [Pure]
-        IConvertible IVector2D.X
+        void IVector2D.GetCoordinates(ICoordinateSetter2D setter)
         {
-            get { return this.X; }
-        }
-
-        [Pure]
-        IConvertible IVector2D.Y
-        {
-            get { return this.Y; }
+            setter.SetCoords(this.X, this.Y);
         }
 
         [Pure]
         double IVector2D.Cross(IVector2D v2)
         {
             if (v2 is Vector2i)
-            {
                 return this.Cross((Vector2i)v2);
-            }
             return this.Cross(new Vector2i(v2));
         }
 
@@ -652,9 +614,7 @@ namespace Essence.Geometry.Core.Int
         bool IEpsilonEquatable<IVector>.EpsilonEquals(IVector other, double epsilon)
         {
             if (other is Vector2i)
-            {
                 return this.Equals((Vector2i)other);
-            }
             return this.Equals(new Vector2i(other));
         }
 
@@ -703,9 +663,7 @@ namespace Essence.Geometry.Core.Int
                 int i;
                 i = v1.X.CompareTo(v2.X);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.Y.CompareTo(v2.Y);
                 return i;
             }

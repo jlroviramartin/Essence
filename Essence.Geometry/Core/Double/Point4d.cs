@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using Essence.Util.Math;
 using Essence.Util.Math.Double;
-using REAL = System.Double;
+using SysMath = System.Math;
 
 namespace Essence.Geometry.Core.Double
 {
@@ -91,10 +91,12 @@ namespace Essence.Geometry.Core.Double
 
         public Point4d(IPoint4D p)
         {
-            this.X = p.X.ToDouble(null);
-            this.Y = p.Y.ToDouble(null);
-            this.Z = p.Z.ToDouble(null);
-            this.W = p.W.ToDouble(null);
+            CoordinateSetter4d setter = new CoordinateSetter4d();
+            p.GetCoordinates(setter);
+            this.X = setter.X;
+            this.Y = setter.Y;
+            this.Z = setter.Z;
+            this.W = setter.W;
         }
 
         public Point4d(IPoint p)
@@ -102,21 +104,23 @@ namespace Essence.Geometry.Core.Double
             IPoint4D p4 = p as IPoint4D;
             if (p4 != null)
             {
-                this.X = p4.X.ToDouble(null);
-                this.Y = p4.Y.ToDouble(null);
-                this.Z = p4.Z.ToDouble(null);
-                this.W = p4.W.ToDouble(null);
+                CoordinateSetter4d setter = new CoordinateSetter4d();
+                p4.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
+                this.Z = setter.Z;
+                this.W = setter.W;
             }
             else
             {
                 if (p.Dim < 4)
-                {
                     throw new Exception("Punto no valido");
-                }
-                this.X = p[0].ToDouble(null);
-                this.Y = p[1].ToDouble(null);
-                this.Z = p[2].ToDouble(null);
-                this.W = p[3].ToDouble(null);
+                CoordinateSetter4d setter = new CoordinateSetter4d();
+                p.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
+                this.Z = setter.Z;
+                this.W = setter.W;
             }
         }
 
@@ -292,9 +296,7 @@ namespace Essence.Geometry.Core.Double
         {
             Point4d result;
             if (!TryParse(s, out result, provider, vstyle, style))
-            {
                 throw new Exception();
-            }
             return result;
         }
 
@@ -356,9 +358,7 @@ namespace Essence.Geometry.Core.Double
         public override bool Equals(object obj)
         {
             if (!(obj is Point4d))
-            {
                 return false;
-            }
 
             return this.Equals((Point4d)obj);
         }
@@ -410,9 +410,7 @@ namespace Essence.Geometry.Core.Double
             {
                 ICustomFormatter formatter = provider.GetFormat(this.GetType()) as ICustomFormatter;
                 if (formatter != null)
-                {
                     return formatter.Format(format, this, provider);
-                }
             }
 
             return VectorUtils.ToString(provider, format, (double[])this);
@@ -445,10 +443,9 @@ namespace Essence.Geometry.Core.Double
         //[Pure]
         //int Dim { get; }
 
-        [Pure]
-        IConvertible IPoint.this[int i]
+        void IPoint.GetCoordinates(ICoordinateSetter setter)
         {
-            get { return this[i]; }
+            setter.SetCoords(this.X, this.Y, this.Z, this.W);
         }
 
         [Pure]
@@ -491,28 +488,9 @@ namespace Essence.Geometry.Core.Double
 
         #region IPoint4D
 
-        [Pure]
-        IConvertible IPoint4D.X
+        void IPoint4D.GetCoordinates(ICoordinateSetter4D setter)
         {
-            get { return this.X; }
-        }
-
-        [Pure]
-        IConvertible IPoint4D.Y
-        {
-            get { return this.Y; }
-        }
-
-        [Pure]
-        IConvertible IPoint4D.Z
-        {
-            get { return this.Z; }
-        }
-
-        [Pure]
-        IConvertible IPoint4D.W
-        {
-            get { return this.W; }
+            setter.SetCoords(this.X, this.Y, this.Z, this.W);
         }
 
         #endregion
@@ -574,19 +552,13 @@ namespace Essence.Geometry.Core.Double
                 int i;
                 i = v1.X.CompareTo(v2.X);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.Y.CompareTo(v2.Y);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.Z.CompareTo(v2.Z);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.W.CompareTo(v2.W);
                 return i;
             }

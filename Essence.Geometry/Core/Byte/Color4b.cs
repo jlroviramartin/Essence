@@ -39,12 +39,70 @@ namespace Essence.Geometry.Core.Byte
             this.Alpha = alpha;
         }
 
+        public Color4b(IColor4 c)
+        {
+            ColorSetter4b setter = new ColorSetter4b();
+            c.GetColor(setter);
+            this.Red = setter.C1;
+            this.Green = setter.C2;
+            this.Blue = setter.C3;
+            this.Alpha = setter.C3;
+        }
+
+        public Color4b(IColor c)
+        {
+            IColor3 c4 = c as IColor3;
+            if (c4 != null)
+            {
+                ColorSetter4b setter = new ColorSetter4b();
+                c4.GetColor(setter);
+                this.Red = setter.C1;
+                this.Green = setter.C2;
+                this.Blue = setter.C3;
+                this.Alpha = setter.C3;
+            }
+            else
+            {
+                if (c.Dim < 3)
+                {
+                    throw new Exception("Vector no valido");
+                }
+                ColorSetter4b setter = new ColorSetter4b();
+                c.GetColor(setter);
+                this.Red = setter.C1;
+                this.Green = setter.C2;
+                this.Blue = setter.C3;
+                this.Alpha = setter.C3;
+            }
+        }
+
         public bool Equals(Color4b other)
         {
             return this.Red == other.Red
                    && this.Green == other.Green
                    && this.Blue == other.Blue
                    && this.Alpha == other.Alpha;
+        }
+
+        [Pure]
+        public byte this[int i]
+        {
+            get
+            {
+                switch (i)
+                {
+                    case 0:
+                        return this.Red;
+                    case 1:
+                        return this.Green;
+                    case 2:
+                        return this.Blue;
+                    case 3:
+                        return this.Alpha;
+                    default:
+                        throw new IndexOutOfRangeException();
+                }
+            }
         }
 
         public readonly byte Red;
@@ -60,57 +118,18 @@ namespace Essence.Geometry.Core.Byte
             get { return 4; }
         }
 
-        [Pure]
-        IColorConvertible IColor.this[int i]
+        void IColor.GetColor(IColorSetter setter)
         {
-            get
-            {
-                switch (i)
-                {
-                    case 0:
-                        return new ByteColor(this.Red);
-                    case 1:
-                        return new ByteColor(this.Green);
-                    case 2:
-                        return new ByteColor(this.Blue);
-                    case 3:
-                        return new ByteColor(this.Alpha);
-                    default:
-                        throw new IndexOutOfRangeException();
-                }
-            }
-        }
-
-        #endregion
-
-        #region IColor3
-
-        [Pure]
-        IColorConvertible IColor3.Red
-        {
-            get { return new ByteColor(this.Red); }
-        }
-
-        [Pure]
-        IColorConvertible IColor3.Green
-        {
-            get { return new ByteColor(this.Green); }
-        }
-
-        [Pure]
-        IColorConvertible IColor3.Blue
-        {
-            get { return new ByteColor(this.Blue); }
+            setter.SetColor(this.Red, this.Green, this.Blue, this.Alpha);
         }
 
         #endregion
 
         #region IColor4
 
-        [Pure]
-        IColorConvertible IColor4.Alpha
+        public void GetColor(IColorSetter4 setter)
         {
-            get { return new ByteColor(this.Alpha); }
+            setter.SetColor(this.Red, this.Green, this.Blue, this.Alpha);
         }
 
         #endregion

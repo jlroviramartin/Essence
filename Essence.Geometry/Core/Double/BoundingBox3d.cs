@@ -18,7 +18,6 @@ using System.Diagnostics.Contracts;
 using Essence.Util;
 using Essence.Util.Math;
 using Essence.Util.Math.Double;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Core.Double
 {
@@ -64,7 +63,7 @@ namespace Essence.Geometry.Core.Double
         /// <summary>
         ///     Rectangulo infinito.
         /// </summary>
-        public static BoundingBox3d Infinity = new BoundingBox3d(double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity);
+        public static readonly BoundingBox3d Infinity = new BoundingBox3d(double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity);
 
         /// <summary>
         ///     Une todos los rectangulos.

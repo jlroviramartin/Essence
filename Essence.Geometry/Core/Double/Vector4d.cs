@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using Essence.Util.Math;
 using Essence.Util.Math.Double;
-using REAL = System.Double;
+using SysMath = System.Math;
 
 namespace Essence.Geometry.Core.Double
 {
@@ -89,26 +89,38 @@ namespace Essence.Geometry.Core.Double
             this.W = w;
         }
 
+        public Vector4d(IVector4D v)
+        {
+            CoordinateSetter4d setter = new CoordinateSetter4d();
+            v.GetCoordinates(setter);
+            this.X = setter.X;
+            this.Y = setter.Y;
+            this.Z = setter.Z;
+            this.W = setter.W;
+        }
+
         public Vector4d(IVector v)
         {
             IVector4D v4 = v as IVector4D;
             if (v4 != null)
             {
-                this.X = v4.X.ToDouble(null);
-                this.Y = v4.Y.ToDouble(null);
-                this.Z = v4.Z.ToDouble(null);
-                this.W = v4.W.ToDouble(null);
+                CoordinateSetter4d setter = new CoordinateSetter4d();
+                v4.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
+                this.Z = setter.Z;
+                this.W = setter.W;
             }
             else
             {
                 if (v.Dim < 4)
-                {
                     throw new Exception("Vector no valido");
-                }
-                this.X = v[0].ToDouble(null);
-                this.Y = v[1].ToDouble(null);
-                this.Z = v[2].ToDouble(null);
-                this.W = v[3].ToDouble(null);
+                CoordinateSetter4d setter = new CoordinateSetter4d();
+                v.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
+                this.Z = setter.Z;
+                this.W = setter.W;
             }
         }
 
@@ -249,9 +261,7 @@ namespace Essence.Geometry.Core.Double
             {
                 double len = this.Length;
                 if (len.EpsilonZero())
-                {
                     return Zero;
-                }
                 return this.Div(len);
             }
         }
@@ -370,9 +380,7 @@ namespace Essence.Geometry.Core.Double
         {
             Vector4d result;
             if (!TryParse(s, out result, provider, vstyle, style))
-            {
                 throw new Exception();
-            }
             return result;
         }
 
@@ -434,9 +442,7 @@ namespace Essence.Geometry.Core.Double
         public override bool Equals(object obj)
         {
             if (!(obj is Vector4d))
-            {
                 return false;
-            }
 
             return this.Equals((Vector4d)obj);
         }
@@ -488,9 +494,7 @@ namespace Essence.Geometry.Core.Double
             {
                 ICustomFormatter formatter = provider.GetFormat(this.GetType()) as ICustomFormatter;
                 if (formatter != null)
-                {
                     return formatter.Format(format, this, provider);
-                }
             }
 
             return VectorUtils.ToString(provider, format, (double[])this);
@@ -522,10 +526,9 @@ namespace Essence.Geometry.Core.Double
 
         //int Dim { get; }
 
-        [Pure]
-        IConvertible IVector.this[int i]
+        void IVector.GetCoordinates(ICoordinateSetter setter)
         {
-            get { return this[i]; }
+            setter.SetCoords(this.X, this.Y, this.Z, this.W);
         }
 
         [Pure]
@@ -625,28 +628,9 @@ namespace Essence.Geometry.Core.Double
 
         #region IVector4D
 
-        [Pure]
-        IConvertible IVector4D.X
+        void IVector4D.GetCoordinates(ICoordinateSetter4D setter)
         {
-            get { return this.X; }
-        }
-
-        [Pure]
-        IConvertible IVector4D.Y
-        {
-            get { return this.Y; }
-        }
-
-        [Pure]
-        IConvertible IVector4D.Z
-        {
-            get { return this.Z; }
-        }
-
-        [Pure]
-        IConvertible IVector4D.W
-        {
-            get { return this.W; }
+            setter.SetCoords(this.X, this.Y, this.Z, this.W);
         }
 
         #endregion
@@ -708,19 +692,13 @@ namespace Essence.Geometry.Core.Double
                 int i;
                 i = v1.X.CompareTo(v2.X);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.Y.CompareTo(v2.Y);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.Z.CompareTo(v2.Z);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.W.CompareTo(v2.W);
                 return i;
             }
@@ -777,9 +755,7 @@ namespace Essence.Geometry.Core.Double
                 if (v1.IsZero)
                 {
                     if (v2.IsZero)
-                    {
                         return 0;
-                    }
                     return -1; // v2 es mayor.
                 }
                 else if (v2.IsZero)
@@ -795,44 +771,22 @@ namespace Essence.Geometry.Core.Double
                     // v1 esta encima.
                     double nv2 = this.normal.Dot(v2);
                     if (nv2 > 0)
-                    {
-                        // v2 esta encima.
                         return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
                     else if (nv2 < 0)
-                    {
-                        // v2 esta debajo.
                         return -1; // v2 es mayor.
-                    }
                     else
-                    {
-                        // Dot(this.direccion, v2) // Es +1 o -1
-
-                        // v2 esta alineado.
                         return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
                 }
                 else if (nv1 < 0)
                 {
                     // v1 esta debajo.
                     double nv2 = this.normal.Dot(v2);
                     if (nv2 > 0)
-                    {
-                        // v2 esta encima.
                         return 1; // v1 es mayor.
-                    }
                     else if (nv2 < 0)
-                    {
-                        // v2 esta debajo o alineado.
                         return this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
                     else
-                    {
-                        // Dot(this.direccion, v2) // Es +1 o -1
-
-                        // v2 esta alineado.
                         return 1;
-                    }
                 }
                 else // if (nv1 == 0)
                 {
@@ -841,22 +795,11 @@ namespace Essence.Geometry.Core.Double
                     // v1 esta alineado.
                     double nv2 = this.normal.Dot(v2);
                     if (nv2 > 0)
-                    {
-                        // v2 esta encima.
                         return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
                     else if (nv2 < 0)
-                    {
-                        // v2 esta debajo.
                         return -1;
-                    }
                     else
-                    {
-                        // Dot(this.direccion, v2); // Es +1 o -1
-
-                        // v2 esta alineado.
                         return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
                 }
             }
 

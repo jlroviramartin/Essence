@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using Essence.View.Models;
 using Essence.View.Models.Properties;
 
 namespace Essence.View.Controls

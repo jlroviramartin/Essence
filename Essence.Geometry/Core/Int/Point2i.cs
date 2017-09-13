@@ -20,8 +20,6 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using Essence.Util.Math;
 using Essence.Util.Math.Int;
-using INT = System.Int32;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Core.Int
 {
@@ -68,8 +66,10 @@ namespace Essence.Geometry.Core.Int
 
         public Point2i(IPoint2D p)
         {
-            this.X = p.X.ToInt32(null);
-            this.Y = p.Y.ToInt32(null);
+            CoordinateSetter2i setter = new CoordinateSetter2i();
+            p.GetCoordinates(setter);
+            this.X = setter.X;
+            this.Y = setter.Y;
         }
 
         public Point2i(IPoint p)
@@ -77,17 +77,19 @@ namespace Essence.Geometry.Core.Int
             IPoint2D p2 = p as IPoint2D;
             if (p2 != null)
             {
-                this.X = p2.X.ToInt32(null);
-                this.Y = p2.Y.ToInt32(null);
+                CoordinateSetter2i setter = new CoordinateSetter2i();
+                p2.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
             }
             else
             {
                 if (p.Dim < 2)
-                {
                     throw new Exception("Punto no valido");
-                }
-                this.X = p[0].ToInt32(null);
-                this.Y = p[1].ToInt32(null);
+                CoordinateSetter2i setter = new CoordinateSetter2i();
+                p.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
             }
         }
 
@@ -249,9 +251,7 @@ namespace Essence.Geometry.Core.Int
         {
             Point2i result;
             if (!TryParse(s, out result, provider, vstyle, style))
-            {
                 throw new Exception();
-            }
             return result;
         }
 
@@ -309,9 +309,7 @@ namespace Essence.Geometry.Core.Int
         public override bool Equals(object obj)
         {
             if (!(obj is Point2i))
-            {
                 return false;
-            }
 
             return this.Equals((Point2i)obj);
         }
@@ -351,9 +349,7 @@ namespace Essence.Geometry.Core.Int
             {
                 ICustomFormatter formatter = provider.GetFormat(this.GetType()) as ICustomFormatter;
                 if (formatter != null)
-                {
                     return formatter.Format(format, this, provider);
-                }
             }
 
             return VectorUtils.ToString(provider, format, (int[])this);
@@ -382,19 +378,16 @@ namespace Essence.Geometry.Core.Int
         //[Pure]
         //int Dim { get; }
 
-        [Pure]
-        IConvertible IPoint.this[int i]
+        void IPoint.GetCoordinates(ICoordinateSetter setter)
         {
-            get { return this[i]; }
+            setter.SetCoords(this.X, this.Y);
         }
 
         [Pure]
         IPoint IPoint.Add(IVector v)
         {
             if (v is Vector2i)
-            {
                 return this.Add((Vector2i)v);
-            }
             return this.Add(new Vector2i(v));
         }
 
@@ -402,9 +395,7 @@ namespace Essence.Geometry.Core.Int
         IPoint IPoint.Sub(IVector v)
         {
             if (v is Vector2i)
-            {
                 return this.Sub((Vector2i)v);
-            }
             return this.Sub(new Vector2i(v));
         }
 
@@ -412,9 +403,7 @@ namespace Essence.Geometry.Core.Int
         IVector IPoint.Sub(IPoint p2)
         {
             if (p2 is Point2i)
-            {
                 return this.Sub((Point2i)p2);
-            }
             return this.Sub(new Point2i(p2));
         }
 
@@ -422,9 +411,7 @@ namespace Essence.Geometry.Core.Int
         IPoint IPoint.Lerp(IPoint p2, double alpha)
         {
             if (p2 is Point2i)
-            {
                 return this.Lerp((Point2i)p2, alpha);
-            }
             return this.Lerp(new Point2i(p2), alpha);
         }
 
@@ -434,9 +421,7 @@ namespace Essence.Geometry.Core.Int
             if (p2 is Point2i)
             {
                 if (pLerp is Point2i)
-                {
                     return this.InvLerp((Point2i)p2, (Point2i)pLerp);
-                }
                 return this.InvLerp((Point2i)p2, new Point2i(pLerp));
             }
             return this.InvLerp(new Point2i(p2), new Point2i(pLerp));
@@ -446,9 +431,7 @@ namespace Essence.Geometry.Core.Int
         IPoint IPoint.Lineal(IPoint p2, double alpha, double beta)
         {
             if (p2 is Point2i)
-            {
                 return this.Lineal((Point2i)p2, alpha, beta);
-            }
             return this.Lineal(new Point2i(p2), alpha, beta);
         }
 
@@ -456,16 +439,9 @@ namespace Essence.Geometry.Core.Int
 
         #region IPoint2D
 
-        [Pure]
-        IConvertible IPoint2D.X
+        void IPoint2D.GetCoordinates(ICoordinateSetter2D setter)
         {
-            get { return this.X; }
-        }
-
-        [Pure]
-        IConvertible IPoint2D.Y
-        {
-            get { return this.Y; }
+            setter.SetCoords(this.X, this.Y);
         }
 
         #endregion
@@ -476,9 +452,7 @@ namespace Essence.Geometry.Core.Int
         bool IEpsilonEquatable<IPoint>.EpsilonEquals(IPoint other, double epsilon)
         {
             if (other is Point2i)
-            {
                 return this.Equals((Point2i)other);
-            }
             return this.Equals(new Point2i(other));
         }
 
@@ -527,9 +501,7 @@ namespace Essence.Geometry.Core.Int
                 int i;
                 i = v1.X.CompareTo(v2.X);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.Y.CompareTo(v2.Y);
                 return i;
             }

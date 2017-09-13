@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\osgnet.3.4.0-alpha100\build\osgnet.props" Condition="Exists('..\..\packages\osgnet.3.4.0-alpha100\build\osgnet.props')" />
+  <Import Project="..\..\packages\osgworks.2016.06.13.100\build\osgworks.props" Condition="Exists('..\..\packages\osgworks.2016.06.13.100\build\osgworks.props')" />
+  <Import Project="..\..\packages\osgearth.2.9-alpha100\build\osgearth.props" Condition="Exists('..\..\packages\osgearth.2.9-alpha100\build\osgearth.props')" />
+  <Import Project="..\..\packages\osgbullet.2016.08.06.100\build\osgbullet.props" Condition="Exists('..\..\packages\osgbullet.2016.08.06.100\build\osgbullet.props')" />
+  <Import Project="..\..\packages\osg.3.4.0.100\build\osg.props" Condition="Exists('..\..\packages\osg.3.4.0.100\build\osg.props')" />
+  <Import Project="..\..\packages\gdal.3.6.1.100\build\gdal.props" Condition="Exists('..\..\packages\gdal.3.6.1.100\build\gdal.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EE76FC8F-A737-4A6D-BADA-D43287FD887F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Essence.View</RootNamespace>
+    <AssemblyName>Essence.View.GL</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="gdalconst_csharp, Version=1.0.6334.40692, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\gdal.3.6.1.100\lib\net40-client\gdalconst_csharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gdal_csharp, Version=1.0.6334.40691, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\gdal.3.6.1.100\lib\net40-client\gdal_csharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ogr_csharp, Version=1.0.6334.40691, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\gdal.3.6.1.100\lib\net40-client\ogr_csharp.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenThreads_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\OpenThreads_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgDB_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgDB_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgEarthDrivers_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgEarthDrivers_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgEarthFeatures_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgEarthFeatures_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgEarthSplat_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgEarthSplat_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgEarthSymbology_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgEarthSymbology_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgEarthUtil_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgEarthUtil_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgEarth_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgEarth_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgExtend_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgExtend_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgGA_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgGA_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgSim_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgSim_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgTerrain_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgTerrain_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgUtil_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgUtil_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osgViewer_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osgViewer_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osg_csharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\osgnet.3.4.0-alpha100\lib\net40-client\osg_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="osr_csharp, Version=1.0.6334.40691, Culture=neutral, PublicKeyToken=db5a52b08dc5b321, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\gdal.3.6.1.100\lib\net40-client\osr_csharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\Drawing2DViewControl.cs" />
+    <Compile Include="Controls\Forms\Drawing3DOSGControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Osg\AbsByteImage.cs" />
+    <Compile Include="Controls\Osg\ByteBitmap.cs" />
+    <Compile Include="Controls\Osg\ByteImage.cs" />
+    <Compile Include="Controls\Osg\OSGUtils.cs" />
+    <Compile Include="Controls\Osg\TextureMagFilter.cs" />
+    <Compile Include="Controls\Osg\TextureMinFilter.cs" />
+    <Compile Include="Controls\Osg\TextureMode.cs" />
+    <Compile Include="Controls\Osg\TextureWrapMode.cs" />
+    <Compile Include="Forms\SimpleOSGControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Models\AbsDrawing3DModel.cs" />
+    <Compile Include="Models\IDrawing2DModel.cs" />
+    <Compile Include="Models\IDrawing3DModel.cs" />
+    <Compile Include="Models\IRenderContext2D.cs" />
+    <Compile Include="Models\IRenderContext3D.cs" />
+    <Compile Include="Models\OsgDrawing3DModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\IDrawing2DView.cs" />
+    <Compile Include="Views\IDrawing3DView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Essence.Geometry\Essence.Geometry.csproj">
+      <Project>{435dddb4-5427-4d0f-98c9-121a2b8192b1}</Project>
+      <Name>Essence.Geometry</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Essence.Util\Essence.Util.csproj">
+      <Project>{8ef57341-1971-4217-baf9-2aa8993e5285}</Project>
+      <Name>Essence.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Essence.View\Essence.View.csproj">
+      <Project>{0510d637-47a5-45fd-9494-6bc278439a15}</Project>
+      <Name>Essence.View</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\gdal.3.6.1.100\build\gdal.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\gdal.3.6.1.100\build\gdal.props'))" />
+    <Error Condition="!Exists('..\..\packages\gdal.3.6.1.100\build\gdal.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\gdal.3.6.1.100\build\gdal.targets'))" />
+    <Error Condition="!Exists('..\..\packages\osg.3.4.0.100\build\osg.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osg.3.4.0.100\build\osg.props'))" />
+    <Error Condition="!Exists('..\..\packages\osg.3.4.0.100\build\osg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osg.3.4.0.100\build\osg.targets'))" />
+    <Error Condition="!Exists('..\..\packages\osgbullet.2016.08.06.100\build\osgbullet.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgbullet.2016.08.06.100\build\osgbullet.props'))" />
+    <Error Condition="!Exists('..\..\packages\osgbullet.2016.08.06.100\build\osgbullet.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgbullet.2016.08.06.100\build\osgbullet.targets'))" />
+    <Error Condition="!Exists('..\..\packages\osgearth.2.9-alpha100\build\osgearth.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgearth.2.9-alpha100\build\osgearth.props'))" />
+    <Error Condition="!Exists('..\..\packages\osgearth.2.9-alpha100\build\osgearth.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgearth.2.9-alpha100\build\osgearth.targets'))" />
+    <Error Condition="!Exists('..\..\packages\osgworks.2016.06.13.100\build\osgworks.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgworks.2016.06.13.100\build\osgworks.props'))" />
+    <Error Condition="!Exists('..\..\packages\osgworks.2016.06.13.100\build\osgworks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgworks.2016.06.13.100\build\osgworks.targets'))" />
+    <Error Condition="!Exists('..\..\packages\osgnet.3.4.0-alpha100\build\osgnet.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgnet.3.4.0-alpha100\build\osgnet.props'))" />
+    <Error Condition="!Exists('..\..\packages\osgnet.3.4.0-alpha100\build\osgnet.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgnet.3.4.0-alpha100\build\osgnet.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\gdal.3.6.1.100\build\gdal.targets" Condition="Exists('..\..\packages\gdal.3.6.1.100\build\gdal.targets')" />
+  <Import Project="..\..\packages\osg.3.4.0.100\build\osg.targets" Condition="Exists('..\..\packages\osg.3.4.0.100\build\osg.targets')" />
+  <Import Project="..\..\packages\osgbullet.2016.08.06.100\build\osgbullet.targets" Condition="Exists('..\..\packages\osgbullet.2016.08.06.100\build\osgbullet.targets')" />
+  <Import Project="..\..\packages\osgearth.2.9-alpha100\build\osgearth.targets" Condition="Exists('..\..\packages\osgearth.2.9-alpha100\build\osgearth.targets')" />
+  <Import Project="..\..\packages\osgworks.2016.06.13.100\build\osgworks.targets" Condition="Exists('..\..\packages\osgworks.2016.06.13.100\build\osgworks.targets')" />
+  <Import Project="..\..\packages\osgnet.3.4.0-alpha100\build\osgnet.targets" Condition="Exists('..\..\packages\osgnet.3.4.0-alpha100\build\osgnet.targets')" />
+</Project>

@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using Essence.Util.Math;
 using Essence.Util.Math.Double;
-using REAL = System.Double;
+using SysMath = System.Math;
 
 namespace Essence.Geometry.Core.Double
 {
@@ -81,9 +81,11 @@ namespace Essence.Geometry.Core.Double
 
         public Point3d(IPoint3D p)
         {
-            this.X = p.X.ToDouble(null);
-            this.Y = p.Y.ToDouble(null);
-            this.Z = p.Z.ToDouble(null);
+            CoordinateSetter3d setter = new CoordinateSetter3d();
+            p.GetCoordinates(setter);
+            this.X = setter.X;
+            this.Y = setter.Y;
+            this.Z = setter.Z;
         }
 
         public Point3d(IPoint p)
@@ -91,19 +93,21 @@ namespace Essence.Geometry.Core.Double
             IPoint3D p3 = p as IPoint3D;
             if (p3 != null)
             {
-                this.X = p3.X.ToDouble(null);
-                this.Y = p3.Y.ToDouble(null);
-                this.Z = p3.Z.ToDouble(null);
+                CoordinateSetter3d setter = new CoordinateSetter3d();
+                p3.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
+                this.Z = setter.Z;
             }
             else
             {
                 if (p.Dim < 3)
-                {
                     throw new Exception("Punto no valido");
-                }
-                this.X = p[0].ToDouble(null);
-                this.Y = p[1].ToDouble(null);
-                this.Z = p[2].ToDouble(null);
+                CoordinateSetter3d setter = new CoordinateSetter3d();
+                p.GetCoordinates(setter);
+                this.X = setter.X;
+                this.Y = setter.Y;
+                this.Z = setter.Z;
             }
         }
 
@@ -309,9 +313,7 @@ namespace Essence.Geometry.Core.Double
         {
             Point3d result;
             if (!TryParse(s, out result, provider, vstyle, style))
-            {
                 throw new Exception();
-            }
             return result;
         }
 
@@ -369,9 +371,7 @@ namespace Essence.Geometry.Core.Double
         public override bool Equals(object obj)
         {
             if (!(obj is Point3d))
-            {
                 return false;
-            }
 
             return this.Equals((Point3d)obj);
         }
@@ -422,9 +422,7 @@ namespace Essence.Geometry.Core.Double
             {
                 ICustomFormatter formatter = provider.GetFormat(this.GetType()) as ICustomFormatter;
                 if (formatter != null)
-                {
                     return formatter.Format(format, this, provider);
-                }
             }
 
             return VectorUtils.ToString(provider, format, (double[])this);
@@ -455,10 +453,9 @@ namespace Essence.Geometry.Core.Double
         //[Pure]
         //int Dim { get; }
 
-        [Pure]
-        IConvertible IPoint.this[int i]
+        void IPoint.GetCoordinates(ICoordinateSetter setter)
         {
-            get { return this[i]; }
+            setter.SetCoords(this.X, this.Y, this.Z);
         }
 
         [Pure]
@@ -501,22 +498,9 @@ namespace Essence.Geometry.Core.Double
 
         #region IPoint3D
 
-        [Pure]
-        IConvertible IPoint3D.X
+        void IPoint3D.GetCoordinates(ICoordinateSetter3D setter)
         {
-            get { return this.X; }
-        }
-
-        [Pure]
-        IConvertible IPoint3D.Y
-        {
-            get { return this.Y; }
-        }
-
-        [Pure]
-        IConvertible IPoint3D.Z
-        {
-            get { return this.Z; }
+            setter.SetCoords(this.X, this.Y, this.Z);
         }
 
         #endregion
@@ -576,14 +560,10 @@ namespace Essence.Geometry.Core.Double
                 int i;
                 i = v1.X.CompareTo(v2.X);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.Y.CompareTo(v2.Y);
                 if (i != 0)
-                {
                     return i;
-                }
                 i = v1.Z.CompareTo(v2.Z);
                 return i;
             }

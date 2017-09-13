@@ -1,8 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\osgearth.2.6.5\build\osgearth.props" Condition="Exists('..\..\packages\osgearth.2.6.5\build\osgearth.props')" />
-  <Import Project="..\..\packages\osgnet.3.2.1.29\build\osgnet.props" Condition="Exists('..\..\packages\osgnet.3.2.1.29\build\osgnet.props')" />
-  <Import Project="..\..\packages\osg.3.4.0.12\build\osg.props" Condition="Exists('..\..\packages\osg.3.4.0.12\build\osg.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -21,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -37,9 +34,6 @@
   <ItemGroup>
     <Reference Include="Autofac, Version=4.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autofac.4.4.0\lib\net45\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="osgnet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\osgnet.3.2.1.29\lib\net40-client\osgnet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -65,23 +59,11 @@
     <Compile Include="Attributes\ViewAttribute.cs" />
     <Compile Include="BootStrap.cs" />
     <Compile Include="Config\AutofacConfig.cs" />
-    <Compile Include="Controls\Drawing2DViewControl.cs" />
-    <Compile Include="Controls\Forms\Drawing3DOSGControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Controls\Menus\TSIRenderComposedComponentUI.cs" />
     <Compile Include="Controls\Menus\TSIRenderLabel.cs" />
     <Compile Include="Controls\Menus\TSIRenderNull.cs" />
     <Compile Include="Controls\Menus\TSIRenderProperty.cs" />
     <Compile Include="Controls\Menus\TSIRenderSeparator.cs" />
-    <Compile Include="Controls\Osg\AbsByteImage.cs" />
-    <Compile Include="Controls\Osg\ByteBitmap.cs" />
-    <Compile Include="Controls\Osg\ByteImage.cs" />
-    <Compile Include="Controls\Osg\OSGUtils.cs" />
-    <Compile Include="Controls\Osg\TextureMagFilter.cs" />
-    <Compile Include="Controls\Osg\TextureMinFilter.cs" />
-    <Compile Include="Controls\Osg\TextureMode.cs" />
-    <Compile Include="Controls\Osg\TextureWrapMode.cs" />
     <Compile Include="Forms\ControlUtils.cs" />
     <Compile Include="Forms\LabelValueControl.cs">
       <SubType>Component</SubType>
@@ -89,11 +71,7 @@
     <Compile Include="Forms\LabelValueToolStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\SimpleOSGControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Models\AbsComponentUI.cs" />
-    <Compile Include="Models\AbsDrawing3DModel.cs" />
     <Compile Include="Models\ActionUtils.cs" />
     <Compile Include="Controls\Forms\ControlExchange.cs" />
     <Compile Include="Controls\ControlUtils.cs" />
@@ -123,16 +101,11 @@
     <Compile Include="Models\IComposedAction.cs" />
     <Compile Include="Models\IComponentUI.cs" />
     <Compile Include="Models\IComposedComponentUI.cs" />
-    <Compile Include="Models\IDrawing2DModel.cs" />
-    <Compile Include="Models\IDrawing3DModel.cs" />
     <Compile Include="Models\IProperty.cs" />
     <Compile Include="Models\IRefFormObject.cs" />
     <Compile Include="Models\IRefList.cs" />
     <Compile Include="Controls\MenuViewControl.cs" />
-    <Compile Include="Models\IRenderContext2D.cs" />
-    <Compile Include="Models\IRenderContext3D.cs" />
     <Compile Include="Models\Label.cs" />
-    <Compile Include="Models\OsgDrawing3DModel.cs" />
     <Compile Include="Models\Properties\FormatProperties.cs" />
     <Compile Include="Models\Properties\IViewPropertiesProvider.cs" />
     <Compile Include="Models\Properties\PropertyProperties.cs" />
@@ -151,8 +124,6 @@
       <DependentUpon>MainResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Views\IDialogView.cs" />
-    <Compile Include="Views\IDrawing3DView.cs" />
-    <Compile Include="Views\IDrawing2DView.cs" />
     <Compile Include="Views\IListView.cs" />
     <Compile Include="Views\IFormView.cs" />
     <Compile Include="Views\IMenuView.cs" />
@@ -190,20 +161,6 @@
     <None Include="Resources\Icons\icon_not_found.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\osg.3.4.0.12\build\osg.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osg.3.4.0.12\build\osg.props'))" />
-    <Error Condition="!Exists('..\..\packages\osg.3.4.0.12\build\osg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osg.3.4.0.12\build\osg.targets'))" />
-    <Error Condition="!Exists('..\..\packages\osgnet.3.2.1.29\build\osgnet.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgnet.3.2.1.29\build\osgnet.props'))" />
-    <Error Condition="!Exists('..\..\packages\osgnet.3.2.1.29\build\osgnet.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgnet.3.2.1.29\build\osgnet.targets'))" />
-    <Error Condition="!Exists('..\..\packages\osgearth.2.6.5\build\osgearth.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgearth.2.6.5\build\osgearth.props'))" />
-    <Error Condition="!Exists('..\..\packages\osgearth.2.6.5\build\osgearth.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\osgearth.2.6.5\build\osgearth.targets'))" />
-  </Target>
-  <Import Project="..\..\packages\osg.3.4.0.12\build\osg.targets" Condition="Exists('..\..\packages\osg.3.4.0.12\build\osg.targets')" />
-  <Import Project="..\..\packages\osgnet.3.2.1.29\build\osgnet.targets" Condition="Exists('..\..\packages\osgnet.3.2.1.29\build\osgnet.targets')" />
-  <Import Project="..\..\packages\osgearth.2.6.5\build\osgearth.targets" Condition="Exists('..\..\packages\osgearth.2.6.5\build\osgearth.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

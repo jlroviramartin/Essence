@@ -29,6 +29,8 @@ namespace Essence.Geometry.Core
 
         public abstract bool IsIdentity { get; }
 
+        public abstract void GetMatrix(Matrix3x3d matrix);
+
         public static Transform2D Identity()
         {
             return new Transform2DMatrix(
