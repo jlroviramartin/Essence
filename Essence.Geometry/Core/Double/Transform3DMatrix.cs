@@ -16,14 +16,12 @@ using System;
 
 namespace Essence.Geometry.Core.Double
 {
-    /// <summary>
-    ///     Trasnsformacion 2D a partir de una matriz.
-    /// </summary>
+    /// <summary>3D transform using a matrix.</summary>
     public sealed class Transform3DMatrix : Transform3D
     {
         public Transform3DMatrix(Matrix4x4d matrix, bool share = true)
         {
-            this.matrix = (share ? matrix : matrix.Clone());
+            this.Matrix = (share ? matrix : matrix.Clone());
         }
 
         public Transform3DMatrix(double m00, double m01, double m02, double tx,
@@ -41,7 +39,7 @@ namespace Essence.Geometry.Core.Double
                                  double m20, double m21, double m22, double tz,
                                  double m30, double m31, double m32, double m33)
         {
-            this.matrix = new Matrix4x4d(m00, m01, m02, tx,
+            this.Matrix = new Matrix4x4d(m00, m01, m02, tx,
                                          m10, m11, m12, ty,
                                          m20, m21, m22, tz,
                                          m30, m31, m32, m33);
@@ -49,12 +47,12 @@ namespace Essence.Geometry.Core.Double
 
         public override IVector3D Transform(IVector3D v)
         {
-            return this.matrix.Mul(v.ToVector3d());
+            return this.Matrix.Mul(v.ToVector3d());
         }
 
         public override IPoint3D Transform(IPoint3D p)
         {
-            return this.matrix.Mul(p.ToPoint3d());
+            return this.Matrix.Mul(p.ToPoint3d());
         }
 
         public override ITransform3D Concat(ITransform3D transform)
@@ -70,8 +68,8 @@ namespace Essence.Geometry.Core.Double
                 throw new NotImplementedException();
             }
 
-            Matrix4x4d result = this.matrix.Clone();
-            result.Mul(tmatrix.matrix);
+            Matrix4x4d result = this.Matrix.Clone();
+            result.Mul(tmatrix.Matrix);
             return new Transform3DMatrix(result, true);
         }
 
@@ -81,7 +79,7 @@ namespace Essence.Geometry.Core.Double
             {
                 if (this.inv == null)
                 {
-                    Matrix4x4d aux = this.matrix.Clone();
+                    Matrix4x4d aux = this.Matrix.Clone();
                     aux.Inv();
                     this.inv = new Transform3DMatrix(aux);
                     this.inv.inv = this;
@@ -92,7 +90,7 @@ namespace Essence.Geometry.Core.Double
 
         public override bool IsIdentity
         {
-            get { return this.matrix.IsIdentity; }
+            get { return this.Matrix.IsIdentity; }
         }
 
         public override void GetMatrix(Matrix4x4d matrix)
@@ -100,14 +98,10 @@ namespace Essence.Geometry.Core.Double
             matrix.Set(this.Matrix);
         }
 
-        public Matrix4x4d Matrix
-        {
-            get { return this.matrix; }
-        }
+        public Matrix4x4d Matrix { get; }
 
         #region private
 
-        private readonly Matrix4x4d matrix;
         private Transform3DMatrix inv;
 
         #endregion

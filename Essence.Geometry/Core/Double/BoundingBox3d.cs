@@ -32,6 +32,7 @@ namespace Essence.Geometry.Core.Double
         public const string _ZMIN = "ZMin";
         public const string _ZMAX = "YMax";
 
+        /// <summary>This method builds a bounding box using the <code>(x1, y1, z1)</code> and <code>(x2, y2, z2)</code> points.</summary>
         public static BoundingBox3d FromCoords(double x1, double y1, double z1, double x2, double y2, double z2)
         {
             if (x1 > x2)
@@ -50,32 +51,25 @@ namespace Essence.Geometry.Core.Double
             return new BoundingBox3d(x1, x2, y1, y2, z1, z2);
         }
 
+        /// <summary>This method builds a bounding box using the <code>(x, y, z)</code> point and <code>(dx, dy, dz)</code> extent.</summary>
         public static BoundingBox3d FromExtents(double x, double y, double z, double dx, double dy, double dz)
         {
             return FromCoords(x, y, z, x + dx, y + dy, z + dz);
         }
 
-        /// <summary>
-        ///     Rectangulo vacio.
-        /// </summary>
+        /// <summary>Empty rectangle.</summary>
         public static readonly BoundingBox3d Empty = new BoundingBox3d(0, -1, 0, -1, 0, -1);
 
-        /// <summary>
-        ///     Rectangulo infinito.
-        /// </summary>
+        /// <summary>Infinite rectangle.</summary>
         public static readonly BoundingBox3d Infinity = new BoundingBox3d(double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity);
 
-        /// <summary>
-        ///     Une todos los rectangulos.
-        /// </summary>
+        /// <summary>This method gets the union of <code>bboxes</code>.</summary>
         public static BoundingBox3d Union(params BoundingBox3d[] bboxes)
         {
             return Union((IEnumerable<BoundingBox3d>)bboxes);
         }
 
-        /// <summary>
-        ///     Une todos los rectangulos.
-        /// </summary>
+        /// <summary>This method gets the union of <code>bboxes</code>.</summary>
         public static BoundingBox3d Union(IEnumerable<BoundingBox3d> bboxes)
         {
             using (IEnumerator<BoundingBox3d> enumer = bboxes.GetEnumerator())
@@ -93,17 +87,13 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        /// <summary>
-        ///     Une todos los puntos.
-        /// </summary>
+        /// <summary>This method gets the union of <code>points</code>.</summary>
         public static BoundingBox3d Union(params Point3d[] points)
         {
             return Union((IEnumerable<Point3d>)points);
         }
 
-        /// <summary>
-        ///     Une todos los puntos.
-        /// </summary>
+        /// <summary>This method gets the union of <code>points</code>.</summary>
         public static BoundingBox3d Union(IEnumerable<Point3d> points)
         {
             using (IEnumerator<Point3d> enumer = points.GetEnumerator())
@@ -137,9 +127,7 @@ namespace Essence.Geometry.Core.Double
         {
         }
 
-        /// <summary>
-        ///     Indica si es valido.
-        /// </summary>
+        /// <summary>This method tests is this bounding box is valid.</summary>
         public bool IsValid
         {
             get
@@ -150,9 +138,7 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        /// <summary>
-        ///     Indica si es vacio.
-        /// </summary>
+        /// <summary>This method tests is this bounding box is empty.</summary>
         public bool IsEmpty
         {
             get
@@ -163,9 +149,7 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        /// <summary>
-        ///     Indica si es infinito.
-        /// </summary>
+        /// <summary>This method tests is this bounding box is infinity.</summary>
         public bool IsInfinity
         {
             get
@@ -174,33 +158,6 @@ namespace Essence.Geometry.Core.Double
                        || RangeUtils.IsInfinity(this.YMin, this.YMax)
                        || RangeUtils.IsInfinity(this.ZMin, this.ZMax);
             }
-        }
-
-        /// <summary>
-        /// Devuelve todos los vertices ordenados por coordenada:
-        /// [Z, Y, X] : [min, min, min], [min, min, max], [min, max, min], [min, max, max],
-        ///             [max, min, min], [max, min, max], [max, max, min], [max, max, max]
-        /// </summary>
-        public Point3d[] GetVertices()
-        {
-            if (this.IsEmpty)
-            {
-                return new Point3d[0];
-            }
-            return new[]
-            {
-                new Point3d(this.XMin, this.YMin, this.ZMin),
-                new Point3d(this.XMax, this.YMin, this.ZMin),
-
-                new Point3d(this.XMin, this.YMax, this.ZMin),
-                new Point3d(this.XMax, this.YMax, this.ZMin),
-
-                new Point3d(this.XMin, this.YMin, this.ZMax),
-                new Point3d(this.XMax, this.YMin, this.ZMax),
-
-                new Point3d(this.XMin, this.YMax, this.ZMax),
-                new Point3d(this.XMax, this.YMax, this.ZMax)
-            };
         }
 
         public Point3d Origin
@@ -229,8 +186,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si el rectangulo toca al rectangulo indicado por algun lado desde el interior.
-        ///     <c><![CDATA[
+        /// This method tests if the edges of this bounding box touches the edges of the <code>rec</code> bounding box.
+        /// <c><![CDATA[
         ///  +-+----+---+
         ///  | |    |   |
         ///  | +----+   |
@@ -238,9 +195,9 @@ namespace Essence.Geometry.Core.Double
         ///  +----------+
         /// ]]></c>
         /// </summary>
-        /// <param name="rec">Rectangulo.</param>
+        /// <param name="rec">Bounding box.</param>
         /// <param name="epsilon">Epsilon error.</param>
-        /// <returns>Indica si lo toca.</returns>
+        /// <returns>true if both bounding box touch.</returns>
         public bool Touch(BoundingBox3d rec, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.Touch(this.XMin, this.XMax, rec.XMin, rec.XMax, epsilon)
@@ -248,12 +205,10 @@ namespace Essence.Geometry.Core.Double
                    || RangeUtils.Touch(this.ZMin, this.ZMax, rec.ZMin, rec.ZMax, epsilon);
         }
 
-        /// <summary>
-        ///     Indica si el rectangulo toca al punto indicado por algun lado.
-        /// </summary>
-        /// <param name="p">Punto.</param>
+        /// <summary>This method tests if this bounding box touches the <code>p</code> point.</summary>
+        /// <param name="p">Point.</param>
         /// <param name="epsilon">Epsilon error.</param>
-        /// <returns>Indica si lo toca.</returns>
+        /// <returns>true if the bounding box touch and the point touch.</returns>
         public bool Touch(Point3d p, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.TouchPoint(this.XMin, this.XMax, p.X, epsilon)
@@ -433,6 +388,32 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
+        /// <summary>This method gets the vertices sorted by coordinates:
+        /// [Z, Y, X] : [min, min, min], [min, min, max], [min, max, min], [min, max, max],
+        ///             [max, min, min], [max, min, max], [max, max, min], [max, max, max]
+        /// </summary>
+        public Point3d[] GetVertices()
+        {
+            if (this.IsEmpty)
+            {
+                return new Point3d[0];
+            }
+            return new[]
+            {
+                new Point3d(this.XMin, this.YMin, this.ZMin),
+                new Point3d(this.XMax, this.YMin, this.ZMin),
+
+                new Point3d(this.XMin, this.YMax, this.ZMin),
+                new Point3d(this.XMax, this.YMax, this.ZMin),
+
+                new Point3d(this.XMin, this.YMin, this.ZMax),
+                new Point3d(this.XMax, this.YMin, this.ZMax),
+
+                new Point3d(this.XMin, this.YMax, this.ZMax),
+                new Point3d(this.XMax, this.YMax, this.ZMax)
+            };
+        }
+
         public readonly double XMin;
         public readonly double XMax;
 
@@ -495,7 +476,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEpsilonEquatable<BOUNDINGBOX>
+        #region IEpsilonEquatable<BoundingBox3d>
 
         [Pure]
         public bool EpsilonEquals(BoundingBox3d other, double epsilon = MathUtils.EPSILON)
@@ -505,7 +486,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEquatable<BOUNDINGBOX>
+        #region IEquatable<BoundingBox3d>
 
         [Pure]
         public bool Equals(BoundingBox3d other)

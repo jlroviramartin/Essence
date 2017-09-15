@@ -25,7 +25,7 @@ namespace Essence.Geometry.Core.Double
     // http://content.gpwiki.org/index.php/OpenGL:Tutorials:Using_Quaternions_to_represent_rotation
     // http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToMatrix/index.htm
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public partial struct Quaternion : IFormattable, IEpsilonEquatable<Quaternion>
+    public struct Quaternion : IFormattable, IEpsilonEquatable<Quaternion>
     {
         public const string _W = "W";
         public const string _X = "X";

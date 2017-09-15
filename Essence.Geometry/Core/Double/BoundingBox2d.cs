@@ -29,6 +29,7 @@ namespace Essence.Geometry.Core.Double
         public const string _YMIN = "YMin";
         public const string _YMAX = "YMax";
 
+        /// <summary>This method builds a bounding box using the <code>(x1, y1, z1)</code> and <code>(x2, y2, z2)</code> points.</summary>
         public static BoundingBox2d FromCoords(double x1, double y1, double x2, double y2)
         {
             if (x1 > x2)
@@ -43,32 +44,25 @@ namespace Essence.Geometry.Core.Double
             return new BoundingBox2d(x1, x2, y1, y2);
         }
 
+        /// <summary>This method builds a bounding box using the <code>(x, y, z)</code> point and <code>(dx, dy, dz)</code> extent.</summary>
         public static BoundingBox2d FromExtents(double x, double y, double dx, double dy)
         {
             return FromCoords(x, y, x + dx, y + dy);
         }
 
-        /// <summary>
-        ///     Rectangulo vacio.
-        /// </summary>
+        /// <summary>Empty rectangle.</summary>
         public static readonly BoundingBox2d Empty = new BoundingBox2d(0, -1, 0, -1);
 
-        /// <summary>
-        ///     Rectangulo infinito.
-        /// </summary>
+        /// <summary>Infinite rectangle.</summary>
         public static BoundingBox2d Infinity = new BoundingBox2d(double.NegativeInfinity, double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity);
 
-        /// <summary>
-        ///     Une todos los rectangulos.
-        /// </summary>
+        /// <summary>This method gets the union of <code>bboxes</code>.</summary>
         public static BoundingBox2d Union(params BoundingBox2d[] bboxes)
         {
             return Union((IEnumerable<BoundingBox2d>)bboxes);
         }
 
-        /// <summary>
-        ///     Une todos los rectangulos.
-        /// </summary>
+        /// <summary>This method gets the union of <code>bboxes</code>.</summary>
         public static BoundingBox2d Union(IEnumerable<BoundingBox2d> bboxes)
         {
             using (IEnumerator<BoundingBox2d> enumer = bboxes.GetEnumerator())
@@ -86,17 +80,13 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        /// <summary>
-        ///     Une todos los puntos.
-        /// </summary>
+        /// <summary>This method gets the union of <code>points</code>.</summary>
         public static BoundingBox2d Union(params Point2d[] points)
         {
             return Union((IEnumerable<Point2d>)points);
         }
 
-        /// <summary>
-        ///     Une todos los puntos.
-        /// </summary>
+        /// <summary>This method gets the union of <code>points</code>.</summary>
         public static BoundingBox2d Union(IEnumerable<Point2d> points)
         {
             using (IEnumerator<Point2d> enumer = points.GetEnumerator())
@@ -128,9 +118,7 @@ namespace Essence.Geometry.Core.Double
         {
         }
 
-        /// <summary>
-        ///     Indica si es valido.
-        /// </summary>
+        /// <summary>This method tests is this bounding box is valid.</summary>
         public bool IsValid
         {
             get
@@ -140,9 +128,7 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        /// <summary>
-        ///     Indica si es vacio.
-        /// </summary>
+        /// <summary>This method tests is this bounding box is empty.</summary>
         public bool IsEmpty
         {
             get
@@ -152,9 +138,7 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        /// <summary>
-        ///     Indica si es infinito.
-        /// </summary>
+        /// <summary>This method tests is this bounding box is infinity.</summary>
         public bool IsInfinity
         {
             get
@@ -162,26 +146,6 @@ namespace Essence.Geometry.Core.Double
                 return RangeUtils.IsInfinity(this.XMin, this.XMax)
                        || RangeUtils.IsInfinity(this.YMin, this.YMax);
             }
-        }
-
-        /// <summary>
-        /// Devuelve todos los vertices ordenados por coordenada:
-        /// [Y, X] : [min, min], [min, max], [max, min], [max, max]
-        /// </summary>
-        public Point2d[] GetVertices()
-        {
-            if (this.IsEmpty)
-            {
-                return new Point2d[0];
-            }
-            return new[]
-            {
-                new Point2d(this.XMin, this.YMin),
-                new Point2d(this.XMax, this.YMin),
-
-                new Point2d(this.XMin, this.YMax),
-                new Point2d(this.XMax, this.YMax)
-            };
         }
 
         public Point2d Origin
@@ -205,8 +169,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si el rectangulo toca al rectangulo indicado por algun lado desde el interior.
-        ///     <c><![CDATA[
+        /// This method tests if the edges of this bounding box touches the edges of the <code>rec</code> bounding box.
+        /// <c><![CDATA[
         ///  +-+----+---+
         ///  | |    |   |
         ///  | +----+   |
@@ -214,21 +178,19 @@ namespace Essence.Geometry.Core.Double
         ///  +----------+
         /// ]]></c>
         /// </summary>
-        /// <param name="rec">Rectangulo.</param>
+        /// <param name="rec">Bounding box.</param>
         /// <param name="epsilon">Epsilon error.</param>
-        /// <returns>Indica si lo toca.</returns>
+        /// <returns>true if both bounding box touch.</returns>
         public bool Touch(BoundingBox2d rec, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.Touch(this.XMin, this.XMax, rec.XMin, rec.XMax, epsilon)
                    || RangeUtils.Touch(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon);
         }
 
-        /// <summary>
-        ///     Indica si el rectangulo toca al punto indicado por algun lado.
-        /// </summary>
-        /// <param name="p">Punto.</param>
+        /// <summary>This method tests if this bounding box touches the <code>p</code> point.</summary>
+        /// <param name="p">Point.</param>
         /// <param name="epsilon">Epsilon error.</param>
-        /// <returns>Indica si lo toca.</returns>
+        /// <returns>true if the bounding box touch and the point touch.</returns>
         public bool Touch(Point2d p, double epsilon = MathUtils.EPSILON)
         {
             return RangeUtils.TouchPoint(this.XMin, this.XMax, p.X, epsilon)
@@ -387,6 +349,25 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
+        /// <summary>This method gets the vertices sorted by coordinates:
+        /// [Y, X] : [min, min], [min, max], [max, min], [max, max]
+        /// </summary>
+        public Point2d[] GetVertices()
+        {
+            if (this.IsEmpty)
+            {
+                return new Point2d[0];
+            }
+            return new[]
+            {
+                new Point2d(this.XMin, this.YMin),
+                new Point2d(this.XMax, this.YMin),
+
+                new Point2d(this.XMin, this.YMax),
+                new Point2d(this.XMax, this.YMax)
+            };
+        }
+
         public readonly double XMin;
         public readonly double XMax;
 
@@ -442,7 +423,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEpsilonEquatable<BOUNDINGBOX>
+        #region IEpsilonEquatable<BoundingBox2d>
 
         [Pure]
         public bool EpsilonEquals(BoundingBox2d other, double epsilon = MathUtils.EPSILON)
@@ -452,7 +433,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEquatable<BOUNDINGBOX>
+        #region IEquatable<BoundingBox2d>
 
         [Pure]
         public bool Equals(BoundingBox2d other)
