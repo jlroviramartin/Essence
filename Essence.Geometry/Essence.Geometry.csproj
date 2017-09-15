@@ -53,19 +53,10 @@
   <ItemGroup>
     <Compile Include="Algorithms\PolylineSimplification.cs" />
     <Compile Include="ClipperLib\clipper.cs" />
-    <Compile Include="Core\Axis.cs" />
-    <Compile Include="Core\Byte\Color4b.cs" />
-    <Compile Include="Core\Byte\Color3b.cs" />
-    <Compile Include="Core\Byte\ColorSetter.cs" />
-    <Compile Include="Core\ColorUtils.cs" />
     <Compile Include="Core\Double\BoundingBox3d.cs" />
     <Compile Include="Core\Double\Quaternion.cs" />
-    <Compile Include="Core\Double\CoordinateSetter.cs" />
+    <Compile Include="Core\Double\RectangleUtils.cs" />
     <Compile Include="Core\Double\Transform3DMatrix.cs" />
-    <Compile Include="Core\Float\ColorSetter.cs" />
-    <Compile Include="Core\IColorSetter.cs" />
-    <Compile Include="Core\ICoordinateSetter.cs" />
-    <Compile Include="Core\Int\CoordinateSetter.cs" />
     <Compile Include="Core\ITransform3D.cs" />
     <Compile Include="Core\Light.cs" />
     <Compile Include="Core\Transform3DIdentity.cs" />
@@ -91,6 +82,8 @@
     <Compile Include="Curves\PolynomialCurve1.cs" />
     <Compile Include="Curves\SimpleCurve1.cs" />
     <Compile Include="Curves\SimpleCurve2.cs" />
+    <Compile Include="Geom2D\PointInPoly.cs" />
+    <Compile Include="Geom2D\PolygonUtils.cs" />
     <Compile Include="Graphics\IGraphicsContext2D.cs" />
     <Compile Include="Graphics\IPathIterator2D.cs" />
     <Compile Include="Graphics\IShape2D.cs" />
@@ -102,53 +95,19 @@
     <Compile Include="Core\Double\BoundingBox2dUtils.cs" />
     <Compile Include="Maths\Double\ClothoUtils.cs" />
     <Compile Include="Maths\Double\Derivative.cs" />
-    <Compile Include="Core\Double\Matrix2x2d.cs" />
-    <Compile Include="Core\Double\Matrix2x2dUtils.cs" />
-    <Compile Include="Core\Double\Matrix2x3d.cs" />
-    <Compile Include="Core\Double\Matrix3x3d.cs" />
-    <Compile Include="Core\Double\Matrix3x3dUtils.cs" />
-    <Compile Include="Core\Double\Matrix4x4d.cs" />
-    <Compile Include="Core\Double\Matriz4x4dUtils.cs" />
-    <Compile Include="Core\Double\Point3d.cs" />
-    <Compile Include="Core\Double\Point2d.cs" />
-    <Compile Include="Core\Double\Point4d.cs" />
     <Compile Include="Core\Double\Rectangle2d.cs" />
-    <Compile Include="Core\Float\Color4f.cs" />
-    <Compile Include="Core\Float\Color3f.cs" />
-    <Compile Include="Core\IColor.cs" />
-    <Compile Include="Core\IColor3.cs" />
-    <Compile Include="Core\IColor4.cs" />
-    <Compile Include="Core\IColorConvertible.cs" />
     <Compile Include="Core\Int\BoundingBox2i.cs" />
     <Compile Include="Core\Int\BoundingBox2iUtils.cs" />
-    <Compile Include="Core\PointUtils.cs" />
     <Compile Include="Maths\Double\Transform1.cs" />
     <Compile Include="Core\Transform2D.cs" />
     <Compile Include="Core\Transform2DIdentity.cs" />
     <Compile Include="Core\Double\Transform2DMatrix.cs" />
-    <Compile Include="Core\Double\Vector3d.cs" />
-    <Compile Include="Core\Double\Vector2d.cs" />
-    <Compile Include="Core\Double\Vector4d.cs" />
-    <Compile Include="Core\Int\Point2i.cs" />
-    <Compile Include="Core\Int\Vector2i.cs" />
     <Compile Include="Core\TransformUtils.cs" />
-    <Compile Include="Core\VectorFormatInfo.cs" />
-    <Compile Include="Core\VectorStyles.cs" />
-    <Compile Include="Core\VectorUtils.cs" />
-    <Compile Include="Core\IPoint.cs" />
-    <Compile Include="Core\IPoint2D.cs" />
-    <Compile Include="Core\IPoint3D.cs" />
-    <Compile Include="Core\IPoint4D.cs" />
     <Compile Include="Core\ITransform2D.cs" />
-    <Compile Include="Core\IVector.cs" />
-    <Compile Include="Core\IVector2D.cs" />
-    <Compile Include="Core\IVector3D.cs" />
-    <Compile Include="Core\IVector4D.cs" />
     <Compile Include="Distances\DistPointCircle2.cs" />
     <Compile Include="Distances\DistPointCircleArc2.cs" />
     <Compile Include="Geom2D\Geom2DUtils.cs" />
     <Compile Include="Geom2D\Line2d.cs" />
-    <Compile Include="Geom2D\LineSide.cs" />
     <Compile Include="Geom2D\Orientation.cs" />
     <Compile Include="Geom2D\Segment2d.cs" />
     <Compile Include="Geom2D\Triangle2d.cs" />
@@ -169,9 +128,15 @@
     <Compile Include="WavefrontFormatUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Core\Byte\" />
+    <Folder Include="Core\Float\" />
     <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Essence.Geometry.Core\Essence.Geometry.Core.csproj">
+      <Project>{678c7b81-7bf4-4053-995b-8320b810efaa}</Project>
+      <Name>Essence.Geometry.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Essence.Util\Essence.Util.csproj">
       <Project>{8ef57341-1971-4217-baf9-2aa8993e5285}</Project>
       <Name>Essence.Util</Name>

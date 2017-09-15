@@ -1,79 +1,48 @@
-﻿namespace Essence.Geometry.Core
+﻿// Copyright 2017 Jose Luis Rovira Martin
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+namespace Essence.Geometry.Core
 {
     public interface ICoordinateSetter
     {
-        /// <summary>
-        /// Sets the coordinates as double values.
-        /// </summary>
         void SetCoords(params double[] coords);
 
-        /// <summary>
-        /// Sets the coordinates as float values.
-        /// </summary>
         void SetCoords(params float[] coords);
 
-        /// <summary>
-        /// Sets the coordinates as int values.
-        /// </summary>
         void SetCoords(params int[] coords);
-    }
-
-    public interface ICoordinateSetter1D : ICoordinateSetter
-    {
-        /// <summary>
-        /// Sets the coordinates as double values.
-        /// </summary>
-        void SetCoords(double x);
-
-        /// <summary>
-        /// Sets the coordinates as float values.
-        /// </summary>
-        void SetCoords(float x);
     }
 
     public interface ICoordinateSetter2D : ICoordinateSetter
     {
-        /// <summary>
-        /// Sets the coordinates as double values.
-        /// </summary>
         void SetCoords(double x, double y);
 
-        /// <summary>
-        /// Sets the coordinates as float values.
-        /// </summary>
         void SetCoords(float x, float y);
+
+        void SetCoords(int x, int y);
     }
 
     public interface ICoordinateSetter3D : ICoordinateSetter
     {
-        /// <summary>
-        /// Sets the coordinates as double values.
-        /// </summary>
         void SetCoords(double x, double y, double z);
 
-
-        /// <summary>
-        /// Sets the coordinates as float values.
-        /// </summary>
         void SetCoords(float x, float y, float z);
     }
 
     public interface ICoordinateSetter4D : ICoordinateSetter
     {
-        /// <summary>
-        /// Sets the coordinates as double values.
-        /// </summary>
         void SetCoords(double x, double y, double z, double w);
 
-
-        /// <summary>
-        /// Sets the coordinates as float values.
-        /// </summary>
         void SetCoords(float x, float y, float z, float w);
-
-        /// <summary>
-        /// Sets the coordinates as int values.
-        /// </summary>
-        void SetCoords(int x, int y, int z, int w);
     }
 }

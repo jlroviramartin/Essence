@@ -1,4 +1,4 @@
-﻿// Copyright 2017 Jose Luis Rovira Martin
+// Copyright 2017 Jose Luis Rovira Martin
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace Essence.Geometry.Core
 {
-    public interface IColor4 : IColor
+    [Flags]
+    public enum Axis
     {
-        /// <summary>
-        /// This method gets the color.
-        /// </summary>
-        /// <param name="setter">Setter.</param>
-        void GetColor(IColorSetter4 setter);
+        None = 0,
+        X = 1,
+        Y = 2,
+        Z = 4,
+        XY = X | Y,
+        YZ = Y | Z,
+        XZ = X | Z,
+        XYZ = X | Y | Z,
     }
 }

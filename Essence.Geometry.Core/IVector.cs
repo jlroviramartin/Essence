@@ -13,9 +13,7 @@
 // limitations under the License.
 
 using Essence.Util.Math;
-using System;
 using System.Diagnostics.Contracts;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Core
 {
@@ -24,7 +22,11 @@ namespace Essence.Geometry.Core
         [Pure]
         int Dim { get; }
 
-        void GetCoordinates(ICoordinateSetter result);
+        /// <summary>
+        /// This method gets the coordinates.
+        /// </summary>
+        /// <param name="setter">Setter.</param>
+        void GetCoordinates(ICoordinateSetter setter);
 
         /// <summary>
         ///     Vector unitario: this / Length.
@@ -75,7 +77,7 @@ namespace Essence.Geometry.Core
         IVector Neg();
 
         /// <summary>
-        ///     Operacion valor absoluto.
+        ///     Operacion valor absoluto: Absoluto( vector ).
         /// </summary>
         [Pure]
         IVector Abs();

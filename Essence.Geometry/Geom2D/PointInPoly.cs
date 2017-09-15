@@ -12,14 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Essence.Geometry.Core
+namespace Essence.Geometry.Geom2D
 {
-    public interface IColor4 : IColor
+    public enum PointInPoly
     {
         /// <summary>
-        /// This method gets the color.
+        /// Inside the polygon ( + )<code><![CDATA[> 0]]></code>
         /// </summary>
-        /// <param name="setter">Setter.</param>
-        void GetColor(IColorSetter4 setter);
+        Inside = 1,
+
+        /// <summary>
+        /// Outside the polygon ( - )<code><![CDATA[< 0]]></code>
+        /// </summary>
+        Outside = -1,
+
+        /// <summary>
+        /// On the polygon ( 0 )<code><![CDATA[== 0]]></code>
+        /// </summary>
+        On = 0
     }
 }

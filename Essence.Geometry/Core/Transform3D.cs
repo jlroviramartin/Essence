@@ -47,7 +47,7 @@ namespace Essence.Geometry.Core
 
         public static Transform3D Translate(double dx, double dy, double dz)
         {
-            return new Transform3DMatrix(Matriz4x4dUtils.Translate(dx, dy, dz));
+            return new Transform3DMatrix(Matrix4x4dUtils.Translate(dx, dy, dz));
         }
 
         public static Transform3D Translate(double px, double py, double pz, double px2, double py2, double pz2)
@@ -57,12 +57,12 @@ namespace Essence.Geometry.Core
 
         public static Transform3D Scale(double ex, double ey, double ez)
         {
-            return new Transform3DMatrix(Matriz4x4dUtils.Scale(ex, ey, ez));
+            return new Transform3DMatrix(Matrix4x4dUtils.Scale(ex, ey, ez));
         }
 
         public static Transform3D Scale(double px, double py, double pz, double ex, double ey, double ez)
         {
-            return new Transform3DMatrix(Matriz4x4dUtils.Scale(px, py, pz, ex, ey, ez));
+            return new Transform3DMatrix(Matrix4x4dUtils.Scale(px, py, pz, ex, ey, ez));
         }
     }
 }

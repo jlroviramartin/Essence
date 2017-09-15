@@ -40,11 +40,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Axis.cs" />
+    <Compile Include="Byte\Color3b.cs" />
+    <Compile Include="Byte\Color4b.cs" />
+    <Compile Include="Byte\ColorSetter.cs" />
+    <Compile Include="ColorUtils.cs" />
+    <Compile Include="Double\CoordinateSetter.cs" />
+    <Compile Include="Double\Matrix2x2d.cs" />
+    <Compile Include="Double\Matrix2x2dUtils.cs" />
+    <Compile Include="Double\Matrix2x3d.cs" />
+    <Compile Include="Double\Matrix3x3d.cs" />
+    <Compile Include="Double\Matrix3x3dUtils.cs" />
+    <Compile Include="Double\Matrix4x4d.cs" />
+    <Compile Include="Double\Matrix4x4dUtils.cs" />
+    <Compile Include="Double\Point2d.cs" />
+    <Compile Include="Double\Point3d.cs" />
+    <Compile Include="Double\Point4d.cs" />
+    <Compile Include="Double\Vector2d.cs" />
+    <Compile Include="Double\Vector3d.cs" />
+    <Compile Include="Double\Vector4d.cs" />
+    <Compile Include="Float\Color3f.cs" />
+    <Compile Include="Float\Color4f.cs" />
+    <Compile Include="Float\ColorSetter.cs" />
     <Compile Include="IColor.cs" />
     <Compile Include="IColor3.cs" />
     <Compile Include="IColor4.cs" />
     <Compile Include="IColorSetter.cs" />
     <Compile Include="ICoordinateSetter.cs" />
+    <Compile Include="Int\CoordinateSetter.cs" />
+    <Compile Include="Int\Point2i.cs" />
+    <Compile Include="Int\Vector2i.cs" />
     <Compile Include="IPoint.cs" />
     <Compile Include="IPoint2D.cs" />
     <Compile Include="IPoint3D.cs" />
@@ -53,7 +78,12 @@
     <Compile Include="IVector2D.cs" />
     <Compile Include="IVector3D.cs" />
     <Compile Include="IVector4D.cs" />
+    <Compile Include="LineSide.cs" />
+    <Compile Include="PointUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VectorFormatInfo.cs" />
+    <Compile Include="VectorStyles.cs" />
+    <Compile Include="VectorUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Essence.Util\Essence.Util.csproj">

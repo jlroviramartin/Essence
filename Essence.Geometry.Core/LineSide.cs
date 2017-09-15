@@ -14,12 +14,10 @@
 
 namespace Essence.Geometry.Core
 {
-    public interface IColor4 : IColor
+    public enum LineSide
     {
-        /// <summary>
-        /// This method gets the color.
-        /// </summary>
-        /// <param name="setter">Setter.</param>
-        void GetColor(IColorSetter4 setter);
+        Left = +1,
+        Middle = 0,
+        Right = -1
     }
 }

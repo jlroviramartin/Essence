@@ -12,14 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Runtime.InteropServices;
+
 namespace Essence.Geometry.Core
 {
-    public interface IColor4 : IColor
+    /// <summary>
+    ///     Estilos para los vectores.
+    /// </summary>
+    [Flags]
+    [Guid("CD1B7003-54E7-4D7C-BA23-A3AF96F84720")]
+    public enum VectorStyles
     {
-        /// <summary>
-        /// This method gets the color.
-        /// </summary>
-        /// <param name="setter">Setter.</param>
-        void GetColor(IColorSetter4 setter);
+        Empty = 0,
+        Sep = 1,
+        BegEnd = 2,
+        All = Sep | BegEnd
     }
 }

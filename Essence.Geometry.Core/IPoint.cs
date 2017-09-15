@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Diagnostics.Contracts;
 using Essence.Util.Math;
 
@@ -23,7 +22,11 @@ namespace Essence.Geometry.Core
         [Pure]
         int Dim { get; }
 
-        void GetCoordinates(ICoordinateSetter result);
+        /// <summary>
+        /// This method gets the coordinates.
+        /// </summary>
+        /// <param name="setter">Setter.</param>
+        void GetCoordinates(ICoordinateSetter setter);
 
         [Pure]
         IPoint Add(IVector v);
@@ -36,8 +39,10 @@ namespace Essence.Geometry.Core
 
         /// <summary>
         ///     Operacion interpolar: resultado = (1 - alpha) * this + alpha * p2 = this + (p2 - this) * alpha.
-        ///     Cuando alpha=0, resultado=this.
-        ///     Cuando alpha=1, resultado=p.
+        ///     <list type="bullet">
+        ///     <item>Cuando alpha=0, resultado=this.</item>
+        ///     <item>Cuando alpha=1, resultado=p.</item>
+        ///     </list>
         /// </summary>
         [Pure]
         IPoint Lerp(IPoint p2, double alpha);
