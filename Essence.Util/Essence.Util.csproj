@@ -44,7 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\CircularList.cs" />
     <Compile Include="Collections\DictionaryUtils.cs" />
+    <Compile Include="Collections\RangeList.cs" />
+    <Compile Include="Collections\ShiftedList.cs" />
     <Compile Include="Converters\IParseable.cs" />
     <Compile Include="Converters\ICustomParser.cs" />
     <Compile Include="EmptyServiceProvider.cs" />

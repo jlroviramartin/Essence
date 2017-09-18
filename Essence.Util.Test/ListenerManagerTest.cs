@@ -20,7 +20,7 @@ using Essence.Util.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Essence.Util.Properties;
 
-namespace Essence.Util.Test
+namespace Essence.Util
 {
     [TestClass]
     public class ListenerManagerTest

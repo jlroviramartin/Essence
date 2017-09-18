@@ -16,7 +16,7 @@ using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Essence.Util.Test
+namespace Essence.Util
 {
     [TestClass]
     public class TypeUtilsTest

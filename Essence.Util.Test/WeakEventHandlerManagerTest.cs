@@ -19,7 +19,7 @@ using Essence.Util.Events;
 using Essence.Util.WeakEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Essence.Util.Test
+namespace Essence.Util
 {
     [TestClass]
     public class WeakEventHandlerManagerTest

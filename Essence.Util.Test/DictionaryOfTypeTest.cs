@@ -18,7 +18,7 @@ using System.Linq;
 using Essence.Util.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Essence.Util.Test
+namespace Essence.Util
 {
     [TestClass]
     public class DictionaryOfTypeTest

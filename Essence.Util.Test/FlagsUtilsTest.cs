@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Essence.Util.Test
+namespace Essence.Util
 {
     [TestClass]
     public class FlagsUtilsTest

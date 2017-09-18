@@ -6,7 +6,7 @@
     <ProjectGuid>{C738C277-C0B8-48DB-81F3-2DA06A07080A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Essence.Util.Test</RootNamespace>
+    <RootNamespace>Essence.Util</RootNamespace>
     <AssemblyName>Essence.Util.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -50,6 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Collections\CircularListTest.cs" />
+    <Compile Include="Collections\ShiftedListTest.cs" />
+    <Compile Include="Collections\RangeListTest.cs" />
     <Compile Include="Converters\StringConverterTest.cs" />
     <Compile Include="DictionaryOfTypeTest.cs" />
     <Compile Include="FlagsUtilsTest.cs" />
@@ -64,6 +67,7 @@
       <Name>Essence.Util</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

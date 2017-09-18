@@ -13,10 +13,9 @@
 // limitations under the License.
 
 using System.Globalization;
-using Essence.Util.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Essence.Util.Test.Converters
+namespace Essence.Util.Converters
 {
     [TestClass]
     public class StringConverterTest

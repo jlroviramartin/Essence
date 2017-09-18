@@ -22,6 +22,42 @@ namespace Essence.Util.Collections
     /// </summary>
     public static class ListUtils
     {
+        public static void ShiftLeft<T>(IList<T> items, int n)
+        {
+            ShiftLeftHelper(items, items.Count, n);
+        }
+
+        private static void ShiftLeftHelper<T>(IList<T> items, int size, int n)
+        {
+            n = n % size;
+            if (n < 0)
+            {
+                n = size + n;
+            }
+
+            if (n == 0)
+            {
+                return;
+            }
+
+            int j = n - 1;
+            for (int i = size - 1; i >= n; i--, j--)
+            {
+                if (j < 0)
+                {
+                    j = n - 1;
+                }
+                Swap(items, i, j);
+            }
+            j++; // Rollback j
+            // Last update is j that HAS TO BE in the 0 position, but we cannot change
+            // items from n to size - 1
+            if (j > 0)
+            {
+                ShiftLeftHelper(items, n, j);
+            }
+        }
+
         #region IList<T>
 
         /// <summary>
