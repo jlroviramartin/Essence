@@ -80,9 +80,15 @@
     <Compile Include="Curves\MultiCurve2.cs" />
     <Compile Include="Curves\Polynomial.cs" />
     <Compile Include="Curves\PolynomialCurve1.cs" />
+    <Compile Include="Curves\Segment1.cs" />
+    <Compile Include="Curves\Segment2.cs" />
     <Compile Include="Curves\SimpleCurve1.cs" />
     <Compile Include="Curves\SimpleCurve2.cs" />
+    <Compile Include="Distances\DistPointSegment2.cs" />
+    <Compile Include="Distances\IDistance.cs" />
+    <Compile Include="Geom2D\IPolyEnumerator.cs" />
     <Compile Include="Geom2D\PointInPoly.cs" />
+    <Compile Include="Geom2D\Polygon2d.cs" />
     <Compile Include="Geom2D\PolygonUtils.cs" />
     <Compile Include="Graphics\IGraphicsContext2D.cs" />
     <Compile Include="Graphics\IPathIterator2D.cs" />

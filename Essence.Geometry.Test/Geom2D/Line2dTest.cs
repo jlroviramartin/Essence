@@ -14,13 +14,13 @@
 
 using System;
 using System.Diagnostics;
+using Essence.Geometry.Core;
 using Essence.Geometry.Core.Double;
-using Essence.Geometry.Geom2D;
 using Essence.Util.Math.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using REAL = System.Double;
 
-namespace Essence.Geometry.Test.Geom2D
+namespace Essence.Geometry.Geom2D
 {
     [TestClass]
     public class Line2dTest

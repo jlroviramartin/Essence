@@ -32,7 +32,7 @@ namespace Essence.Geometry.Core
 
         public static BoundingBox2d DoTransform(this ITransform2D transform, BoundingBox2d bbox)
         {
-            return BoundingBox2d.Union(bbox.GetVertices().Select(v => transform.DoTransform(v)));
+            return BoundingBox2d.UnionOfPoints(bbox.GetVertices().Select(v => transform.DoTransform(v)));
         }
 
         public static Matrix2x3d ToMatrix(this ITransform2D transform)

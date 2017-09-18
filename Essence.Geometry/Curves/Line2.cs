@@ -13,10 +13,11 @@
 // limitations under the License.
 
 using Essence.Geometry.Core.Double;
+using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class Line2 : SimpleCurve2
     {
@@ -43,6 +44,36 @@ namespace Essence.Maths.Double.Curves
             //return this.dir.Dot(diff) / this.len;
             return this.dirN.Dot(diff);
         }
+
+        #region private
+
+        private double GetT01(double t)
+        {
+            t = t.Clamp(this.TMin, this.TMax);
+            double t01 = this.ttransform.Get(t);
+            return t01;
+        }
+
+        private Point2d Evaluate01(double t01)
+        {
+            //return this.p0.Add(this.dirN.Mul(t01 * this.len));
+            return this.p0.Add(this.v01.Mul(t01));
+        }
+
+        private readonly Point2d p0;
+        private readonly Point2d p1;
+
+        private double tmin;
+        private double tmax;
+
+        private readonly Vector2d v01; // p1 - p0
+        private readonly double len;
+        private readonly Vector2d dirN;
+
+        /// <summary>Transformacion que se aplica sobre el parametro.</summary>
+        private Transform1 ttransform;
+
+        #endregion
 
         #region ICurve2
 
@@ -135,36 +166,6 @@ namespace Essence.Maths.Double.Curves
             double t01_1 = this.GetT01(t1);
             return SysMath.Abs(t01_1 - t01_0) * this.TotalLength;
         }
-
-        #endregion
-
-        #region private
-
-        private double GetT01(double t)
-        {
-            t = t.Clamp(this.TMin, this.TMax);
-            double t01 = this.ttransform.Get(t);
-            return t01;
-        }
-
-        private Point2d Evaluate01(double t01)
-        {
-            //return this.p0.Add(this.dirN.Mul(t01 * this.len));
-            return this.p0.Add(this.v01.Mul(t01));
-        }
-
-        private readonly Point2d p0;
-        private readonly Point2d p1;
-
-        private double tmin;
-        private double tmax;
-
-        private readonly Vector2d v01; // p1 - p0
-        private readonly double len;
-        private readonly Vector2d dirN;
-
-        /// <summary>Transformacion que se aplica sobre el parametro.</summary>
-        private Transform1 ttransform;
 
         #endregion
     }

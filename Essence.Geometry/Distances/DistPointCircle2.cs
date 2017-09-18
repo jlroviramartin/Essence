@@ -13,13 +13,14 @@
 // limitations under the License.
 
 using Essence.Geometry.Core.Double;
-using Essence.Maths.Double.Curves;
+using Essence.Geometry.Curves;
+using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
-namespace Essence.Maths.Double.Distances
+namespace Essence.Geometry.Distances
 {
-    public sealed class DistPointCircle2
+    public sealed class DistPointCircle2 : IDistance
     {
         public DistPointCircle2()
         {
@@ -40,7 +41,7 @@ namespace Essence.Maths.Double.Distances
 
         public double CalcDistance()
         {
-            double radio = System.Math.Abs(this.Circle.Radius);
+            double radio = SysMath.Abs(this.Circle.Radius);
 
             Vector2d diff = this.Point.Sub(this.Circle.Center);
             double len = diff.Length;

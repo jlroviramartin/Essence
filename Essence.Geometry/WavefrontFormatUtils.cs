@@ -14,16 +14,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using Essence.Geometry.Core.Double;
 using Essence.Geometry.Core.Float;
+using Essence.Geometry.Curves;
 using Essence.Maths.Double;
-using Essence.Maths.Double.Curves;
 using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
-namespace Essence.Maths
+namespace Essence.Geometry
 {
     public static class WavefrontFormatUtils
     {

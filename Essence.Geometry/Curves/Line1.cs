@@ -13,11 +13,11 @@
 // limitations under the License.
 
 using Essence.Geometry.Core.Double;
+using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using SysMath = System.Math;
-using REAL = System.Double;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class Line1 : SimpleCurve1
     {
@@ -30,6 +30,33 @@ namespace Essence.Maths.Double.Curves
 
             this.SetTInterval(t0, t1);
         }
+
+        #region private
+
+        private double GetT01(double t)
+        {
+            t = t.Clamp(this.TMin, this.TMax);
+            double t01 = this.ttransform.Get(t);
+            return t01;
+        }
+
+        private double Evaluate01(double t01)
+        {
+            return this.p0 + (this.p1 - this.p0) * t01;
+        }
+
+        private readonly double p0;
+        private readonly double p1;
+
+        private double tmin;
+        private double tmax;
+
+        private readonly double len;
+
+        /// <summary>Transformacion que se aplica sobre el parametro.</summary>
+        private Transform1 ttransform;
+
+        #endregion
 
         #region ICurve2
 
@@ -112,33 +139,6 @@ namespace Essence.Maths.Double.Curves
             double t01_1 = this.GetT01(t1);
             return SysMath.Abs(t01_1 - t01_0) * this.TotalLength;
         }
-
-        #endregion
-
-        #region private
-
-        private double GetT01(double t)
-        {
-            t = t.Clamp(this.TMin, this.TMax);
-            double t01 = this.ttransform.Get(t);
-            return t01;
-        }
-
-        private double Evaluate01(double t01)
-        {
-            return this.p0 + (this.p1 - this.p0) * t01;
-        }
-
-        private readonly double p0;
-        private readonly double p1;
-
-        private double tmin;
-        private double tmax;
-
-        private readonly double len;
-
-        /// <summary>Transformacion que se aplica sobre el parametro.</summary>
-        private Transform1 ttransform;
 
         #endregion
     }

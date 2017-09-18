@@ -16,7 +16,6 @@ using System;
 using System.Runtime.CompilerServices;
 using Essence.Geometry.Core.Double;
 using Essence.Util.Math;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Geom2D
 {

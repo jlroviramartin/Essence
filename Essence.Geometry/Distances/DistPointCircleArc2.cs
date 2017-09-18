@@ -13,11 +13,13 @@
 // limitations under the License.
 
 using Essence.Geometry.Core.Double;
-using Essence.Maths.Double.Curves;
+using Essence.Geometry.Curves;
+using Essence.Maths.Double;
+using SysMath = System.Math;
 
-namespace Essence.Maths.Double.Distances
+namespace Essence.Geometry.Distances
 {
-    public sealed class DistPointCircleArc2
+    public sealed class DistPointCircleArc2 : IDistance
     {
         public DistPointCircleArc2()
         {
@@ -33,7 +35,7 @@ namespace Essence.Maths.Double.Distances
 
         public double CalcDistance()
         {
-            return System.Math.Sqrt(this.CalcDistance2());
+            return SysMath.Sqrt(this.CalcDistance2());
         }
 
         public double CalcDistance2()

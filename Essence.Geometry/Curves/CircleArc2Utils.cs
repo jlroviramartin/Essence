@@ -15,11 +15,12 @@
 using System;
 using System.Collections;
 using Essence.Geometry.Core.Double;
+using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using SysMath = System.Math;
 using LenP1P2Dir = System.Tuple<double, Essence.Geometry.Core.Double.Point2d, Essence.Geometry.Core.Double.Point2d, Essence.Geometry.Core.Double.Vector2d>;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class CircleArc2Utils
     {

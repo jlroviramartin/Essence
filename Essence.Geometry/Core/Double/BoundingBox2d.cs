@@ -81,13 +81,13 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>This method gets the union of <code>points</code>.</summary>
-        public static BoundingBox2d Union(params Point2d[] points)
+        public static BoundingBox2d UnionOfPoints(params Point2d[] points)
         {
-            return Union((IEnumerable<Point2d>)points);
+            return UnionOfPoints((IEnumerable<Point2d>)points);
         }
 
         /// <summary>This method gets the union of <code>points</code>.</summary>
-        public static BoundingBox2d Union(IEnumerable<Point2d> points)
+        public static BoundingBox2d UnionOfPoints(IEnumerable<Point2d> points)
         {
             using (IEnumerator<Point2d> enumer = points.GetEnumerator())
             {
@@ -219,6 +219,11 @@ namespace Essence.Geometry.Core.Double
         {
             return RangeUtils.ContainsPoint(this.XMin, this.XMax, p.X, epsilon)
                    && RangeUtils.ContainsPoint(this.YMin, this.YMax, p.Y, epsilon);
+        }
+
+        public bool IsInterior(Point2d p, double epsilon = MathUtils.EPSILON)
+        {
+            return this.Contains(p, epsilon);
         }
 
         /// <summary>

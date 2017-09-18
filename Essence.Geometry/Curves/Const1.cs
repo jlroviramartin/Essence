@@ -13,11 +13,11 @@
 // limitations under the License.
 
 using Essence.Geometry.Core.Double;
+using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using SysMath = System.Math;
-using REAL = System.Double;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class Const1 : SimpleCurve1
     {

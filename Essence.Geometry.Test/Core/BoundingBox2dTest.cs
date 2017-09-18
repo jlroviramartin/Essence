@@ -15,7 +15,7 @@
 using Essence.Geometry.Core.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Essence.Geometry.Test.Core
+namespace Essence.Geometry.Core
 {
     [TestClass]
     public class BoundingBox2dTest

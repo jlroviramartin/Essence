@@ -4,7 +4,7 @@ using Essence.Util.Math.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Essence.Geometry.Test.Core
+namespace Essence.Geometry.Core
 {
     [TestClass]
     public class Point2dTest

@@ -14,7 +14,7 @@
 
 using Essence.Geometry.Core.Double;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public interface ICurve2
     {

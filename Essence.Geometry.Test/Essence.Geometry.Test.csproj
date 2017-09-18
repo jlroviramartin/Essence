@@ -6,7 +6,7 @@
     <ProjectGuid>{2F2888F2-B538-44F6-8DD9-23E2E4704AD8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Essence.Geometry.Test</RootNamespace>
+    <RootNamespace>Essence.Geometry</RootNamespace>
     <AssemblyName>Essence.Geometry.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -55,7 +55,9 @@
     <Compile Include="Core\Point2dTest.cs" />
     <Compile Include="Curves\CircleArc2Test.cs" />
     <Compile Include="Curves\ClothoidArc2dTest.cs" />
+    <Compile Include="Geom2D\IPolyEnumeratorTest.cs" />
     <Compile Include="Geom2D\Line2dTest.cs" />
+    <Compile Include="Geom2D\PolygonUtilsTest.cs" />
     <Compile Include="Geom2D\Triangle2dTest.cs" />
     <Compile Include="Geom3D\Plane3dTest.cs" />
     <Compile Include="Geom3D\Triangle3dTest.cs" />
@@ -67,6 +69,10 @@
     <Compile Include="TransformMatrix2DTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Essence.Geometry.Core\Essence.Geometry.Core.csproj">
+      <Project>{678c7b81-7bf4-4053-995b-8320b810efaa}</Project>
+      <Name>Essence.Geometry.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Essence.Geometry\Essence.Geometry.csproj">
       <Project>{435dddb4-5427-4d0f-98c9-121a2b8192b1}</Project>
       <Name>Essence.Geometry</Name>

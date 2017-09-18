@@ -15,13 +15,14 @@
 using Essence.Geometry.Core.Double;
 using SysMath = System.Math;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class Circle2 : BaseCircle2
     {
         public Circle2(Point2d center, double radius)
             : base(center, radius)
         {
+            this.SetTInterval(0, this.TotalLength);
         }
 
         #region Curve2

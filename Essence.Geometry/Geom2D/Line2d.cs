@@ -13,9 +13,9 @@
 // limitations under the License.
 
 using System;
+using Essence.Geometry.Core;
 using Essence.Geometry.Core.Double;
 using Essence.Util.Math.Double;
-using REAL = System.Double;
 
 namespace Essence.Geometry.Geom2D
 {

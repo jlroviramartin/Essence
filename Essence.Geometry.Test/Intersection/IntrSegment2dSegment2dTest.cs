@@ -14,10 +14,9 @@
 
 using Essence.Geometry.Core.Double;
 using Essence.Geometry.Geom2D;
-using Essence.Geometry.Intersection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Essence.Geometry.Test.Intersection
+namespace Essence.Geometry.Intersection
 {
     [TestClass]
     public class IntrSegment2dSegment2dTest

@@ -14,12 +14,11 @@
 
 using System;
 using Essence.Geometry.Core.Double;
-using Essence.Geometry.Geom3D;
 using Essence.Util.Math.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using REAL = System.Double;
 
-namespace Essence.Geometry.Test.Geom3D
+namespace Essence.Geometry.Geom3D
 {
     [TestClass]
     public class Plane3dTest

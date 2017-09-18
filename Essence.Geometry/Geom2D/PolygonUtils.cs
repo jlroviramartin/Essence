@@ -12,35 +12,196 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using Essence.Geometry.Core;
 using Essence.Geometry.Core.Double;
+using Essence.Geometry.Curves;
+using Essence.Geometry.Distances;
 using Essence.Geometry.Geom3D;
 using Essence.Util.Collections;
-using java.util;
+using Essence.Util.Math.Double;
+using java.lang;
+using Math = System.Math;
 
 namespace Essence.Geometry.Geom2D
 {
-    public class PolygonUtils
+    public class PolyChains
     {
+        public PolyChains(IList<Point2d> points)
+        {
+            this.Points = points;
+        }
+
+        public readonly IList<Point2d> Points;
+        public int LeftMost;
+        public readonly IList<PolyChain> Chains = new List<PolyChain>();
+
+        public void AddChain(bool leftToRight, int startIndex, int count, List<int> inflectionYPoints)
+        {
+            PolyChain pchain = new PolyChain()
+            {
+                LeftToRight = leftToRight,
+                StartIndex = startIndex,
+                Count = count
+            };
+            pchain.InflectionYPoints.AddRange(inflectionYPoints);
+
+            if (pchain.InflectionYPoints.Count == 0)
+            {
+                pchain.InflectionYPoints.Add(startIndex);
+                pchain.InflectionYPoints.Add(startIndex + count - 1);
+            }
+            else
+            {
+                if (pchain.InflectionYPoints.First() != startIndex)
+                {
+                    pchain.InflectionYPoints.Add(startIndex);
+                }
+                if (pchain.InflectionYPoints.Last() != startIndex + count - 1)
+                {
+                    pchain.InflectionYPoints.Add(startIndex + count - 1);
+                }
+            }
+
+            this.Chains.Add(pchain);
+        }
+
+        public IList<IList<Point2d>> GetMonotoneChains()
+        {
+            List<IList<Point2d>> result = new List<IList<Point2d>>();
+            foreach (PolyChains.PolyChain pchain in this.Chains)
+            {
+                result.Add(new RangeList<Point2d>(this.Points, pchain.StartIndex, pchain.Count, true));
+            }
+            return result;
+        }
+
+        public class PolyChain
+        {
+            public bool LeftToRight;
+            public int StartIndex;
+            public int Count;
+            public readonly List<int> InflectionYPoints = new List<int>();
+        }
+    }
+
+    public static class PolygonUtils
+    {
+        public static IList<IList<Point2d>> Sort2(IList<Point2d> points)
+        {
+            PolyChains pchains = Sort(points);
+            return pchains.GetMonotoneChains();
+        }
+
+        public static PolyChains Sort(IList<Point2d> points)
+        {
+            PolyChains pchains = new PolyChains(points);
+
+            // NOTE: it is not necessary to find the leftmost point. It is enough with finding the start of a chain.
+            int leftMost = FindLeftMost(points);
+            pchains.LeftMost = leftMost;
+
+            int first = leftMost;
+            bool? leftRight = null;
+            bool? bottomTop = null;
+            List<int> inflectionYPoints = new List<int>();
+
+            for (int i = 1; i < points.Count + 1; i++)
+            {
+                Point2d pprev = points[(leftMost + i - 1) % points.Count];
+                Point2d p = points[(leftMost + i) % points.Count];
+
+                {
+                    bool? nextBT = null;
+                    if (p.Y.EpsilonG(pprev.Y))
+                    {
+                        nextBT = true;
+                    }
+                    else if (p.Y.EpsilonL(pprev.Y))
+                    {
+                        nextBT = false;
+                    }
+
+                    if (bottomTop == null)
+                    {
+                        bottomTop = nextBT;
+                    }
+                    else
+                    {
+                        if ((nextBT != null) && (bottomTop != nextBT))
+                        {
+                            inflectionYPoints.Add(leftMost + i);
+                        }
+                    }
+                }
+
+                {
+                    bool? nextLR = null;
+                    if (p.X.EpsilonG(pprev.X))
+                    {
+                        nextLR = true;
+                    }
+                    else if (p.X.EpsilonL(pprev.X))
+                    {
+                        nextLR = false;
+                    }
+
+                    if (leftRight == null)
+                    {
+                        leftRight = nextLR;
+                    }
+                    else
+                    {
+                        if ((nextLR != null) && (leftRight != nextLR))
+                        {
+                            pchains.AddChain((bool)leftRight, first, (leftMost + i) - first, inflectionYPoints);
+
+                            // Rollback
+                            i--;
+
+                            first = leftMost + i;
+                            leftRight = null;
+                            bottomTop = null;
+                            inflectionYPoints.Clear();
+                        }
+                    }
+                }
+            }
+
+            int c = (leftMost + points.Count + 1) - first;
+            if (c > 1)
+            {
+                pchains.AddChain((leftRight ?? true), first, c, inflectionYPoints);
+            }
+            return pchains;
+        }
 
         /**
          * This method changes the order of the items in a list in order to be the first, the one with minimum lexicographical order (mínimum X, mínimum Y):
          * Point2d.LexComparer. If there are more than one point with equal order, it is choosen as the first point, the left most one.
          * <example>
-         * List<Point2d> result = PolygonUtils.Normalize(new[] { new Point2d(10, 0), new Point2d(10, 10), new Point2d(0, 10), new Point2d(0, 0) }).ToList();
+         * IList<Point2d> result = PolygonUtils.Normalize(new[] { new Point2d(10, 0), new Point2d(10, 10), new Point2d(0, 10), new Point2d(0, 0) }).ToList();
          * </example>
          */
-        public static void normalize(List<Point2d> points)
+        public static void Normalize(IList<Point2d> points)
         {
-            Comparator<Point2d> lexComparer = Point2d.LexComparer.INSTANCE;
+            int index = FindLeftMost(points);
+            ListUtils.ShiftLeft(points, index);
+        }
+
+        /**
+         * This method finds the point with minimum lexicographical order (mínimum X, mínimum Y):
+         * Point2d.LexComparer. If there are more than one point with equal order, it is choosen as the first point, the left most one.
+         */
+        public static int FindLeftMost(IList<Point2d> points, double epsilon = MathUtils.EPSILON)
+        {
+            IComparer<Point2d> lexComparer = new Point2d.LexComparer(epsilon);
 
             int index = 0;
             Point2d min = points[index];
             for (int i = 1; i < points.Count; i++)
             {
-                if (lexComparer.compare(min, points[i)) > 0]
+                if (lexComparer.Compare(min, points[i]) > 0)
                 {
                     index = i;
                     min = points[index];
@@ -52,7 +213,7 @@ namespace Essence.Geometry.Geom2D
             {
                 for (int i = points.Count - 1; i > 0; i--)
                 {
-                    if (lexComparer.compare(min, points[i)) == 0]
+                    if (lexComparer.Compare(min, points[i]) == 0)
                     {
                         index = i;
                         min = points[index];
@@ -64,18 +225,18 @@ namespace Essence.Geometry.Geom2D
                 }
             }
 
-            ListUtils.shiftLeft(points, index);
+            return index;
         }
 
         /**
          * Indica si el punto está en el borde del poligono.
          */
-        public static bool pointInEdge(List<Point2d> points, Point2d p, double epsilon)
+        public static bool PointInEdge(IList<Point2d> points, Point2d p, double epsilon)
         {
             double epsilon2 = epsilon * epsilon;
 
             DistPointSegment2 dist = new DistPointSegment2();
-            dist.setPoint(p);
+            dist.Point = p;
 
             // loop through all edges of the polygon
             Point2d a = points[points.Count - 1];
@@ -84,8 +245,8 @@ namespace Essence.Geometry.Geom2D
                 // Segmento ab.
                 Point2d b = points[i];
 
-                dist.setSegment(new Segment2(a, b));
-                if (EpsilonEquals(dist.calcDistance2(), 0, epsilon2))
+                dist.Segment = new Segment2(a, b);
+                if (dist.CalcDistance2().EpsilonEquals(0, epsilon2))
                 {
                     return true;
                 }
@@ -103,7 +264,7 @@ namespace Essence.Geometry.Geom2D
          * <li>extendedAlgorithm: This algorithm differenciates between inside/outside/on the polygon.<li>
          * </ul>
          */
-        public static PointInPoly pointInPolyEvenOdd(List<Point2d> points, Point2d p, bool extendedAlgorithm, double epsilon)
+        public static PointInPoly PointInPolyEvenOdd(IList<Point2d> points, Point2d p, bool extendedAlgorithm, double epsilon)
         {
             // the crossing number counter
             int cn = 0;
@@ -118,9 +279,9 @@ namespace Essence.Geometry.Geom2D
                 if (extendedAlgorithm)
                 {
                     // Horizontal line.
-                    if (EpsilonEquals(a.Y, b.Y, epsilon))
+                    if (a.Y.EpsilonEquals(b.Y, epsilon))
                     {
-                        if (EpsilonEquals(p.Y, a.Y, epsilon))
+                        if (p.Y.EpsilonEquals(a.Y, epsilon))
                         {
                             double min, max;
                             if (a.X < b.X)
@@ -134,7 +295,7 @@ namespace Essence.Geometry.Geom2D
                                 max = a.X;
                             }
 
-                            if (epsilonBetweenClosed(p.X, min, max, epsilon))
+                            if (p.X.EpsilonBetweenClosed(min, max, epsilon))
                             {
                                 return PointInPoly.On;
                             }
@@ -144,22 +305,22 @@ namespace Essence.Geometry.Geom2D
                     }
                 }
 
-                if ((epsilonGE(p.Y, a.Y, epsilon))
-                    ? (epsilonL(p.Y, b.Y, epsilon)) // an upward crossing
-                    : (epsilonGE(p.Y, b.Y, epsilon))) // a downward crossing
+                if ((p.Y.EpsilonGE(a.Y, epsilon))
+                    ? (p.Y.EpsilonL(b.Y, epsilon)) // an upward crossing
+                    : (p.Y.EpsilonGE(b.Y, epsilon))) // a downward crossing
                 {
                     // compute the actual edge-ray intersect x-coordinate
                     double vt = (p.Y - a.Y) / (b.Y - a.Y);
                     double x = a.X + vt * (b.X - a.X);
 
-                    if (EpsilonEquals(p.X, x, epsilon))
+                    if (p.X.EpsilonEquals(x, epsilon))
                     {
                         if (extendedAlgorithm)
                         {
                             return PointInPoly.On;
                         }
                     }
-                    else if (epsilonL(p.X, x, epsilon))
+                    else if (p.X.EpsilonL(x, epsilon))
                     {
                         // a valid crossing of y=P.Y right of P.X
                         cn++;
@@ -178,7 +339,7 @@ namespace Essence.Geometry.Geom2D
          * <li>extendedAlgorithm: This algorithm differenciates between inside/outside/on the polygon.<li>
          * </ul>
          */
-        public static PointInPoly pointInPolyNonZero(List<Point2d> points, Point2d p, bool extendedAlgorithm, double epsilon)
+        public static PointInPoly PointInPolyNonZero(IList<Point2d> points, Point2d p, bool extendedAlgorithm, double epsilon)
         {
             // the winding number counter
             int wn = 0;
@@ -193,9 +354,9 @@ namespace Essence.Geometry.Geom2D
                 if (extendedAlgorithm)
                 {
                     // Horizontal line.
-                    if (EpsilonEquals(a.Y, b.Y, epsilon))
+                    if (a.Y.EpsilonEquals(b.Y, epsilon))
                     {
-                        if (EpsilonEquals(p.Y, a.Y, epsilon))
+                        if (p.Y.EpsilonEquals(a.Y, epsilon))
                         {
                             double min, max;
                             if (a.X < b.X)
@@ -209,7 +370,7 @@ namespace Essence.Geometry.Geom2D
                                 max = a.X;
                             }
 
-                            if (epsilonBetweenClosed(p.X, min, max, epsilon))
+                            if (p.X.EpsilonBetweenClosed(min, max, epsilon))
                             {
                                 return PointInPoly.On;
                             }
@@ -219,43 +380,45 @@ namespace Essence.Geometry.Geom2D
                     }
                 }
 
-                if (epsilonGE(p.Y, a.Y, epsilon))
+                if (p.Y.EpsilonGE(a.Y, epsilon))
                 {
                     // an upward crossing
-                    if (epsilonL(p.Y, b.Y, epsilon))
+                    if (p.Y.EpsilonL(b.Y, epsilon))
                     {
                         // P left of edge
-                        switch (Point2d.whichSide(a, b, p, epsilon))
+                        switch (Point2d.WhichSide(a, b, p, epsilon))
                         {
-                            case Left:
+                            case LineSide.Left:
                                 // have a valid up intersect
                                 wn++;
                                 break;
-                            case Middle:
+                            case LineSide.Middle:
                                 if (extendedAlgorithm)
                                 {
                                     return PointInPoly.On;
                                 }
+                                break;
                         }
                     }
                 }
-                else // if (p.Y.EpsilonMenor(a.Y, epsilon))
+                else // if (p.Y.EpsilonL(a.Y, epsilon))
                 {
                     // a downward crossing
-                    if (epsilonGE(p.Y, b.Y, epsilon))
+                    if (p.Y.EpsilonGE(b.Y, epsilon))
                     {
                         // P right of edge
-                        switch (Point2d.whichSide(a, b, p, epsilon))
+                        switch (Point2d.WhichSide(a, b, p, epsilon))
                         {
-                            case Right:
+                            case LineSide.Right:
                                 // have a valid down intersect
                                 wn--;
                                 break;
-                            case Middle:
+                            case LineSide.Middle:
                                 if (extendedAlgorithm)
                                 {
                                     return PointInPoly.On;
                                 }
+                                break;
                         }
                     }
                 }
@@ -264,38 +427,63 @@ namespace Essence.Geometry.Geom2D
             return ((wn != 0) ? PointInPoly.Inside : PointInPoly.Outside);
         }
 
-        /**
-         * Se asegura que la orientacion de los points sea CCW. No trata poligonos que contengan vertices repetidos.
-         */
-        public static void ensureCCW(List<Point2d> points)
+        /// <summary>
+        /// Se asegura que la orientacion de los points sea CCW.
+        /// </summary>
+        /// <param name="points">Poligono.</param>
+        /// <param name="robust">Indica si trata poligonos que contengan vertices repetidos.</param>
+        public static void EnsureCCW(IList<Point2d> points, bool robust)
         {
-            if (testOrientation(points) == Orientation.CW)
+            if (TestOrientation(points, robust) == Orientation.CW)
             {
-                Collections.reverse(points);
+                ListUtils.Reverse(points);
             }
         }
 
         /**
-         * Se asegura que la orientacion de los points sea CCW. Trata poligonos que contengan vertices repetidos.
-         */
-        public static void ensureCCWRobust(List<Point2d> points)
-        {
-            if (testOrientationRobust(points) == Orientation.CW)
-            {
-                Collections.reverse(points);
-            }
-        }
-
-        /**
-         * Comprueba la orientacion del poligono. No trata poligonos que contengan vertices repetidos.
+         * This method tests the orientation of a simple polygon.
          * <p>
-         * {@link http://www.easywms.com/easywms/?q=en/node/3602}
-         * {@link http://paulbourke.net/geometry/clockwise/}
-         * {@link http://paulbourke.net/geometry/polygonmesh/}
+         * {@link http://geometryalgorithms.com/Archive/algorithm_0101/algorithm_0101.htm#orientation2D_polygon()}
+         * {@link http://geomalgorithms.com/a01-_area.html#orientation2D_polygon%28%29}
          */
-        public static Orientation testOrientation(List<Point2d> points)
+        public static Orientation TestOrientation(IList<Point2d> points, bool robust, double epsilon = MathUtils.EPSILON)
         {
-            if (points.Count < 3)
+            int n = points.Count;
+
+            if (n < 3)
+            {
+                return Orientation.Degenerate;
+            }
+
+            // first find leftmost lowest vertex of the polygon
+            int index = FindLeftMost(points);
+            IPolyEnumerator<Point2d> enumer = NewEnumerator(points, index, robust, epsilon);
+
+            // test orientation at this imin vertex
+            // ccw <=> the edge leaving is left of the entering edge
+            IPolyEnumerator<Point2d> next = enumer.Clone();
+            next.Next();
+
+            IPolyEnumerator<Point2d> prev = enumer.Clone();
+            prev.Prev();
+
+            switch (Point2d.WhichSide(prev.Point, enumer.Point, next.Point))
+            {
+                case LineSide.Middle:
+                    return Orientation.Degenerate;
+                case LineSide.Left:
+                    return Orientation.CCW;
+                case LineSide.Right:
+                    return Orientation.CW;
+                default:
+                    throw new IndexOutOfBoundsException();
+            }
+
+            // Another algorithm.
+            // http://www.easywms.com/easywms/?q=en/node/3602
+            // http://paulbourke.net/geometry/clockwise/
+            // http://paulbourke.net/geometry/polygonmesh/
+            /*if (points.Count < 3)
             {
                 return Orientation.Degenerate;
             }
@@ -308,7 +496,7 @@ namespace Essence.Geometry.Geom2D
                 Point2d pNextNext = points[(i + 2) % points.Count];
 
                 double v = (pNext.Sub(p)).Cross(pNextNext.Sub(pNext));
-                if (EpsilonEquals(v, 0))
+                if (v.EpsilonEquals(0))
                 {
                 }
                 else if (v < 0)
@@ -332,19 +520,15 @@ namespace Essence.Geometry.Geom2D
             else //if (count < 0)
             {
                 return Orientation.CW;
-            }
-        }
+            }*/
 
-        /**
-         * Comprueba la orientacion del poligono. Trata poligonos que contengan vertices repetidos.
-         * <p>
-         * {@link http://www.easywms.com/easywms/?q=en/node/3602}
-         * {@link http://paulbourke.net/geometry/clockwise/}
-         * {@link http://paulbourke.net/geometry/polygonmesh/}
-         */
-        public static Orientation testOrientationRobust(List<Point2d> points)
-        {
-            if (points.Count < 3)
+            // Another algorithm which deals with duplicated points.
+            // http://www.easywms.com/easywms/?q=en/node/3602
+            // http://paulbourke.net/geometry/clockwise/
+            // http://paulbourke.net/geometry/polygonmesh/
+            /*int n = points.Count;
+
+            if (n < 3)
             {
                 return Orientation.Degenerate;
             }
@@ -360,11 +544,11 @@ namespace Essence.Geometry.Geom2D
             do
             {
                 j++;
-                pNext = points[j % points.Count];
+                pNext = points[j % n];
                 c++;
-            } while (p.EpsilonEquals(pNext) && (c < points.Count));
+            } while (p.EpsilonEquals(pNext) && (c < n));
 
-            if (c == points.Count)
+            if (c == n)
             {
                 return Orientation.Degenerate;
             }
@@ -372,7 +556,7 @@ namespace Essence.Geometry.Geom2D
             // Indicadores de giro.
             int count = 0;
 
-            while (i < points.Count)
+            while (i < n)
             {
                 // Tercer punto: no puede ser igual al segundo.
                 int k = j;
@@ -381,12 +565,12 @@ namespace Essence.Geometry.Geom2D
                 do
                 {
                     k++;
-                    pNextNext = points[k % points.Count];
+                    pNextNext = points[k % n];
                     c++;
-                } while (pNext.EpsilonEquals(pNextNext) && (c < points.Count));
+                } while (pNext.EpsilonEquals(pNextNext) && (c < n));
 
                 double v = (pNext.Sub(p)).Cross(pNextNext.Sub(pNext));
-                if (EpsilonEquals(v, 0))
+                if (v.EpsilonEquals(0))
                 {
                 }
                 else if (v < 0)
@@ -415,64 +599,7 @@ namespace Essence.Geometry.Geom2D
             else //if (count < 0)
             {
                 return Orientation.CW;
-            }
-        }
-
-        /**
-         * Orientation de un poligono simple. Da problemas con poligonos que contengan vertices repetidos.
-         * <p>
-         * {@link http://geometryalgorithms.com/Archive/algorithm_0101/algorithm_0101.htm#orientation2D_polygon()}
-         * {@link http://geomalgorithms.com/a01-_area.html#orientation2D_polygon%28%29}
-         */
-        public static Orientation testOrientation2(List<Point2d> points)
-        {
-            int n = points.Count;
-
-            if (n < 3)
-            {
-                return Orientation.Degenerate;
-            }
-
-            // first find rightmost lowest vertex of the polygon
-            int imin = 0;
-            double xmin = points[0].X;
-            double ymin = points[0].Y;
-
-            for (int i = 1; i < n; i++)
-            {
-                Point2d pi = points[i];
-                if (pi.Y > ymin)
-                {
-                    continue;
-                }
-
-                if (pi.Y == ymin)
-                {
-                    // just as low
-                    if (pi.X < xmin) // and to left
-                    {
-                        continue;
-                    }
-                }
-                imin = i; // a new rightmost lowest vertex
-                xmin = pi.X;
-                ymin = pi.Y;
-            }
-
-            // test orientation at this imin vertex
-            // ccw <=> the edge leaving is left of the entering edge
-            int isig = (imin + 1) % n;
-            int iprev = (n + imin - 1) % n;
-            switch (Point2d.IsLeft(points[iprev], points[imin], points[isig]))
-            {
-                default:
-                case 0:
-                    return Orientation.Degenerate;
-                case 1:
-                    return Orientation.CCW;
-                case -1:
-                    return Orientation.CW;
-            }
+            }*/
         }
 
         /**
@@ -483,23 +610,34 @@ namespace Essence.Geometry.Geom2D
          * @param points Puntos del poligono.
          * @return Area (con signo).
          */
-        public static double signedArea(List<Point2d> points)
+        public static double SignedArea(IList<Point2d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             if (points.Count < 3)
             {
                 return 0;
             }
 
-            int n = points.Count;
-
             double area = 0;
+
+            IPolyEnumerator<Point2d> pFirst = NewEnumerator(points, 0, robust, epsilon);
+            IPolyEnumerator<Point2d> p = pFirst.Clone();
+            IPolyEnumerator<Point2d> pNext = p.Clone();
+            pNext.Next();
+            do
+            {
+                area += p.Point.X * pNext.Point.Y - p.Point.Y * pNext.Point.X;
+                p.Next();
+                pNext.Next();
+            } while (!p.Equals(pFirst));
+
+            /*int n = points.Count;
             for (int i = 0; i < n; i++)
             {
                 Point2d p = points[i];
                 Point2d pNext = points[(i + 1) % n];
 
                 area += p.X * pNext.Y - p.Y * pNext.X;
-            }
+            }*/
             return area / 2;
         }
 
@@ -512,7 +650,7 @@ namespace Essence.Geometry.Geom2D
          * @param points Puntos del poligono.
          * @return Area (con signo).
          */
-        public static double signedArea2(List<Point2d> points)
+        public static double SignedArea2(IList<Point2d> points)
         {
             if (points.Count < 3)
             {
@@ -537,7 +675,7 @@ namespace Essence.Geometry.Geom2D
         /**
          * Indica si un poligo es convexo. Da problemas con poligonos que contengan vertices repetidos.
          */
-        public static bool isConvex(List<Point2d> points)
+        public static bool IsConvex(IList<Point2d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             if (points.Count < 3)
             {
@@ -547,7 +685,55 @@ namespace Essence.Geometry.Geom2D
             // Indicadores de giro.
             bool leftTurn = false, rightTurn = false;
 
-            for (int i = 0; i < points.Count; i++)
+            IPolyEnumerator<Point2d> pFirst = NewEnumerator(points, 0, robust, epsilon);
+            IPolyEnumerator<Point2d> p1 = pFirst.Clone();
+
+            IPolyEnumerator<Point2d> p2 = p1.Clone();
+            p2.Next();
+            if (p2.Equals(pFirst))
+            {
+                return false;
+            }
+
+            IPolyEnumerator<Point2d> p3 = p2.Clone();
+            p3.Next();
+            if (p3.Equals(pFirst))
+            {
+                return false;
+            }
+
+            do
+            {
+                switch (Point2d.WhichSide(p1.Point, p2.Point, p3.Point))
+                {
+                    case LineSide.Left:
+                        leftTurn = true;
+                        break;
+                    case LineSide.Right:
+                        rightTurn = true;
+                        break;
+                }
+
+                // Si se ha girado a izquierda y derecha, no es convexo.
+                if (leftTurn && rightTurn)
+                {
+                    return false;
+                }
+
+                p1.Next();
+                p2.Next();
+                p3.Next();
+            } while (!p1.Equals(pFirst));
+
+            // Si no se ha encontrado giro, caso degenerado.
+            if (!leftTurn && !rightTurn)
+            {
+                return false;
+            }
+
+            return true;
+
+            /*for (int i = 0; i < points.Count; i++)
             {
                 Point2d p = points[i];
                 Point2d pNext = points[(i + 1) % points.Count];
@@ -576,15 +762,9 @@ namespace Essence.Geometry.Geom2D
                 return false;
             }
 
-            return true;
-        }
+            return true;*/
 
-        /**
-         * Indica si un poligo es convexo. Trata poligonos que contengan vertices repetidos.
-         */
-        public static bool isConvexRobust(List<Point2d> points)
-        {
-            if (points.Count < 3)
+            /*if (points.Count < 3)
             {
                 return false;
             }
@@ -614,7 +794,7 @@ namespace Essence.Geometry.Geom2D
 
             while (i < points.Count)
             {
-                /*// Tercer punto: no puede ser una combinacion lineal del primero y segundo.
+                / * // Tercer punto: no puede ser una combinacion lineal del primero y segundo.
                     int k = j;
                     Point2d pNextNext;
                     Lado lado;
@@ -625,7 +805,7 @@ namespace Essence.Geometry.Geom2D
                         pNextNext = points[k % points.Count];
                         lado = Point2d.WhichSide(p, pNext, pNextNext);
                         c++;
-                    } while ((lado == Lado.Medio) && (c < points.Count));*/
+                    } while ((lado == Lado.Medio) && (c < points.Count));* /
 
                 // Tercer punto: no puede ser igual al segundo.
                 int k = j;
@@ -666,21 +846,17 @@ namespace Essence.Geometry.Geom2D
                 return false;
             }
 
-            return true;
+            return true;*/
         }
 
         /**
          * Indica si los points estan en un plano.
          */
-        public static bool isPlanarPolygon(List<Point3d> points, double epsilon)
+        public static bool IsPlanarPolygon(IList<Point3d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
-            if (points.Count < 3)
-            {
-                // Poligono degenerado.
-                return false;
-            }
+            return Plane(points, robust, epsilon) != null;
 
-            Point3d p0 = points[0];
+            /*Point3d p0 = points[0];
             Point3d p1 = points[1];
             int i = 2;
             while (p0.EpsilonEquals(p1) && (i < points.Count))
@@ -697,7 +873,7 @@ namespace Essence.Geometry.Geom2D
 
             Point3d p2 = points[i];
             i++;
-            if (alignmentPoints(p0, p1, p2))
+            if (AlignmentPoints(p0, p1, p2))
             {
                 bool encontrado = false;
                 while (i < points.Count)
@@ -705,7 +881,7 @@ namespace Essence.Geometry.Geom2D
                     p2 = points[i];
                     i++;
 
-                    if (alignmentPoints(p0, p1, p2))
+                    if (AlignmentPoints(p0, p1, p2))
                     {
                         encontrado = true;
                     }
@@ -732,13 +908,13 @@ namespace Essence.Geometry.Geom2D
             }
 
             // Se ha terminado correctamente.
-            return true;
+            return true;*/
         }
 
         /**
          * Suponiendo que todos los points estan en un plano, calcula dicho plano.
          */
-        public static Plane3d plane(List<Point3d> points)
+        public static Plane3d Plane(IList<Point3d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             if (points.Count < 3)
             {
@@ -746,57 +922,59 @@ namespace Essence.Geometry.Geom2D
                 return null;
             }
 
-            Point3d p0 = points[0];
-            Point3d p1 = points[1];
-            int i = 2;
-            while (p0.EpsilonEquals(p1) && (i < points.Count))
-            {
-                p1 = points[i];
-                i++;
-            }
+            IPolyEnumerator<Point3d> pFirst = NewEnumerator(points, 0, robust, epsilon);
+            IPolyEnumerator<Point3d> p1 = pFirst.Clone();
 
-            if (i >= points.Count)
+            IPolyEnumerator<Point3d> p2 = p1.Clone();
+            p2.Next();
+            if (p2.Equals(pFirst))
             {
                 // Poligono degenerado.
                 return null;
             }
 
-            Point3d p2 = points[i];
-            i++;
-            if (alignmentPoints(p0, p1, p2))
+            IPolyEnumerator<Point3d> p3 = p2.Clone();
+            p3.Next();
+            while (!p3.Equals(pFirst) && AlignmentPoints(p1.Point, p2.Point, p3.Point))
             {
-                bool encontrado = false;
-                while (i < points.Count)
-                {
-                    p2 = points[i];
-                    i++;
-
-                    if (alignmentPoints(p0, p1, p2))
-                    {
-                        encontrado = true;
-                    }
-                }
-                if (!encontrado)
-                {
-                    // Poligono degenerado.
-                    return null;
-                }
+                p3.Next();
+            }
+            if (p3.Equals(pFirst))
+            {
+                // Poligono degenerado.
+                return null;
             }
 
-            return Plane3d.NewOrthonormal(p0, p1, p2);
+            Plane3d plane = Plane3d.NewOrthonormal(p1.Point, p2.Point, p3.Point);
+
+            IPolyEnumerator<Point3d> p = p3.Clone();
+            p.Next();
+            while (!p.Equals(pFirst))
+            {
+                if (plane.WhichSide(p.Point) != PlaneSide.Middle)
+                {
+                    // Se ha encontrado un punto que no esta en el plano.
+                    return null;
+                }
+
+                p.Next();
+            }
+
+            // Se ha terminado correctamente.
+            return plane;
         }
 
         /**
          * Indica si los points estan alineados.
          */
-        public static bool alignmentPoints(Point3d p0, Point3d p1, Point3d p2)
+        public static bool AlignmentPoints(Point3d p0, Point3d p1, Point3d p2)
         {
             Vector3d v0 = p1.Sub(p0);
             Vector3d v1 = p2.Sub(p0);
             return v0.Cross(v1).IsZero;
         }
 
-        public static Point2d evaluate2D(List<Point2d> points, bool cerrada, double t)
+        public static Point2d Evaluate2D(IList<Point2d> points, bool cerrada, double t)
         {
             if (cerrada)
             {
@@ -815,7 +993,7 @@ namespace Essence.Geometry.Geom2D
             }
         }
 
-        public static Point3d evaluate3D(List<Point3d> points, bool cerrada, double t)
+        public static Point3d Evaluate3D(IList<Point3d> points, bool cerrada, double t)
         {
             if (cerrada)
             {
@@ -834,20 +1012,28 @@ namespace Essence.Geometry.Geom2D
             }
         }
 
-        public static bool samePlane(Point3d p0, Point3d p1, Point3d p2, Point3d p)
-        {
-            return samePlane(p0, p1, p2, p, ZERO_TOLERANCE);
-        }
-
-        public static bool samePlane(Point3d p0, Point3d p1, Point3d p2, Point3d p, double epsilon)
+        public static bool SamePlane(Point3d p0, Point3d p1, Point3d p2, Point3d p, double epsilon = MathUtils.ZERO_TOLERANCE)
         {
             double det = (p.Sub(p0)).TripleProduct(p1.Sub(p0), p2.Sub(p0));
             /*double det = new Matriz3x3d(
                     p.X - p0.X, p.Y - p0.Y, p.Z - p0.Z,
                     p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z,
                     p2.X - p0.X, p2.Y - p0.Y, p2.Z - p0.Z).Determinante;*/
-            return EpsilonZero(det, epsilon);
+            return det.EpsilonZero(epsilon);
+        }
+
+        private static IPolyEnumerator<Point2d> NewEnumerator(IList<Point2d> points, int index = 0, bool robust = true, double epsilon = MathUtils.EPSILON)
+        {
+            return (robust
+                ? (IPolyEnumerator<Point2d>)new PolyEnumeratorRobust<Point2d>(points, index, true, epsilon)
+                : new PolyEnumerator<Point2d>(points, index));
+        }
+
+        private static IPolyEnumerator<Point3d> NewEnumerator(IList<Point3d> points, int index = 0, bool robust = true, double epsilon = MathUtils.EPSILON)
+        {
+            return (robust
+                ? (IPolyEnumerator<Point3d>)new PolyEnumeratorRobust<Point3d>(points, index, true, epsilon)
+                : new PolyEnumerator<Point3d>(points, index));
         }
     }
-
 }

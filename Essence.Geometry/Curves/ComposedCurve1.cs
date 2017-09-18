@@ -14,9 +14,8 @@
 
 using System;
 using System.Collections.Generic;
-using REAL = System.Double;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class ComposedCurve1 : MultiCurve1
     {

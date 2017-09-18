@@ -14,13 +14,11 @@
 
 using System;
 using Essence.Geometry.Core.Double;
-using Essence.Maths.Double.Curves;
-using Essence.Maths.Test;
-using Essence.Util.Math.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
-namespace Essence.Maths
+namespace Essence.Geometry.Curves
 {
     [TestClass]
     public class CircleArc2Test

@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Essence.Util.Math.Double;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class ComposedCurve2 : MultiCurve2
     {

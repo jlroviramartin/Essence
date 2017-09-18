@@ -15,12 +15,11 @@
 using System.IO;
 using Essence.Geometry.Core.Double;
 using Essence.Maths.Double;
-using Essence.Maths.Double.Curves;
 using Essence.Util.Math.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SysMath = System.Math;
 
-namespace Essence.Maths
+namespace Essence.Geometry.Curves
 {
     [TestClass]
     public class ClothoidArc2dTest

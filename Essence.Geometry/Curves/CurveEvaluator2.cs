@@ -18,7 +18,7 @@ using Essence.Geometry.Core.Double;
 using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class CurveEvaluator2
     {

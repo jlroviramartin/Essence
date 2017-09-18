@@ -17,7 +17,7 @@ using Essence.Util.Math.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SysMath = System.Math;
 
-namespace Essence.Maths
+namespace Essence.Geometry
 {
     [TestClass]
     public partial class MathUtilsTest

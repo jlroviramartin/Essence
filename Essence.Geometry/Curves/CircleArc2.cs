@@ -14,11 +14,12 @@
 
 using System.Diagnostics.Contracts;
 using Essence.Geometry.Core.Double;
-using Essence.Maths.Double.Distances;
+using Essence.Geometry.Distances;
+using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class CircleArc2 : BaseCircle2
     {
@@ -33,8 +34,8 @@ namespace Essence.Maths.Double.Curves
             Contract.Assert(angle1 >= 0 && angle1 < 2 * SysMath.PI);
             Contract.Assert(SysMath.Abs(angle2 - angle1) <= 2 * SysMath.PI);
 
-            this.angle1 = angle1;
-            this.angle2 = angle2;
+            this.Angle1 = angle1;
+            this.Angle2 = angle2;
 
             this.SetTInterval(0, this.TotalLength);
         }
@@ -43,19 +44,13 @@ namespace Essence.Maths.Double.Curves
         ///     Initial angle.
         ///     <![CDATA[ Angle1 in [ 0, 2 * PI ) ]]>
         /// </summary>
-        public double Angle1
-        {
-            get { return this.angle1; }
-        }
+        public double Angle1 { get; }
 
         /// <summary>
         ///     Initial angle.
         ///     <![CDATA[ Angle2 in [ -2 * PI, 4 * PI ) ó Abs(Angle2 - Angle1) <= 2 * PI]]>
         /// </summary>
-        public double Angle2
-        {
-            get { return this.angle2; }
-        }
+        public double Angle2 { get; }
 
         /// <summary>
         ///     Advance angle.
@@ -63,7 +58,7 @@ namespace Essence.Maths.Double.Curves
         /// </summary>
         public double AdvAngle
         {
-            get { return this.angle2 - this.angle1; }
+            get { return this.Angle2 - this.Angle1; }
         }
 
         public double Project(Point2d punto)
@@ -131,9 +126,6 @@ namespace Essence.Maths.Double.Curves
         #endregion
 
         #region private
-
-        private readonly double angle1;
-        private readonly double angle2;
 
         #endregion
     }

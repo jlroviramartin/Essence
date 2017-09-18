@@ -16,7 +16,7 @@
 using System;
 using Essence.Geometry.Core.Double;
 
-namespace Essence.Geometry.Prueba2
+namespace Essence.Geometry
 {
     public class BufferedVector2d
     {

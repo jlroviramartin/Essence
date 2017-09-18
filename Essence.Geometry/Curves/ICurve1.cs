@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using REAL = System.Double;
-
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public interface ICurve1
     {

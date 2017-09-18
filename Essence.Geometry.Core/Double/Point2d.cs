@@ -302,27 +302,9 @@ namespace Essence.Geometry.Core.Double
         /// <param name="p"></param>
         /// <param name="epsilon"></param>
         /// <returns></returns>
-        public static int IsLeft(Point2d a, Point2d b, Point2d p, double epsilon)
+        public static int IsLeft(Point2d a, Point2d b, Point2d p, double epsilon = EPSILON)
         {
             return (int)WhichSide(a, b, p, epsilon);
-        }
-
-        /// <summary>
-        /// This method test if the {@code p} point is at the left, on or at the right of the {@code a, b} line
-        /// {@link http://www.softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm}.
-        /// <ul>
-        /// <li>+1 if the {@code p} point is at the left of the line</li>
-        /// <li>0 if the {@code p} point is on the line</li>
-        /// <li>-1 if the {@code p} point is at the right of the line</li>
-        /// </ul>
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        public static int IsLeft(Point2d a, Point2d b, Point2d p)
-        {
-            return IsLeft(a, b, p, EPSILON);
         }
 
         /// <summary>
@@ -334,23 +316,10 @@ namespace Essence.Geometry.Core.Double
         /// <param name="p"></param>
         /// <param name="epsilon"></param>
         /// <returns></returns>
-        public static LineSide WhichSide(Point2d a, Point2d b, Point2d p, double epsilon)
+        public static LineSide WhichSide(Point2d a, Point2d b, Point2d p, double epsilon = EPSILON)
         {
             double v = ((b.X - a.X) * (p.Y - a.Y) - (b.Y - a.Y) * (p.X - a.X));
             return (MathUtils.EpsilonEquals(v, 0, epsilon) ? LineSide.Middle : (v < 0 ? LineSide.Right : LineSide.Left));
-        }
-
-        /// <summary>
-        /// This method test if the {@code p} point is at the left, on or at the right of the {@code a, b} line
-        /// {@link http://www.softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm}.
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        public static LineSide WhichSide(Point2d a, Point2d b, Point2d p)
-        {
-            return WhichSide(a, b, p, EPSILON);
         }
 
         #region parse
@@ -613,15 +582,24 @@ namespace Essence.Geometry.Core.Double
         /// </summary>
         public sealed class LexComparer : IComparer<Point2d>, IComparer
         {
+            public static readonly LexComparer Instance = new LexComparer();
+
+            public LexComparer(double epsilon = MathUtils.EPSILON)
+            {
+                this.epsilon = epsilon;
+            }
+
+            private readonly double epsilon;
+
             public int Compare(Point2d v1, Point2d v2)
             {
                 int i;
-                i = v1.X.CompareTo(v2.X);
+                i = v1.X.EpsilonCompareTo(v2.X, this.epsilon);
                 if (i != 0)
                 {
                     return i;
                 }
-                i = v1.Y.CompareTo(v2.Y);
+                i = v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
                 return i;
             }
 

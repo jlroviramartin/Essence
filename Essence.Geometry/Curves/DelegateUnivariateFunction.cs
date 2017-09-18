@@ -15,7 +15,7 @@
 using System;
 using org.apache.commons.math3.analysis;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class DelegateUnivariateFunction : UnivariateFunction
     {

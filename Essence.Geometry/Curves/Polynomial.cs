@@ -18,9 +18,8 @@ using Essence.Util.Math.Double;
 using java.lang;
 using Exception = System.Exception;
 using Math = System.Math;
-using REAL = System.Double;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class Polynomial : IFormattable, IEpsilonEquatable<Polynomial>, ICloneable
     {

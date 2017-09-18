@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using java.lang;
-using REAL = System.Double;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public class PolynomialCurve1 : SimpleCurve1
     {

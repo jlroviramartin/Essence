@@ -21,10 +21,9 @@ using System.Linq;
 using Essence.Geometry.Core;
 using Essence.Geometry.Core.Byte;
 using Essence.Geometry.Core.Double;
-using Essence.Maths.Double;
 using Essence.Util;
 
-namespace Essence.Maths
+namespace Essence.Geometry
 {
     public class WavefrontFormat : DisposableObject
     {

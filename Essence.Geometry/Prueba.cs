@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Essence.Maths.Prueba
+namespace Essence.Geometry
 {
     public interface IBufferedTuple
     {

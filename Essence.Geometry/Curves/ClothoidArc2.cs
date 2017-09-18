@@ -18,10 +18,11 @@ using Essence.Geometry.Core.Double;
 using Essence.Util.Math.Double;
 using org.apache.commons.math3.exception;
 using org.apache.commons.math3.analysis.solvers;
-using SysMath = System.Math;
 using Essence.Geometry.Core;
+using Essence.Maths.Double;
+using SysMath = System.Math;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     /// <summary>
     ///     Arco de clotoide.
@@ -91,26 +92,26 @@ namespace Essence.Maths.Double.Curves
             if (SysMath.Abs(radius0) > SysMath.Abs(radius1))
             {
                 // t positivas
-                this.invertY = radius1 < 0;
+                this.InvertY = radius1 < 0;
             }
             else
             {
                 // t negativa
-                this.invertY = radius1 > 0;
+                this.InvertY = radius1 > 0;
             }
 
             // Diferencia de puntos en coordenadas reales.
             Vector2d v01 = point1.Sub(point0);
 
-            this.a = a;
+            this.A = a;
 
             // Desarrollo segun el radio en el punto (0) y (1).
-            double l0_n = ClothoUtils.ClothoL(radius0, this.invertY, this.a);
-            double l1_n = ClothoUtils.ClothoL(radius1, this.invertY, this.a);
+            double l0_n = ClothoUtils.ClothoL(radius0, this.InvertY, this.A);
+            double l1_n = ClothoUtils.ClothoL(radius1, this.InvertY, this.A);
 
             // Coordenadas en el punto (0) y (1) para una clotoide normalizada.
-            Point2d p0_n = ClothoUtils.Clotho(l0_n, this.invertY, this.a);
-            Point2d p1_n = ClothoUtils.Clotho(l1_n, this.invertY, this.a);
+            Point2d p0_n = ClothoUtils.Clotho(l0_n, this.InvertY, this.A);
+            Point2d p1_n = ClothoUtils.Clotho(l1_n, this.InvertY, this.A);
 
             Vector2d v01_n = p1_n.Sub(p0_n);
 
@@ -158,26 +159,26 @@ namespace Essence.Maths.Double.Curves
             if (SysMath.Abs(radius0) > SysMath.Abs(radius1))
             {
                 // t positivas
-                this.invertY = radius1 < 0;
+                this.InvertY = radius1 < 0;
             }
             else
             {
                 // t negativa
-                this.invertY = radius1 > 0;
+                this.InvertY = radius1 > 0;
             }
 
             // Diferencia de puntos en coordenadas reales.
             Vector2d v01 = point1.Sub(point0);
 
-            this.a = SolveParam(v01.Length, radius0, radius1);
+            this.A = SolveParam(v01.Length, radius0, radius1);
 
             // Desarrollo segun el radio en el punto (0) y (1).
-            double l0_n = ClothoUtils.ClothoL(radius0, this.invertY, this.a);
-            double l1_n = ClothoUtils.ClothoL(radius1, this.invertY, this.a);
+            double l0_n = ClothoUtils.ClothoL(radius0, this.InvertY, this.A);
+            double l1_n = ClothoUtils.ClothoL(radius1, this.InvertY, this.A);
 
             // Coordenadas en el punto (0) y (1) para una clotoide normalizada.
-            Point2d p0_n = ClothoUtils.Clotho(l0_n, this.invertY, this.a);
-            Point2d p1_n = ClothoUtils.Clotho(l1_n, this.invertY, this.a);
+            Point2d p0_n = ClothoUtils.Clotho(l0_n, this.InvertY, this.A);
+            Point2d p1_n = ClothoUtils.Clotho(l1_n, this.InvertY, this.A);
 
             Vector2d v01_n = p1_n.Sub(p0_n);
 
@@ -200,23 +201,17 @@ namespace Essence.Maths.Double.Curves
         {
             this.l0 = l0;
             this.l1 = l1;
-            this.a = a;
-            this.invertY = invertY;
+            this.A = a;
+            this.InvertY = invertY;
 
             this.transform = transform;
 
             this.SetTInterval(this.l0, this.l1);
         }
 
-        public double A
-        {
-            get { return this.a; }
-        }
+        public double A { get; }
 
-        public bool InvertY
-        {
-            get { return this.invertY; }
-        }
+        public bool InvertY { get; }
 
         public double GetRadius(double t)
         {
@@ -276,7 +271,7 @@ namespace Essence.Maths.Double.Curves
         {
             t = t.Clamp(this.tmin, this.tmax);
             double dl = this.ttransform.Get(t);
-            if (SysMath.Abs(dl) > ClothoUtils.GetMaxL(this.a))
+            if (SysMath.Abs(dl) > ClothoUtils.GetMaxL(this.A))
             {
                 throw new Exception("Longitud del arco por encima del máximo permitido.");
             }
@@ -285,8 +280,6 @@ namespace Essence.Maths.Double.Curves
 
         private readonly double l0;
         private readonly double l1;
-        private readonly double a;
-        private readonly bool invertY;
 
         /// <summary>Transformacion que se aplica sobre la posicion.</summary>
         private readonly ITransform2D transform;

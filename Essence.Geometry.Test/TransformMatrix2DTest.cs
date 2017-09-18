@@ -16,7 +16,7 @@ using Essence.Geometry.Core;
 using Essence.Geometry.Core.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Essence.Geometry.Test
+namespace Essence.Geometry
 {
     [TestClass]
     public class TransformMatrix2DTest

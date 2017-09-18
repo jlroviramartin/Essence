@@ -13,28 +13,23 @@
 // limitations under the License.
 
 using Essence.Geometry.Core.Double;
+using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public abstract class BaseCircle2 : SimpleCurve2
     {
         public BaseCircle2(Point2d center, double radius)
         {
-            this.center = center;
-            this.radius = radius;
+            this.Center = center;
+            this.Radius = radius;
         }
 
-        public Point2d Center
-        {
-            get { return this.center; }
-        }
+        public Point2d Center { get; }
 
-        public double Radius
-        {
-            get { return this.radius; }
-        }
+        public double Radius { get; }
 
         public double GetAngle(double t)
         {
@@ -152,9 +147,6 @@ namespace Essence.Maths.Double.Curves
         #endregion
 
         #region private
-
-        private readonly Point2d center;
-        private readonly double radius;
 
         protected double tmin;
         protected double tmax;

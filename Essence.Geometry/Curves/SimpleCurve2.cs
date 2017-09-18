@@ -14,12 +14,13 @@
 
 using System.Diagnostics.Contracts;
 using Essence.Geometry.Core.Double;
+using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using org.apache.commons.math3.analysis.integration;
 using SysMath = System.Math;
 using UnaryFunction = System.Func<double, double>;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public abstract class SimpleCurve2 : ICurve2
     {

@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Diagnostics.Contracts;
 using Essence.Geometry.Core.Double;
+using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using org.apache.commons.math3.analysis.integration;
 using SysMath = System.Math;
 using UnaryFunction = System.Func<double, double>;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public abstract class MultiCurve2 : ICurve2
     {

@@ -15,7 +15,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Essence.Maths.Test
+namespace Essence.Geometry
 {
     public class AssertEx
     {

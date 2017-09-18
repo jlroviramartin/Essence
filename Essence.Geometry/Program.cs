@@ -22,7 +22,7 @@ using Essence.Geometry.Core;
 using Essence.Geometry.Core.Double;
 using SysMath = System.Math;
 
-namespace Essence.Maths
+namespace Essence.Geometry
 {
     public class Program
     {

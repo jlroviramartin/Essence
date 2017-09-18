@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using Essence.Geometry.Core.Double;
 using Essence.Maths.Double;
 
-namespace Essence.Maths
+namespace Essence.Geometry
 {
     public static class WavefrontFormatGDIUtils
     {

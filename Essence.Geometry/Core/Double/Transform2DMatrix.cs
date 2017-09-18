@@ -19,6 +19,12 @@ namespace Essence.Geometry.Core.Double
     /// <summary>2D transform using a matrix.</summary>
     public sealed class Transform2DMatrix : Transform2D
     {
+        public Transform2DMatrix(Matrix3x3d matrix)
+        {
+            this.Matrix = new Matrix2x3d(matrix.M00, matrix.M01, matrix.M02,
+                                         matrix.M10, matrix.M11, matrix.M12);
+        }
+
         public Transform2DMatrix(Matrix2x3d matrix, bool share = true)
         {
             this.Matrix = (share ? matrix : matrix.Clone());

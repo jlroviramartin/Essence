@@ -13,11 +13,11 @@
 // limitations under the License.
 
 using System.Diagnostics.Contracts;
+using Essence.Maths.Double;
 using org.apache.commons.math3.analysis.integration;
-using REAL = System.Double;
 using UnaryFunction = System.Func<double, double>;
 
-namespace Essence.Maths.Double.Curves
+namespace Essence.Geometry.Curves
 {
     public abstract class SimpleCurve1 : ICurve1
     {
