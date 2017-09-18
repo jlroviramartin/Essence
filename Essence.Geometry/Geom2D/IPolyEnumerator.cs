@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System.Collections.Generic;
-using Essence.Geometry.Core.Double;
 using Essence.Util.Math;
 using Essence.Util.Math.Double;
 
@@ -93,15 +92,12 @@ namespace Essence.Geometry.Geom2D
         public PolyEnumeratorRobust(IList<TPunto> points, int index = 0, bool findFirstEqual = false, double epsilon = MathUtils.EPSILON)
         {
             this.points = points;
+            this.index = index;
             this.epsilon = epsilon;
 
             if (findFirstEqual)
             {
                 this.FindFirstEqual();
-            }
-            else
-            {
-                this.index = index;
             }
         }
 

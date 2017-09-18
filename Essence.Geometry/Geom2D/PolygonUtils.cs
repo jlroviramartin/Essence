@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using Essence.Geometry.Core;
 using Essence.Geometry.Core.Double;
@@ -20,7 +21,6 @@ using Essence.Geometry.Distances;
 using Essence.Geometry.Geom3D;
 using Essence.Util.Collections;
 using Essence.Util.Math.Double;
-using java.lang;
 using Math = System.Math;
 
 namespace Essence.Geometry.Geom2D
@@ -35,6 +35,16 @@ namespace Essence.Geometry.Geom2D
         public readonly IList<Point2d> Points;
         public int LeftMost;
         public readonly IList<PolyChain> Chains = new List<PolyChain>();
+
+        public void AddChain(bool leftToRight, IPolyEnumerator<Point2d> startIndex, IPolyEnumerator<Point2d> endIndex, List<int> inflectionYPoints)
+        {
+            int count = endIndex.Index - startIndex.Index + 1;
+            if (count < 0)
+            {
+                count += this.Points.Count;
+            }
+            this.AddChain(leftToRight, startIndex.Index, count, inflectionYPoints);
+        }
 
         public void AddChain(bool leftToRight, int startIndex, int count, List<int> inflectionYPoints)
         {
@@ -93,20 +103,96 @@ namespace Essence.Geometry.Geom2D
             return pchains.GetMonotoneChains();
         }
 
-        public static PolyChains Sort(IList<Point2d> points)
+        public static PolyChains Sort(IList<Point2d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             PolyChains pchains = new PolyChains(points);
 
             // NOTE: it is not necessary to find the leftmost point. It is enough with finding the start of a chain.
-            int leftMost = FindLeftMost(points);
+            int leftMost = FindLeftMost(points, epsilon);
             pchains.LeftMost = leftMost;
 
-            int first = leftMost;
+            IPolyEnumerator<Point2d> eFirst = NewEnumerator(points, leftMost, robust, epsilon);
+            IPolyEnumerator<Point2d> e = eFirst.Clone();
+
+            IPolyEnumerator<Point2d> eNext = e.Clone();
+            eNext.Next();
+            if (eNext.Equals(eFirst))
+            {
+            }
+
+            IPolyEnumerator<Point2d> first = e.Clone();
             bool? leftRight = null;
             bool? bottomTop = null;
             List<int> inflectionYPoints = new List<int>();
 
-            for (int i = 1; i < points.Count + 1; i++)
+            do
+            {
+                Point2d p = e.Point;
+                Point2d pNext = eNext.Point;
+                {
+                    bool? nextBT = null;
+                    if (pNext.Y.EpsilonG(p.Y))
+                    {
+                        nextBT = true;
+                    }
+                    else if (pNext.Y.EpsilonL(p.Y))
+                    {
+                        nextBT = false;
+                    }
+
+                    if (bottomTop == null)
+                    {
+                        bottomTop = nextBT;
+                    }
+                    else
+                    {
+                        if ((nextBT != null) && (bottomTop != nextBT))
+                        {
+                            inflectionYPoints.Add(e.Index);
+                        }
+                    }
+                }
+
+                {
+                    bool? nextLR = null;
+                    if (pNext.X.EpsilonG(p.X))
+                    {
+                        nextLR = true;
+                    }
+                    else if (pNext.X.EpsilonL(p.X))
+                    {
+                        nextLR = false;
+                    }
+
+                    if (leftRight == null)
+                    {
+                        leftRight = nextLR;
+                    }
+                    else
+                    {
+                        if ((nextLR != null) && (leftRight != nextLR))
+                        {
+                            pchains.AddChain((bool)leftRight, first, e, inflectionYPoints);
+
+                            first = e.Clone();
+                            leftRight = null;
+                            bottomTop = null;
+                            inflectionYPoints.Clear();
+                        }
+                    }
+                }
+
+                e.Next();
+                eNext.Next();
+            } while (!e.Equals(eFirst));
+
+            if (!first.Equals(e))
+            {
+                pchains.AddChain((leftRight ?? true), first, e, inflectionYPoints);
+            }
+            return pchains;
+
+            /*for (int i = 1; i < points.Count + 1; i++)
             {
                 Point2d pprev = points[(leftMost + i - 1) % points.Count];
                 Point2d p = points[(leftMost + i) % points.Count];
@@ -173,7 +259,7 @@ namespace Essence.Geometry.Geom2D
             {
                 pchains.AddChain((leftRight ?? true), first, c, inflectionYPoints);
             }
-            return pchains;
+            return pchains;*/
         }
 
         /**
@@ -183,9 +269,9 @@ namespace Essence.Geometry.Geom2D
          * IList<Point2d> result = PolygonUtils.Normalize(new[] { new Point2d(10, 0), new Point2d(10, 10), new Point2d(0, 10), new Point2d(0, 0) }).ToList();
          * </example>
          */
-        public static void Normalize(IList<Point2d> points)
+        public static void Normalize(IList<Point2d> points, double epsilon = MathUtils.EPSILON)
         {
-            int index = FindLeftMost(points);
+            int index = FindLeftMost(points, epsilon);
             ListUtils.ShiftLeft(points, index);
         }
 
@@ -231,28 +317,34 @@ namespace Essence.Geometry.Geom2D
         /**
          * Indica si el punto está en el borde del poligono.
          */
-        public static bool PointInEdge(IList<Point2d> points, Point2d p, double epsilon)
+        public static bool PointInEdge(IList<Point2d> points, Point2d p, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             double epsilon2 = epsilon * epsilon;
 
             DistPointSegment2 dist = new DistPointSegment2();
             dist.Point = p;
 
-            // loop through all edges of the polygon
-            Point2d a = points[points.Count - 1];
-            for (int i = 0; i < points.Count; i++)
-            {
-                // Segmento ab.
-                Point2d b = points[i];
+            IPolyEnumerator<Point2d> eFirst = NewEnumerator(points, 0, robust, epsilon);
+            IPolyEnumerator<Point2d> e = eFirst.Clone();
 
-                dist.Segment = new Segment2(a, b);
+            IPolyEnumerator<Point2d> eNext = e.Clone();
+            eNext.Next();
+            if (eNext.Equals(eFirst))
+            {
+                return false;
+            }
+
+            do
+            {
+                dist.Segment = new Segment2(e.Point, eNext.Point);
                 if (dist.CalcDistance2().EpsilonEquals(0, epsilon2))
                 {
                     return true;
                 }
 
-                a = b;
-            }
+                e.Next();
+                eNext.Next();
+            } while (!e.Equals(eFirst));
 
             return false;
         }
@@ -264,17 +356,27 @@ namespace Essence.Geometry.Geom2D
          * <li>extendedAlgorithm: This algorithm differenciates between inside/outside/on the polygon.<li>
          * </ul>
          */
-        public static PointInPoly PointInPolyEvenOdd(IList<Point2d> points, Point2d p, bool extendedAlgorithm, double epsilon)
+        public static PointInPoly PointInPolyEvenOdd(IList<Point2d> points, Point2d p, bool extendedAlgorithm, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             // the crossing number counter
             int cn = 0;
 
+            IPolyEnumerator<Point2d> eFirst = NewEnumerator(points, 0, robust, epsilon);
+            IPolyEnumerator<Point2d> e = eFirst.Clone();
+
+            IPolyEnumerator<Point2d> eNext = e.Clone();
+            eNext.Next();
+            if (eNext.Equals(eFirst))
+            {
+                return PointInPoly.Outside;
+            }
+
             // loop through all edges of the polygon
-            for (int i = 0; i < points.Count; i++)
+            do
             {
                 // Segmento ab.
-                Point2d a = points[i];
-                Point2d b = points[(i + 1) % points.Count];
+                Point2d a = e.Point;
+                Point2d b = eNext.Point;
 
                 if (extendedAlgorithm)
                 {
@@ -326,7 +428,11 @@ namespace Essence.Geometry.Geom2D
                         cn++;
                     }
                 }
-            }
+
+                e.Next();
+                eNext.Next();
+            } while (!e.Equals(eFirst));
+
             // 0 = outside, 1 = inside
             // 0 if even (out), and 1 if odd (in)
             return ((cn & 1) == 1) ? PointInPoly.Inside : PointInPoly.Outside;
@@ -339,17 +445,27 @@ namespace Essence.Geometry.Geom2D
          * <li>extendedAlgorithm: This algorithm differenciates between inside/outside/on the polygon.<li>
          * </ul>
          */
-        public static PointInPoly PointInPolyNonZero(IList<Point2d> points, Point2d p, bool extendedAlgorithm, double epsilon)
+        public static PointInPoly PointInPolyNonZero(IList<Point2d> points, Point2d p, bool extendedAlgorithm, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             // the winding number counter
             int wn = 0;
 
+            IPolyEnumerator<Point2d> eFirst = NewEnumerator(points, 0, robust, epsilon);
+            IPolyEnumerator<Point2d> e = eFirst.Clone();
+
+            IPolyEnumerator<Point2d> eNext = e.Clone();
+            eNext.Next();
+            if (eNext.Equals(eFirst))
+            {
+                return PointInPoly.Outside;
+            }
+
             // loop through all edges of the polygon
-            for (int i = 0; i < points.Count; i++)
+            do
             {
                 // Segmento ab.
-                Point2d a = points[i];
-                Point2d b = points[(i + 1) % points.Count];
+                Point2d a = e.Point;
+                Point2d b = eNext.Point;
 
                 if (extendedAlgorithm)
                 {
@@ -422,19 +538,23 @@ namespace Essence.Geometry.Geom2D
                         }
                     }
                 }
-            }
+
+                e.Next();
+                eNext.Next();
+            } while (!e.Equals(eFirst));
+
             // == 0 only if P is outside
             return ((wn != 0) ? PointInPoly.Inside : PointInPoly.Outside);
         }
 
         /// <summary>
-        /// Se asegura que la orientacion de los points sea CCW.
+        ///     Se asegura que la orientacion de los points sea CCW.
         /// </summary>
         /// <param name="points">Poligono.</param>
         /// <param name="robust">Indica si trata poligonos que contengan vertices repetidos.</param>
-        public static void EnsureCCW(IList<Point2d> points, bool robust)
+        public static void EnsureCCW(IList<Point2d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
-            if (TestOrientation(points, robust) == Orientation.CW)
+            if (TestOrientation(points, robust, epsilon) == Orientation.CW)
             {
                 ListUtils.Reverse(points);
             }
@@ -456,18 +576,26 @@ namespace Essence.Geometry.Geom2D
             }
 
             // first find leftmost lowest vertex of the polygon
-            int index = FindLeftMost(points);
-            IPolyEnumerator<Point2d> enumer = NewEnumerator(points, index, robust, epsilon);
+            int index = FindLeftMost(points, epsilon);
+            IPolyEnumerator<Point2d> e = NewEnumerator(points, index, robust, epsilon);
 
-            // test orientation at this imin vertex
+            // test orientation at leftmost vertex
             // ccw <=> the edge leaving is left of the entering edge
-            IPolyEnumerator<Point2d> next = enumer.Clone();
-            next.Next();
+            IPolyEnumerator<Point2d> eNext = e.Clone();
+            eNext.Next();
+            if (eNext.Equals(e))
+            {
+                return Orientation.Degenerate;
+            }
 
-            IPolyEnumerator<Point2d> prev = enumer.Clone();
-            prev.Prev();
+            IPolyEnumerator<Point2d> ePrev = e.Clone();
+            ePrev.Prev();
+            if (ePrev.Equals(e))
+            {
+                return Orientation.Degenerate;
+            }
 
-            switch (Point2d.WhichSide(prev.Point, enumer.Point, next.Point))
+            switch (Point2d.WhichSide(ePrev.Point, e.Point, eNext.Point))
             {
                 case LineSide.Middle:
                     return Orientation.Degenerate;
@@ -476,130 +604,17 @@ namespace Essence.Geometry.Geom2D
                 case LineSide.Right:
                     return Orientation.CW;
                 default:
-                    throw new IndexOutOfBoundsException();
+                    throw new IndexOutOfRangeException();
             }
 
-            // Another algorithm.
+            // Another algorithms:
             // http://www.easywms.com/easywms/?q=en/node/3602
             // http://paulbourke.net/geometry/clockwise/
             // http://paulbourke.net/geometry/polygonmesh/
-            /*if (points.Count < 3)
-            {
-                return Orientation.Degenerate;
-            }
-
-            int count = 0;
-            for (int i = 0; i < points.Count; i++)
-            {
-                Point2d p = points[i];
-                Point2d pNext = points[(i + 1) % points.Count];
-                Point2d pNextNext = points[(i + 2) % points.Count];
-
-                double v = (pNext.Sub(p)).Cross(pNextNext.Sub(pNext));
-                if (v.EpsilonEquals(0))
-                {
-                }
-                else if (v < 0)
-                {
-                    count--;
-                }
-                else //if (v > 0)
-                {
-                    count++;
-                }
-            }
-
-            if (count == 0)
-            {
-                return Orientation.Degenerate;
-            }
-            else if (count > 0)
-            {
-                return Orientation.CCW;
-            }
-            else //if (count < 0)
-            {
-                return Orientation.CW;
-            }*/
-
-            // Another algorithm which deals with duplicated points.
+            //
             // http://www.easywms.com/easywms/?q=en/node/3602
             // http://paulbourke.net/geometry/clockwise/
             // http://paulbourke.net/geometry/polygonmesh/
-            /*int n = points.Count;
-
-            if (n < 3)
-            {
-                return Orientation.Degenerate;
-            }
-
-            // Primer punto.
-            int i = 0;
-            Point2d p = points[i];
-
-            // Segundo punto: no puede ser igual al primero.
-            int j = i;
-            Point2d pNext;
-            int c = 0;
-            do
-            {
-                j++;
-                pNext = points[j % n];
-                c++;
-            } while (p.EpsilonEquals(pNext) && (c < n));
-
-            if (c == n)
-            {
-                return Orientation.Degenerate;
-            }
-
-            // Indicadores de giro.
-            int count = 0;
-
-            while (i < n)
-            {
-                // Tercer punto: no puede ser igual al segundo.
-                int k = j;
-                Point2d pNextNext;
-                c = 0;
-                do
-                {
-                    k++;
-                    pNextNext = points[k % n];
-                    c++;
-                } while (pNext.EpsilonEquals(pNextNext) && (c < n));
-
-                double v = (pNext.Sub(p)).Cross(pNextNext.Sub(pNext));
-                if (v.EpsilonEquals(0))
-                {
-                }
-                else if (v < 0)
-                {
-                    count--;
-                }
-                else //if (v > 0)
-                {
-                    count++;
-                }
-
-                i = j;
-                j = k;
-                p = pNext;
-                pNext = pNextNext;
-            }
-
-            if (count == 0)
-            {
-                return Orientation.Degenerate;
-            }
-            else if (count > 0)
-            {
-                return Orientation.CCW;
-            }
-            else //if (count < 0)
-            {
-                return Orientation.CW;
-            }*/
         }
 
         /**
@@ -619,25 +634,23 @@ namespace Essence.Geometry.Geom2D
 
             double area = 0;
 
-            IPolyEnumerator<Point2d> pFirst = NewEnumerator(points, 0, robust, epsilon);
-            IPolyEnumerator<Point2d> p = pFirst.Clone();
-            IPolyEnumerator<Point2d> pNext = p.Clone();
-            pNext.Next();
+            IPolyEnumerator<Point2d> eFirst = NewEnumerator(points, 0, robust, epsilon);
+            IPolyEnumerator<Point2d> e = eFirst.Clone();
+
+            IPolyEnumerator<Point2d> eNext = e.Clone();
+            eNext.Next();
+            if (eNext.Equals(eFirst))
+            {
+                return 0;
+            }
+
             do
             {
-                area += p.Point.X * pNext.Point.Y - p.Point.Y * pNext.Point.X;
-                p.Next();
-                pNext.Next();
-            } while (!p.Equals(pFirst));
+                area += e.Point.X * eNext.Point.Y - e.Point.Y * eNext.Point.X;
+                e.Next();
+                eNext.Next();
+            } while (!e.Equals(eFirst));
 
-            /*int n = points.Count;
-            for (int i = 0; i < n; i++)
-            {
-                Point2d p = points[i];
-                Point2d pNext = points[(i + 1) % n];
-
-                area += p.X * pNext.Y - p.Y * pNext.X;
-            }*/
             return area / 2;
         }
 
@@ -685,26 +698,26 @@ namespace Essence.Geometry.Geom2D
             // Indicadores de giro.
             bool leftTurn = false, rightTurn = false;
 
-            IPolyEnumerator<Point2d> pFirst = NewEnumerator(points, 0, robust, epsilon);
-            IPolyEnumerator<Point2d> p1 = pFirst.Clone();
+            IPolyEnumerator<Point2d> eFirst = NewEnumerator(points, 0, robust, epsilon);
+            IPolyEnumerator<Point2d> e1 = eFirst.Clone();
 
-            IPolyEnumerator<Point2d> p2 = p1.Clone();
-            p2.Next();
-            if (p2.Equals(pFirst))
+            IPolyEnumerator<Point2d> e2 = e1.Clone();
+            e2.Next();
+            if (e2.Equals(eFirst))
             {
                 return false;
             }
 
-            IPolyEnumerator<Point2d> p3 = p2.Clone();
-            p3.Next();
-            if (p3.Equals(pFirst))
+            IPolyEnumerator<Point2d> e3 = e2.Clone();
+            e3.Next();
+            if (e3.Equals(eFirst))
             {
                 return false;
             }
 
             do
             {
-                switch (Point2d.WhichSide(p1.Point, p2.Point, p3.Point))
+                switch (Point2d.WhichSide(e1.Point, e2.Point, e3.Point))
                 {
                     case LineSide.Left:
                         leftTurn = true;
@@ -720,10 +733,10 @@ namespace Essence.Geometry.Geom2D
                     return false;
                 }
 
-                p1.Next();
-                p2.Next();
-                p3.Next();
-            } while (!p1.Equals(pFirst));
+                e1.Next();
+                e2.Next();
+                e3.Next();
+            } while (!e1.Equals(eFirst));
 
             // Si no se ha encontrado giro, caso degenerado.
             if (!leftTurn && !rightTurn)
@@ -732,121 +745,6 @@ namespace Essence.Geometry.Geom2D
             }
 
             return true;
-
-            /*for (int i = 0; i < points.Count; i++)
-            {
-                Point2d p = points[i];
-                Point2d pNext = points[(i + 1) % points.Count];
-                Point2d pNextNext = points[(i + 2) % points.Count];
-
-                switch (Point2d.WhichSide(p, pNext, pNextNext))
-                {
-                    case LineSide.Left:
-                        leftTurn = true;
-                        break;
-                    case LineSide.Right:
-                        rightTurn = true;
-                        break;
-                }
-
-                // Si se ha girado a izquierda y derecha, no es convexo.
-                if (leftTurn && rightTurn)
-                {
-                    return false;
-                }
-            }
-
-            // Si no se ha encontrado giro, caso degenerado.
-            if (!leftTurn && !rightTurn)
-            {
-                return false;
-            }
-
-            return true;*/
-
-            /*if (points.Count < 3)
-            {
-                return false;
-            }
-
-            // Primer punto.
-            int i = 0;
-            Point2d p = points[i];
-
-            // Segundo punto: no puede ser igual al primero.
-            int j = i;
-            Point2d pNext;
-            int c = 0;
-            do
-            {
-                j++;
-                pNext = points[j % points.Count];
-                c++;
-            } while (p.EpsilonEquals(pNext) && (c < points.Count));
-
-            if (c == points.Count)
-            {
-                return false;
-            }
-
-            // Indicadores de giro.
-            bool leftTurn = false, rightTurn = false;
-
-            while (i < points.Count)
-            {
-                / * // Tercer punto: no puede ser una combinacion lineal del primero y segundo.
-                    int k = j;
-                    Point2d pNextNext;
-                    Lado lado;
-                    c = 0;
-                    do
-                    {
-                        k++;
-                        pNextNext = points[k % points.Count];
-                        lado = Point2d.WhichSide(p, pNext, pNextNext);
-                        c++;
-                    } while ((lado == Lado.Medio) && (c < points.Count));* /
-
-                // Tercer punto: no puede ser igual al segundo.
-                int k = j;
-                Point2d pNextNext;
-                c = 0;
-                do
-                {
-                    k++;
-                    pNextNext = points[k % points.Count];
-                    c++;
-                } while (pNext.EpsilonEquals(pNextNext) && (c < points.Count));
-
-                switch (Point2d.WhichSide(p, pNext, pNextNext))
-                {
-                    case LineSide.Left:
-                        leftTurn = true;
-                        break;
-                    case LineSide.Right:
-                        rightTurn = true;
-                        break;
-                }
-
-                // Si se ha girado a izquierda y derecha, no es convexo.
-                if (leftTurn && rightTurn)
-                {
-                    return false;
-                }
-
-                i = j;
-                j = k;
-                p = pNext;
-                pNext = pNextNext;
-            }
-
-            // Si no se ha encontrado giro, caso degenerado.
-            if (!leftTurn && !rightTurn)
-            {
-                return false;
-            }
-
-            return true;*/
         }
 
         /**
@@ -855,60 +753,6 @@ namespace Essence.Geometry.Geom2D
         public static bool IsPlanarPolygon(IList<Point3d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             return Plane(points, robust, epsilon) != null;
-
-            /*Point3d p0 = points[0];
-            Point3d p1 = points[1];
-            int i = 2;
-            while (p0.EpsilonEquals(p1) && (i < points.Count))
-            {
-                p1 = points[i];
-                i++;
-            }
-
-            if (i >= points.Count)
-            {
-                // Poligono degenerado.
-                return false;
-            }
-
-            Point3d p2 = points[i];
-            i++;
-            if (AlignmentPoints(p0, p1, p2))
-            {
-                bool encontrado = false;
-                while (i < points.Count)
-                {
-                    p2 = points[i];
-                    i++;
-
-                    if (AlignmentPoints(p0, p1, p2))
-                    {
-                        encontrado = true;
-                    }
-                }
-                if (!encontrado)
-                {
-                    // Poligono degenerado.
-                    return false;
-                }
-            }
-
-            Plane3d plano = Plane3d.NewOrthonormal(p0, p1, p2);
-
-            // Se comprueba que el resto de los points esten en el plano.
-            while (i < points.Count)
-            {
-                Point3d p3 = points[i];
-                i++;
-                if (plano.WhichSide(p3) != PlaneSide.Middle)
-                {
-                    // Se ha encontrado un punto que no esta en el plano.
-                    return false;
-                }
-            }
-
-            // Se ha terminado correctamente.
-            return true;*/
         }
 
         /**
@@ -922,42 +766,42 @@ namespace Essence.Geometry.Geom2D
                 return null;
             }
 
-            IPolyEnumerator<Point3d> pFirst = NewEnumerator(points, 0, robust, epsilon);
-            IPolyEnumerator<Point3d> p1 = pFirst.Clone();
+            IPolyEnumerator<Point3d> eFirst = NewEnumerator(points, 0, robust, epsilon);
+            IPolyEnumerator<Point3d> e1 = eFirst.Clone();
 
-            IPolyEnumerator<Point3d> p2 = p1.Clone();
-            p2.Next();
-            if (p2.Equals(pFirst))
+            IPolyEnumerator<Point3d> e2 = e1.Clone();
+            e2.Next();
+            if (e2.Equals(eFirst))
             {
                 // Poligono degenerado.
                 return null;
             }
 
-            IPolyEnumerator<Point3d> p3 = p2.Clone();
-            p3.Next();
-            while (!p3.Equals(pFirst) && AlignmentPoints(p1.Point, p2.Point, p3.Point))
+            IPolyEnumerator<Point3d> e3 = e2.Clone();
+            e3.Next();
+            while (!e3.Equals(eFirst) && AlignmentPoints(e1.Point, e2.Point, e3.Point))
             {
-                p3.Next();
+                e3.Next();
             }
-            if (p3.Equals(pFirst))
+            if (e3.Equals(eFirst))
             {
                 // Poligono degenerado.
                 return null;
             }
 
-            Plane3d plane = Plane3d.NewOrthonormal(p1.Point, p2.Point, p3.Point);
+            Plane3d plane = Plane3d.NewOrthonormal(e1.Point, e2.Point, e3.Point);
 
-            IPolyEnumerator<Point3d> p = p3.Clone();
-            p.Next();
-            while (!p.Equals(pFirst))
+            IPolyEnumerator<Point3d> e4 = e3.Clone();
+            e4.Next();
+            while (!e4.Equals(eFirst))
             {
-                if (plane.WhichSide(p.Point) != PlaneSide.Middle)
+                if (plane.WhichSide(e4.Point) != PlaneSide.Middle)
                 {
                     // Se ha encontrado un punto que no esta en el plano.
                     return null;
                 }
 
-                p.Next();
+                e4.Next();
             }
 
             // Se ha terminado correctamente.

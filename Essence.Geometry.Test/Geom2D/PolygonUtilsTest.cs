@@ -36,9 +36,9 @@ namespace Essence.Geometry.Geom2D
             };
             PolygonUtils.Normalize(points1);
             AssertEqualsList(points1, AsList(new Point2d(0, 0),
-                                          new Point2d(10, 0),
-                                          new Point2d(10, 10),
-                                          new Point2d(0, 10)));
+                                             new Point2d(10, 0),
+                                             new Point2d(10, 10),
+                                             new Point2d(0, 10)));
 
             IList<Point2d> points2 = AsList(new Point2d(10, 10),
                                             new Point2d(0, 10),
@@ -46,9 +46,9 @@ namespace Essence.Geometry.Geom2D
                                             new Point2d(10, 0));
             PolygonUtils.Normalize(points2);
             AssertEqualsList(points2, AsList(new Point2d(0, 0),
-                                          new Point2d(10, 0),
-                                          new Point2d(10, 10),
-                                          new Point2d(0, 10)));
+                                             new Point2d(10, 0),
+                                             new Point2d(10, 10),
+                                             new Point2d(0, 10)));
 
             // Puntos repetidos.
             IList<Point2d> points3 = AsList(new Point2d(10, 0), new Point2d(10, 0),
@@ -57,9 +57,9 @@ namespace Essence.Geometry.Geom2D
                                             new Point2d(0, 0), new Point2d(0, 0));
             PolygonUtils.Normalize(points3);
             AssertEqualsList(points3, AsList(new Point2d(0, 0), new Point2d(0, 0),
-                                          new Point2d(10, 0), new Point2d(10, 0),
-                                          new Point2d(10, 10), new Point2d(10, 10),
-                                          new Point2d(0, 10), new Point2d(0, 10)));
+                                             new Point2d(10, 0), new Point2d(10, 0),
+                                             new Point2d(10, 10), new Point2d(10, 10),
+                                             new Point2d(0, 10), new Point2d(0, 10)));
 
             IList<Point2d> points4 = AsList(new Point2d(10, 10), new Point2d(10, 10),
                                             new Point2d(0, 10), new Point2d(0, 10),
@@ -67,9 +67,9 @@ namespace Essence.Geometry.Geom2D
                                             new Point2d(10, 0), new Point2d(10, 0));
             PolygonUtils.Normalize(points4);
             AssertEqualsList(points4, AsList(new Point2d(0, 0), new Point2d(0, 0),
-                                          new Point2d(10, 0), new Point2d(10, 0),
-                                          new Point2d(10, 10), new Point2d(10, 10),
-                                          new Point2d(0, 10), new Point2d(0, 10)));
+                                             new Point2d(10, 0), new Point2d(10, 0),
+                                             new Point2d(10, 10), new Point2d(10, 10),
+                                             new Point2d(0, 10), new Point2d(0, 10)));
         }
 
         [TestMethod]
@@ -80,18 +80,18 @@ namespace Essence.Geometry.Geom2D
                                            new Point2d(0, 10),
                                            new Point2d(0, 0));
 
-            Assert.IsTrue(PolygonUtils.PointInEdge(points, new Point2d(5, 0), MathUtils.EPSILON));
-            Assert.IsTrue(PolygonUtils.PointInEdge(points, new Point2d(10, 5), MathUtils.EPSILON));
-            Assert.IsTrue(PolygonUtils.PointInEdge(points, new Point2d(5, 10), MathUtils.EPSILON));
-            Assert.IsTrue(PolygonUtils.PointInEdge(points, new Point2d(0, 5), MathUtils.EPSILON));
+            Assert.IsTrue(PolygonUtils.PointInEdge(points, new Point2d(5, 0), true, MathUtils.EPSILON));
+            Assert.IsTrue(PolygonUtils.PointInEdge(points, new Point2d(10, 5), true, MathUtils.EPSILON));
+            Assert.IsTrue(PolygonUtils.PointInEdge(points, new Point2d(5, 10), true, MathUtils.EPSILON));
+            Assert.IsTrue(PolygonUtils.PointInEdge(points, new Point2d(0, 5), true, MathUtils.EPSILON));
 
-            Assert.IsFalse(PolygonUtils.PointInEdge(points, new Point2d(5, 5), MathUtils.EPSILON));
-            Assert.IsFalse(PolygonUtils.PointInEdge(points, new Point2d(5, 15), MathUtils.EPSILON));
-            Assert.IsFalse(PolygonUtils.PointInEdge(points, new Point2d(5, -5), MathUtils.EPSILON));
+            Assert.IsFalse(PolygonUtils.PointInEdge(points, new Point2d(5, 5), true, MathUtils.EPSILON));
+            Assert.IsFalse(PolygonUtils.PointInEdge(points, new Point2d(5, 15), true, MathUtils.EPSILON));
+            Assert.IsFalse(PolygonUtils.PointInEdge(points, new Point2d(5, -5), true, MathUtils.EPSILON));
 
             // Using epsilon.
-            Assert.IsFalse(PolygonUtils.PointInEdge(points, new Point2d(5, 5), 4.9));
-            Assert.IsTrue(PolygonUtils.PointInEdge(points, new Point2d(5, 5), 5));
+            Assert.IsFalse(PolygonUtils.PointInEdge(points, new Point2d(5, 5), true, 4.9));
+            Assert.IsTrue(PolygonUtils.PointInEdge(points, new Point2d(5, 5), true, 5));
         }
 
         [TestMethod]
@@ -109,43 +109,43 @@ namespace Essence.Geometry.Geom2D
 
             IList<Point2d> points = AsList(p0, p2, p4, p1, p3);
 
-            PointInPoly pip1 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, 0), true, MathUtils.EPSILON);
+            PointInPoly pip1 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip1);
 
-            PointInPoly pip2 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(-2, 2), true, MathUtils.EPSILON);
+            PointInPoly pip2 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(-2, 2), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip2);
 
-            PointInPoly pip3 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(-2, -2), true, MathUtils.EPSILON);
+            PointInPoly pip3 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(-2, -2), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip3);
 
-            PointInPoly pip4 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(0, 0), true, MathUtils.EPSILON);
+            PointInPoly pip4 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(0, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip4);
 
-            PointInPoly pip5 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(10, 0), true, MathUtils.EPSILON);
+            PointInPoly pip5 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(10, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip5);
 
-            PointInPoly pip6 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, 3), true, MathUtils.EPSILON);
+            PointInPoly pip6 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, 3), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip6);
 
-            PointInPoly pip7 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, -3), true, MathUtils.EPSILON);
+            PointInPoly pip7 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, -3), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip7);
 
-            PointInPoly pip8 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(1, 1), true, MathUtils.EPSILON);
+            PointInPoly pip8 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(1, 1), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip8);
 
-            PointInPoly pip9 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(1, -1), true, MathUtils.EPSILON);
+            PointInPoly pip9 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(1, -1), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip9);
 
-            PointInPoly pip10 = PolygonUtils.PointInPolyEvenOdd(points, p4.Add(p1.Sub(p4).Unit.Mul(0.7)), true, MathUtils.EPSILON);
+            PointInPoly pip10 = PolygonUtils.PointInPolyEvenOdd(points, p4.Add(p1.Sub(p4).Unit.Mul(0.7)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip10);
 
-            PointInPoly pip11 = PolygonUtils.PointInPolyEvenOdd(points, p4.Add(p1.Sub(p4).Unit.Mul(0.3)), true, MathUtils.EPSILON);
+            PointInPoly pip11 = PolygonUtils.PointInPolyEvenOdd(points, p4.Add(p1.Sub(p4).Unit.Mul(0.3)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip11);
 
-            PointInPoly pip12 = PolygonUtils.PointInPolyEvenOdd(points, p1.Add(p3.Sub(p1).Unit.Mul(0.7)), true, MathUtils.EPSILON);
+            PointInPoly pip12 = PolygonUtils.PointInPolyEvenOdd(points, p1.Add(p3.Sub(p1).Unit.Mul(0.7)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip12);
 
-            PointInPoly pip13 = PolygonUtils.PointInPolyEvenOdd(points, p1.Add(p3.Sub(p1).Unit.Mul(0.3)), true, MathUtils.EPSILON);
+            PointInPoly pip13 = PolygonUtils.PointInPolyEvenOdd(points, p1.Add(p3.Sub(p1).Unit.Mul(0.3)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip13);
         }
 
@@ -164,43 +164,43 @@ namespace Essence.Geometry.Geom2D
 
             IList<Point2d> points = DuplicatePoints(AsList(p0, p2, p4, p1, p3));
 
-            PointInPoly pip1 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, 0), true, MathUtils.EPSILON);
+            PointInPoly pip1 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip1);
 
-            PointInPoly pip2 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(-2, 2), true, MathUtils.EPSILON);
+            PointInPoly pip2 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(-2, 2), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip2);
 
-            PointInPoly pip3 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(-2, -2), true, MathUtils.EPSILON);
+            PointInPoly pip3 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(-2, -2), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip3);
 
-            PointInPoly pip4 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(0, 0), true, MathUtils.EPSILON);
+            PointInPoly pip4 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(0, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip4);
 
-            PointInPoly pip5 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(10, 0), true, MathUtils.EPSILON);
+            PointInPoly pip5 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(10, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip5);
 
-            PointInPoly pip6 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, 3), true, MathUtils.EPSILON);
+            PointInPoly pip6 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, 3), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip6);
 
-            PointInPoly pip7 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, -3), true, MathUtils.EPSILON);
+            PointInPoly pip7 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(4, -3), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip7);
 
-            PointInPoly pip8 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(1, 1), true, MathUtils.EPSILON);
+            PointInPoly pip8 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(1, 1), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip8);
 
-            PointInPoly pip9 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(1, -1), true, MathUtils.EPSILON);
+            PointInPoly pip9 = PolygonUtils.PointInPolyEvenOdd(points, new Point2d(1, -1), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip9);
 
-            PointInPoly pip10 = PolygonUtils.PointInPolyEvenOdd(points, p4.Add(p1.Sub(p4).Unit.Mul(0.7)), true, MathUtils.EPSILON);
+            PointInPoly pip10 = PolygonUtils.PointInPolyEvenOdd(points, p4.Add(p1.Sub(p4).Unit.Mul(0.7)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip10);
 
-            PointInPoly pip11 = PolygonUtils.PointInPolyEvenOdd(points, p4.Add(p1.Sub(p4).Unit.Mul(0.3)), true, MathUtils.EPSILON);
+            PointInPoly pip11 = PolygonUtils.PointInPolyEvenOdd(points, p4.Add(p1.Sub(p4).Unit.Mul(0.3)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip11);
 
-            PointInPoly pip12 = PolygonUtils.PointInPolyEvenOdd(points, p1.Add(p3.Sub(p1).Unit.Mul(0.7)), true, MathUtils.EPSILON);
+            PointInPoly pip12 = PolygonUtils.PointInPolyEvenOdd(points, p1.Add(p3.Sub(p1).Unit.Mul(0.7)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip12);
 
-            PointInPoly pip13 = PolygonUtils.PointInPolyEvenOdd(points, p1.Add(p3.Sub(p1).Unit.Mul(0.3)), true, MathUtils.EPSILON);
+            PointInPoly pip13 = PolygonUtils.PointInPolyEvenOdd(points, p1.Add(p3.Sub(p1).Unit.Mul(0.3)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip13);
         }
 
@@ -219,43 +219,43 @@ namespace Essence.Geometry.Geom2D
 
             IList<Point2d> points = AsList(p0, p2, p4, p1, p3);
 
-            PointInPoly pip1 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, 0), true, MathUtils.EPSILON);
+            PointInPoly pip1 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip1);
 
-            PointInPoly pip2 = PolygonUtils.PointInPolyNonZero(points, new Point2d(-2, 2), true, MathUtils.EPSILON);
+            PointInPoly pip2 = PolygonUtils.PointInPolyNonZero(points, new Point2d(-2, 2), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip2);
 
-            PointInPoly pip3 = PolygonUtils.PointInPolyNonZero(points, new Point2d(-2, -2), true, MathUtils.EPSILON);
+            PointInPoly pip3 = PolygonUtils.PointInPolyNonZero(points, new Point2d(-2, -2), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip3);
 
-            PointInPoly pip4 = PolygonUtils.PointInPolyNonZero(points, new Point2d(0, 0), true, MathUtils.EPSILON);
+            PointInPoly pip4 = PolygonUtils.PointInPolyNonZero(points, new Point2d(0, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip4);
 
-            PointInPoly pip5 = PolygonUtils.PointInPolyNonZero(points, new Point2d(10, 0), true, MathUtils.EPSILON);
+            PointInPoly pip5 = PolygonUtils.PointInPolyNonZero(points, new Point2d(10, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip5);
 
-            PointInPoly pip6 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, 3), true, MathUtils.EPSILON);
+            PointInPoly pip6 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, 3), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip6);
 
-            PointInPoly pip7 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, -3), true, MathUtils.EPSILON);
+            PointInPoly pip7 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, -3), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip7);
 
-            PointInPoly pip8 = PolygonUtils.PointInPolyNonZero(points, new Point2d(1, 1), true, MathUtils.EPSILON);
+            PointInPoly pip8 = PolygonUtils.PointInPolyNonZero(points, new Point2d(1, 1), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip8);
 
-            PointInPoly pip9 = PolygonUtils.PointInPolyNonZero(points, new Point2d(1, -1), true, MathUtils.EPSILON);
+            PointInPoly pip9 = PolygonUtils.PointInPolyNonZero(points, new Point2d(1, -1), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip9);
 
-            PointInPoly pip10 = PolygonUtils.PointInPolyNonZero(points, p4.Add(p1.Sub(p4).Unit.Mul(0.7)), true, MathUtils.EPSILON);
+            PointInPoly pip10 = PolygonUtils.PointInPolyNonZero(points, p4.Add(p1.Sub(p4).Unit.Mul(0.7)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip10);
 
-            PointInPoly pip11 = PolygonUtils.PointInPolyNonZero(points, p4.Add(p1.Sub(p4).Unit.Mul(0.3)), true, MathUtils.EPSILON);
+            PointInPoly pip11 = PolygonUtils.PointInPolyNonZero(points, p4.Add(p1.Sub(p4).Unit.Mul(0.3)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip11);
 
-            PointInPoly pip12 = PolygonUtils.PointInPolyNonZero(points, p1.Add(p3.Sub(p1).Unit.Mul(0.7)), true, MathUtils.EPSILON);
+            PointInPoly pip12 = PolygonUtils.PointInPolyNonZero(points, p1.Add(p3.Sub(p1).Unit.Mul(0.7)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip12);
 
-            PointInPoly pip13 = PolygonUtils.PointInPolyNonZero(points, p1.Add(p3.Sub(p1).Unit.Mul(0.3)), true, MathUtils.EPSILON);
+            PointInPoly pip13 = PolygonUtils.PointInPolyNonZero(points, p1.Add(p3.Sub(p1).Unit.Mul(0.3)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip13);
         }
 
@@ -274,43 +274,43 @@ namespace Essence.Geometry.Geom2D
 
             IList<Point2d> points = DuplicatePoints(AsList(p0, p2, p4, p1, p3));
 
-            PointInPoly pip1 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, 0), true, MathUtils.EPSILON);
+            PointInPoly pip1 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip1);
 
-            PointInPoly pip2 = PolygonUtils.PointInPolyNonZero(points, new Point2d(-2, 2), true, MathUtils.EPSILON);
+            PointInPoly pip2 = PolygonUtils.PointInPolyNonZero(points, new Point2d(-2, 2), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip2);
 
-            PointInPoly pip3 = PolygonUtils.PointInPolyNonZero(points, new Point2d(-2, -2), true, MathUtils.EPSILON);
+            PointInPoly pip3 = PolygonUtils.PointInPolyNonZero(points, new Point2d(-2, -2), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip3);
 
-            PointInPoly pip4 = PolygonUtils.PointInPolyNonZero(points, new Point2d(0, 0), true, MathUtils.EPSILON);
+            PointInPoly pip4 = PolygonUtils.PointInPolyNonZero(points, new Point2d(0, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip4);
 
-            PointInPoly pip5 = PolygonUtils.PointInPolyNonZero(points, new Point2d(10, 0), true, MathUtils.EPSILON);
+            PointInPoly pip5 = PolygonUtils.PointInPolyNonZero(points, new Point2d(10, 0), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip5);
 
-            PointInPoly pip6 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, 3), true, MathUtils.EPSILON);
+            PointInPoly pip6 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, 3), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip6);
 
-            PointInPoly pip7 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, -3), true, MathUtils.EPSILON);
+            PointInPoly pip7 = PolygonUtils.PointInPolyNonZero(points, new Point2d(4, -3), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Outside, pip7);
 
-            PointInPoly pip8 = PolygonUtils.PointInPolyNonZero(points, new Point2d(1, 1), true, MathUtils.EPSILON);
+            PointInPoly pip8 = PolygonUtils.PointInPolyNonZero(points, new Point2d(1, 1), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip8);
 
-            PointInPoly pip9 = PolygonUtils.PointInPolyNonZero(points, new Point2d(1, -1), true, MathUtils.EPSILON);
+            PointInPoly pip9 = PolygonUtils.PointInPolyNonZero(points, new Point2d(1, -1), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.Inside, pip9);
 
-            PointInPoly pip10 = PolygonUtils.PointInPolyNonZero(points, p4.Add(p1.Sub(p4).Unit.Mul(0.7)), true, MathUtils.EPSILON);
+            PointInPoly pip10 = PolygonUtils.PointInPolyNonZero(points, p4.Add(p1.Sub(p4).Unit.Mul(0.7)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip10);
 
-            PointInPoly pip11 = PolygonUtils.PointInPolyNonZero(points, p4.Add(p1.Sub(p4).Unit.Mul(0.3)), true, MathUtils.EPSILON);
+            PointInPoly pip11 = PolygonUtils.PointInPolyNonZero(points, p4.Add(p1.Sub(p4).Unit.Mul(0.3)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip11);
 
-            PointInPoly pip12 = PolygonUtils.PointInPolyNonZero(points, p1.Add(p3.Sub(p1).Unit.Mul(0.7)), true, MathUtils.EPSILON);
+            PointInPoly pip12 = PolygonUtils.PointInPolyNonZero(points, p1.Add(p3.Sub(p1).Unit.Mul(0.7)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip12);
 
-            PointInPoly pip13 = PolygonUtils.PointInPolyNonZero(points, p1.Add(p3.Sub(p1).Unit.Mul(0.3)), true, MathUtils.EPSILON);
+            PointInPoly pip13 = PolygonUtils.PointInPolyNonZero(points, p1.Add(p3.Sub(p1).Unit.Mul(0.3)), true, true, MathUtils.EPSILON);
             Assert.AreEqual(PointInPoly.On, pip13);
         }
 
@@ -320,36 +320,36 @@ namespace Essence.Geometry.Geom2D
             IList<Point2d> points1 = AsList(new Point2d(0, 0), new Point2d(10, 10), new Point2d(0, 10));
             IList<Point2d> points2 = AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(5, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(0, 5), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(5, 5), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(5, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(0, 5), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(5, 5), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(5, 0), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(10, 5), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(5, 5), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(5, 0), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(10, 5), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(5, 5), false, true, MathUtils.EPSILON));
 
             IList<Point2d> points3 = AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10), new Point2d(0, 10));
             IList<Point2d> points4 = AsList(new Point2d(0, 10), new Point2d(10, 10), new Point2d(10, 20), new Point2d(0, 20));
             IList<Point2d> points5 = AsList(new Point2d(10, 0), new Point2d(20, 0), new Point2d(20, 10), new Point2d(10, 10));
             IList<Point2d> points6 = AsList(new Point2d(10, 10), new Point2d(20, 10), new Point2d(20, 20), new Point2d(10, 20));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(5, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(5, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(5, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(5, 10), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(15, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(15, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(15, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(15, 10), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(10, 5), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(10, 5), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(10, 5), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(10, 5), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(10, 15), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(10, 15), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(10, 15), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(10, 15), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(10, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(10, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(10, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(10, 10), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(10, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(10, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(10, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(10, 10), false, true, MathUtils.EPSILON));
         }
 
         [TestMethod]
@@ -358,36 +358,36 @@ namespace Essence.Geometry.Geom2D
             IList<Point2d> points1 = DuplicatePoints(AsList(new Point2d(0, 0), new Point2d(10, 10), new Point2d(0, 10)));
             IList<Point2d> points2 = DuplicatePoints(AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10)));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(5, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(0, 5), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(5, 5), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(5, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(0, 5), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points1, new Point2d(5, 5), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(5, 0), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(10, 5), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(5, 5), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(5, 0), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(10, 5), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points2, new Point2d(5, 5), false, true, MathUtils.EPSILON));
 
             IList<Point2d> points3 = DuplicatePoints(AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10), new Point2d(0, 10)));
             IList<Point2d> points4 = DuplicatePoints(AsList(new Point2d(0, 10), new Point2d(10, 10), new Point2d(10, 20), new Point2d(0, 20)));
             IList<Point2d> points5 = DuplicatePoints(AsList(new Point2d(10, 0), new Point2d(20, 0), new Point2d(20, 10), new Point2d(10, 10)));
             IList<Point2d> points6 = DuplicatePoints(AsList(new Point2d(10, 10), new Point2d(20, 10), new Point2d(20, 20), new Point2d(10, 20)));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(5, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(5, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(5, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(5, 10), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(15, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(15, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(15, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(15, 10), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(10, 5), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(10, 5), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(10, 5), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(10, 5), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(10, 15), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(10, 15), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(10, 15), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(10, 15), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(10, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(10, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points3, new Point2d(10, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points5, new Point2d(10, 10), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(10, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(10, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyEvenOdd(points4, new Point2d(10, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyEvenOdd(points6, new Point2d(10, 10), false, true, MathUtils.EPSILON));
         }
 
         [TestMethod]
@@ -396,36 +396,36 @@ namespace Essence.Geometry.Geom2D
             IList<Point2d> points1 = AsList(new Point2d(0, 0), new Point2d(10, 10), new Point2d(0, 10));
             IList<Point2d> points2 = AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points1, new Point2d(5, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points1, new Point2d(0, 5), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points1, new Point2d(5, 5), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points1, new Point2d(5, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points1, new Point2d(0, 5), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points1, new Point2d(5, 5), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points2, new Point2d(5, 0), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points2, new Point2d(10, 5), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points2, new Point2d(5, 5), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points2, new Point2d(5, 0), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points2, new Point2d(10, 5), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points2, new Point2d(5, 5), false, true, MathUtils.EPSILON));
 
             IList<Point2d> points3 = AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10), new Point2d(0, 10));
             IList<Point2d> points4 = AsList(new Point2d(0, 10), new Point2d(10, 10), new Point2d(10, 20), new Point2d(0, 20));
             IList<Point2d> points5 = AsList(new Point2d(10, 0), new Point2d(20, 0), new Point2d(20, 10), new Point2d(10, 10));
             IList<Point2d> points6 = AsList(new Point2d(10, 10), new Point2d(20, 10), new Point2d(20, 20), new Point2d(10, 20));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points3, new Point2d(5, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points4, new Point2d(5, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points3, new Point2d(5, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points4, new Point2d(5, 10), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points5, new Point2d(15, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points6, new Point2d(15, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points5, new Point2d(15, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points6, new Point2d(15, 10), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points3, new Point2d(10, 5), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points5, new Point2d(10, 5), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points3, new Point2d(10, 5), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points5, new Point2d(10, 5), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points4, new Point2d(10, 15), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points6, new Point2d(10, 15), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points4, new Point2d(10, 15), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points6, new Point2d(10, 15), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points3, new Point2d(10, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points5, new Point2d(10, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points3, new Point2d(10, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points5, new Point2d(10, 10), false, true, MathUtils.EPSILON));
 
-            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points4, new Point2d(10, 10), false, MathUtils.EPSILON));
-            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points6, new Point2d(10, 10), false, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Outside, PolygonUtils.PointInPolyNonZero(points4, new Point2d(10, 10), false, true, MathUtils.EPSILON));
+            Assert.AreEqual(PointInPoly.Inside, PolygonUtils.PointInPolyNonZero(points6, new Point2d(10, 10), false, true, MathUtils.EPSILON));
         }
 
         [TestMethod]

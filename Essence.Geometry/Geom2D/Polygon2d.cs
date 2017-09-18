@@ -78,23 +78,23 @@ namespace Essence.Geometry.Geom2D
                 return false;
             }
 
-            return PolygonUtils.PointInEdge(this.Vertices, p, precision);
+            return PolygonUtils.PointInEdge(this.Vertices, p, true, precision);
         }
 
         /**
          * This method tests if the point is on the polygon.
          */
-        public bool PointInPoly(Point2d p, WindingRule windingRule, bool extendedAlgorithm, double epsilon = MathUtils.EPSILON)
+        public bool PointInPoly(Point2d p, WindingRule windingRule, bool extendedAlgorithm, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             switch (windingRule)
             {
                 case WindingRule.EvenOdd:
                 {
-                    return this.PointInPolyEvenOdd(p, extendedAlgorithm, epsilon);
+                    return this.PointInPolyEvenOdd(p, extendedAlgorithm, robust, epsilon);
                 }
                 case WindingRule.NonZero:
                 {
-                    return this.PointInPolyNonZero(p, extendedAlgorithm, epsilon);
+                    return this.PointInPolyNonZero(p, extendedAlgorithm, robust, epsilon);
                 }
                 default:
                 {
@@ -106,27 +106,27 @@ namespace Essence.Geometry.Geom2D
         /**
          * Crossing number test for a point in a polygon.
          */
-        public bool PointInPolyEvenOdd(Point2d p, bool extendedAlgorithm, double epsilon = MathUtils.EPSILON)
+        public bool PointInPolyEvenOdd(Point2d p, bool extendedAlgorithm, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             if (!this.BoundingBox.IsInterior(p))
             {
                 return false;
             }
 
-            return (PolygonUtils.PointInPolyEvenOdd(this.vertices, p, extendedAlgorithm, epsilon) != Essence.Geometry.Geom2D.PointInPoly.Outside);
+            return (PolygonUtils.PointInPolyEvenOdd(this.vertices, p, extendedAlgorithm, robust, epsilon) != Essence.Geometry.Geom2D.PointInPoly.Outside);
         }
 
         /**
          * Winding number test for a point in a polygon.
          */
-        public bool PointInPolyNonZero(Point2d p, bool extendedAlgorithm, double epsilon = MathUtils.EPSILON)
+        public bool PointInPolyNonZero(Point2d p, bool extendedAlgorithm, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             if (!this.BoundingBox.IsInterior(p))
             {
                 return false;
             }
 
-            return (PolygonUtils.PointInPolyNonZero(this.vertices, p, extendedAlgorithm, epsilon) != Essence.Geometry.Geom2D.PointInPoly.Outside);
+            return (PolygonUtils.PointInPolyNonZero(this.vertices, p, extendedAlgorithm, robust, epsilon) != Essence.Geometry.Geom2D.PointInPoly.Outside);
         }
 
         /**
