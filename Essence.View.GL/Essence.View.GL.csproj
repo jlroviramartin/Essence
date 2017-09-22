@@ -148,6 +148,10 @@
     <Compile Include="Views\IDrawing3DView.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Essence.Geometry.Core\Essence.Geometry.Core.csproj">
+      <Project>{678c7b81-7bf4-4053-995b-8320b810efaa}</Project>
+      <Name>Essence.Geometry.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Essence.Geometry\Essence.Geometry.csproj">
       <Project>{435dddb4-5427-4d0f-98c9-121a2b8192b1}</Project>
       <Name>Essence.Geometry</Name>

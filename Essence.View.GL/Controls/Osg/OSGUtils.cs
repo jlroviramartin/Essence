@@ -20,18 +20,14 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Essence.Geometry.Core;
 using Essence.Geometry.Core.Byte;
 using Essence.Geometry.Core.Double;
 using Essence.Geometry.Core.Float;
-using Essence.Util;
 using Essence.Util.Logs;
 using Essence.Util.Properties;
 using osg;
 using osgDB;
-using osgGA;
-using osgViewer;
 using Image = osg.Image;
 using Light = Essence.Geometry.Core.Light;
 
@@ -210,15 +206,15 @@ namespace Essence.View.Controls.Osg
             Debug.WriteLine("----- Nodes -----");
             Debug.WriteLine("{");
             Debug.Indent();
-            OSGUtils.PrintNodes(root,
-                                node =>
-                                {
-                                    BoundingSphered bsph = node.computeBound();
-                                    return string.Format("+ {0} [ [{1:F2} ; {2:F2} ; {3:F2} ]; - {4:F2} ]",
-                                                         node.getName(),
-                                                         bsph._center.X, bsph._center.Y, bsph._center.Z,
-                                                         bsph._radius);
-                                });
+            PrintNodes(root,
+                       node =>
+                       {
+                           BoundingSphered bsph = node.computeBound();
+                           return string.Format("+ {0} [ [{1:F2} ; {2:F2} ; {3:F2} ]; - {4:F2} ]",
+                                                node.getName(),
+                                                bsph._center.X, bsph._center.Y, bsph._center.Z,
+                                                bsph._radius);
+                       });
             Debug.Unindent();
             Debug.WriteLine("}");
         }
@@ -274,7 +270,7 @@ namespace Essence.View.Controls.Osg
 
             osgLight.setAmbient(ToVec4f(light.Ambient));
             osgLight.setDiffuse(ToVec4f(light.Diffuse));
-            osgLight.setSpecular(ToVec4f(light.Especular));
+            osgLight.setSpecular(ToVec4f(light.Specular));
             return osgLight;
         }
 
@@ -282,12 +278,16 @@ namespace Essence.View.Controls.Osg
 
         public static Vec4f ToVec4f(this Color3b color)
         {
-            return new Vec4f(ByteColor.GetSingle(color.Red), ByteColor.GetSingle(color.Green), ByteColor.GetSingle(color.Blue), 1);
+            ColorSetter3f setter = new ColorSetter3f();
+            color.GetColor(setter);
+            return new Vec4f(setter.C1, setter.C2, setter.C3, 1);
         }
 
         public static Vec4f ToVec4f(this Color4b color)
         {
-            return new Vec4f(ByteColor.GetSingle(color.Red), ByteColor.GetSingle(color.Green), ByteColor.GetSingle(color.Blue), ByteColor.GetSingle(color.Alpha));
+            ColorSetter4f setter = new ColorSetter4f();
+            color.GetColor(setter);
+            return new Vec4f(setter.C1, setter.C2, setter.C3, setter.C4);
         }
 
         public static Vec4ub ToVec4ub(this Color3b color)
@@ -312,12 +312,16 @@ namespace Essence.View.Controls.Osg
 
         public static Vec4ub ToVec4ub(this Color3f color)
         {
-            return new Vec4ub(FloatColor.GetByte(color.Red), FloatColor.GetByte(color.Green), FloatColor.GetByte(color.Blue), 255);
+            ColorSetter3b setter = new ColorSetter3b();
+            color.GetColor(setter);
+            return new Vec4ub(setter.C1, setter.C2, setter.C3, 1);
         }
 
         public static Vec4ub ToVec4ub(this Color4f color)
         {
-            return new Vec4ub(FloatColor.GetByte(color.Red), FloatColor.GetByte(color.Green), FloatColor.GetByte(color.Blue), FloatColor.GetByte(color.Alpha));
+            ColorSetter4b setter = new ColorSetter4b();
+            color.GetColor(setter);
+            return new Vec4ub(setter.C1, setter.C2, setter.C3, setter.C4);
         }
 
         #endregion
@@ -828,8 +832,7 @@ namespace Essence.View.Controls.Osg
 
             //Environment.SetEnvironmentVariable("OSGEARTH_MP_PROFILE", "1"); // 1, 2
             Environment.SetEnvironmentVariable("OSGEARTH_MP_DEBUG", "ON");
-#else
-//OsgModule.setNotifyHandler(MyNotifyHandlerDebug.Instance);
+#else //OsgModule.setNotifyHandler(MyNotifyHandlerDebug.Instance);
             OsgModule.setNotifyLevel(NotifySeverity.WARN); // WARN DEBUG_FP
 
             // http://trac.openscenegraph.org/projects/osg//wiki/Support/TipsAndTricks

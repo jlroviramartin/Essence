@@ -40,7 +40,7 @@ namespace Essence.View.Controls.Osg
         }
 
         private ByteImage(Image image, int w, int h, int stride, int pixelSize, byte[] array)
-            : base(w, h, stride, pixelSize, array)
+            : base(w, h, 0, stride, pixelSize, array)
         {
             this.image = image;
         }

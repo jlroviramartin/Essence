@@ -18,10 +18,11 @@ namespace Essence.View.Controls.Osg
 {
     public abstract class AbsByteImage : DisposableObject
     {
-        protected AbsByteImage(int w, int h, int stride, int pixelSize, byte[] array)
+        protected AbsByteImage(int w, int h, int offset, int stride, int pixelSize, byte[] array)
         {
             this.w = w;
             this.h = h;
+            this.offset = offset;
             this.stride = stride;
             this.pixelSize = pixelSize;
             this.array = array;
@@ -66,13 +67,13 @@ namespace Essence.View.Controls.Osg
 
         public byte this[int x, int y]
         {
-            get { return this.array[x + y * this.stride]; }
-            set { this.array[x + y * this.stride] = value; }
+            get { return this.array[this.offset + x + y * this.stride]; }
+            set { this.array[this.offset + x + y * this.stride] = value; }
         }
 
         public abstract void Update();
 
-        private readonly int w, h, stride, pixelSize;
+        private readonly int w, h, offset, stride, pixelSize;
         protected readonly byte[] array;
     }
 }
