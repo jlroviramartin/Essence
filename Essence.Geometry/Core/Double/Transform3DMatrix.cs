@@ -45,14 +45,14 @@ namespace Essence.Geometry.Core.Double
                                          m30, m31, m32, m33);
         }
 
-        public override IVector3D Transform(IVector3D v)
+        public override Vector3d Transform(Vector3d v)
         {
-            return this.Matrix.Mul(v.ToVector3d());
+            return this.Matrix.Mul(v);
         }
 
-        public override IPoint3D Transform(IPoint3D p)
+        public override Point3d Transform(Point3d p)
         {
-            return this.Matrix.Mul(p.ToPoint3d());
+            return this.Matrix.Mul(p);
         }
 
         public override ITransform3D Concat(ITransform3D transform)

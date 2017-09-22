@@ -19,14 +19,14 @@ namespace Essence.Geometry.Graphics
 {
     public interface IShape2D
     {
-        BoundingBox2d getBounds(IGraphicsContext2D context);
+        BoundingBox2d GetBounds(IGraphicsContext2D context);
 
-        bool contains(IPoint2D pt, IGraphicsContext2D context);
+        bool Contains(IPoint2D pt, IGraphicsContext2D context);
 
-        bool contains(BoundingBox2d rec, IGraphicsContext2D context);
+        bool Contains(BoundingBox2d rec, IGraphicsContext2D context);
 
-        bool intersects(BoundingBox2d r, IGraphicsContext2D context);
+        bool Intersects(BoundingBox2d r, IGraphicsContext2D context);
 
-        IPathIterator2D getPathIterator(IGraphicsContext2D context, double flatness);
+        IPathIterator2D GetPathIterator(IGraphicsContext2D context, double flatness);
     }
 }

@@ -71,7 +71,8 @@ namespace Essence.Geometry.Curves
         {
             DistPointCircleArc2 distance = new DistPointCircleArc2()
             {
-                Point = punto, Arc = this
+                Point = punto,
+                Arc = this
             };
 
             // Se calcula el punto mas cercano.

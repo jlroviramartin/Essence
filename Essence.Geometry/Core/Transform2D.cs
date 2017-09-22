@@ -19,9 +19,19 @@ namespace Essence.Geometry.Core
 {
     public abstract class Transform2D : ITransform2D
     {
-        public abstract IVector2D Transform(IVector2D v);
+        public abstract Vector2d Transform(Vector2d v);
 
-        public abstract IPoint2D Transform(IPoint2D p);
+        public abstract Point2d Transform(Point2d v);
+
+        IPoint2D ITransform2D.Transform(IPoint2D p)
+        {
+            return this.Transform(p.ToPoint2d());
+        }
+
+        IVector2D ITransform2D.Transform(IVector2D v)
+        {
+            return this.Transform(v.ToVector2d());
+        }
 
         public abstract ITransform2D Concat(ITransform2D transform);
 

@@ -20,12 +20,12 @@ namespace Essence.Geometry.Core
     {
         public static readonly Transform3DIdentity Instance = new Transform3DIdentity();
 
-        public override IVector3D Transform(IVector3D v)
+        public override Vector3d Transform(Vector3d v)
         {
             return v;
         }
 
-        public override IPoint3D Transform(IPoint3D p)
+        public override Point3d Transform(Point3d p)
         {
             return p;
         }

@@ -16,13 +16,13 @@ namespace Essence.Geometry.Geom2D
 {
     public enum Orientation
     {
-        /// <summary>AntiHoraria, CounterClockWise, CCW ( + )<c><![CDATA[> 0]]></c></summary>
+        /// <summary>CounterClockWise, CCW ( + )<c><![CDATA[> 0]]></c></summary>
         CCW = 1,
 
-        /// <summary>Ninguna, degenrado ( 0 )<c><![CDATA[== 0]]></c></summary>
+        /// <summary>Degenrate ( 0 )<c><![CDATA[== 0]]></c></summary>
         Degenerate = 0,
 
-        /// <summary>Horaria, ClockWise, CW ( - )<c><![CDATA[< 0]]></c></summary>
+        /// <summary>ClockWise, CW ( - )<c><![CDATA[< 0]]></c></summary>
         CW = -1
     }
 }

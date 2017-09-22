@@ -23,9 +23,7 @@ namespace Essence.Geometry.Graphics
         {
             List<Point2d> points = new List<Point2d>();
 
-            CoordinateSetter2d setP1 = new CoordinateSetter2d();
-            CoordinateSetter2d setP2 = new CoordinateSetter2d();
-            CoordinateSetter2d setP3 = new CoordinateSetter2d();
+            CoordinateSetter2d setter = new CoordinateSetter2d();
 
             Point2d pFirst;
             Point2d p0;
@@ -36,42 +34,49 @@ namespace Essence.Geometry.Graphics
                 {
                     case SegmentType.MoveTo:
                     {
-                        path.GetP1(setP1);
-                        p0 = setP1.GetPoint();
-                        pFirst = p0;
+                        path.GetP1(setter);
+                        p0 = setter.GetPoint();
                         points.Add(p0);
+
+                        pFirst = p0;
                         break;
                     }
                     case SegmentType.LineTo:
                     {
-                        path.GetP1(setP1);
-                        Point2d p1 = setP1.GetPoint();
+                        path.GetP1(setter);
+                        Point2d p1 = setter.GetPoint();
                         points.Add(p1);
+
                         p0 = p1;
                         break;
                     }
                     case SegmentType.CubicTo:
                     {
-                        path.GetP1(setP1);
-                        path.GetP2(setP2);
-                        Point2d p1 = setP1.GetPoint();
-                        Point2d p2 = setP2.GetPoint();
+                        path.GetP1(setter);
+                        Point2d p1 = setter.GetPoint();
                         points.Add(p1);
+
+                        path.GetP2(setter);
+                        Point2d p2 = setter.GetPoint();
                         points.Add(p2);
+
                         p0 = p1;
                         break;
                     }
                     case SegmentType.CuadTo:
                     {
-                        path.GetP1(setP1);
-                        path.GetP2(setP2);
-                        path.GetP2(setP3);
-                        Point2d p1 = setP1.GetPoint();
-                        Point2d p2 = setP2.GetPoint();
-                        Point2d p3 = setP3.GetPoint();
+                        path.GetP1(setter);
+                        Point2d p1 = setter.GetPoint();
                         points.Add(p1);
+
+                        path.GetP2(setter);
+                        Point2d p2 = setter.GetPoint();
                         points.Add(p2);
+
+                        path.GetP2(setter);
+                        Point2d p3 = setter.GetPoint();
                         points.Add(p3);
+
                         p0 = p1;
                         break;
                     }

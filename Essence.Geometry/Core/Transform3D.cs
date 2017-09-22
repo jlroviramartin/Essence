@@ -19,9 +19,19 @@ namespace Essence.Geometry.Core
 {
     public abstract class Transform3D : ITransform3D
     {
-        public abstract IVector3D Transform(IVector3D v);
+        public abstract Vector3d Transform(Vector3d v);
 
-        public abstract IPoint3D Transform(IPoint3D p);
+        public abstract Point3d Transform(Point3d v);
+
+        IPoint3D ITransform3D.Transform(IPoint3D p)
+        {
+            return this.Transform(p.ToPoint3d());
+        }
+
+        IVector3D ITransform3D.Transform(IVector3D v)
+        {
+            return this.Transform(v.ToVector3d());
+        }
 
         public abstract ITransform3D Concat(ITransform3D transform);
 

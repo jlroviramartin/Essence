@@ -63,7 +63,7 @@ namespace Essence.Geometry.Distances
             this.ClosestT = param;
 
             Vector2d diff = this.ClosestPoint.Sub(this.Point);
-            return diff.LengthCuad;
+            return diff.LengthSquared;
         }
     }
 }

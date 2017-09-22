@@ -307,9 +307,9 @@ namespace Essence.Geometry.Curves
             Vector2d v1 = p2.Sub(p1);
             Vector2d v2 = p3.Sub(p1);
             Vector2d v3 = p3.Sub(p2);
-            double l1 = v1.LengthCuad;
-            double l2 = v2.LengthCuad;
-            double l3 = v3.LengthCuad;
+            double l1 = v1.LengthSquared;
+            double l2 = v2.LengthSquared;
+            double l3 = v3.LengthSquared;
 
             LenP1P2Dir[] vs =
             {

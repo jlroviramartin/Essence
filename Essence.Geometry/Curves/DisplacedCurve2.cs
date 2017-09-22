@@ -201,7 +201,7 @@ namespace Essence.Geometry.Curves
         {
             // https://en.wikipedia.org/wiki/Curvature
             Vector2d der1 = this.GetFirstDerivative(t);
-            double speed2 = der1.LengthCuad;
+            double speed2 = der1.LengthSquared;
 
             if (speed2.EpsilonEquals(0))
             {

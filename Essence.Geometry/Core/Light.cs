@@ -20,11 +20,11 @@ using Essence.Util.Math.Double;
 namespace Essence.Geometry.Core
 {
     /// <summary>
-    ///     Fuente de luz.
-    ///     <see cref="http://www.opengl.org/sdk/docs/man/xhtml/glLight.xml" />
-    ///     <see cref="http://www.glprogramming.com/red/chapter05.html#name4" />
+    /// Light source.
+    /// <see cref="http://www.opengl.org/sdk/docs/man/xhtml/glLight.xml" />
+    /// <see cref="http://www.glprogramming.com/red/chapter05.html#name4" />
     /// </summary>
-    public sealed partial class Light : IFormattable, ICloneable
+    public sealed class Light : IFormattable, ICloneable
     {
         public const string FOCUS = "Focus";
         public const string POSITION = "Position";
@@ -32,7 +32,7 @@ namespace Essence.Geometry.Core
 
         public const string AMBIENT = "Ambient";
         public const string DIFFUSE = "Diffuse";
-        public const string ESPECULAR = "Especular";
+        public const string SPECULAR = "Specular";
 
         public const string CONSTANT_ATTENUATION = "ConstantAttenuation";
         public const string LINEAR_ATTENUATION = "LinearAttenuation";
@@ -44,7 +44,7 @@ namespace Essence.Geometry.Core
         public static Light NewDireccional(Vector3d dir,
                                            Color4f? ambiente = null,
                                            Color4f? difuso = null,
-                                           Color4f? especular = null)
+                                           Color4f? specular = null)
         {
             Light luz = new Light();
 
@@ -53,14 +53,14 @@ namespace Essence.Geometry.Core
 
             luz.Ambient = ambiente ?? new Color4f(0, 0, 0, 1);
             luz.Diffuse = difuso ?? new Color4f(1, 1, 1, 1);
-            luz.Especular = especular ?? new Color4f(1, 1, 1, 1);
+            luz.Specular = specular ?? new Color4f(1, 1, 1, 1);
             return luz;
         }
 
         public static Light NewPosicional(Point3d p, Vector3d dir,
                                           Color4f? ambiente = null,
                                           Color4f? difuso = null,
-                                          Color4f? especular = null)
+                                          Color4f? specular = null)
         {
             Light luz = new Light();
 
@@ -70,7 +70,7 @@ namespace Essence.Geometry.Core
 
             luz.Ambient = ambiente ?? new Color4f(0, 0, 0, 1);
             luz.Diffuse = difuso ?? new Color4f(1, 1, 1, 1);
-            luz.Especular = especular ?? new Color4f(1, 1, 1, 1);
+            luz.Specular = specular ?? new Color4f(1, 1, 1, 1);
 
             return luz;
         }
@@ -78,7 +78,7 @@ namespace Essence.Geometry.Core
         public static Light NewFoco(Point3d p, Vector3d dir,
                                     Color4f? ambiente = null,
                                     Color4f? difuso = null,
-                                    Color4f? especular = null,
+                                    Color4f? specular = null,
                                     float atenuacionConstante = 1,
                                     float atenuacionLinear = 0,
                                     float atenuacionCuadratica = 0,
@@ -93,7 +93,7 @@ namespace Essence.Geometry.Core
 
             luz.Ambient = ambiente ?? new Color4f(0, 0, 0, 1);
             luz.Diffuse = difuso ?? new Color4f(1, 1, 1, 1);
-            luz.Especular = especular ?? new Color4f(1, 1, 1, 1);
+            luz.Specular = specular ?? new Color4f(1, 1, 1, 1);
 
             luz.ConstantAttenuation = 1;
             luz.LinearAttenuation = 0;
@@ -112,7 +112,7 @@ namespace Essence.Geometry.Core
 
             this.Ambient = new Color4f(0, 0, 0, 1);
             this.Diffuse = new Color4f(1, 1, 1, 1);
-            this.Especular = new Color4f(1, 1, 1, 1);
+            this.Specular = new Color4f(1, 1, 1, 1);
 
             this.ConstantAttenuation = 1;
             this.LinearAttenuation = 0;
@@ -155,7 +155,7 @@ namespace Essence.Geometry.Core
         ///     for GL_LIGHT0 is (1, 1, 1, 1); for other lights, the
         ///     initial value is (0, 0, 0, 1).
         /// </summary>
-        public Color4f Especular { get; set; }
+        public Color4f Specular { get; set; }
 
         public Vector3d Direction { get; set; }
 
@@ -248,7 +248,7 @@ namespace Essence.Geometry.Core
                    && this.Direction.EpsilonEquals(luz.Direction, epsilon)
                    && this.Ambient.EpsilonEquals(luz.Ambient, epsilon)
                    && this.Diffuse.EpsilonEquals(luz.Diffuse, epsilon)
-                   && this.Especular.EpsilonEquals(luz.Especular, epsilon)
+                   && this.Specular.EpsilonEquals(luz.Specular, epsilon)
                    && MathUtils.EpsilonEquals(this.ConstantAttenuation, luz.ConstantAttenuation, epsilon)
                    && MathUtils.EpsilonEquals(this.LinearAttenuation, luz.LinearAttenuation, epsilon)
                    && MathUtils.EpsilonEquals(this.QuadraticAttenuation, luz.QuadraticAttenuation, epsilon)
@@ -284,7 +284,7 @@ namespace Essence.Geometry.Core
             map.Add(DIRECCION, this.Direction, "F3", proveedor);
             map.Add(AMBIENTE, this.Ambient, "F3", proveedor);
             map.Add(DIFUSO, this.Diffuse, "F3", proveedor);
-            map.Add(ESPECULAR, this.Especular, "F3", proveedor);
+            map.Add(specular, this.specular, "F3", proveedor);
             map.Add(ATENUACION_CONSTANTE, this.ConstantAttenuation, "F3", proveedor);
             map.Add(ATENUACION_LINEAR, this.LinearAttenuation, "F3", proveedor);
             map.Add(ATENUACION_CUADRATICA, this.QuadraticAttenuation, "F3", proveedor);
@@ -310,7 +310,7 @@ namespace Essence.Geometry.Core
                     ^ this.Direction.GetHashCode()
                     ^ this.Ambient.GetHashCode()
                     ^ this.Diffuse.GetHashCode()
-                    ^ this.Especular.GetHashCode()
+                    ^ this.Specular.GetHashCode()
                     ^ this.ConstantAttenuation.GetHashCode()
                     ^ this.LinearAttenuation.GetHashCode()
                     ^ this.QuadraticAttenuation.GetHashCode()

@@ -37,14 +37,14 @@ namespace Essence.Geometry.Core.Double
                                          c, d, ty);
         }
 
-        public override IVector2D Transform(IVector2D v)
+        public override Vector2d Transform(Vector2d v)
         {
-            return this.Matrix.Mul(v.ToVector2d());
+            return this.Matrix.Mul(v);
         }
 
-        public override IPoint2D Transform(IPoint2D p)
+        public override Point2d Transform(Point2d p)
         {
-            return this.Matrix.Mul(p.ToPoint2d());
+            return this.Matrix.Mul(p);
         }
 
         public override ITransform2D Concat(ITransform2D transform)

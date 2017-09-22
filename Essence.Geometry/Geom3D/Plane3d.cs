@@ -84,7 +84,7 @@ namespace Essence.Geometry.Geom3D
                 {
                     this.evaluated |= Evaluated.IsDegenerate;
 
-                    this.isDegenerate = this.DX.IsZero || this.DY.IsZero || this.DX.Cross(this.DY).LengthCuad.EpsilonEquals(0);
+                    this.isDegenerate = this.DX.IsZero || this.DY.IsZero || this.DX.Cross(this.DY).LengthSquared.EpsilonEquals(0);
                 }
                 return this.isDegenerate;
             }

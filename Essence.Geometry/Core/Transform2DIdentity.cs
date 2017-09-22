@@ -20,12 +20,12 @@ namespace Essence.Geometry.Core
     {
         public static readonly Transform2DIdentity Instance = new Transform2DIdentity();
 
-        public override IVector2D Transform(IVector2D v)
+        public override Vector2d Transform(Vector2d v)
         {
             return v;
         }
 
-        public override IPoint2D Transform(IPoint2D p)
+        public override Point2d Transform(Point2d p)
         {
             return p;
         }

@@ -28,12 +28,14 @@ namespace Essence.Geometry.Geom2D
         private readonly IList<Point2d> vertices;
 
         private BoundingBox2d? boundingBox;
+        private readonly bool robust = true;
 
         #endregion
 
         public Polygon2d(IList<Point2d> vertices)
         {
             this.vertices = vertices;
+            this.robust = true;
         }
 
         public IList<Point2d> Vertices
@@ -71,30 +73,30 @@ namespace Essence.Geometry.Geom2D
         /**
          * This method tests if the point is on the edge.
          */
-        public bool PointInEdge(Point2d p, double precision = MathUtils.EPSILON)
+        public bool PointInEdge(Point2d p, double epsilon = MathUtils.EPSILON)
         {
-            if (!this.BoundingBox.IsInterior(p))
+            if (!this.BoundingBox.IsInterior(p, epsilon))
             {
                 return false;
             }
 
-            return PolygonUtils.PointInEdge(this.Vertices, p, true, precision);
+            return PolygonUtils.PointInEdge(this.Vertices, p, this.robust, epsilon);
         }
 
         /**
          * This method tests if the point is on the polygon.
          */
-        public bool PointInPoly(Point2d p, WindingRule windingRule, bool extendedAlgorithm, bool robust = true, double epsilon = MathUtils.EPSILON)
+        public bool PointInPoly(Point2d p, WindingRule windingRule, bool extendedAlgorithm, double epsilon = MathUtils.EPSILON)
         {
             switch (windingRule)
             {
                 case WindingRule.EvenOdd:
                 {
-                    return this.PointInPolyEvenOdd(p, extendedAlgorithm, robust, epsilon);
+                    return this.PointInPolyEvenOdd(p, extendedAlgorithm, epsilon);
                 }
                 case WindingRule.NonZero:
                 {
-                    return this.PointInPolyNonZero(p, extendedAlgorithm, robust, epsilon);
+                    return this.PointInPolyNonZero(p, extendedAlgorithm, epsilon);
                 }
                 default:
                 {
@@ -106,27 +108,27 @@ namespace Essence.Geometry.Geom2D
         /**
          * Crossing number test for a point in a polygon.
          */
-        public bool PointInPolyEvenOdd(Point2d p, bool extendedAlgorithm, bool robust = true, double epsilon = MathUtils.EPSILON)
+        public bool PointInPolyEvenOdd(Point2d p, bool extendedAlgorithm, double epsilon = MathUtils.EPSILON)
         {
-            if (!this.BoundingBox.IsInterior(p))
+            if (!this.BoundingBox.IsInterior(p, epsilon))
             {
                 return false;
             }
 
-            return (PolygonUtils.PointInPolyEvenOdd(this.vertices, p, extendedAlgorithm, robust, epsilon) != Essence.Geometry.Geom2D.PointInPoly.Outside);
+            return (PolygonUtils.PointInPolyEvenOdd(this.vertices, p, extendedAlgorithm, this.robust, epsilon) != Essence.Geometry.Geom2D.PointInPoly.Outside);
         }
 
         /**
          * Winding number test for a point in a polygon.
          */
-        public bool PointInPolyNonZero(Point2d p, bool extendedAlgorithm, bool robust = true, double epsilon = MathUtils.EPSILON)
+        public bool PointInPolyNonZero(Point2d p, bool extendedAlgorithm, double epsilon = MathUtils.EPSILON)
         {
-            if (!this.BoundingBox.IsInterior(p))
+            if (!this.BoundingBox.IsInterior(p, epsilon))
             {
                 return false;
             }
 
-            return (PolygonUtils.PointInPolyNonZero(this.vertices, p, extendedAlgorithm, robust, epsilon) != Essence.Geometry.Geom2D.PointInPoly.Outside);
+            return (PolygonUtils.PointInPolyNonZero(this.vertices, p, extendedAlgorithm, this.robust, epsilon) != Essence.Geometry.Geom2D.PointInPoly.Outside);
         }
 
         /**
@@ -142,10 +144,7 @@ namespace Essence.Geometry.Geom2D
          */
         public void EnsureCCW()
         {
-            if (this.TestOrientation() == Orientation.CW)
-            {
-                ListUtils.Reverse(this.vertices);
-            }
+            PolygonUtils.EnsureCCW(this.vertices, this.robust);
         }
 
         /**
@@ -163,18 +162,9 @@ namespace Essence.Geometry.Geom2D
          * Polygon2D poly = new Polygon2D(new[] { new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10), new Point2d(0, 10), });
          * </pre></example>
          */
-        public void RemoveDuplicatePoints()
+        public void RemoveDuplicatePoints(double epsilon = MathUtils.EPSILON)
         {
-            for (int i = this.Count - 1; i >= 0; i--)
-            {
-                Point2d p = this[i];
-                Point2d pNext = this[(i + 1) % this.Count];
-
-                if (p.EpsilonEquals(pNext))
-                {
-                    this.vertices.RemoveAt(i);
-                }
-            }
+            PolygonUtils.RemoveDuplicatePoints(this.vertices, epsilon);
         }
 
         /**
@@ -186,7 +176,7 @@ namespace Essence.Geometry.Geom2D
          */
         public Orientation TestOrientation()
         {
-            return PolygonUtils.TestOrientation(this.vertices, false);
+            return PolygonUtils.TestOrientation(this.vertices, this.robust);
         }
 
         /**
@@ -194,7 +184,7 @@ namespace Essence.Geometry.Geom2D
          */
         public double SignedArea()
         {
-            return PolygonUtils.SignedArea(this.vertices);
+            return PolygonUtils.SignedArea(this.vertices, this.robust);
         }
     }
 }

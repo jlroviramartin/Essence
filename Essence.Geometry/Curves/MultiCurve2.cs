@@ -75,7 +75,7 @@ namespace Essence.Geometry.Curves
         protected virtual double GetCurvature(int index, double tInSegment)
         {
             Vector2d der1 = this.GetFirstDerivative(index, tInSegment);
-            double speed2 = der1.LengthCuad;
+            double speed2 = der1.LengthSquared;
 
             if (speed2.EpsilonEquals(0))
             {

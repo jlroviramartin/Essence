@@ -86,14 +86,14 @@ namespace Essence.Geometry
             return this.X * v2.X + this.Y * v2.Y;
         }
 
-        public double Proy(Vector2d v2)
+        public double Proj(Vector2d v2)
         {
             return this.Dot(v2) / this.Length;
         }
 
-        public void ProyV(Vector2d v2)
+        public void ProjV(Vector2d v2)
         {
-            this.Mul(this.Proy(v2));
+            this.Mul(this.Proj(v2));
         }
 
         public double X, Y;

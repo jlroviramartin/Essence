@@ -97,6 +97,35 @@ namespace Essence.Geometry.Geom2D
 
     public static class PolygonUtils
     {
+        /**
+         * This method removes the suplicate points of this polygon.
+         * <example><pre>
+         * Polygon2D poly = new Polygon2D(new[]
+         * {
+         *     new Point2d(0, 0), new Point2d(0, 0), new Point2d(0, 0),
+         *     new Point2d(10, 0), new Point2d(10, 0), new Point2d(10, 0),
+         *     new Point2d(10, 10), new Point2d(10, 10), new Point2d(10, 10),
+         *     new Point2d(0, 10), new Point2d(0, 10), new Point2d(0, 10),
+         *     new Point2d(0, 0), new Point2d(0, 0), new Point2d(0, 0),
+         * });
+         * poly.RemoveDuplicatePoints();
+         * Polygon2D poly = new Polygon2D(new[] { new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10), new Point2d(0, 10), });
+         * </pre></example>
+         */
+        public static void RemoveDuplicatePoints(IList<Point2d> points, double epsilon = MathUtils.EPSILON)
+        {
+            for (int i = points.Count - 1; i >= 0; i--)
+            {
+                Point2d p = points[i];
+                Point2d pNext = points[(i + 1) % points.Count];
+
+                if (p.EpsilonEquals(pNext, epsilon))
+                {
+                    points.RemoveAt(i);
+                }
+            }
+        }
+
         public static IList<IList<Point2d>> Sort2(IList<Point2d> points)
         {
             PolyChains pchains = Sort(points);
@@ -566,7 +595,7 @@ namespace Essence.Geometry.Geom2D
          * {@link http://geometryalgorithms.com/Archive/algorithm_0101/algorithm_0101.htm#orientation2D_polygon()}
          * {@link http://geomalgorithms.com/a01-_area.html#orientation2D_polygon%28%29}
          */
-        public static Orientation TestOrientation(IList<Point2d> points, bool robust, double epsilon = MathUtils.EPSILON)
+        public static Orientation TestOrientation(IList<Point2d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             int n = points.Count;
 
