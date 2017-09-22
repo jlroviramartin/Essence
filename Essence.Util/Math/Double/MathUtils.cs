@@ -19,17 +19,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using REAL = System.Double;
 
 namespace Essence.Util.Math.Double
 {
     public static class MathUtils
     {
         /// <summary>Error.</summary>
-        public const double EPSILON = (double)1e-09;
+        public const double EPSILON = 1e-09;
 
         /// <summary>Tolerancia a cero.</summary>
-        public const double ZERO_TOLERANCE = (double)1e-08;
+        public const double ZERO_TOLERANCE = 1e-08;
 
         // NOTA: mejor utilizar Math.Round(double value, int decimals)
         public static double Round(double value, int decimals)
@@ -468,12 +467,7 @@ namespace Essence.Util.Math.Double
         /// </summary>
         public sealed class EpsilonEqualityComparer : IEqualityComparer<double>, IEqualityComparer
         {
-            public EpsilonEqualityComparer()
-                : this(EPSILON)
-            {
-            }
-
-            public EpsilonEqualityComparer(double epsilon)
+            public EpsilonEqualityComparer(double epsilon = EPSILON)
             {
                 this.epsilon = epsilon;
             }
@@ -516,12 +510,7 @@ namespace Essence.Util.Math.Double
         /// </summary>
         public sealed class EpsilonComparer : IComparer<double>, IComparer
         {
-            public EpsilonComparer()
-                : this(EPSILON)
-            {
-            }
-
-            public EpsilonComparer(double epsilon)
+            public EpsilonComparer(double epsilon = EPSILON)
             {
                 this.epsilon = epsilon;
             }

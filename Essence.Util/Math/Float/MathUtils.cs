@@ -17,17 +17,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using REAL = System.Single;
 
 namespace Essence.Util.Math.Float
 {
     public static class MathUtils
     {
         /// <summary>Error.</summary>
-        public const float EPSILON = (float)1e-05;
+        public const float EPSILON = 1e-05f;
 
         /// <summary>Tolerancia a cero.</summary>
-        public const float ZERO_TOLERANCE = (float)1e-04;
+        public const float ZERO_TOLERANCE = 1e-04f;
 
         public static void MinMax(float a, float b, out float min, out float max)
         {
@@ -446,12 +445,7 @@ namespace Essence.Util.Math.Float
         /// </summary>
         public sealed class EpsilonEqualityComparer : IEqualityComparer<float>, IEqualityComparer
         {
-            public EpsilonEqualityComparer()
-                : this(EPSILON)
-            {
-            }
-
-            public EpsilonEqualityComparer(float epsilon)
+            public EpsilonEqualityComparer(float epsilon = EPSILON)
             {
                 this.epsilon = epsilon;
             }
@@ -494,12 +488,7 @@ namespace Essence.Util.Math.Float
         /// </summary>
         public sealed class EpsilonComparer : IComparer<float>, IComparer
         {
-            public EpsilonComparer()
-                : this(EPSILON)
-            {
-            }
-
-            public EpsilonComparer(float epsilon)
+            public EpsilonComparer(float epsilon = EPSILON)
             {
                 this.epsilon = epsilon;
             }
