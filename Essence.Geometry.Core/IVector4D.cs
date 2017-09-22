@@ -17,7 +17,7 @@ namespace Essence.Geometry.Core
     public interface IVector4D : IVector
     {
         /// <summary>
-        /// This method gets the coordinates.
+        /// This method gets the coordinates of <code>this</code> point.
         /// </summary>
         /// <param name="setter">Setter.</param>
         void GetCoordinates(ICoordinateSetter4D setter);

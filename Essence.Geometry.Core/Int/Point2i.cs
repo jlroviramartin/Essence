@@ -34,16 +34,16 @@ namespace Essence.Geometry.Core.Int
         /// <summary>Name of the property Y.</summary>
         public const string _Y = "Y";
 
-        /// <summary>Tuple zero.</summary>
+        /// <summary>Point zero.</summary>
         public static readonly Point2i Zero = new Point2i(0, 0);
 
-        /// <summary>Tuple one.</summary>
+        /// <summary>Point one.</summary>
         public static readonly Point2i One = new Point2i(1, 1);
 
-        /// <summary>Tuple with property X = 1 and others = 0.</summary>
+        /// <summary>Point with property X = 1 and others = 0.</summary>
         public static readonly Point2i UX = new Point2i(1, 0);
 
-        /// <summary>Tuple with property Y = 1 and others = 0.</summary>
+        /// <summary>Point with property Y = 1 and others = 0.</summary>
         public static readonly Point2i UY = new Point2i(0, 1);
 
         public Point2i(int x, int y)
@@ -92,7 +92,7 @@ namespace Essence.Geometry.Core.Int
         #region operators
 
         /// <summary>
-        ///     Casting a REAL[].
+        /// Casting to an array.
         /// </summary>
         public static explicit operator int[](Point2i v)
         {
@@ -144,7 +144,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Indica si es cero.
+        /// Tests if <code>this</code> point is zero (all coordinates are 0).
         /// </summary>
         [Pure]
         public bool IsZero
@@ -153,8 +153,8 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Cuadrante en sentido CCW:
-        ///     <pre><![CDATA[
+        /// Counterclockwise quadrant:
+        /// <pre><![CDATA[
         ///       ^
         ///   1   |   0
         ///       |
@@ -227,20 +227,20 @@ namespace Essence.Geometry.Core.Int
         #region parse
 
         /// <summary>
-        ///     Parsea la cadena de texto segun los estilos indicados y devuelve una tupla.
+        /// Parses the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
         /// </summary>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <returns>Resultado.</returns>
+        /// <param name="s">String.</param>
+        /// <param name="provider">Provider.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <returns>Point.</returns>
         public static Point2i Parse(string s,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Point2i result;
-            if (!TryParse(s, out result, provider, vstyle, style))
+            if (!TryParse(s, out result, provider, vstyle, nstyle))
             {
                 throw new Exception();
             }
@@ -248,24 +248,24 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Parsea la cadena de texto segun los estilos indicados y devuelve una tupla.
+        /// Tries to parse the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
         /// </summary>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <param name="result">Resultado.</param>
-        /// <returns>Indica si lo ha parseado correctamente.</returns>
+        /// <param name="s">String.</param>
+        /// <param name="provider">Provider.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <param name="result">Point.</param>
+        /// <returns><code>True</code> if everything is correct, <code>false</code> otherwise.</returns>
         public static bool TryParse(string s,
                                     out Point2i result,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Contract.Requires(s != null);
 
             int[] ret;
-            if (!VectorUtils.TryParse(s, 2, out ret, int.TryParse, provider, vstyle, style))
+            if (!VectorUtils.TryParse(s, 2, out ret, int.TryParse, provider, vstyle, nstyle))
             {
                 result = Zero;
                 return false;
@@ -279,7 +279,7 @@ namespace Essence.Geometry.Core.Int
         #region private
 
         /// <summary>
-        ///     Comprueba si son iguales.
+        /// Tests if the coordinates of <code>this</code> point are equals to <code>x</code> and <code>y</code>.
         /// </summary>
         [Pure]
         private bool Equals(int x, int y)
@@ -311,15 +311,7 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         public override int GetHashCode()
         {
-            // http://www.jarvana.com/jarvana/view/org/apache/lucene/lucene-spatial/2.9.3/lucene-spatial-2.9.3-sources.jar!/org/apache/lucene/spatial/geometry/shape/Vector2D.java
-            const int prime = 31;
-            int hash = 1;
-            unchecked
-            {
-                hash = prime * hash + this.X.GetHashCode();
-                hash = prime * hash + this.Y.GetHashCode();
-            }
-            return hash;
+            return VectorUtils.GetHashCode(this.X, this.Y);
         }
 
         #endregion
@@ -382,65 +374,37 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         IPoint IPoint.Add(IVector v)
         {
-            if (v is Vector2i)
-            {
-                return this.Add((Vector2i)v);
-            }
-            return this.Add(new Vector2i(v));
+            return this.Add(v.ToVector2i());
         }
 
         [Pure]
         IPoint IPoint.Sub(IVector v)
         {
-            if (v is Vector2i)
-            {
-                return this.Sub((Vector2i)v);
-            }
-            return this.Sub(new Vector2i(v));
+            return this.Sub(v.ToVector2i());
         }
 
         [Pure]
         IVector IPoint.Sub(IPoint p2)
         {
-            if (p2 is Point2i)
-            {
-                return this.Sub((Point2i)p2);
-            }
-            return this.Sub(new Point2i(p2));
+            return this.Sub(p2.ToPoint2i());
         }
 
         [Pure]
         IPoint IPoint.Lerp(IPoint p2, double alpha)
         {
-            if (p2 is Point2i)
-            {
-                return this.Lerp((Point2i)p2, alpha);
-            }
-            return this.Lerp(new Point2i(p2), alpha);
+            return this.Lerp(p2.ToPoint2i(), alpha);
         }
 
         [Pure]
         double IPoint.InvLerp(IPoint p2, IPoint pLerp)
         {
-            if (p2 is Point2i)
-            {
-                if (pLerp is Point2i)
-                {
-                    return this.InvLerp((Point2i)p2, (Point2i)pLerp);
-                }
-                return this.InvLerp((Point2i)p2, new Point2i(pLerp));
-            }
-            return this.InvLerp(new Point2i(p2), new Point2i(pLerp));
+            return this.InvLerp(p2.ToPoint2i(), pLerp.ToPoint2i());
         }
 
         [Pure]
         IPoint IPoint.Lineal(IPoint p2, double alpha, double beta)
         {
-            if (p2 is Point2i)
-            {
-                return this.Lineal((Point2i)p2, alpha, beta);
-            }
-            return this.Lineal(new Point2i(p2), alpha, beta);
+            return this.Lineal(p2.ToPoint2i(), alpha, beta);
         }
 
         #endregion
@@ -459,11 +423,7 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         bool IEpsilonEquatable<IPoint>.EpsilonEquals(IPoint other, double epsilon)
         {
-            if (other is Point2i)
-            {
-                return this.Equals((Point2i)other);
-            }
-            return this.Equals(new Point2i(other));
+            return this.Equals(other.ToPoint2i());
         }
 
         #endregion
@@ -471,7 +431,7 @@ namespace Essence.Geometry.Core.Int
         #region inner classes
 
         /// <summary>
-        ///     Compara los puntos en funcion a la coordenada indicada (X o Y).
+        /// This class compares points by coordinate (X or Y).
         /// </summary>
         public sealed class CoordComparer : IComparer<Point2i>, IComparer
         {
@@ -502,7 +462,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Comparador lexicografico, primero compara por X y despues por Y.
+        /// This class lexicographically compares points: it compares X -> Y.
         /// </summary>
         public sealed class LexComparer : IComparer<Point2i>, IComparer
         {

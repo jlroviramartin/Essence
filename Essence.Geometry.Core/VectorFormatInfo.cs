@@ -22,21 +22,15 @@ namespace Essence.Geometry.Core
     public class VectorFormatInfo : ICloneable, IFormatProvider
     {
         /// <summary>
-        ///     Instancia con la informacion de coordenadas para la cultura actual. Similar a
-        ///     <c>NumberFormatInfo.CurrentInfo</c>
+        /// Gets a read-only VectorFormatInfo object that contains vector formatting information for the current culture.
         /// </summary>
         public static VectorFormatInfo CurrentInfo;
 
         /// <summary>
-        ///     Instancia con la informacion de coordenadas independiente de la cultura. Similar a
-        ///     <c>NumberFormatInfo.InvariantInfo</c>
+        /// Gets a read-only VectorFormatInfo object that contains culture-independent (invariant) vector formatting information.
         /// </summary>
         public static VectorFormatInfo InvariantInfo;
 
-        /// <summary>
-        ///     Instancia con la informacion de coordenadas independiente de la cultura. Similar a
-        ///     <c>NumberFormatInfo.InvariantInfo</c>
-        /// </summary>
         public VectorFormatInfo()
         {
             this.Beg = "(";
@@ -44,10 +38,6 @@ namespace Essence.Geometry.Core
             this.End = ")";
         }
 
-        /// <summary>
-        ///     Instancia con la informacion de coordenadas independiente de la cultura. Similar a
-        ///     <c>NumberFormatInfo.InvariantInfo</c>
-        /// </summary>
         public VectorFormatInfo(string beg, string sep, string end)
         {
             this.Beg = beg;
@@ -66,17 +56,17 @@ namespace Essence.Geometry.Core
         }
 
         /// <summary>
-        ///     Inicio de un punto.
+        /// Gets or sets the begin text of a point/vector.
         /// </summary>
         public string Beg { get; set; }
 
         /// <summary>
-        ///     Separador de coordenadas.
+        /// Gets or sets the coordinates separator text of a point/vector.
         /// </summary>
         public string Sep { get; set; }
 
         /// <summary>
-        ///     Fin de un punto.
+        /// Gets or sets the end text of a point/vector.
         /// </summary>
         public string End { get; set; }
 

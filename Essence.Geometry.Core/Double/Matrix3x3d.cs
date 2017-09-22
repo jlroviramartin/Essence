@@ -131,7 +131,7 @@ namespace Essence.Geometry.Core.Double
             this.Set(vX, vY, vZ);
         }
 
-        #region Multiplicacion vectores/puntos
+        #region Multiplicacion y Premultiplicacion vectores/puntos
 
         public static Vector2d operator *(Matrix3x3d mat, Vector2d v)
         {
@@ -183,16 +183,22 @@ namespace Essence.Geometry.Core.Double
                                this.M20 * p.X + this.M21 * p.Y + this.M22 * p.Z);
         }
 
-        #endregion
-
-        #region Premultiplicacion vectores/puntos
-
         public static Vector2d operator *(Vector2d v, Matrix3x3d mat)
         {
             return mat.PreMul(v);
         }
 
         public static Point2d operator *(Point2d p, Matrix3x3d mat)
+        {
+            return mat.PreMul(p);
+        }
+
+        public static Vector3d operator *(Vector3d v, Matrix3x3d mat)
+        {
+            return mat.PreMul(v);
+        }
+
+        public static Point3d operator *(Point3d p, Matrix3x3d mat)
         {
             return mat.PreMul(p);
         }
@@ -994,7 +1000,7 @@ namespace Essence.Geometry.Core.Double
             return this.EpsilonEquals(mat.M00, mat.M01, mat.M02,
                                       mat.M10, mat.M11, mat.M12,
                                       mat.M20, mat.M21, mat.M22,
-                                      (double)epsilon);
+                                      epsilon);
         }
 
         #endregion

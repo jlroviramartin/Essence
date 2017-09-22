@@ -17,7 +17,7 @@ namespace Essence.Geometry.Core
     public interface IPoint3D : IPoint
     {
         /// <summary>
-        /// This method gets the coordinates.
+        /// This method gets the coordinate of <code>this</code> points.
         /// </summary>
         /// <param name="setter">Setter.</param>
         void GetCoordinates(ICoordinateSetter3D setter);

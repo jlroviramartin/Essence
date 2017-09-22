@@ -18,6 +18,9 @@ using Essence.Geometry.Core.Int;
 
 namespace Essence.Geometry.Core
 {
+    /// <summary>
+    /// Point utilities.
+    /// </summary>
     public static class PointUtils
     {
         #region Point2d
@@ -35,68 +38,6 @@ namespace Essence.Geometry.Core
         public static Point2i Floor(this Point2d p)
         {
             return new Point2i((int)Math.Floor(p.X), (int)Math.Floor(p.Y));
-        }
-
-        #endregion
-
-        #region IVector
-
-        public static Vector2d ToVector2d(this IVector p)
-        {
-            if (p is Vector2d)
-            {
-                return (Vector2d)p;
-            }
-            return new Vector2d(p);
-        }
-
-        public static Vector3d ToVector3d(this IVector p)
-        {
-            if (p is Vector3d)
-            {
-                return (Vector3d)p;
-            }
-            return new Vector3d(p);
-        }
-
-        public static Vector4d ToVector4d(this IVector p)
-        {
-            if (p is Vector4d)
-            {
-                return (Vector4d)p;
-            }
-            return new Vector4d(p);
-        }
-
-        #endregion
-
-        #region IVector2D
-
-        public static Vector2d ToVector2d(this IVector2D p)
-        {
-            if (p is Vector2d)
-            {
-                return (Vector2d)p;
-            }
-            return new Vector2d(p);
-        }
-
-        public static Vector3d ToVector3d(this IVector3D p)
-        {
-            if (p is Vector3d)
-            {
-                return (Vector3d)p;
-            }
-            return new Vector3d(p);
-        }
-
-        public static Vector4d ToVector4d(this IVector4D p)
-        {
-            if (p is Vector4d)
-            {
-                return (Vector4d)p;
-            }
-            return new Vector4d(p);
         }
 
         #endregion

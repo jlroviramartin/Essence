@@ -36,9 +36,7 @@ namespace Essence.Geometry.Core.Double
         public const string _M10 = "M10";
         public const string _M11 = "M11";
 
-        /// <summary>
-        ///     Matriz identidad.
-        /// </summary>
+        /// <summary>Identity matrix.</summary>
         public static Matrix2x2d Identity
         {
             get
@@ -48,23 +46,21 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        /// <summary>
-        ///     Matriz cero.
-        /// </summary>
+        /// <summary>Zero matrix.</summary>
         public static Matrix2x2d Zero
         {
             get { return new Matrix2x2d(); }
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         public Matrix2x2d()
         {
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         public Matrix2x2d(double m00, double m01,
                           double m10, double m11)
@@ -74,28 +70,28 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
-        /// <param name="items">Elementos.</param>
+        /// <param name="items">Items.</param>
         public Matrix2x2d(double[] items)
         {
             this.Set(items);
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
-        /// <param name="items">Elementos.</param>
+        /// <param name="items">Items.</param>
         public Matrix2x2d(double[,] items)
         {
             this.Set(items);
         }
 
         /// <summary>
-        ///     Crea un mat 3x3 con los vectores directores <c>vX, vY</c>.
+        /// Builds a 2x2 matrix with the director vectors <c>vX, vY</c>.
         /// </summary>
-        /// <param name="vX">Vector X.</param>
-        /// <param name="vY">Vector Y.</param>
+        /// <param name="vX">X vector.</param>
+        /// <param name="vY">Y vector.</param>
         public Matrix2x2d(Vector2d vX, Vector2d vY)
         {
             this.Set(vX, vY);
@@ -152,8 +148,11 @@ namespace Essence.Geometry.Core.Double
         #region operadores
 
         /// <summary>
-        ///     Operacion sumar: mat1 + mat2.
+        /// Adds two matrices.
         /// </summary>
+        /// <param name="mat1">Matrix 1.</param>
+        /// <param name="mat2">Matrix 2.</param>
+        /// <returns>mat1 + mat2</returns>
         public static Matrix2x2d operator +(Matrix2x2d mat1, Matrix2x2d mat2)
         {
             Matrix2x2d matrizOut = mat1.Clone();
@@ -162,8 +161,11 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion restar: mat1 - mat2.
+        /// Subs two matrices.
         /// </summary>
+        /// <param name="mat1">Matrix 1.</param>
+        /// <param name="mat2">Matrix 2.</param>
+        /// <returns>mat1 - mat2</returns>
         public static Matrix2x2d operator -(Matrix2x2d mat1, Matrix2x2d mat2)
         {
             Matrix2x2d matrizOut = mat1.Clone();
@@ -172,8 +174,10 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion restar: mat1 - mat2.
+        /// Negates a matrix.
         /// </summary>
+        /// <param name="mat">Matrix.</param>
+        /// <returns>- mat</returns>
         public static Matrix2x2d operator -(Matrix2x2d mat)
         {
             Matrix2x2d matrizOut = mat.Clone();
@@ -182,8 +186,11 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: mat * valor.
+        /// Multiplies a matrix with a value.
         /// </summary>
+        /// <param name="mat">Matrix.</param>
+        /// <param name="v">Value.</param>
+        /// <returns>mat * v</returns>
         public static Matrix2x2d operator *(Matrix2x2d mat, double v)
         {
             Matrix2x2d matrizOut = mat.Clone();
@@ -192,8 +199,11 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: valor * mat.
+        /// Multiplies a matrix with a value.
         /// </summary>
+        /// <param name="v">Value.</param>
+        /// <param name="mat">Matrix.</param>
+        /// <returns>v * mat</returns>
         public static Matrix2x2d operator *(double v, Matrix2x2d mat)
         {
             Matrix2x2d matrizOut = mat.Clone();
@@ -202,8 +212,11 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion division: mat / valor.
+        /// Divides a matrix by a value.
         /// </summary>
+        /// <param name="mat">Matrix.</param>
+        /// <param name="v">Value.</param>
+        /// <returns>mat / v</returns>
         public static Matrix2x2d operator /(Matrix2x2d mat, double v)
         {
             Matrix2x2d matrizOut = mat.Clone();
@@ -212,8 +225,11 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: mat1 * mat2.
+        /// Multiplies two matrices.
         /// </summary>
+        /// <param name="mat1">Matrix 1.</param>
+        /// <param name="mat2">Matrix 2.</param>
+        /// <returns>mat1 * mat2</returns>
         public static Matrix2x2d operator *(Matrix2x2d mat1, Matrix2x2d mat2)
         {
             Matrix2x2d matrizOut = mat1.Clone();
@@ -226,7 +242,7 @@ namespace Essence.Geometry.Core.Double
         #region casting
 
         /// <summary>
-        ///     Casting a REAL[].
+        /// Casting to an array.
         /// </summary>
         public static explicit operator double[](Matrix2x2d m)
         {
@@ -238,7 +254,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Casting a REAL[,].
+        /// Casting to an array.
         /// </summary>
         public static explicit operator double[,](Matrix2x2d m)
         {
@@ -253,24 +269,20 @@ namespace Essence.Geometry.Core.Double
 
         #region propiedades
 
-        /// <summary>
-        ///     Filas.
-        /// </summary>
+        /// <summary>Gets the rows.</summary>
         public int Rows
         {
             get { return 2; }
         }
 
-        /// <summary>
-        ///     Columnas.
-        /// </summary>
+        /// <summary>Gets the columns.</summary>
         public int Columns
         {
             get { return 2; }
         }
 
         /// <summary>
-        ///     Indica si es valido: ningun componente es NaN ni Infinito.
+        /// Tests if <code>this</code> matrix is valid (not any item is NaN or infinity).
         /// </summary>
         public bool IsValid
         {
@@ -278,7 +290,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica que algun componente es NaN.
+        /// Tests if <code>this</code> matrix is NaN (any item is NaN).
         /// </summary>
         public bool IsNaN
         {

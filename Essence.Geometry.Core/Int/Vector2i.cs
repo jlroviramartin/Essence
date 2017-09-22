@@ -33,16 +33,16 @@ namespace Essence.Geometry.Core.Int
         /// <summary>Name of the property Y.</summary>
         public const string _Y = "Y";
 
-        /// <summary>Tuple zero.</summary>
+        /// <summary>Vector zero.</summary>
         public static readonly Vector2i Zero = new Vector2i(0, 0);
 
-        /// <summary>Tuple one.</summary>
+        /// <summary>Vector one.</summary>
         public static readonly Vector2i One = new Vector2i(1, 1);
 
-        /// <summary>Tuple with property X = 1 and others = 0.</summary>
+        /// <summary>Vector with property X = 1 and others = 0.</summary>
         public static readonly Vector2i UX = new Vector2i(1, 0);
 
-        /// <summary>Tuple with property Y = 1 and others = 0.</summary>
+        /// <summary>Vector with property Y = 1 and others = 0.</summary>
         public static readonly Vector2i UY = new Vector2i(0, 1);
 
         public Vector2i(int x, int y)
@@ -91,7 +91,7 @@ namespace Essence.Geometry.Core.Int
         #region operators
 
         /// <summary>
-        ///     Casting a REAL[].
+        /// Casting to an array.
         /// </summary>
         public static explicit operator int[](Vector2i v)
         {
@@ -158,7 +158,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Indica si es cero.
+        /// Tests if <code>this</code> vector is zero (all coordinates are 0).
         /// </summary>
         [Pure]
         public bool IsZero
@@ -167,8 +167,8 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Cuadrante en sentido CCW:
-        ///     <pre><![CDATA[
+        /// Counterclockwise quadrant:
+        /// <pre><![CDATA[
         ///       ^
         ///   1   |   0
         ///       |
@@ -198,11 +198,11 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         public double Length
         {
-            get { return (double)Math.Sqrt(this.LengthCuad); }
+            get { return (double)Math.Sqrt(this.LengthSquared); }
         }
 
         [Pure]
-        public double LengthCuad
+        public double LengthSquared
         {
             get { return this.Dot(this); }
         }
@@ -295,20 +295,20 @@ namespace Essence.Geometry.Core.Int
         #region parse
 
         /// <summary>
-        ///     Parsea la cadena de texto segun los estilos indicados y devuelve una tupla.
+        /// Parses the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
         /// </summary>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <returns>Resultado.</returns>
+        /// <param name="s">String.</param>
+        /// <param name="provider">Provider.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <returns>Point.</returns>
         public static Vector2i Parse(string s,
                                      IFormatProvider provider = null,
                                      VectorStyles vstyle = VectorStyles.All,
-                                     NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                     NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Vector2i result;
-            if (!TryParse(s, out result, provider, vstyle, style))
+            if (!TryParse(s, out result, provider, vstyle, nstyle))
             {
                 throw new Exception();
             }
@@ -316,24 +316,24 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Parsea la cadena de texto segun los estilos indicados y devuelve una tupla.
+        /// Tries to parse the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
         /// </summary>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <param name="result">Resultado.</param>
-        /// <returns>Indica si lo ha parseado correctamente.</returns>
+        /// <param name="s">String.</param>
+        /// <param name="provider">Provider.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <param name="result">Vector.</param>
+        /// <returns><code>True</code> if everything is correct, <code>false</code> otherwise.</returns>
         public static bool TryParse(string s,
                                     out Vector2i result,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Contract.Requires(s != null);
 
             int[] ret;
-            if (!VectorUtils.TryParse(s, 2, out ret, int.TryParse, provider, vstyle, style))
+            if (!VectorUtils.TryParse(s, 2, out ret, int.TryParse, provider, vstyle, nstyle))
             {
                 result = Zero;
                 return false;
@@ -373,7 +373,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Comprueba si son iguales.
+        /// Tests if the coordinates of <code>this</code> vector are equals to <code>x</code> and <code>y</code>.
         /// </summary>
         [Pure]
         private bool Equals(int x, int y)
@@ -405,15 +405,7 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         public override int GetHashCode()
         {
-            // http://www.jarvana.com/jarvana/view/org/apache/lucene/lucene-spatial/2.9.3/lucene-spatial-2.9.3-sources.jar!/org/apache/lucene/spatial/geometry/shape/Vector2D.java
-            const int prime = 31;
-            int hash = 1;
-            unchecked
-            {
-                hash = prime * hash + this.X.GetHashCode();
-                hash = prime * hash + this.Y.GetHashCode();
-            }
-            return hash;
+            return VectorUtils.GetHashCode(this.X, this.Y);
         }
 
         #endregion
@@ -482,7 +474,7 @@ namespace Essence.Geometry.Core.Int
         //REAL Length { get; }
 
         //[Pure]
-        //REAL LengthCuad { get; }
+        //REAL LengthSquared { get; }
 
         //[Pure]
         //REAL LengthL1 { get; }
@@ -490,21 +482,13 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         IVector IVector.Add(IVector v2)
         {
-            if (v2 is Vector2i)
-            {
-                return this.Add((Vector2i)v2);
-            }
-            return this.Add(new Vector2i(v2));
+            return this.Add(v2.ToVector2i());
         }
 
         [Pure]
         IVector IVector.Sub(IVector v2)
         {
-            if (v2 is Vector2i)
-            {
-                return this.Add((Vector2i)v2);
-            }
-            return this.Sub(new Vector2i(v2));
+            return this.Sub(v2.ToVector2i());
         }
 
         [Pure]
@@ -522,11 +506,7 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         IVector IVector.SimpleMul(IVector v2)
         {
-            if (v2 is Vector2i)
-            {
-                return this.SimpleMul((Vector2i)v2);
-            }
-            return this.SimpleMul(new Vector2i(v2));
+            return this.SimpleMul(v2.ToVector2i());
         }
 
         [Pure]
@@ -544,69 +524,38 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         IVector IVector.Lerp(IVector v2, double alpha)
         {
-            if (v2 is Vector2i)
-            {
-                return this.Lerp((Vector2i)v2, alpha);
-            }
-            return this.Lerp(new Vector2i(v2), alpha);
+            return this.Lerp(v2.ToVector2i(), alpha);
         }
 
         [Pure]
         double IVector.InvLerp(IVector v2, IVector vLerp)
         {
-            if (v2 is Vector2i)
-            {
-                if (vLerp is Vector2i)
-                {
-                    return this.InvLerp((Vector2i)v2, (Vector2i)vLerp);
-                }
-                else
-                {
-                    return this.InvLerp((Vector2i)v2, new Vector2i(vLerp));
-                }
-            }
-            return this.InvLerp(new Vector2i(v2), new Vector2i(vLerp));
+            return this.InvLerp(v2.ToVector2i(), vLerp.ToVector2i());
         }
 
         [Pure]
         IVector IVector.Lineal(IVector v2, double alpha, double beta)
         {
-            if (v2 is Vector2i)
-            {
-                return this.Lineal((Vector2i)v2, alpha, beta);
-            }
-            return this.Lineal(new Vector2i(v2), alpha, beta);
+            return this.Lineal(v2.ToVector2i(), alpha, beta);
         }
 
         [Pure]
         double IVector.Dot(IVector v2)
         {
-            if (v2 is Vector2i)
-            {
-                return this.Dot((Vector2i)v2);
-            }
-            return this.Dot(new Vector2i(v2));
+            return this.Dot(v2.ToVector2i());
         }
 
         [Pure]
-        double IVector.Proy(IVector v2)
+        double IVector.Proj(IVector v2)
 
         {
-            if (v2 is Vector2i)
-            {
-                return this.Proy((Vector2i)v2);
-            }
-            return this.Proy(new Vector2i(v2));
+            return this.Proy(v2.ToVector2i());
         }
 
         [Pure]
-        IVector IVector.ProyV(IVector v2)
+        IVector IVector.ProjV(IVector v2)
         {
-            if (v2 is Vector2i)
-            {
-                return this.ProyV((Vector2i)v2);
-            }
-            return this.ProyV(new Vector2i(v2));
+            return this.ProyV(v2.ToVector2i());
         }
 
         #endregion
@@ -621,11 +570,7 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         double IVector2D.Cross(IVector2D v2)
         {
-            if (v2 is Vector2i)
-            {
-                return this.Cross((Vector2i)v2);
-            }
-            return this.Cross(new Vector2i(v2));
+            return this.Cross(v2.ToVector2i());
         }
 
         #endregion
@@ -635,11 +580,7 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         bool IEpsilonEquatable<IVector>.EpsilonEquals(IVector other, double epsilon)
         {
-            if (other is Vector2i)
-            {
-                return this.Equals((Vector2i)other);
-            }
-            return this.Equals(new Vector2i(other));
+            return this.Equals(other.ToVector2i());
         }
 
         #endregion
@@ -647,7 +588,7 @@ namespace Essence.Geometry.Core.Int
         #region inner classes
 
         /// <summary>
-        ///     Compara los puntos en funcion a la coordenada indicada (X o Y).
+        /// This class compares vectors by coordinate (X or Y).
         /// </summary>
         public sealed class CoordComparer : IComparer<Vector2i>, IComparer
         {
@@ -678,7 +619,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Comparador lexicografico, primero compara por X y despues por Y.
+        /// This class lexicographically compares vectors: it compares X -> Y.
         /// </summary>
         public sealed class LexComparer : IComparer<Vector2i>, IComparer
         {

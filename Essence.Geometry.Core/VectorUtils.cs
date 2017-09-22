@@ -16,6 +16,8 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using Essence.Geometry.Core.Double;
+using Essence.Geometry.Core.Int;
 using Essence.Util;
 
 namespace Essence.Geometry.Core
@@ -23,7 +25,7 @@ namespace Essence.Geometry.Core
     public delegate bool TryParse<T>(string s, NumberStyles style, IFormatProvider proveedor, out T result);
 
     /// <summary>
-    ///     Utilidades sobre vectores.
+    /// Vector utilities.
     /// </summary>
     public static class VectorUtils
     {
@@ -73,13 +75,13 @@ namespace Essence.Geometry.Core
         }
 
         /// <summary>
-        ///     Muestra el array como una cadena de texto.
+        /// Converts the array to a string.
         /// </summary>
-        /// <typeparam name="T">Tipo.</typeparam>
-        /// <param name="provider">Proveedor.</param>
-        /// <param name="format">Formato.</param>
+        /// <typeparam name="T">Type.</typeparam>
+        /// <param name="provider">Provider.</param>
+        /// <param name="format">Format.</param>
         /// <param name="vs">Array.</param>
-        /// <returns>Cadena de texto.</returns>
+        /// <returns>String.</returns>
         public static string ToString<T>(IFormatProvider provider,
                                          string format,
                                          T[] vs)
@@ -121,22 +123,23 @@ namespace Essence.Geometry.Core
         }
 
         /// <summary>
-        ///     Intenta parsear la cadena de texto segun los estilos indicados y devuelve un array de valores.
+        /// Tries to parse the string using <code>vstyle</code> and <code>style</code> styles
+        /// and returns an array.
         /// </summary>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="count">Numero de elementos tienen que leer. Si es -1, se leen todos.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <param name="tryParse">Funcion de parseo.</param>
-        /// <param name="result">Array de flotantes.</param>
-        /// <returns>Indica si lo ha parseado correctamente.</returns>
+        /// <param name="provider">Format providor.</param>
+        /// <param name="s">String.</param>
+        /// <param name="count">Number of items. If it is -1 the it reads all items.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <param name="tryParse">Parser function.</param>
+        /// <param name="result">Array.</param>
+        /// <returns><code>True</code> if everything is correct, <code>false</code> otherwise.</returns>
         public static bool TryParse<T>(string s, int count,
                                        out T[] result,
                                        TryParse<T> tryParse,
                                        IFormatProvider provider = null,
                                        VectorStyles vstyle = VectorStyles.All,
-                                       NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                       NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             try
             {
@@ -228,7 +231,7 @@ namespace Essence.Geometry.Core
                 T[] ret = new T[ss.Length];
                 for (int i = 0; i < ss.Length; i++)
                 {
-                    if (!tryParse(ss[i], style, provider, out ret[i]))
+                    if (!tryParse(ss[i], nstyle, provider, out ret[i]))
                     {
                         result = null;
                         return false;
@@ -243,5 +246,95 @@ namespace Essence.Geometry.Core
                 return false;
             }
         }
+
+        #region Vector2d
+
+        public static Vector2i Round(this Vector2d p)
+        {
+            return new Vector2i((int)Math.Round(p.X), (int)Math.Round(p.Y));
+        }
+
+        public static Vector2i Ceiling(this Vector2d p)
+        {
+            return new Vector2i((int)Math.Ceiling(p.X), (int)Math.Ceiling(p.Y));
+        }
+
+        public static Vector2i Floor(this Vector2d p)
+        {
+            return new Vector2i((int)Math.Floor(p.X), (int)Math.Floor(p.Y));
+        }
+
+        #endregion
+
+        #region IVector
+
+        public static Vector2d ToVector2d(this IVector p)
+        {
+            if (p is Vector2d)
+            {
+                return (Vector2d)p;
+            }
+            return new Vector2d(p);
+        }
+
+        public static Vector2i ToVector2i(this IVector p)
+        {
+            if (p is Vector2i)
+            {
+                return (Vector2i)p;
+            }
+            return new Vector2i(p);
+        }
+
+        public static Vector3d ToVector3d(this IVector p)
+        {
+            if (p is Vector3d)
+            {
+                return (Vector3d)p;
+            }
+            return new Vector3d(p);
+        }
+
+        public static Vector4d ToVector4d(this IVector p)
+        {
+            if (p is Vector4d)
+            {
+                return (Vector4d)p;
+            }
+            return new Vector4d(p);
+        }
+
+        #endregion
+
+        #region IVector2D
+
+        public static Vector2d ToVector2d(this IVector2D p)
+        {
+            if (p is Vector2d)
+            {
+                return (Vector2d)p;
+            }
+            return new Vector2d(p);
+        }
+
+        public static Vector3d ToVector3d(this IVector3D p)
+        {
+            if (p is Vector3d)
+            {
+                return (Vector3d)p;
+            }
+            return new Vector3d(p);
+        }
+
+        public static Vector4d ToVector4d(this IVector4D p)
+        {
+            if (p is Vector4d)
+            {
+                return (Vector4d)p;
+            }
+            return new Vector4d(p);
+        }
+
+        #endregion
     }
 }

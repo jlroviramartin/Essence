@@ -17,7 +17,7 @@ namespace Essence.Geometry.Core
     public interface IColor3 : IColor
     {
         /// <summary>
-        /// This method gets the color.
+        /// This method gets the channels of <code>this</code> color.
         /// </summary>
         /// <param name="setter">Setter.</param>
         void GetColor(IColorSetter3 setter);

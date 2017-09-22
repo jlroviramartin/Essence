@@ -18,6 +18,9 @@ using Essence.Util.Math.Double;
 
 namespace Essence.Geometry.Core
 {
+    /// <summary>
+    /// Color utilities.
+    /// </summary>
     public static class ColorUtils
     {
         public static float ToChannelFloat(byte c)

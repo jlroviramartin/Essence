@@ -36,20 +36,17 @@ namespace Essence.Geometry.Core.Double
         /// <summary>Name of the property Y.</summary>
         public const string _Y = "Y";
 
-        private const double ZERO_TOLERANCE = MathUtils.ZERO_TOLERANCE;
-        private const double EPSILON = MathUtils.EPSILON;
-
-        /// <summary>Tuple zero.</summary>
+        /// <summary>Point zero.</summary>
         public static readonly Point2d Zero = new Point2d(0, 0);
 
-        /// <summary>Tuple one.</summary>
+        /// <summary>Point one.</summary>
         public static readonly Point2d One = new Point2d(1, 1);
 
-        /// <summary>Tuple with property X = 1 and others = 0.</summary>
+        /// <summary>Point with property X = 1 and others = 0.</summary>
         public static readonly Point2d UX = new Point2d(1, 0);
 
-        /// <static readonly>Tuple with property Y = 1 and others = 0.</summary>
-        public static Point2d UY = new Point2d(0, 1);
+        /// <summary>Point with property Y = 1 and others = 0.</summary>
+        public static readonly Point2d UY = new Point2d(0, 1);
 
         public Point2d(double x, double y)
         {
@@ -97,11 +94,11 @@ namespace Essence.Geometry.Core.Double
         #region operators
 
         /// <summary>
-        ///     Casting a REAL[].
+        /// Casting to an array.
         /// </summary>
         public static explicit operator double[](Point2d v)
         {
-            return new double[] { v.X, v.Y };
+            return new[] { v.X, v.Y };
         }
 
         public static Point2d operator +(Point2d p, Vector2d v)
@@ -149,7 +146,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es valido: ningun componente es NaN ni Infinito.
+        /// Tests if <code>this</code> point is valid (not any coordinate is NaN or infinity).
         /// </summary>
         [Pure]
         public bool IsValid
@@ -158,7 +155,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica que algun componente es NaN.
+        /// Tests if <code>this</code> point is NaN (any coordinate is NaN).
         /// </summary>
         [Pure]
         public bool IsNaN
@@ -167,7 +164,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica que algun componente es infinito.
+        /// Tests if <code>this</code> point is infinity (any coordinate is infinity).
         /// </summary>
         [Pure]
         public bool IsInfinity
@@ -176,7 +173,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es cero.
+        /// Tests if <code>this</code> point is zero (all coordinates are 0).
         /// </summary>
         [Pure]
         public bool IsZero
@@ -185,8 +182,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Cuadrante en sentido CCW:
-        ///     <pre><![CDATA[
+        /// Counterclockwise quadrant:
+        /// <pre><![CDATA[
         ///       ^
         ///   1   |   0
         ///       |
@@ -257,21 +254,21 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Calcula el angulo de <c>p2 - 0</c> respecto a <c>p1 - 0</c>.
-        ///     Angulo en radianes entre [-PI, PI].
-        ///     Es positivo si el giro es sentido horario [0, PI].
-        ///     Es negativo si el giro es sentido anti-horario [-PI, 0].
-        ///     <pre><![CDATA[
+        /// Calculates the angle of <code>p2 - 0</code> with respect to <code>this - 0</code>.
+        /// Angle in radians between [-PI, PI].
+        /// If it is a clockwise rotation [0, PI] then it is positive.
+        /// If it is a counterclockwise rotation [-PI, 0] then it is negative.
+        /// <pre><![CDATA[
         ///               __
         ///              _/| p2
         ///            _/
         ///          _/
         ///        _/ __
-        ///      _/   |\ angulo +
+        ///      _/   |\ Angle +
         ///    _/       |
-        ///   +--------------------> p1
-        /// origen      |
-        ///       \_  |/  angulo -
+        ///   +--------------------> this
+        /// origin      |
+        ///       \_  |/  Angle -
         ///         \_|--
         ///           \_
         ///             \_
@@ -279,22 +276,22 @@ namespace Essence.Geometry.Core.Double
         ///              --| p2
         /// ]]></pre>
         /// </summary>
-        /// <param name="o">Origen.</param>
-        /// <param name="p1">Punto base.</param>
-        /// <param name="p2">Punto.</param>
-        /// <returns>Angulo.</returns>
+        /// <param name="o">Origin.</param>
+        /// <param name="p1">Base point.</param>
+        /// <param name="p2">Other point.</param>
+        /// <returns>Angle.</returns>
         public static double EvAngle(Point2d o, Point2d p1, Point2d p2)
         {
             return (p1 - o).AngleTo(p2 - o);
         }
 
         /// <summary>
-        /// This method test if the {@code p} point is at the left, on or at the right of the {@code a, b} line
-        /// {@link http://www.softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm}.
+        /// This method tests if the <code>p</code> point is at the left, on or at the right of the <code>a, b</code> line.
+        /// <see cref="http://www.softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm"/>
         /// <ul>
-        /// <li>+1 if the {@code p} point is at the left of the line</li>
-        /// <li>0 if the {@code p} point is on the line</li>
-        /// <li>-1 if the {@code p} point is at the right of the line</li>
+        /// <li>+1 if the <code>p</code> point is at the left of the line</li>
+        /// <li>0 if the <code>p</code> point is on the line</li>
+        /// <li>-1 if the <code>p</code> point is at the right of the line</li>
         /// </ul>
         /// </summary>
         /// <param name="a"></param>
@@ -302,13 +299,13 @@ namespace Essence.Geometry.Core.Double
         /// <param name="p"></param>
         /// <param name="epsilon"></param>
         /// <returns></returns>
-        public static int IsLeft(Point2d a, Point2d b, Point2d p, double epsilon = EPSILON)
+        public static int IsLeft(Point2d a, Point2d b, Point2d p, double epsilon = MathUtils.EPSILON)
         {
             return (int)WhichSide(a, b, p, epsilon);
         }
 
         /// <summary>
-        /// This method test if the {@code p} point is at the left, on or at the right of the {@code a, b} line
+        /// This method tests if the <code>p</code> point is at the left, on or at the right of the <code>a, b</code> line.
         /// {@link http://www.softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm}.
         /// </summary>
         /// <param name="a"></param>
@@ -316,7 +313,7 @@ namespace Essence.Geometry.Core.Double
         /// <param name="p"></param>
         /// <param name="epsilon"></param>
         /// <returns></returns>
-        public static LineSide WhichSide(Point2d a, Point2d b, Point2d p, double epsilon = EPSILON)
+        public static LineSide WhichSide(Point2d a, Point2d b, Point2d p, double epsilon = MathUtils.EPSILON)
         {
             double v = ((b.X - a.X) * (p.Y - a.Y) - (b.Y - a.Y) * (p.X - a.X));
             return (MathUtils.EpsilonEquals(v, 0, epsilon) ? LineSide.Middle : (v < 0 ? LineSide.Right : LineSide.Left));
@@ -325,20 +322,20 @@ namespace Essence.Geometry.Core.Double
         #region parse
 
         /// <summary>
-        ///     Parsea la cadena de texto segun los estilos indicados y devuelve una tupla.
+        /// Parses the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
         /// </summary>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <returns>Resultado.</returns>
+        /// <param name="s">String.</param>
+        /// <param name="provider">Provider.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <returns>Point.</returns>
         public static Point2d Parse(string s,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Point2d result;
-            if (!TryParse(s, out result, provider, vstyle, style))
+            if (!TryParse(s, out result, provider, vstyle, nstyle))
             {
                 throw new Exception();
             }
@@ -346,24 +343,24 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Parsea la cadena de texto segun los estilos indicados y devuelve una tupla.
+        /// Tries to parse the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
         /// </summary>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <param name="result">Resultado.</param>
-        /// <returns>Indica si lo ha parseado correctamente.</returns>
+        /// <param name="s">String.</param>
+        /// <param name="provider">Provider.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <param name="result">Point.</param>
+        /// <returns><code>True</code> if everything is correct, <code>false</code> otherwise.</returns>
         public static bool TryParse(string s,
                                     out Point2d result,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Contract.Requires(s != null);
 
             double[] ret;
-            if (!VectorUtils.TryParse(s, 2, out ret, double.TryParse, provider, vstyle, style))
+            if (!VectorUtils.TryParse(s, 2, out ret, double.TryParse, provider, vstyle, nstyle))
             {
                 result = Zero;
                 return false;
@@ -377,10 +374,10 @@ namespace Essence.Geometry.Core.Double
         #region private
 
         /// <summary>
-        ///     Comprueba si son casi iguales.
+        /// Tests if the coordinates of <code>this</code> point are equals to <code>x</code> and <code>y</code>.
         /// </summary>
         [Pure]
-        private bool EpsilonEquals(double x, double y, double epsilon = ZERO_TOLERANCE)
+        private bool EpsilonEquals(double x, double y, double epsilon = MathUtils.ZERO_TOLERANCE)
         {
             return this.X.EpsilonEquals(x, epsilon) && this.Y.EpsilonEquals(y, epsilon);
         }
@@ -409,15 +406,7 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public override int GetHashCode()
         {
-            // http://www.jarvana.com/jarvana/view/org/apache/lucene/lucene-spatial/2.9.3/lucene-spatial-2.9.3-sources.jar!/org/apache/lucene/spatial/geometry/shape/Vector2D.java
-            const int prime = 31;
-            int hash = 1;
-            unchecked
-            {
-                hash = prime * hash + this.X.GetHashCode();
-                hash = prime * hash + this.Y.GetHashCode();
-            }
-            return hash;
+            return VectorUtils.GetHashCode(this.X, this.Y);
         }
 
         #endregion
@@ -425,7 +414,7 @@ namespace Essence.Geometry.Core.Double
         #region IEpsilonEquatable<Point2d>
 
         [Pure]
-        public bool EpsilonEquals(Point2d other, double epsilon = EPSILON)
+        public bool EpsilonEquals(Point2d other, double epsilon = MathUtils.EPSILON)
         {
             return this.EpsilonEquals(other.X, other.Y, (double)epsilon);
         }
@@ -547,25 +536,27 @@ namespace Essence.Geometry.Core.Double
         #region inner classes
 
         /// <summary>
-        ///     Compara los puntos en funcion a la coordenada indicada (X o Y).
+        /// This class compares points by coordinate (X or Y).
         /// </summary>
         public sealed class CoordComparer : IComparer<Point2d>, IComparer
         {
-            public CoordComparer(int coord)
+            public CoordComparer(int coord, double epsilon = MathUtils.EPSILON)
             {
                 this.coord = coord;
+                this.epsilon = epsilon;
             }
 
             private readonly int coord;
+            private readonly double epsilon;
 
             public int Compare(Point2d v1, Point2d v2)
             {
                 switch (this.coord)
                 {
                     case 0:
-                        return v1.X.CompareTo(v2.X);
+                        return v1.X.EpsilonCompareTo(v2.X, this.epsilon);
                     case 1:
-                        return v1.Y.CompareTo(v2.Y);
+                        return v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
                 }
                 throw new IndexOutOfRangeException();
             }
@@ -578,7 +569,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Comparador lexicografico, primero compara por X y despues por Y.
+        /// This class lexicographically compares points: it compares X -> Y.
         /// </summary>
         public sealed class LexComparer : IComparer<Point2d>, IComparer
         {

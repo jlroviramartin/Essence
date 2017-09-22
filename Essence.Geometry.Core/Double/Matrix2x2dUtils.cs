@@ -25,8 +25,8 @@ namespace Essence.Geometry.Core.Double
         /// <returns>Matriz de rotacion.</returns>
         public static Matrix2x2d Rotate(double r)
         {
-            double c = (double)Math.Cos(r);
-            double s = (double)Math.Sin(r);
+            double c = Math.Cos(r);
+            double s = Math.Sin(r);
             return new Matrix2x2d(
                 c, -s,
                 s, c);
@@ -69,8 +69,8 @@ namespace Essence.Geometry.Core.Double
         /// <returns>Matriz de traslacion, rotacion y escala.</returns>
         public static Matrix2x2d RotateScale(double r, double ex, double ey)
         {
-            double s = (double)Math.Sin(r);
-            double c = (double)Math.Cos(r);
+            double s = Math.Sin(r);
+            double c = Math.Cos(r);
             return new Matrix2x2d(
                 c * ex, -ey * s,
                 ex * s, c * ey);

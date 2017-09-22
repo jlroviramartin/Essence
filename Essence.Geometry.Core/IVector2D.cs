@@ -19,16 +19,15 @@ namespace Essence.Geometry.Core
     public interface IVector2D : IVector
     {
         /// <summary>
-        /// This method gets the coordinates.
+        /// This method gets the coordinates of <code>this</code> point.
         /// </summary>
         /// <param name="setter">Setter.</param>
         void GetCoordinates(ICoordinateSetter2D setter);
 
         /// <summary>
-        ///     Operacion producto vectorial (cross) en 3D: v1 x v2. Tiene en cuenta el signo.
-        ///     A x B = |A| * |B| * sin( angulo( A, B ) )
-        ///     <see cref="http://en.wikipedia.org/wiki/Cross_product" />
-        ///     <code><![CDATA[
+        /// This method calculates the cross product (producto vectorial) of <code>this</code> vector and <code>v2</code> vector.
+        /// <see cref="http://en.wikipedia.org/wiki/Cross_product" />
+        /// <code><![CDATA[
         /// ^ v1 x v2 ( + )
         /// |
         /// |   _
@@ -38,6 +37,8 @@ namespace Essence.Geometry.Core
         /// +----------> v1
         /// ]]></code>
         /// </summary>
+        /// <param name="v2">Other vector.</param>
+        /// <returns>this x v2 = A x B = |A| * |B| * sin( angulo( A, B ) )</returns>
         [Pure]
         double Cross(IVector2D v2);
     }

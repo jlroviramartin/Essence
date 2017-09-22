@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 namespace Essence.Geometry.Core
 {
     /// <summary>
-    ///     Estilos para los vectores.
+    /// Styles of the vectors.
     /// </summary>
     [Flags]
     [Guid("CD1B7003-54E7-4D7C-BA23-A3AF96F84720")]

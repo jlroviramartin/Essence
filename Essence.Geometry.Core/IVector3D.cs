@@ -19,16 +19,16 @@ namespace Essence.Geometry.Core
     public interface IVector3D : IVector
     {
         /// <summary>
-        /// This method gets the coordinates.
+        /// This method gets the coordinates of <code>this</code> point.
         /// </summary>
         /// <param name="setter">Setter.</param>
         void GetCoordinates(ICoordinateSetter3D setter);
 
         /// <summary>
-        ///     Operacion producto vectorial (cross) en 3D: v1 x v2.
-        ///     Regla de la mano derecha (OpenGL): VZ = VX * VY
-        ///     <see cref="http://en.wikipedia.org/wiki/Cross_product" />
-        ///     <code><![CDATA[
+        /// This method calculates the cross product (producto vectorial) of <code>this</code> vector and <code>v2</code> vector.
+        /// Right hand rule (OpenGL): VZ = VX * VY
+        /// <see cref="http://en.wikipedia.org/wiki/Cross_product" />
+        /// <code><![CDATA[
         /// ^ v1 x v2 ( + )
         /// |
         /// |   _
@@ -37,15 +37,20 @@ namespace Essence.Geometry.Core
         /// | /  |\
         /// +------+---> v1
         /// ]]></code>
-        ///     Base ortonormal: Vx * Vy = Vz ; Vy * Vz = Vx ; Vz * Vx = Vy
+        /// Base ortonormal: Vx * Vy = Vz ; Vy * Vz = Vx ; Vz * Vx = Vy
         /// </summary>
+        /// <param name="v2">Other vector.</param>
+        /// <returns>this x v2 = A x B = |A| * |B| * sin( angulo( A, B ) )</returns>
         [Pure]
         IVector3D Cross(IVector3D v2);
 
         /// <summary>
-        ///     Operacion producto mixto en 3D (Mixed product/Triple product): v1 · ( v2 x v3 ).
-        ///     <see cref="http://en.wikipedia.org/wiki/Mixed_product" />
+        /// This method calculates the mixed/triple product (producto mixto/triple) of <code>this</code> vector, <code>v2</code> and <code>v3</code> vector.
+        /// <see cref="http://en.wikipedia.org/wiki/Mixed_product" />
         /// </summary>
+        /// <param name="v2">Other vector.</param>
+        /// <param name="v3">Other vector.</param>
+        /// <returns>this · ( v2 x v3 )</returns>
         [Pure]
         double TripleProduct(IVector3D v2, IVector3D v3);
     }

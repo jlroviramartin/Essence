@@ -42,25 +42,22 @@ namespace Essence.Geometry.Core.Double
         /// <summary>Name of the property W.</summary>
         public const string _W = "W";
 
-        private const double ZERO_TOLERANCE = MathUtils.ZERO_TOLERANCE;
-        private const double EPSILON = MathUtils.EPSILON;
-
-        /// <summary>Tuple zero.</summary>
+        /// <summary>Point zero.</summary>
         public static readonly Point4d Zero = new Point4d(0, 0, 0, 0);
 
-        /// <summary>Tuple one.</summary>
+        /// <summary>Point one.</summary>
         public static readonly Point4d One = new Point4d(1, 1, 1, 1);
 
-        /// <summary>Tuple with property X = 1 and others = 0.</summary>
+        /// <summary>Point with property X = 1 and others = 0.</summary>
         public static readonly Point4d UX = new Point4d(1, 0, 0, 0);
 
-        /// <summary>Tuple with property Y = 1 and others = 0.</summary>
+        /// <summary>Point with property Y = 1 and others = 0.</summary>
         public static readonly Point4d UY = new Point4d(0, 1, 0, 0);
 
-        /// <summary>Tuple with property Z = 1 and others = 0.</summary>
+        /// <summary>Point with property Z = 1 and others = 0.</summary>
         public static readonly Point4d UZ = new Point4d(0, 0, 1, 0);
 
-        /// <summary>Tuple with property W = 1 and others = 0.</summary>
+        /// <summary>Point with property W = 1 and others = 0.</summary>
         public static readonly Point4d UW = new Point4d(0, 0, 0, 1);
 
         public Point4d(double x, double y, double z, double w)
@@ -123,11 +120,11 @@ namespace Essence.Geometry.Core.Double
         #region operators
 
         /// <summary>
-        ///     Casting a REAL[].
+        /// Casting to an array.
         /// </summary>
         public static explicit operator double[](Point4d v)
         {
-            return new double[] { v.X, v.Y, v.Z, v.W };
+            return new[] { v.X, v.Y, v.Z, v.W };
         }
 
         public static Point4d operator +(Point4d p, Vector4d v)
@@ -179,7 +176,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es valido: ningun componente es NaN ni Infinito.
+        /// Tests if <code>this</code> point is valid (not any coordinate is NaN or infinity).
         /// </summary>
         [Pure]
         public bool IsValid
@@ -188,7 +185,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica que algun componente es NaN.
+        /// Tests if <code>this</code> point is NaN (any coordinate is NaN).
         /// </summary>
         [Pure]
         public bool IsNaN
@@ -197,7 +194,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica que algun componente es infinito.
+        /// Tests if <code>this</code> point is infinity (any coordinate is infinity).
         /// </summary>
         [Pure]
         public bool IsInfinity
@@ -206,7 +203,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es cero.
+        /// Tests if <code>this</code> point is zero (all coordinates are 0).
         /// </summary>
         [Pure]
         public bool IsZero
@@ -266,20 +263,20 @@ namespace Essence.Geometry.Core.Double
         #region parse
 
         /// <summary>
-        ///     Parsea la cadena de texto segun los estilos indicados y devuelve una tupla.
+        /// Parses the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
         /// </summary>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <returns>Resultado.</returns>
+        /// <param name="s">String.</param>
+        /// <param name="provider">Provider.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <returns>Point.</returns>
         public static Point4d Parse(string s,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Point4d result;
-            if (!TryParse(s, out result, provider, vstyle, style))
+            if (!TryParse(s, out result, provider, vstyle, nstyle))
             {
                 throw new Exception();
             }
@@ -287,24 +284,24 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Parsea la cadena de texto segun los estilos indicados y devuelve una tupla.
+        /// Tries to parse the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
         /// </summary>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <param name="result">Resultado.</param>
-        /// <returns>Indica si lo ha parseado correctamente.</returns>
+        /// <param name="s">String.</param>
+        /// <param name="provider">Provider.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <param name="result">Point.</param>
+        /// <returns><code>True</code> if everything is correct, <code>false</code> otherwise.</returns>
         public static bool TryParse(string s,
                                     out Point4d result,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Contract.Requires(s != null);
 
             double[] ret;
-            if (!VectorUtils.TryParse(s, 4, out ret, double.TryParse, provider, vstyle, style))
+            if (!VectorUtils.TryParse(s, 4, out ret, double.TryParse, provider, vstyle, nstyle))
             {
                 result = Zero;
                 return false;
@@ -322,10 +319,10 @@ namespace Essence.Geometry.Core.Double
         #region private
 
         /// <summary>
-        ///     Comprueba si son casi iguales.
+        /// Tests if the coordinates of <code>this</code> point are equals to <code>x</code>, <code>y</code>, <code>z</code> and <code>w</code>.
         /// </summary>
         [Pure]
-        private bool EpsilonEquals(double x, double y, double z, double w, double epsilon = ZERO_TOLERANCE)
+        private bool EpsilonEquals(double x, double y, double z, double w, double epsilon = MathUtils.ZERO_TOLERANCE)
         {
             return this.X.EpsilonEquals(x, epsilon) && this.Y.EpsilonEquals(y, epsilon) && this.Z.EpsilonEquals(z, epsilon) && this.W.EpsilonEquals(w, epsilon);
         }
@@ -354,17 +351,7 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public override int GetHashCode()
         {
-            // http://www.jarvana.com/jarvana/view/org/apache/lucene/lucene-spatial/2.9.3/lucene-spatial-2.9.3-sources.jar!/org/apache/lucene/spatial/geometry/shape/Vector2D.java
-            const int prime = 31;
-            int hash = 1;
-            unchecked
-            {
-                hash = prime * hash + this.X.GetHashCode();
-                hash = prime * hash + this.Y.GetHashCode();
-                hash = prime * hash + this.Z.GetHashCode();
-                hash = prime * hash + this.W.GetHashCode();
-            }
-            return hash;
+            return VectorUtils.GetHashCode(this.X, this.Y, this.Z, this.W);
         }
 
         #endregion
@@ -372,7 +359,7 @@ namespace Essence.Geometry.Core.Double
         #region IEpsilonEquatable
 
         [Pure]
-        public bool EpsilonEquals(Point4d other, double epsilon = EPSILON)
+        public bool EpsilonEquals(Point4d other, double epsilon = MathUtils.EPSILON)
         {
             return this.EpsilonEquals(other.X, other.Y, other.Z, other.W, (double)epsilon);
         }
@@ -498,29 +485,31 @@ namespace Essence.Geometry.Core.Double
         #region inner classes
 
         /// <summary>
-        ///     Compara los puntos en funcion a la coordenada indicada (X o Y).
+        /// This class compares points by coordinate (X or Y or Z or W).
         /// </summary>
         public sealed class CoordComparer : IComparer<Point4d>, IComparer
         {
-            public CoordComparer(int coord)
+            public CoordComparer(int coord, double epsilon = MathUtils.EPSILON)
             {
                 this.coord = coord;
+                this.epsilon = epsilon;
             }
 
             private readonly int coord;
+            private readonly double epsilon;
 
             public int Compare(Point4d v1, Point4d v2)
             {
                 switch (this.coord)
                 {
                     case 0:
-                        return v1.X.CompareTo(v2.X);
+                        return v1.X.EpsilonCompareTo(v2.X, this.epsilon);
                     case 1:
-                        return v1.Y.CompareTo(v2.Y);
+                        return v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
                     case 2:
-                        return v1.Z.CompareTo(v2.Z);
+                        return v1.Z.EpsilonCompareTo(v2.Z, this.epsilon);
                     case 3:
-                        return v1.W.CompareTo(v2.W);
+                        return v1.W.EpsilonCompareTo(v2.W, this.epsilon);
                 }
                 throw new IndexOutOfRangeException();
             }
@@ -533,29 +522,36 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Comparador lexicografico, primero compara por X y despues por Y.
+        /// This class lexicographically compares points: it compares X -> Y -> Z -> W.
         /// </summary>
         public sealed class LexComparer : IComparer<Point4d>, IComparer
         {
+            public LexComparer(double epsilon = MathUtils.EPSILON)
+            {
+                this.epsilon = epsilon;
+            }
+
+            private readonly double epsilon;
+
             public int Compare(Point4d v1, Point4d v2)
             {
                 int i;
-                i = v1.X.CompareTo(v2.X);
+                i = v1.X.EpsilonCompareTo(v2.X, this.epsilon);
                 if (i != 0)
                 {
                     return i;
                 }
-                i = v1.Y.CompareTo(v2.Y);
+                i = v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
                 if (i != 0)
                 {
                     return i;
                 }
-                i = v1.Z.CompareTo(v2.Z);
+                i = v1.Z.EpsilonCompareTo(v2.Z, this.epsilon);
                 if (i != 0)
                 {
                     return i;
                 }
-                i = v1.W.CompareTo(v2.W);
+                i = v1.W.EpsilonCompareTo(v2.W, this.epsilon);
                 return i;
             }
 

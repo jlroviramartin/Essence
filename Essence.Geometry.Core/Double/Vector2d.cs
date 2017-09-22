@@ -36,19 +36,16 @@ namespace Essence.Geometry.Core.Double
         /// <summary>Name of the property Y.</summary>
         public const string _Y = "Y";
 
-        private const double ZERO_TOLERANCE = MathUtils.ZERO_TOLERANCE;
-        private const double EPSILON = MathUtils.EPSILON;
-
-        /// <summary>Tuple zero.</summary>
+        /// <summary>Vector zero.</summary>
         public static readonly Vector2d Zero = new Vector2d(0, 0);
 
-        /// <summary>Tuple one.</summary>
+        /// <summary>Vector one.</summary>
         public static readonly Vector2d One = new Vector2d(1, 1);
 
-        /// <summary>Tuple with property X = 1 and others = 0.</summary>
+        /// <summary>Vector with property X = 1 and others = 0.</summary>
         public static readonly Vector2d UX = new Vector2d(1, 0);
 
-        /// <summary>Tuple with property Y = 1 and others = 0.</summary>
+        /// <summary>Vector with property Y = 1 and others = 0.</summary>
         public static readonly Vector2d UY = new Vector2d(0, 1);
 
         public static Vector2d NewRotate(double angle, double len = 1)
@@ -102,11 +99,11 @@ namespace Essence.Geometry.Core.Double
         #region operators
 
         /// <summary>
-        ///     Casting a REAL[].
+        /// Casting to an array.
         /// </summary>
         public static explicit operator double[](Vector2d v)
         {
-            return new double[] { v.X, v.Y };
+            return new[] { v.X, v.Y };
         }
 
         public static Vector2d operator -(Vector2d v1)
@@ -169,7 +166,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es valido: ningun componente es NaN ni Infinito.
+        /// Tests if <code>this</code> vector is valid (not any coordinate is NaN or infinity).
         /// </summary>
         [Pure]
         public bool IsValid
@@ -178,7 +175,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica que algun componente es NaN.
+        /// Tests if <code>this</code> vector is NaN (any coordinate is NaN).
         /// </summary>
         [Pure]
         public bool IsNaN
@@ -187,7 +184,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica que algun componente es infinito.
+        /// Tests if <code>this</code> vector is infinity (any coordinate is infinity).
         /// </summary>
         [Pure]
         public bool IsInfinity
@@ -196,7 +193,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es cero.
+        /// Tests if <code>this</code> vector is zero (all coordinates are 0).
         /// </summary>
         [Pure]
         public bool IsZero
@@ -205,8 +202,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Cuadrante en sentido CCW:
-        ///     <pre><![CDATA[
+        /// Counterclockwise quadrant:
+        /// <pre><![CDATA[
         ///       ^
         ///   1   |   0
         ///       |
@@ -227,14 +224,8 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        [Pure]
-        public double Cross(Vector2d v2)
-        {
-            return this.X * v2.Y - this.Y * v2.X;
-        }
-
         /// <summary>
-        ///     Indica si es unitario.
+        /// Tests if <code>this</code> vector is unit.
         /// </summary>
         [Pure]
         public bool IsUnit
@@ -259,11 +250,11 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public double Length
         {
-            get { return (double)Math.Sqrt(this.LengthCuad); }
+            get { return (double)Math.Sqrt(this.LengthSquared); }
         }
 
         [Pure]
-        public double LengthCuad
+        public double LengthSquared
         {
             get { return this.Dot(this); }
         }
@@ -325,14 +316,29 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public double InvLerp(Vector2d v2, Vector2d vLerp)
         {
-            Vector2d v12 = v2.Sub(this);
-            return v12.Proy(vLerp.Sub(this));
+            double x = (v2.X - this.X), y = (v2.Y - this.Y);
+
+            double a = x * (vLerp.X - this.X)
+                       + y * (vLerp.Y - this.Y);
+            double b = x * x
+                       + y * y;
+            return a / Math.Sqrt(b);
+
+            //Vector2d v12 = v2.Sub(this);
+            //return v12.Proj(vLerp.Sub(this));
+            //return v12.Dot(vLerp.Sub(this)) / v12.Length;
         }
 
         [Pure]
         public Vector2d Lineal(Vector2d v2, double alpha, double beta)
         {
             return new Vector2d(alpha * this.X + beta * v2.X, alpha * this.Y + beta * v2.Y);
+        }
+
+        [Pure]
+        public double Cross(Vector2d v2)
+        {
+            return this.X * v2.Y - this.Y * v2.X;
         }
 
         [Pure]
@@ -354,8 +360,9 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Calcula el angulo de <c>this</c> respecto del eje X. Es lo mismo que 'new Vector2d(1, 0).AngleTo(v)'.
-        ///     <pre><![CDATA[
+        /// Evaluates the angle of <c>this</c> vector with respect to the X axis.
+        /// It is the same as 'new Vector2d(1, 0).AngleTo(v)'.
+        /// <pre><![CDATA[
         ///   ^           __
         ///   |          _/| this
         ///   |        _/
@@ -380,11 +387,11 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Calcula el angulo de <c>other</c> respecto de este vector.
-        ///     Angulo en radianes entre [-PI, PI].
-        ///     Es positivo si el giro es sentido horario [0, PI].
-        ///     Es negativo si el giro es sentido anti-horario [-PI, 0].
-        ///     <pre><![CDATA[
+        /// Evaluates the angle of <c>other</c> vector with respect to <code>this</code> vector.
+        /// Angle in radians between [-PI, PI].
+        /// If it is a clockwise rotation [0, PI] then it is positive.
+        /// If it is a counterclockwise rotation [-PI, 0] then it is negative.
+        /// <pre><![CDATA[
         ///               __
         ///              _/| other
         ///            _/
@@ -413,7 +420,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Vector perpendicular a la derecha (Perp): (y, -x).
+        /// Gets the perpendicular vector of <code>this</code> to the right (Perp): (y, -x).
         /// </summary>
         [Pure]
         public Vector2d PerpRight
@@ -422,7 +429,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Vector perpendicular a la izquierda: (-y, x).
+        /// Gets the perpendicular vector of <code>this</code> to the left: (-y, x).
         /// </summary>
         [Pure]
         public Vector2d PerpLeft
@@ -431,7 +438,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Vector unitario perpendicular a la derecha (UnitPerp): PerpRight / Length.
+        /// Gets the perpendicular unit vector of <code>this</code> to the right (UnitPerp): PerpRight / Length.
         /// </summary>
         [Pure]
         public Vector2d UnitPerpRight
@@ -440,7 +447,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Vector unitario perpendicular a la izquierda:PerpLeft / Length.
+        /// Gets the perpendicular unit vector of <code>this</code> to the left: PerpLeft / Length.
         /// </summary>
         [Pure]
         public Vector2d UnitPerpLeft
@@ -449,10 +456,11 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Producto escalar por el vector perpendicular a <c>v</c> (dotPerp).
-        ///     returns DotPerp((x,y),(V.x,V.y)) = Dot((x,y),PerpRight(v)) = x*V.y - y*V.x
-        ///     NOTA: igual al producto vectorial (cross).
+        /// Calculates the dot product of <code>this</code> vector with the perpendicular vector of <c>v</c> (dotPerp).
+        /// NOTA: it is similar to the cross product.
         /// </summary>
+        /// <param name="v2">Vector</param>
+        /// <returns>DotPerp( ( x, y ), ( V.x, V.y ) ) = Dot( ( x, y ), PerpRight( v ) ) = x * V.y - y * V.x</returns>
         [Pure]
         public double DotPerpRight(Vector2d v2)
         {
@@ -460,10 +468,10 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Rota el vector.
+        /// Rotates <code>this</code> vector.
         /// </summary>
         /// <param name="v2">Vector.</param>
-        /// <param name="rad">Angulo en radianes.</param>
+        /// <param name="rad">Angle in radians.</param>
         public static Vector2d Rot(Vector2d v2, double rad)
         {
             double s = (double)Math.Sin(rad);
@@ -474,20 +482,20 @@ namespace Essence.Geometry.Core.Double
         #region parse
 
         /// <summary>
-        ///     Parsea la cadena de texto segun los estilos indicados y devuelve una tupla.
+        /// Parses the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
         /// </summary>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <returns>Resultado.</returns>
+        /// <param name="s">String.</param>
+        /// <param name="provider">Provider.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <returns>Vector.</returns>
         public static Vector2d Parse(string s,
                                      IFormatProvider provider = null,
                                      VectorStyles vstyle = VectorStyles.All,
-                                     NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                     NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Vector2d result;
-            if (!TryParse(s, out result, provider, vstyle, style))
+            if (!TryParse(s, out result, provider, vstyle, nstyle))
             {
                 throw new Exception();
             }
@@ -495,24 +503,24 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Parsea la cadena de texto segun los estilos indicados y devuelve una tupla.
+        /// Tries to parse the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
         /// </summary>
-        /// <param name="s">Cadena de texto a parsear.</param>
-        /// <param name="provider">Proveedor de formato.</param>
-        /// <param name="vstyle">Estilo de vectores.</param>
-        /// <param name="style">Estilo de numeros.</param>
-        /// <param name="result">Resultado.</param>
-        /// <returns>Indica si lo ha parseado correctamente.</returns>
+        /// <param name="s">String.</param>
+        /// <param name="provider">Provider.</param>
+        /// <param name="vstyle">Vector style.</param>
+        /// <param name="nstyle">Number style.</param>
+        /// <param name="result">Vector.</param>
+        /// <returns><code>True</code> if everything is correct, <code>false</code> otherwise.</returns>
         public static bool TryParse(string s,
                                     out Vector2d result,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Contract.Requires(s != null);
 
             double[] ret;
-            if (!VectorUtils.TryParse(s, 2, out ret, double.TryParse, provider, vstyle, style))
+            if (!VectorUtils.TryParse(s, 2, out ret, double.TryParse, provider, vstyle, nstyle))
             {
                 result = Zero;
                 return false;
@@ -526,10 +534,10 @@ namespace Essence.Geometry.Core.Double
         #region private
 
         /// <summary>
-        ///     Comprueba si son casi iguales.
+        /// Tests if the coordinates of <code>this</code> vector are equals to <code>x</code> and <code>y</code>.
         /// </summary>
         [Pure]
-        private bool EpsilonEquals(double x, double y, double epsilon = ZERO_TOLERANCE)
+        private bool EpsilonEquals(double x, double y, double epsilon = MathUtils.ZERO_TOLERANCE)
         {
             return this.X.EpsilonEquals(x, epsilon) && this.Y.EpsilonEquals(y, epsilon);
         }
@@ -558,15 +566,7 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public override int GetHashCode()
         {
-            // http://www.jarvana.com/jarvana/view/org/apache/lucene/lucene-spatial/2.9.3/lucene-spatial-2.9.3-sources.jar!/org/apache/lucene/spatial/geometry/shape/Vector2D.java
-            const int prime = 31;
-            int hash = 1;
-            unchecked
-            {
-                hash = prime * hash + this.X.GetHashCode();
-                hash = prime * hash + this.Y.GetHashCode();
-            }
-            return hash;
+            return VectorUtils.GetHashCode(this.X, this.Y);
         }
 
         #endregion
@@ -574,9 +574,9 @@ namespace Essence.Geometry.Core.Double
         #region IEpsilonEquatable<Vector2d>
 
         [Pure]
-        public bool EpsilonEquals(Vector2d other, double epsilon = EPSILON)
+        public bool EpsilonEquals(Vector2d other, double epsilon = MathUtils.EPSILON)
         {
-            return this.EpsilonEquals(other.X, other.Y, (double)epsilon);
+            return this.EpsilonEquals(other.X, other.Y, epsilon);
         }
 
         #endregion
@@ -645,7 +645,7 @@ namespace Essence.Geometry.Core.Double
         //REAL Length { get; }
 
         //[Pure]
-        //REAL LengthCuad { get; }
+        //REAL LengthSquared { get; }
 
         //[Pure]
         //REAL LengthL1 { get; }
@@ -717,14 +717,14 @@ namespace Essence.Geometry.Core.Double
         }
 
         [Pure]
-        double IVector.Proy(IVector v2)
+        double IVector.Proj(IVector v2)
 
         {
             return this.Proy(v2.ToVector2d());
         }
 
         [Pure]
-        IVector IVector.ProyV(IVector v2)
+        IVector IVector.ProjV(IVector v2)
         {
             return this.ProyV(v2.ToVector2d());
         }
@@ -759,25 +759,27 @@ namespace Essence.Geometry.Core.Double
         #region inner classes
 
         /// <summary>
-        ///     Compara los puntos en funcion a la coordenada indicada (X o Y).
+        /// This class compares vectors by coordinate (X or Y).
         /// </summary>
         public sealed class CoordComparer : IComparer<Vector2d>, IComparer
         {
-            public CoordComparer(int coord)
+            public CoordComparer(int coord, double epsilon = MathUtils.EPSILON)
             {
                 this.coord = coord;
+                this.epsilon = epsilon;
             }
 
             private readonly int coord;
+            private readonly double epsilon;
 
             public int Compare(Vector2d v1, Vector2d v2)
             {
                 switch (this.coord)
                 {
                     case 0:
-                        return v1.X.CompareTo(v2.X);
+                        return v1.X.EpsilonCompareTo(v2.X, this.epsilon);
                     case 1:
-                        return v1.Y.CompareTo(v2.Y);
+                        return v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
                 }
                 throw new IndexOutOfRangeException();
             }
@@ -790,19 +792,26 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Comparador lexicografico, primero compara por X y despues por Y.
+        /// This class lexicographically compares vectors: it compares X -> Y.
         /// </summary>
         public sealed class LexComparer : IComparer<Vector2d>, IComparer
         {
+            public LexComparer(double epsilon = MathUtils.EPSILON)
+            {
+                this.epsilon = epsilon;
+            }
+
+            private readonly double epsilon;
+
             public int Compare(Vector2d v1, Vector2d v2)
             {
                 int i;
-                i = v1.X.CompareTo(v2.X);
+                i = v1.X.EpsilonCompareTo(v2.X, this.epsilon);
                 if (i != 0)
                 {
                     return i;
                 }
-                i = v1.Y.CompareTo(v2.Y);
+                i = v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
                 return i;
             }
 
@@ -814,13 +823,13 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Compara los vectores en funcion a su longitud.
+        /// This class compares vectors using their length.
         /// </summary>
         public sealed class LengthComparer : IComparer<Vector2d>, IComparer
         {
             public int Compare(Vector2d v1, Vector2d v2)
             {
-                return v1.LengthCuad.CompareTo(v2.LengthCuad);
+                return v1.LengthSquared.CompareTo(v2.LengthSquared);
             }
 
             int IComparer.Compare(object o1, object o2)
@@ -831,8 +840,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Compara vectores normalizados segun su angulo.
-        ///     <![CDATA[
+        /// This class compares unit vectors using their angle.
+        /// <![CDATA[
         ///  ^ normal = direccion.PerpLeft
         ///  |
         ///  | /__
