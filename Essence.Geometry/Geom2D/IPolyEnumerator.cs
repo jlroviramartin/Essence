@@ -18,7 +18,7 @@ using Essence.Util.Math.Double;
 
 namespace Essence.Geometry.Geom2D
 {
-    public interface IPolyEnumerator<TPunto>
+    public interface IPolyEnumerator<TPoint>
     {
         bool Next();
 
@@ -26,16 +26,16 @@ namespace Essence.Geometry.Geom2D
 
         int Index { get; }
 
-        TPunto Point { get; }
+        TPoint Point { get; }
 
-        bool Equals(IPolyEnumerator<TPunto> other);
+        bool Equals(IPolyEnumerator<TPoint> other);
 
-        IPolyEnumerator<TPunto> Clone();
+        IPolyEnumerator<TPoint> Clone();
     }
 
-    public class PolyEnumerator<TPunto> : IPolyEnumerator<TPunto>
+    public class PolyEnumerator<TPoint> : IPolyEnumerator<TPoint>
     {
-        public PolyEnumerator(IList<TPunto> points, int index = 0)
+        public PolyEnumerator(IList<TPoint> points, int index = 0)
         {
             this.points = points;
             this.index = index;
@@ -66,30 +66,30 @@ namespace Essence.Geometry.Geom2D
             get { return this.index; }
         }
 
-        public TPunto Point
+        public TPoint Point
         {
             get { return this.points[this.index]; }
         }
 
-        public bool Equals(IPolyEnumerator<TPunto> other)
+        public bool Equals(IPolyEnumerator<TPoint> other)
         {
             return this.index == other.Index;
         }
 
-        public IPolyEnumerator<TPunto> Clone()
+        public IPolyEnumerator<TPoint> Clone()
         {
-            IPolyEnumerator<TPunto> copy = (IPolyEnumerator<TPunto>)this.MemberwiseClone();
+            IPolyEnumerator<TPoint> copy = (IPolyEnumerator<TPoint>)this.MemberwiseClone();
             return copy;
         }
 
-        private readonly IList<TPunto> points;
+        private readonly IList<TPoint> points;
         private int index;
     }
 
-    public class PolyEnumeratorRobust<TPunto> : IPolyEnumerator<TPunto>
-        where TPunto : IEpsilonEquatable<TPunto>
+    public class PolyEnumeratorRobust<TPoint> : IPolyEnumerator<TPoint>
+        where TPoint : IEpsilonEquatable<TPoint>
     {
-        public PolyEnumeratorRobust(IList<TPunto> points, int index = 0, bool findFirstEqual = false, double epsilon = MathUtils.EPSILON)
+        public PolyEnumeratorRobust(IList<TPoint> points, int index = 0, bool findFirstEqual = false, double epsilon = MathUtils.EPSILON)
         {
             this.points = points;
             this.index = index;
@@ -103,7 +103,7 @@ namespace Essence.Geometry.Geom2D
 
         public bool Next()
         {
-            TPunto curr = this.points[this.index];
+            TPoint curr = this.points[this.index];
             int count = 0;
             do
             {
@@ -119,7 +119,7 @@ namespace Essence.Geometry.Geom2D
 
         public bool Prev()
         {
-            TPunto curr = this.points[this.index];
+            TPoint curr = this.points[this.index];
             int count = 0;
             do
             {
@@ -142,25 +142,25 @@ namespace Essence.Geometry.Geom2D
             get { return this.index; }
         }
 
-        public TPunto Point
+        public TPoint Point
         {
             get { return this.points[this.index]; }
         }
 
-        public bool Equals(IPolyEnumerator<TPunto> other)
+        public bool Equals(IPolyEnumerator<TPoint> other)
         {
             return this.index == other.Index;
         }
 
-        public IPolyEnumerator<TPunto> Clone()
+        public IPolyEnumerator<TPoint> Clone()
         {
-            IPolyEnumerator<TPunto> copy = (IPolyEnumerator<TPunto>)this.MemberwiseClone();
+            IPolyEnumerator<TPoint> copy = (IPolyEnumerator<TPoint>)this.MemberwiseClone();
             return copy;
         }
 
         private bool FindFirstEqual()
         {
-            TPunto curr = this.points[this.index];
+            TPoint curr = this.points[this.index];
             int count = 0;
 
             int prevIndex = this.index;
@@ -178,7 +178,7 @@ namespace Essence.Geometry.Geom2D
             return count < this.points.Count;
         }
 
-        private readonly IList<TPunto> points;
+        private readonly IList<TPoint> points;
         private int index;
         private readonly double epsilon;
     }

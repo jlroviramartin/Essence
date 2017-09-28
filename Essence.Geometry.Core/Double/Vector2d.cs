@@ -456,7 +456,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        /// Calculates the dot product of <code>this</code> vector with the perpendicular vector of <c>v</c> (dotPerp).
+        /// Calculates the dot product of <code>this</code> vector with the perpendicular vector of <code>v</code> (dotPerp).
         /// NOTA: it is similar to the cross product.
         /// </summary>
         /// <param name="v2">Vector</param>

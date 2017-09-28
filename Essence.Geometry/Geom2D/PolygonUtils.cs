@@ -98,7 +98,7 @@ namespace Essence.Geometry.Geom2D
     public static class PolygonUtils
     {
         /**
-         * This method removes the suplicate points of this polygon.
+         * This method removes the duplicate points of this polygon.
          * <example><pre>
          * Polygon2D poly = new Polygon2D(new[]
          * {
@@ -577,7 +577,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Se asegura que la orientacion de los points sea CCW.
+        /// Ensures that the orientation is CCW.
         /// </summary>
         /// <param name="points">Poligono.</param>
         /// <param name="robust">Indica si trata poligonos que contengan vertices repetidos.</param>
@@ -598,7 +598,6 @@ namespace Essence.Geometry.Geom2D
         public static Orientation TestOrientation(IList<Point2d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
             int n = points.Count;
-
             if (n < 3)
             {
                 return Orientation.Degenerate;
@@ -777,7 +776,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /**
-         * Indica si los points estan en un plano.
+         * Tests if all points are contained on a plane.
          */
         public static bool IsPlanarPolygon(IList<Point3d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
@@ -785,7 +784,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /**
-         * Suponiendo que todos los points estan en un plano, calcula dicho plano.
+         * Evaluates the plane where all points are contained. If it does not exist, it returns {@code null}.
          */
         public static Plane3d Plane(IList<Point3d> points, bool robust = true, double epsilon = MathUtils.EPSILON)
         {
@@ -838,7 +837,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /**
-         * Indica si los points estan alineados.
+         * Tests if all points are lined up.
          */
         public static bool AlignmentPoints(Point3d p0, Point3d p1, Point3d p2)
         {

@@ -95,7 +95,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         [TestMethod]
-        public void TestPointInPolyEvenOddExtended()
+        public void TestPointInPolyEvenOdd_Extended()
         {
             Circle2 c = new Circle2(new Point2d(0, 0), 5);
             double tmin = c.TMin;
@@ -150,7 +150,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         [TestMethod]
-        public void TestPointInPolyEvenOddExtendedDuplicatePoints()
+        public void TestPointInPolyEvenOdd_Extended_Robust()
         {
             Circle2 c = new Circle2(new Point2d(0, 0), 5);
             double tmin = c.TMin;
@@ -205,7 +205,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         [TestMethod]
-        public void TestPointInPolyNonZeroExtended()
+        public void TestPointInPolyNonZero_Extended()
         {
             Circle2 c = new Circle2(new Point2d(0, 0), 5);
             double tmin = c.TMin;
@@ -260,7 +260,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         [TestMethod]
-        public void TestPointInPolyNonZeroExtendedDuplicatePoints()
+        public void TestPointInPolyNonZero_Extended_Robust()
         {
             Circle2 c = new Circle2(new Point2d(0, 0), 5);
             double tmin = c.TMin;
@@ -315,7 +315,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         [TestMethod]
-        public void TestPointInPolyEvenOddDefault()
+        public void TestPointInPolyEvenOdd_Default()
         {
             IList<Point2d> points1 = AsList(new Point2d(0, 0), new Point2d(10, 10), new Point2d(0, 10));
             IList<Point2d> points2 = AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10));
@@ -353,7 +353,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         [TestMethod]
-        public void TestPointInPolyEvenOddDefaultDuplicatePoints()
+        public void TestPointInPolyEvenOdd_Default_Robust()
         {
             IList<Point2d> points1 = DuplicatePoints(AsList(new Point2d(0, 0), new Point2d(10, 10), new Point2d(0, 10)));
             IList<Point2d> points2 = DuplicatePoints(AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10)));
@@ -391,7 +391,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         [TestMethod]
-        public void TestPointInPolyNonZeroDefault()
+        public void TestPointInPolyNonZero_Default()
         {
             IList<Point2d> points1 = AsList(new Point2d(0, 0), new Point2d(10, 10), new Point2d(0, 10));
             IList<Point2d> points2 = AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10));
@@ -438,7 +438,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         [TestMethod]
-        public void TestOrientationRobust()
+        public void TestOrientation_Robust()
         {
             IList<Point2d> points1 = AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10), new Point2d(0, 10));
             IList<Point2d> points2 = AsList(new Point2d(0, 0), new Point2d(0, 10), new Point2d(10, 10), new Point2d(10, 0));
@@ -484,7 +484,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         [TestMethod]
-        public void TestIsConvexRobust()
+        public void TestIsConvex_Robust()
         {
             IList<Point2d> points1 = AsList(new Point2d(0, 0), new Point2d(10, 0), new Point2d(10, 10), new Point2d(0, 10));
             IList<Point2d> points2 = AsList(new Point2d(0, 0), new Point2d(0, 10), new Point2d(10, 10), new Point2d(10, 0));
