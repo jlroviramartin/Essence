@@ -13,20 +13,12 @@
 // limitations under the License.
 
 using System;
-using System.Diagnostics.Contracts;
 using Essence.Util.Math;
 
 namespace Essence.Geometry.Core
 {
-    public interface IColor : IEpsilonEquatable<IColor>, IEquatable<IColor>
+    public interface IColor<TColor> : IEpsilonEquatable<TColor>, IEquatable<TColor>
+        where TColor : IColor<TColor>
     {
-        [Pure]
-        int Dim { get; }
-
-        /// <summary>
-        /// This method gets the channels of <code>this</code> color.
-        /// </summary>
-        /// <param name="setter">Setter.</param>
-        void GetColor(IColorSetter setter);
     }
 }

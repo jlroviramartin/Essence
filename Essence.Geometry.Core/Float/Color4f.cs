@@ -14,12 +14,13 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Runtime.Serialization;
 using Essence.Util.Math;
 using Essence.Util.Math.Float;
 
 namespace Essence.Geometry.Core.Float
 {
-    public struct Color4f : IColor4
+    public struct Color4f : IColor4, ITuple4_Float
     {
         public const string RED = "Red";
         public const string GREEN = "Green";
@@ -39,57 +40,37 @@ namespace Essence.Geometry.Core.Float
             this.Alpha = alpha;
         }
 
-        public Color4f(IColor4 c)
+        public Color4f(IColor4 other)
         {
-            ColorSetter4f setter = new ColorSetter4f();
-            c.GetColor(setter);
-            this.Red = setter.C1;
-            this.Green = setter.C2;
-            this.Blue = setter.C3;
-            this.Alpha = setter.C3;
+            ITuple4_Float _other = other.AsTupleFloat();
+            this.Red = _other.X;
+            this.Green = _other.Y;
+            this.Blue = _other.Z;
+            this.Alpha = _other.W;
         }
 
-        public Color4f(IColor c)
+        public Color4f(IColor3 other, float alpha)
         {
-            IColor3 c4 = c as IColor3;
-            if (c4 != null)
-            {
-                ColorSetter4f setter = new ColorSetter4f();
-                c4.GetColor(setter);
-                this.Red = setter.C1;
-                this.Green = setter.C2;
-                this.Blue = setter.C3;
-                this.Alpha = setter.C3;
-            }
-            else
-            {
-                if (c.Dim < 3)
-                {
-                    throw new Exception("Vector no valido");
-                }
-                ColorSetter4f setter = new ColorSetter4f();
-                c.GetColor(setter);
-                this.Red = setter.C1;
-                this.Green = setter.C2;
-                this.Blue = setter.C3;
-                this.Alpha = setter.C3;
-            }
+            ITuple3_Float _other = other.AsTupleFloat();
+            this.Red = _other.X;
+            this.Green = _other.Y;
+            this.Blue = _other.Z;
+            this.Alpha = alpha;
         }
 
-        public bool Equals(Color4f other)
+        #region operators
+
+        public static explicit operator float[](Color4f v)
         {
-            return this.Red == other.Red
-                   && this.Green == other.Green
-                   && this.Blue == other.Blue
-                   && this.Alpha == other.Alpha;
+            return new[] { v.Red, v.Green, v.Blue, v.Alpha };
         }
 
-        public bool EpsilonEquals(Color4f other, double epsilon)
+        #endregion operators
+
+        [Pure]
+        public int Dim
         {
-            return this.Red.EpsilonEquals(other.Red, (float)epsilon)
-                   && this.Green.EpsilonEquals(other.Green, (float)epsilon)
-                   && this.Blue.EpsilonEquals(other.Blue, (float)epsilon)
-                   && this.Alpha.EpsilonEquals(other.Alpha, (float)epsilon);
+            get { return 4; }
         }
 
         [Pure]
@@ -118,46 +99,145 @@ namespace Essence.Geometry.Core.Float
         public readonly float Blue;
         public readonly float Alpha;
 
-        #region IColor
+        #region private
 
         [Pure]
-        public int Dim
+        private bool EpsilonEquals(float r, float g, float b, float a, float epsilon)
         {
-            get { return 4; }
+            return this.Red.EpsilonEquals(r, epsilon) && this.Green.EpsilonEquals(g, epsilon) && this.Blue.EpsilonEquals(b, epsilon) && this.Alpha.EpsilonEquals(a, epsilon);
         }
 
-        void IColor.GetColor(IColorSetter setter)
+        [Pure]
+        private bool Equals(float r, float g, float b, float a)
         {
-            setter.SetColor(this.Red, this.Green, this.Blue, this.Alpha);
+            return (this.Red == r) && (this.Green == g) && (this.Blue == b) && (this.Alpha == a);
         }
 
         #endregion
 
-        #region IColor4
+        #region object
 
-        public void GetColor(IColorSetter4 setter)
+        [Pure]
+        public override string ToString()
         {
-            setter.SetColor(this.Red, this.Green, this.Blue, this.Alpha);
+            return this.ToString("F3", null);
+        }
+
+        [Pure]
+        public override bool Equals(object obj)
+        {
+            return (obj is IColor4) && this.Equals((IColor4)obj);
+        }
+
+        [Pure]
+        public override int GetHashCode()
+        {
+            return VectorUtils.GetHashCode(this.Red, this.Green, this.Blue, this.Alpha);
         }
 
         #endregion
 
-        #region IEpsilonEquatable<IPoint>
+        #region IFormattable
 
         [Pure]
-        bool IEpsilonEquatable<IColor>.EpsilonEquals(IColor other, double epsilon)
+        public string ToString(string format, IFormatProvider provider)
         {
-            return this.EpsilonEquals(other.ToColor4f(), epsilon);
+            if (provider != null)
+            {
+                ICustomFormatter formatter = provider.GetFormat(this.GetType()) as ICustomFormatter;
+                if (formatter != null)
+                {
+                    return formatter.Format(format, this, provider);
+                }
+            }
+
+            return VectorUtils.ToString(provider, format, (float[])this);
         }
 
         #endregion
 
-        #region IEquatable<IPoint>
+        #region ISerializable
+
+        public Color4f(SerializationInfo info, StreamingContext context)
+        {
+            this.Red = info.GetSingle(RED);
+            this.Green = info.GetSingle(GREEN);
+            this.Blue = info.GetSingle(BLUE);
+            this.Alpha = info.GetSingle(ALPHA);
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(RED, this.Red);
+            info.AddValue(GREEN, this.Green);
+            info.AddValue(BLUE, this.Blue);
+            info.AddValue(ALPHA, this.Alpha);
+        }
+
+        #endregion
+
+        #region IEpsilonEquatable<IColor4>
 
         [Pure]
-        bool IEquatable<IColor>.Equals(IColor other)
+        bool IEpsilonEquatable<IColor4>.EpsilonEquals(IColor4 other, double epsilon)
         {
-            return this.Equals(other.ToColor4f());
+            ITuple4_Float _other = other.AsTupleFloat();
+            return this.EpsilonEquals(_other.X, _other.Y, _other.Z, _other.W, (float)epsilon);
+        }
+
+        #endregion
+
+        #region IEpsilonEquatable<Color4f>
+
+        [Pure]
+        public bool EpsilonEquals(Color4f other, double epsilon)
+        {
+            return this.EpsilonEquals(other.Red, other.Green, other.Blue, other.Alpha, (float)epsilon);
+        }
+
+        #endregion
+
+        #region IEquatable<IColor4>
+
+        [Pure]
+        bool IEquatable<IColor4>.Equals(IColor4 other)
+        {
+            ITuple4_Float _other = other.AsTupleFloat();
+            return this.Equals(_other.X, _other.Y, _other.Z, _other.W);
+        }
+
+        #endregion
+
+        #region IEquatable<Color4f>
+
+        [Pure]
+        public bool Equals(Color4f other)
+        {
+            return this.Equals(other.Red, other.Green, other.Blue, other.Alpha);
+        }
+
+        #endregion
+
+        #region ITuple4_Float
+
+        float ITuple4_Float.X
+        {
+            get { return this.Red; }
+        }
+
+        float ITuple4_Float.Y
+        {
+            get { return this.Green; }
+        }
+
+        float ITuple4_Float.Z
+        {
+            get { return this.Blue; }
+        }
+
+        float ITuple4_Float.W
+        {
+            get { return this.Alpha; }
         }
 
         #endregion

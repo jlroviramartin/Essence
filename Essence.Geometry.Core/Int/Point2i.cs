@@ -13,8 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -23,7 +21,7 @@ using Essence.Util.Math.Int;
 
 namespace Essence.Geometry.Core.Int
 {
-    public struct Point2i : IPoint2D,
+    public struct Point2i : IPoint2, ITuple2_Int,
                             IEquatable<Point2i>,
                             IFormattable,
                             ISerializable
@@ -52,35 +50,11 @@ namespace Essence.Geometry.Core.Int
             this.Y = y;
         }
 
-        public Point2i(IPoint2D p)
+        public Point2i(IPoint2 p)
         {
-            CoordinateSetter2i setter = new CoordinateSetter2i();
-            p.GetCoordinates(setter);
-            this.X = setter.X;
-            this.Y = setter.Y;
-        }
-
-        public Point2i(IPoint p)
-        {
-            IPoint2D p2 = p as IPoint2D;
-            if (p2 != null)
-            {
-                CoordinateSetter2i setter = new CoordinateSetter2i();
-                p2.GetCoordinates(setter);
-                this.X = setter.X;
-                this.Y = setter.Y;
-            }
-            else
-            {
-                if (p.Dim < 2)
-                {
-                    throw new Exception("Punto no valido");
-                }
-                CoordinateSetter2i setter = new CoordinateSetter2i();
-                p.GetCoordinates(setter);
-                this.X = setter.X;
-                this.Y = setter.Y;
-            }
+            ITuple2_Int _p = p.AsTupleInt();
+            this.X = _p.X;
+            this.Y = _p.Y;
         }
 
         /// <summary>Property X.</summary>
@@ -91,12 +65,9 @@ namespace Essence.Geometry.Core.Int
 
         #region operators
 
-        /// <summary>
-        /// Casting to an array.
-        /// </summary>
         public static explicit operator int[](Point2i v)
         {
-            return new int[] { v.X, v.Y };
+            return new[] { v.X, v.Y };
         }
 
         public static Point2i operator +(Point2i p, Vector2i v)
@@ -143,38 +114,6 @@ namespace Essence.Geometry.Core.Int
             }
         }
 
-        /// <summary>
-        /// Tests if <code>this</code> point is zero (all coordinates are 0).
-        /// </summary>
-        [Pure]
-        public bool IsZero
-        {
-            get { return this.Equals(0, 0); }
-        }
-
-        /// <summary>
-        /// Counterclockwise quadrant:
-        /// <pre><![CDATA[
-        ///       ^
-        ///   1   |   0
-        ///       |
-        /// <-----+-----> p1
-        ///       |
-        ///   2   |   3
-        ///       v
-        /// ]]></pre>
-        /// </summary>
-        [Pure]
-        public int Quadrant
-        {
-            get
-            {
-                return ((this.X >= 0)
-                    ? ((this.Y >= 0) ? 0 : 3)
-                    : ((this.Y >= 0) ? 1 : 2));
-            }
-        }
-
         [Pure]
         public Point2i Add(Vector2i v)
         {
@@ -202,7 +141,7 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         public double DistanceTo(Point2i p2)
         {
-            return (double)Math.Sqrt(this.Distance2To(p2));
+            return Math.Sqrt(this.Distance2To(p2));
         }
 
         [Pure]
@@ -215,7 +154,7 @@ namespace Essence.Geometry.Core.Int
         public double InvLerp(Point2i p2, Point2i pLerp)
         {
             Vector2i v12 = p2.Sub(this);
-            return v12.Proy(pLerp.Sub(this));
+            return v12.Proj(pLerp.Sub(this));
         }
 
         [Pure]
@@ -226,46 +165,29 @@ namespace Essence.Geometry.Core.Int
 
         #region parse
 
-        /// <summary>
-        /// Parses the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
-        /// </summary>
-        /// <param name="s">String.</param>
-        /// <param name="provider">Provider.</param>
-        /// <param name="vstyle">Vector style.</param>
-        /// <param name="nstyle">Number style.</param>
-        /// <returns>Point.</returns>
         public static Point2i Parse(string s,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Point2i result;
-            if (!TryParse(s, out result, provider, vstyle, nstyle))
+            if (!TryParse(s, out result, provider, vstyle, style))
             {
                 throw new Exception();
             }
             return result;
         }
 
-        /// <summary>
-        /// Tries to parse the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
-        /// </summary>
-        /// <param name="s">String.</param>
-        /// <param name="provider">Provider.</param>
-        /// <param name="vstyle">Vector style.</param>
-        /// <param name="nstyle">Number style.</param>
-        /// <param name="result">Point.</param>
-        /// <returns><code>True</code> if everything is correct, <code>false</code> otherwise.</returns>
         public static bool TryParse(string s,
                                     out Point2i result,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Contract.Requires(s != null);
 
             int[] ret;
-            if (!VectorUtils.TryParse(s, 2, out ret, int.TryParse, provider, vstyle, nstyle))
+            if (!VectorUtils.TryParse(s, 2, out ret, int.TryParse, provider, vstyle, style))
             {
                 result = Zero;
                 return false;
@@ -278,13 +200,10 @@ namespace Essence.Geometry.Core.Int
 
         #region private
 
-        /// <summary>
-        /// Tests if the coordinates of <code>this</code> point are equals to <code>x</code> and <code>y</code>.
-        /// </summary>
         [Pure]
         private bool Equals(int x, int y)
         {
-            return this.X == x && this.Y == y;
+            return (this.X == x) && (this.Y == y);
         }
 
         #endregion
@@ -300,12 +219,7 @@ namespace Essence.Geometry.Core.Int
         [Pure]
         public override bool Equals(object obj)
         {
-            if (!(obj is Point2i))
-            {
-                return false;
-            }
-
-            return this.Equals((Point2i)obj);
+            return (obj is Point2i) && this.Equals((Point2i)obj);
         }
 
         [Pure]
@@ -316,12 +230,34 @@ namespace Essence.Geometry.Core.Int
 
         #endregion
 
-        #region IEquatable
+        #region IEpsilonEquatable<IPoint2>
+
+        [Pure]
+        bool IEpsilonEquatable<IPoint2>.EpsilonEquals(IPoint2 other, double epsilon)
+        {
+            ITuple2_Int _other = other.AsTupleInt();
+            return this.Equals(_other.X, _other.Y);
+        }
+
+        #endregion
+
+        #region IEquatable<IPoint2>
+
+        [Pure]
+        public bool Equals(IPoint2 other)
+        {
+            ITuple2_Int _other = other.AsTupleInt();
+            return this.Equals(_other.X, _other.Y);
+        }
+
+        #endregion
+
+        #region IEquatable<Point2i>
 
         [Pure]
         public bool Equals(Point2i other)
         {
-            return other.X == this.X && other.Y == this.Y;
+            return this.Equals(other.X, other.Y);
         }
 
         #endregion
@@ -361,127 +297,62 @@ namespace Essence.Geometry.Core.Int
 
         #endregion
 
+        #region ITuple
+
+        [Pure]
+        bool ITuple<IPoint2>.IsValid
+        {
+            get { return true; }
+        }
+
+        [Pure]
+        bool ITuple<IPoint2>.IsInfinity
+        {
+            get { return false; }
+        }
+
+        [Pure]
+        public bool IsZero
+        {
+            get { return this.Equals(0, 0); }
+        }
+
+        #endregion
+
+        #region ITuple2_Int
+
+        int ITuple2_Int.X
+        {
+            get { return this.X; }
+        }
+
+        int ITuple2_Int.Y
+        {
+            get { return this.Y; }
+        }
+
+        #endregion
+
         #region IPoint
 
-        //[Pure]
-        //int Dim { get; }
-
-        void IPoint.GetCoordinates(ICoordinateSetter setter)
-        {
-            setter.SetCoords(this.X, this.Y);
-        }
-
         [Pure]
-        IPoint IPoint.Add(IVector v)
-        {
-            return this.Add(v.ToVector2i());
-        }
-
-        [Pure]
-        IPoint IPoint.Sub(IVector v)
-        {
-            return this.Sub(v.ToVector2i());
-        }
-
-        [Pure]
-        IVector IPoint.Sub(IPoint p2)
-        {
-            return this.Sub(p2.ToPoint2i());
-        }
-
-        [Pure]
-        IPoint IPoint.Lerp(IPoint p2, double alpha)
-        {
-            return this.Lerp(p2.ToPoint2i(), alpha);
-        }
-
-        [Pure]
-        double IPoint.InvLerp(IPoint p2, IPoint pLerp)
+        public double InvLerp(IPoint2 p2, IPoint2 pLerp)
         {
             return this.InvLerp(p2.ToPoint2i(), pLerp.ToPoint2i());
         }
 
-        [Pure]
-        IPoint IPoint.Lineal(IPoint p2, double alpha, double beta)
-        {
-            return this.Lineal(p2.ToPoint2i(), alpha, beta);
-        }
-
         #endregion
 
-        #region IPoint2D
-
-        void IPoint2D.GetCoordinates(ICoordinateSetter2D setter)
-        {
-            setter.SetCoords(this.X, this.Y);
-        }
-
-        #endregion
-
-        #region IEpsilonEquatable<IPoint>
+        #region IPoint
 
         [Pure]
-        bool IEpsilonEquatable<IPoint>.EpsilonEquals(IPoint other, double epsilon)
+        public int Quadrant
         {
-            return this.Equals(other.ToPoint2i());
-        }
-
-        #endregion
-
-        #region inner classes
-
-        /// <summary>
-        /// This class compares points by coordinate (X or Y).
-        /// </summary>
-        public sealed class CoordComparer : IComparer<Point2i>, IComparer
-        {
-            public CoordComparer(int coord)
+            get
             {
-                this.coord = coord;
-            }
-
-            private readonly int coord;
-
-            public int Compare(Point2i v1, Point2i v2)
-            {
-                switch (this.coord)
-                {
-                    case 0:
-                        return v1.X.CompareTo(v2.X);
-                    case 1:
-                        return v1.Y.CompareTo(v2.Y);
-                }
-                throw new IndexOutOfRangeException();
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Point2i && o2 is Point2i);
-                return this.Compare((Point2i)o1, (Point2i)o2);
-            }
-        }
-
-        /// <summary>
-        /// This class lexicographically compares points: it compares X -> Y.
-        /// </summary>
-        public sealed class LexComparer : IComparer<Point2i>, IComparer
-        {
-            public int Compare(Point2i v1, Point2i v2)
-            {
-                int i;
-                i = v1.X.CompareTo(v2.X);
-                if (i != 0)
-                {
-                    return i;
-                }
-                i = v1.Y.CompareTo(v2.Y);
-                return i;
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Point2i && o2 is Point2i);
-                return this.Compare((Point2i)o1, (Point2i)o2);
+                return ((this.X >= 0)
+                    ? ((this.Y >= 0) ? 0 : 3)
+                    : ((this.Y >= 0) ? 1 : 2));
             }
         }
 

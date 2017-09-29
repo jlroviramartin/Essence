@@ -14,12 +14,7 @@
 
 namespace Essence.Geometry.Core
 {
-    public interface IColor4 : IColor
+    public interface IColor4 : IColor<IColor4>
     {
-        /// <summary>
-        /// This method gets the channels of <code>this</code> color.
-        /// </summary>
-        /// <param name="setter">Setter.</param>
-        void GetColor(IColorSetter4 setter);
     }
 }

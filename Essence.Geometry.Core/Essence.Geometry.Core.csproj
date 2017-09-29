@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{678C7B81-7BF4-4053-995B-8320B810EFAA}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Essence.Geometry.Core</RootNamespace>
     <AssemblyName>Essence.Geometry.Core</AssemblyName>
@@ -28,6 +28,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Essence.Geometry.Core.Prueba</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,9 +47,31 @@
     <Compile Include="Axis.cs" />
     <Compile Include="Byte\Color3b.cs" />
     <Compile Include="Byte\Color4b.cs" />
-    <Compile Include="Byte\ColorSetter.cs" />
+    <Compile Include="Byte\ByteConvertibles.cs" />
+    <Compile Include="Byte\ITuple2_Byte.cs" />
+    <Compile Include="Byte\ITuple3_Byte.cs" />
+    <Compile Include="Byte\ITuple4_Byte.cs" />
     <Compile Include="ColorUtils.cs" />
-    <Compile Include="Double\CoordinateSetter.cs" />
+    <Compile Include="Double\BuffPoint4d.cs" />
+    <Compile Include="Double\BuffPoint3d.cs" />
+    <Compile Include="Double\BuffPoint2d.cs" />
+    <Compile Include="Double\BuffVector4d.cs" />
+    <Compile Include="Double\BuffVector3d.cs" />
+    <Compile Include="Double\BuffVector2d.cs" />
+    <Compile Include="Double\CoordComparer2.cs" />
+    <Compile Include="Double\CoordComparer3.cs" />
+    <Compile Include="Double\CoordComparer4.cs" />
+    <Compile Include="Double\DoubleConvertibles.cs" />
+    <Compile Include="Double\IOpTuple4_Double.cs" />
+    <Compile Include="Double\IOpTuple3_Double.cs" />
+    <Compile Include="Double\IOpTuple2_Double.cs" />
+    <Compile Include="Double\ITuple4_Double.cs" />
+    <Compile Include="Double\ITuple3_Double.cs" />
+    <Compile Include="Double\ITuple2_Double.cs" />
+    <Compile Include="Double\LengthComparer.cs" />
+    <Compile Include="Double\LexComparer2.cs" />
+    <Compile Include="Double\LexComparer3.cs" />
+    <Compile Include="Double\LexComparer4.cs" />
     <Compile Include="Double\Matrix2x2d.cs" />
     <Compile Include="Double\Matrix2x2dUtils.cs" />
     <Compile Include="Double\Matrix2x3d.cs" />
@@ -56,32 +82,41 @@
     <Compile Include="Double\Point2d.cs" />
     <Compile Include="Double\Point3d.cs" />
     <Compile Include="Double\Point4d.cs" />
-    <Compile Include="Double\BuffVector2d.cs" />
     <Compile Include="Double\Vector2d.cs" />
     <Compile Include="Double\Vector3d.cs" />
     <Compile Include="Double\Vector4d.cs" />
     <Compile Include="Float\Color3f.cs" />
     <Compile Include="Float\Color4f.cs" />
-    <Compile Include="Float\ColorSetter.cs" />
+    <Compile Include="Float\FloatConvertibles.cs" />
+    <Compile Include="Float\ITuple2_Float.cs" />
+    <Compile Include="Float\ITuple4_Float.cs" />
+    <Compile Include="Float\ITuple3_Float.cs" />
     <Compile Include="IColor.cs" />
     <Compile Include="IColor3.cs" />
     <Compile Include="IColor4.cs" />
-    <Compile Include="IColorSetter.cs" />
-    <Compile Include="ICoordinateSetter.cs" />
-    <Compile Include="Int\CoordinateSetter.cs" />
+    <Compile Include="IConvertible.cs" />
+    <Compile Include="Int\IntConvertibles.cs" />
+    <Compile Include="Int\ITuple2_Int.cs" />
     <Compile Include="Int\Point2i.cs" />
     <Compile Include="Int\Vector2i.cs" />
+    <Compile Include="IOpPoint4.cs" />
+    <Compile Include="IOpPoint3.cs" />
+    <Compile Include="IOpPoint2.cs" />
+    <Compile Include="IOpVector4.cs" />
+    <Compile Include="IOpVector2.cs" />
+    <Compile Include="IOpVector3.cs" />
     <Compile Include="IPoint.cs" />
-    <Compile Include="IPoint2D.cs" />
-    <Compile Include="IPoint3D.cs" />
-    <Compile Include="IPoint4D.cs" />
+    <Compile Include="IPoint2.cs" />
+    <Compile Include="IPoint3.cs" />
+    <Compile Include="IPoint4.cs" />
+    <Compile Include="ITuple.cs" />
     <Compile Include="IVector.cs" />
-    <Compile Include="IVector2D.cs" />
-    <Compile Include="IVector3D.cs" />
-    <Compile Include="IVector4D.cs" />
+    <Compile Include="IVector2.cs" />
+    <Compile Include="IVector3.cs" />
+    <Compile Include="IVector4.cs" />
     <Compile Include="LineSide.cs" />
-    <Compile Include="PointUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Prueba.cs" />
     <Compile Include="VectorFormatInfo.cs" />
     <Compile Include="VectorStyles.cs" />
     <Compile Include="VectorUtils.cs" />

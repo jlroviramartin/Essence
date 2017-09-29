@@ -24,23 +24,25 @@ using SysMath = System.Math;
 
 namespace Essence.Geometry.Core.Double
 {
-    public struct Vector4d : IVector4D,
+    public struct Vector4d : IVector4, ITuple4_Double,
                              IEpsilonEquatable<Vector4d>,
                              IEquatable<Vector4d>,
                              IFormattable,
                              ISerializable
     {
-        /// <summary>Name of the property X.</summary>
+        /// <summary>Name of the property <code>X</code>.</summary>
         public const string _X = "X";
 
-        /// <summary>Name of the property Y.</summary>
+        /// <summary>Name of the property <code>Y</code>.</summary>
         public const string _Y = "Y";
 
-        /// <summary>Name of the property Z.</summary>
+        /// <summary>Name of the property <code>Z</code>.</summary>
         public const string _Z = "Z";
 
-        /// <summary>Name of the property W.</summary>
+        /// <summary>Name of the property <code>W</code>.</summary>
         public const string _W = "W";
+
+        private const double EPSILON = MathUtils.EPSILON;
 
         /// <summary>Vector zero.</summary>
         public static readonly Vector4d Zero = new Vector4d(0, 0, 0, 0);
@@ -68,41 +70,13 @@ namespace Essence.Geometry.Core.Double
             this.W = w;
         }
 
-        public Vector4d(IVector4D v)
+        public Vector4d(IVector4 v)
         {
-            CoordinateSetter4d setter = new CoordinateSetter4d();
-            v.GetCoordinates(setter);
-            this.X = setter.X;
-            this.Y = setter.Y;
-            this.Z = setter.Z;
-            this.W = setter.W;
-        }
-
-        public Vector4d(IVector v)
-        {
-            IVector4D v4 = v as IVector4D;
-            if (v4 != null)
-            {
-                CoordinateSetter4d setter = new CoordinateSetter4d();
-                v4.GetCoordinates(setter);
-                this.X = setter.X;
-                this.Y = setter.Y;
-                this.Z = setter.Z;
-                this.W = setter.W;
-            }
-            else
-            {
-                if (v.Dim < 4)
-                {
-                    throw new Exception("Vector no valido");
-                }
-                CoordinateSetter4d setter = new CoordinateSetter4d();
-                v.GetCoordinates(setter);
-                this.X = setter.X;
-                this.Y = setter.Y;
-                this.Z = setter.Z;
-                this.W = setter.W;
-            }
+            ITuple4_Double _v = v.AsTupleDouble();
+            this.X = _v.X;
+            this.Y = _v.Y;
+            this.Z = _v.Z;
+            this.W = _v.W;
         }
 
         /// <summary>Property X.</summary>
@@ -119,9 +93,6 @@ namespace Essence.Geometry.Core.Double
 
         #region operators
 
-        /// <summary>
-        /// Casting to an array.
-        /// </summary>
         public static explicit operator double[](Vector4d v)
         {
             return new[] { v.X, v.Y, v.Z, v.W };
@@ -190,49 +161,10 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        /// <summary>
-        /// Tests if <code>this</code> vector is valid (not any coordinate is NaN or infinity).
-        /// </summary>
-        [Pure]
-        public bool IsValid
-        {
-            get { return MathUtils.IsValid(this.X) && MathUtils.IsValid(this.Y) && MathUtils.IsValid(this.Z) && MathUtils.IsValid(this.W); }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> vector is NaN (any coordinate is NaN).
-        /// </summary>
         [Pure]
         public bool IsNaN
         {
             get { return double.IsNaN(this.X) || double.IsNaN(this.Y) || double.IsNaN(this.Z) || double.IsNaN(this.W); }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> vector is infinity (any coordinate is infinity).
-        /// </summary>
-        [Pure]
-        public bool IsInfinity
-        {
-            get { return double.IsInfinity(this.X) || double.IsInfinity(this.Y) || double.IsInfinity(this.Z) || double.IsInfinity(this.W); }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> vector is zero (all coordinates are 0).
-        /// </summary>
-        [Pure]
-        public bool IsZero
-        {
-            get { return this.EpsilonEquals(0, 0, 0, 0); }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> vector is unit.
-        /// </summary>
-        [Pure]
-        public bool IsUnit
-        {
-            get { return this.Length.EpsilonEquals(1); }
         }
 
         [Pure]
@@ -247,24 +179,6 @@ namespace Essence.Geometry.Core.Double
                 }
                 return this.Div(len);
             }
-        }
-
-        [Pure]
-        public double Length
-        {
-            get { return (double)Math.Sqrt(this.LengthSquared); }
-        }
-
-        [Pure]
-        public double LengthSquared
-        {
-            get { return this.Dot(this); }
-        }
-
-        [Pure]
-        public double LengthL1
-        {
-            get { return Math.Abs(this.X) + Math.Abs(this.Y) + Math.Abs(this.Z) + Math.Abs(this.W); }
         }
 
         [Pure]
@@ -318,19 +232,8 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public double InvLerp(Vector4d v2, Vector4d vLerp)
         {
-            double x = (v2.X - this.X), y = (v2.Y - this.Y), z = (v2.Z - this.Z), w = (v2.W - this.W);
-
-            double a = x * (vLerp.X - this.X)
-                       + y * (vLerp.Y - this.Y)
-                       + z * (vLerp.Z - this.Z)
-                       + w * (vLerp.W - this.W);
-            double b = x * x
-                       + y * y
-                       + z * z
-                       + w * w;
-            return a / Math.Sqrt(b);
-            //Vector4d v12 = v2.Sub(this);
-            //return v12.Proj(vLerp.Sub(this));
+            Vector4d v12 = v2.Sub(this);
+            return v12.Proy(vLerp.Sub(this));
         }
 
         [Pure]
@@ -359,46 +262,29 @@ namespace Essence.Geometry.Core.Double
 
         #region parse
 
-        /// <summary>
-        /// Parses the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
-        /// </summary>
-        /// <param name="s">String.</param>
-        /// <param name="provider">Provider.</param>
-        /// <param name="vstyle">Vector style.</param>
-        /// <param name="nstyle">Number style.</param>
-        /// <returns>Vector.</returns>
         public static Vector4d Parse(string s,
                                      IFormatProvider provider = null,
                                      VectorStyles vstyle = VectorStyles.All,
-                                     NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
+                                     NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Vector4d result;
-            if (!TryParse(s, out result, provider, vstyle, nstyle))
+            if (!TryParse(s, out result, provider, vstyle, style))
             {
                 throw new Exception();
             }
             return result;
         }
 
-        /// <summary>
-        /// Tries to parse the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
-        /// </summary>
-        /// <param name="s">String.</param>
-        /// <param name="provider">Provider.</param>
-        /// <param name="vstyle">Vector style.</param>
-        /// <param name="nstyle">Number style.</param>
-        /// <param name="result">Vector.</param>
-        /// <returns><code>True</code> if everything is correct, <code>false</code> otherwise.</returns>
         public static bool TryParse(string s,
                                     out Vector4d result,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Contract.Requires(s != null);
 
             double[] ret;
-            if (!VectorUtils.TryParse(s, 4, out ret, double.TryParse, provider, vstyle, nstyle))
+            if (!VectorUtils.TryParse(s, 4, out ret, double.TryParse, provider, vstyle, style))
             {
                 result = Zero;
                 return false;
@@ -409,19 +295,18 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region protected
-
-        #endregion
-
         #region private
 
-        /// <summary>
-        /// Tests if the coordinates of <code>this</code> vector are equals to <code>x</code>, <code>y</code>, <code>z</code> and <code>w</code>.
-        /// </summary>
         [Pure]
-        private bool EpsilonEquals(double x, double y, double z, double w, double epsilon = MathUtils.ZERO_TOLERANCE)
+        private bool EpsilonEquals(double x, double y, double z, double w, double epsilon = EPSILON)
         {
             return this.X.EpsilonEquals(x, epsilon) && this.Y.EpsilonEquals(y, epsilon) && this.Z.EpsilonEquals(z, epsilon) && this.W.EpsilonEquals(w, epsilon);
+        }
+
+        [Pure]
+        private bool Equals(double x, double y, double z, double w)
+        {
+            return (this.X == x) && (this.Y == y) && (this.Z == z) && (this.W == w);
         }
 
         #endregion
@@ -437,12 +322,7 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public override bool Equals(object obj)
         {
-            if (!(obj is Vector4d))
-            {
-                return false;
-            }
-
-            return this.Equals((Vector4d)obj);
+            return (obj is IVector4) && this.Equals((IVector4)obj);
         }
 
         [Pure]
@@ -456,9 +336,20 @@ namespace Essence.Geometry.Core.Double
         #region IEpsilonEquatable<Vector4d>
 
         [Pure]
-        public bool EpsilonEquals(Vector4d other, double epsilon = MathUtils.EPSILON)
+        public bool EpsilonEquals(Vector4d other, double epsilon = EPSILON)
         {
-            return this.EpsilonEquals(other.X, other.Y, other.Z, other.W, (double)epsilon);
+            return this.EpsilonEquals(other.X, other.Y, other.Z, other.W, epsilon);
+        }
+
+        #endregion
+
+        #region IEpsilonEquatable<IVector4>
+
+        [Pure]
+        public bool EpsilonEquals(IVector4 other, double epsilon = EPSILON)
+        {
+            ITuple4_Double _other = other.AsTupleDouble();
+            return this.EpsilonEquals(_other.X, _other.Y, _other.Z, _other.W, epsilon);
         }
 
         #endregion
@@ -468,7 +359,18 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public bool Equals(Vector4d other)
         {
-            return other.X == this.X && other.Y == this.Y && other.Z == this.Z && other.W == this.W;
+            return this.Equals(other.X, other.Y, other.Z, other.W);
+        }
+
+        #endregion
+
+        #region IEquatable<IVector4>
+
+        [Pure]
+        public bool Equals(IVector4 other)
+        {
+            ITuple4_Double _other = other.AsTupleDouble();
+            return this.Equals(_other.X, _other.Y, _other.Z, _other.W);
         }
 
         #endregion
@@ -512,125 +414,99 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
+        #region ITuple
+
+        [Pure]
+        public bool IsValid
+        {
+            get { return MathUtils.IsValid(this.X) && MathUtils.IsValid(this.Y) && MathUtils.IsValid(this.Z) && MathUtils.IsValid(this.W); }
+        }
+
+        [Pure]
+        public bool IsInfinity
+        {
+            get { return double.IsInfinity(this.X) || double.IsInfinity(this.Y) || double.IsInfinity(this.Z) || double.IsInfinity(this.W); }
+        }
+
+        [Pure]
+        public bool IsZero
+        {
+            get { return this.EpsilonEquals(0, 0, 0, 0); }
+        }
+
+        #endregion
+
+        #region ITuple4_Double
+
+        double ITuple4_Double.X
+        {
+            get { return this.X; }
+        }
+
+        double ITuple4_Double.Y
+        {
+            get { return this.Y; }
+        }
+
+        double ITuple4_Double.Z
+        {
+            get { return this.Z; }
+        }
+
+        double ITuple4_Double.W
+        {
+            get { return this.W; }
+        }
+
+        #endregion
+
         #region IVector
 
-        //int Dim { get; }
-
-        void IVector.GetCoordinates(ICoordinateSetter setter)
+        [Pure]
+        public bool IsUnit
         {
-            setter.SetCoords(this.X, this.Y, this.Z, this.W);
+            get { return this.Length.EpsilonEquals(1); }
         }
 
         [Pure]
-        IVector IVector.Unit
+        public double Length
         {
-            get { return this.Unit; }
-        }
-
-        //[Pure]
-        //REAL Length { get; }
-
-        //[Pure]
-        //REAL LengthSquared { get; }
-
-        //[Pure]
-        //REAL LengthL1 { get; }
-
-        [Pure]
-        IVector IVector.Add(IVector v2)
-        {
-            return this.Add(v2.ToVector4d());
+            get { return (double)Math.Sqrt(this.Length2); }
         }
 
         [Pure]
-        IVector IVector.Sub(IVector v2)
+        public double Length2
         {
-            return this.Sub(v2.ToVector4d());
+            get { return this.Dot(this); }
         }
 
         [Pure]
-        IVector IVector.Mul(double c)
+        public double LengthL1
         {
-            return this.Mul(c);
+            get { return Math.Abs(this.X) + Math.Abs(this.Y) + Math.Abs(this.Z) + Math.Abs(this.W); }
         }
 
         [Pure]
-        IVector IVector.Div(double c)
+        public double Dot(IVector4 v2)
         {
-            return this.Div(c);
+            ITuple4_Double _v2 = v2.AsTupleDouble();
+            return this.X * _v2.X + this.Y * _v2.Y + this.Z * _v2.Z + this.W * _v2.W;
         }
 
         [Pure]
-        IVector IVector.SimpleMul(IVector v2)
+        public double Proj(IVector4 v2)
         {
-            return this.SimpleMul(v2.ToVector4d());
+            return this.Dot(v2) / this.Length;
         }
 
         [Pure]
-        IVector IVector.Neg()
+        public double InvLerp(IVector4 v2, IVector4 vLerp)
         {
-            return this.Neg();
-        }
-
-        [Pure]
-        IVector IVector.Abs()
-        {
-            return this.Abs();
-        }
-
-        [Pure]
-        IVector IVector.Lerp(IVector v2, double alpha)
-        {
-            return this.Lerp(v2.ToVector4d(), alpha);
-        }
-
-        [Pure]
-        double IVector.InvLerp(IVector v2, IVector vLerp)
-        {
-            return this.InvLerp(v2.ToVector4d(), vLerp.ToVector4d());
-        }
-
-        [Pure]
-        IVector IVector.Lineal(IVector v2, double alpha, double beta)
-        {
-            return this.Lineal(v2.ToVector4d(), alpha, beta);
-        }
-
-        [Pure]
-        double IVector.Dot(IVector v2)
-        {
-            return this.Dot(v2.ToVector4d());
-        }
-
-        [Pure]
-        double IVector.Proj(IVector v2)
-        {
-            return this.Proy(v2.ToVector4d());
-        }
-
-        [Pure]
-        IVector IVector.ProjV(IVector v2)
-        {
-            return this.ProyV(v2.ToVector4d());
-        }
-
-        #endregion
-
-        #region IVector4D
-
-        void IVector4D.GetCoordinates(ICoordinateSetter4D setter)
-        {
-            setter.SetCoords(this.X, this.Y, this.Z, this.W);
-        }
-
-        #endregion
-
-        #region IEpsilonEquatable<IVector>
-
-        [Pure]
-        bool IEpsilonEquatable<IVector>.EpsilonEquals(IVector other, double epsilon)
-        {
-            return this.EpsilonEquals(other.ToVector4d(), epsilon);
+            BuffVector4d v12 = new BuffVector4d(v2);
+            v12.Sub(this);
+            BuffVector4d v1Lerp = new BuffVector4d(vLerp);
+            v1Lerp.Sub(this);
+            return v12.Proj(v1Lerp);
         }
 
         #endregion
@@ -638,110 +514,15 @@ namespace Essence.Geometry.Core.Double
         #region inner classes
 
         /// <summary>
-        /// This class compares vectors by coordinate (X or Y or Z).
-        /// </summary>
-        public sealed class CoordComparer : IComparer<Vector4d>, IComparer
-        {
-            public CoordComparer(int coord, double epsilon = MathUtils.EPSILON)
-            {
-                this.coord = coord;
-                this.epsilon = epsilon;
-            }
-
-            private readonly int coord;
-            private readonly double epsilon;
-
-            public int Compare(Vector4d v1, Vector4d v2)
-            {
-                switch (this.coord)
-                {
-                    case 0:
-                        return v1.X.EpsilonCompareTo(v2.X, this.epsilon);
-                    case 1:
-                        return v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
-                    case 2:
-                        return v1.Z.EpsilonCompareTo(v2.Z, this.epsilon);
-                    case 3:
-                        return v1.W.EpsilonCompareTo(v2.W, this.epsilon);
-                }
-                throw new IndexOutOfRangeException();
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Vector4d && o2 is Vector4d);
-                return this.Compare((Vector4d)o1, (Vector4d)o2);
-            }
-        }
-
-        /// <summary>
-        /// This class lexicographically compares vectors: it compares X -> Y.
-        /// </summary>
-        public sealed class LexComparer : IComparer<Vector4d>, IComparer
-        {
-            public LexComparer(double epsilon = MathUtils.EPSILON)
-            {
-                this.epsilon = epsilon;
-            }
-
-            private readonly double epsilon;
-
-            public int Compare(Vector4d v1, Vector4d v2)
-            {
-                int i;
-                i = v1.X.EpsilonCompareTo(v2.X, this.epsilon);
-                if (i != 0)
-                {
-                    return i;
-                }
-                i = v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
-                if (i != 0)
-                {
-                    return i;
-                }
-                i = v1.Z.EpsilonCompareTo(v2.Z, this.epsilon);
-                if (i != 0)
-                {
-                    return i;
-                }
-                i = v1.W.EpsilonCompareTo(v2.W, this.epsilon);
-                return i;
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Vector4d && o2 is Vector4d);
-                return this.Compare((Vector4d)o1, (Vector4d)o2);
-            }
-        }
-
-        /// <summary>
-        /// This class compares vectors using their length.
-        /// </summary>
-        public sealed class LengthComparer : IComparer<Vector4d>, IComparer
-        {
-            public int Compare(Vector4d v1, Vector4d v2)
-            {
-                return v1.LengthSquared.CompareTo(v2.LengthSquared);
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Vector4d && o2 is Vector4d);
-                return this.Compare((Vector4d)o1, (Vector4d)o2);
-            }
-        }
-
-        /// <summary>
-        /// This class compares unit vectors using their angle.
-        /// <![CDATA[
-        ///  ^ normal = direccion.PerpLeft
-        ///  |
-        ///  | /__
-        ///  | \  \  incrementa el angulo
-        ///  |     |
-        ///  +-----+-----------> direccion
-        /// ]]>
+        /// Compares unit vectors using their angle.
+        /// <pre><![CDATA[
+        /// ^ normal = direccion.PerpLeft
+        /// |
+        /// | /__
+        /// | \  \  incrementa el angulo
+        /// |     |
+        /// +-----+-----------> direccion
+        /// ]]></pre>
         /// </summary>
         public struct AngleComparer : IComparer<Vector4d>, IComparer
         {

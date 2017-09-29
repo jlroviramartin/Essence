@@ -24,7 +24,7 @@ using SysMath = System.Math;
 
 namespace Essence.Geometry.Core.Double
 {
-    public struct Point3d : IPoint3D,
+    public struct Point3d : IPoint3, ITuple3_Double,
                             IEpsilonEquatable<Point3d>,
                             IEquatable<Point3d>,
                             IFormattable,
@@ -38,6 +38,8 @@ namespace Essence.Geometry.Core.Double
 
         /// <summary>Name of the property Z.</summary>
         public const string _Z = "Z";
+
+        private const double EPSILON = MathUtils.EPSILON;
 
         /// <summary>Point zero.</summary>
         public static readonly Point3d Zero = new Point3d(0, 0, 0);
@@ -61,38 +63,12 @@ namespace Essence.Geometry.Core.Double
             this.Z = z;
         }
 
-        public Point3d(IPoint3D p)
+        public Point3d(IPoint3 p)
         {
-            CoordinateSetter3d setter = new CoordinateSetter3d();
-            p.GetCoordinates(setter);
-            this.X = setter.X;
-            this.Y = setter.Y;
-            this.Z = setter.Z;
-        }
-
-        public Point3d(IPoint p)
-        {
-            IPoint3D p3 = p as IPoint3D;
-            if (p3 != null)
-            {
-                CoordinateSetter3d setter = new CoordinateSetter3d();
-                p3.GetCoordinates(setter);
-                this.X = setter.X;
-                this.Y = setter.Y;
-                this.Z = setter.Z;
-            }
-            else
-            {
-                if (p.Dim < 3)
-                {
-                    throw new Exception("Punto no valido");
-                }
-                CoordinateSetter3d setter = new CoordinateSetter3d();
-                p.GetCoordinates(setter);
-                this.X = setter.X;
-                this.Y = setter.Y;
-                this.Z = setter.Z;
-            }
+            ITuple3_Double _p = p.AsTupleDouble();
+            this.X = _p.X;
+            this.Y = _p.Y;
+            this.Z = _p.Z;
         }
 
         /// <summary>Property X.</summary>
@@ -106,9 +82,6 @@ namespace Essence.Geometry.Core.Double
 
         #region operators
 
-        /// <summary>
-        /// Casting to an array.
-        /// </summary>
         public static explicit operator double[](Point3d v)
         {
             return new[] { v.X, v.Y, v.Z };
@@ -160,75 +133,10 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        /// <summary>
-        /// Tests if <code>this</code> point is valid (not any coordinate is NaN or infinity).
-        /// </summary>
-        [Pure]
-        public bool IsValid
-        {
-            get { return MathUtils.IsValid(this.X) && MathUtils.IsValid(this.Y) && MathUtils.IsValid(this.Z); }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> point is NaN (any coordinate is NaN).
-        /// </summary>
         [Pure]
         public bool IsNaN
         {
             get { return double.IsNaN(this.X) || double.IsNaN(this.Y) || double.IsNaN(this.Z); }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> point is infinity (any coordinate is infinity).
-        /// </summary>
-        [Pure]
-        public bool IsInfinity
-        {
-            get { return double.IsInfinity(this.X) || double.IsInfinity(this.Y) || double.IsInfinity(this.Z); }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> point is zero (all coordinates are 0).
-        /// </summary>
-        [Pure]
-        public bool IsZero
-        {
-            get { return this.EpsilonEquals(0, 0, 0); }
-        }
-
-        /// <summary>
-        /// Counterclockwise octant:
-        /// <pre><![CDATA[
-        ///        ^
-        ///    1   |   0
-        ///        |
-        ///  <-----+-----> z >= 0
-        ///        |
-        ///    2   |   3
-        ///        v
-        /// 
-        ///        ^
-        ///    5   |   4
-        ///        |
-        ///  <-----+-----> z < 0
-        ///        |
-        ///    6   |   7
-        ///        v
-        ///  ]]></pre>
-        /// </summary>
-        [Pure]
-        public int Octant
-        {
-            get
-            {
-                return ((this.X >= 0)
-                    ? ((this.Y >= 0)
-                        ? ((this.Z >= 0) ? 0 : 4)
-                        : ((this.Z >= 0) ? 3 : 7))
-                    : ((this.Y >= 0)
-                        ? ((this.Z >= 0) ? 1 : 5)
-                        : ((this.Z >= 0) ? 2 : 6)));
-            }
         }
 
         [Pure]
@@ -258,7 +166,7 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public double DistanceTo(Point3d p2)
         {
-            return (double)Math.Sqrt(this.Distance2To(p2));
+            return Math.Sqrt(this.Distance2To(p2));
         }
 
         [Pure]
@@ -282,46 +190,29 @@ namespace Essence.Geometry.Core.Double
 
         #region parse
 
-        /// <summary>
-        /// Parses the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
-        /// </summary>
-        /// <param name="s">String.</param>
-        /// <param name="provider">Provider.</param>
-        /// <param name="vstyle">Vector style.</param>
-        /// <param name="nstyle">Number style.</param>
-        /// <returns>Point.</returns>
         public static Point3d Parse(string s,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Point3d result;
-            if (!TryParse(s, out result, provider, vstyle, nstyle))
+            if (!TryParse(s, out result, provider, vstyle, style))
             {
                 throw new Exception();
             }
             return result;
         }
 
-        /// <summary>
-        /// Tries to parse the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
-        /// </summary>
-        /// <param name="s">String.</param>
-        /// <param name="provider">Provider.</param>
-        /// <param name="vstyle">Vector style.</param>
-        /// <param name="nstyle">Number style.</param>
-        /// <param name="result">Point.</param>
-        /// <returns><code>True</code> if everything is correct, <code>false</code> otherwise.</returns>
         public static bool TryParse(string s,
                                     out Point3d result,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Contract.Requires(s != null);
 
             double[] ret;
-            if (!VectorUtils.TryParse(s, 3, out ret, double.TryParse, provider, vstyle, nstyle))
+            if (!VectorUtils.TryParse(s, 3, out ret, double.TryParse, provider, vstyle, style))
             {
                 result = Zero;
                 return false;
@@ -334,13 +225,16 @@ namespace Essence.Geometry.Core.Double
 
         #region private
 
-        /// <summary>
-        /// Tests if the coordinates of <code>this</code> point are equals to <code>x</code>, <code>y</code> and <code>z</code>.
-        /// </summary>
         [Pure]
-        private bool EpsilonEquals(double x, double y, double z, double epsilon = MathUtils.ZERO_TOLERANCE)
+        private bool EpsilonEquals(double x, double y, double z, double epsilon = EPSILON)
         {
             return this.X.EpsilonEquals(x, epsilon) && this.Y.EpsilonEquals(y, epsilon) && this.Z.EpsilonEquals(z, epsilon);
+        }
+
+        [Pure]
+        private bool Equals(double x, double y, double z)
+        {
+            return (this.X == x) && (this.Y == y) && (this.Z == z);
         }
 
         #endregion
@@ -356,12 +250,7 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public override bool Equals(object obj)
         {
-            if (!(obj is Point3d))
-            {
-                return false;
-            }
-
-            return this.Equals((Point3d)obj);
+            return (obj is IPoint3) && this.Equals((Point3d)obj);
         }
 
         [Pure]
@@ -372,22 +261,44 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEpsilonEquatable
+        #region IEpsilonEquatable<Point3d>
 
         [Pure]
-        public bool EpsilonEquals(Point3d other, double epsilon = MathUtils.EPSILON)
+        public bool EpsilonEquals(Point3d other, double epsilon = EPSILON)
         {
-            return this.EpsilonEquals(other.X, other.Y, other.Z, (double)epsilon);
+            return this.EpsilonEquals(other.X, other.Y, other.Z, epsilon);
         }
 
         #endregion
 
-        #region IEquatable
+        #region IEpsilonEquatable<IPoint3>
+
+        [Pure]
+        public bool EpsilonEquals(IPoint3 other, double epsilon = EPSILON)
+        {
+            ITuple3_Double _other = other.AsTupleDouble();
+            return this.EpsilonEquals(_other.X, _other.Y, _other.Z, epsilon);
+        }
+
+        #endregion
+
+        #region IEquatable<Point3d>
 
         [Pure]
         public bool Equals(Point3d other)
         {
-            return other.X == this.X && other.Y == this.Y && other.Z == this.Z;
+            return this.Equals(other.X, other.Y, other.Z);
+        }
+
+        #endregion
+
+        #region IEquatable<IPoint3>
+
+        [Pure]
+        public bool Equals(IPoint3 other)
+        {
+            ITuple3_Double _other = other.AsTupleDouble();
+            return this.Equals(_other.X, _other.Y, _other.Z);
         }
 
         #endregion
@@ -429,143 +340,75 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
+        #region ITuple
+
+        [Pure]
+        public bool IsValid
+        {
+            get { return MathUtils.IsValid(this.X) && MathUtils.IsValid(this.Y) && MathUtils.IsValid(this.Z); }
+        }
+
+        [Pure]
+        public bool IsInfinity
+        {
+            get { return double.IsInfinity(this.X) || double.IsInfinity(this.Y) || double.IsInfinity(this.Z); }
+        }
+
+        [Pure]
+        public bool IsZero
+        {
+            get { return this.EpsilonEquals(0, 0, 0); }
+        }
+
+        #endregion
+
+        #region ITuple3_Double
+
+        double ITuple3_Double.X
+        {
+            get { return this.X; }
+        }
+
+        double ITuple3_Double.Y
+        {
+            get { return this.Y; }
+        }
+
+        double ITuple3_Double.Z
+        {
+            get { return this.Z; }
+        }
+
+        #endregion
+
         #region IPoint
 
-        //[Pure]
-        //int Dim { get; }
-
-        void IPoint.GetCoordinates(ICoordinateSetter setter)
-        {
-            setter.SetCoords(this.X, this.Y, this.Z);
-        }
-
         [Pure]
-        IPoint IPoint.Add(IVector v)
+        public double InvLerp(IPoint3 p2, IPoint3 pLerp)
         {
-            return this.Add(v.ToVector3d());
-        }
-
-        [Pure]
-        IPoint IPoint.Sub(IVector v)
-        {
-            return this.Sub(v.ToVector3d());
-        }
-
-        [Pure]
-        IVector IPoint.Sub(IPoint p2)
-        {
-            return this.Sub(p2.ToPoint3d());
-        }
-
-        [Pure]
-        IPoint IPoint.Lerp(IPoint p2, double alpha)
-        {
-            return this.Lerp(p2.ToPoint3d(), alpha);
-        }
-
-        [Pure]
-        double IPoint.InvLerp(IPoint p2, IPoint pLerp)
-        {
-            return this.InvLerp(p2.ToPoint3d(), pLerp.ToPoint3d());
-        }
-
-        [Pure]
-        IPoint IPoint.Lineal(IPoint p2, double alpha, double beta)
-        {
-            return this.Lineal(p2.ToPoint3d(), alpha, beta);
+            BuffVector3d v12 = new BuffVector3d();
+            v12.Sub(p2, this);
+            BuffVector3d v1Lerp = new BuffVector3d();
+            v1Lerp.Sub(pLerp, this);
+            return v12.Proj(v1Lerp);
         }
 
         #endregion
 
-        #region IPoint3D
-
-        void IPoint3D.GetCoordinates(ICoordinateSetter3D setter)
-        {
-            setter.SetCoords(this.X, this.Y, this.Z);
-        }
-
-        #endregion
-
-        #region IEpsilonEquatable<IPoint>
+        #region IPoint4
 
         [Pure]
-        bool IEpsilonEquatable<IPoint>.EpsilonEquals(IPoint other, double epsilon)
+        public int Octant
         {
-            return this.EpsilonEquals(other.ToPoint3d(), epsilon);
-        }
-
-        #endregion
-
-        #region inner classes
-
-        /// <summary>
-        /// This class compares points by coordinate (X or Y or Z).
-        /// </summary>
-        public sealed class CoordComparer : IComparer<Point3d>, IComparer
-        {
-            public CoordComparer(int coord, double epsilon = MathUtils.EPSILON)
+            get
             {
-                this.coord = coord;
-                this.epsilon = epsilon;
-            }
-
-            private readonly int coord;
-            private readonly double epsilon;
-
-            public int Compare(Point3d v1, Point3d v2)
-            {
-                switch (this.coord)
-                {
-                    case 0:
-                        return v1.X.EpsilonCompareTo(v2.X, this.epsilon);
-                    case 1:
-                        return v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
-                    case 2:
-                        return v1.Z.EpsilonCompareTo(v2.Z, this.epsilon);
-                }
-                throw new IndexOutOfRangeException();
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Point3d && o2 is Point3d);
-                return this.Compare((Point3d)o1, (Point3d)o2);
-            }
-        }
-
-        /// <summary>
-        /// This class lexicographically compares points: it compares X -> Y -> Z.
-        /// </summary>
-        public sealed class LexComparer : IComparer<Point3d>, IComparer
-        {
-            public LexComparer(double epsilon = MathUtils.EPSILON)
-            {
-                this.epsilon = epsilon;
-            }
-
-            private readonly double epsilon;
-
-            public int Compare(Point3d v1, Point3d v2)
-            {
-                int i;
-                i = v1.X.EpsilonCompareTo(v2.X, this.epsilon);
-                if (i != 0)
-                {
-                    return i;
-                }
-                i = v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
-                if (i != 0)
-                {
-                    return i;
-                }
-                i = v1.Z.EpsilonCompareTo(v2.Z, this.epsilon);
-                return i;
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Point3d && o2 is Point3d);
-                return this.Compare((Point3d)o1, (Point3d)o2);
+                return ((this.X >= 0)
+                    ? ((this.Y >= 0)
+                        ? ((this.Z >= 0) ? 0 : 4)
+                        : ((this.Z >= 0) ? 3 : 7))
+                    : ((this.Y >= 0)
+                        ? ((this.Z >= 0) ? 1 : 5)
+                        : ((this.Z >= 0) ? 2 : 6)));
             }
         }
 

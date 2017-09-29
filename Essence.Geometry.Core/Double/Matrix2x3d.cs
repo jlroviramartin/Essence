@@ -116,7 +116,7 @@ namespace Essence.Geometry.Core.Double
                      mat.M10, mat.M11, mat.M12);
         }
 
-        #region Multiplicacion y Premultiplicacion vectores/puntos
+        #region Multiplicacion vectores/puntos
 
         public static Vector2d operator *(Matrix2x3d mat, Vector2d v)
         {
@@ -164,54 +164,6 @@ namespace Essence.Geometry.Core.Double
             return new Point3d(this.M00 * p.X + this.M01 * p.Y + this.M02 * p.Z,
                                this.M10 * p.X + this.M11 * p.Y + this.M12 * p.Z,
                                p.Z);
-        }
-
-        public static Vector2d operator *(Vector2d v, Matrix2x3d mat)
-        {
-            return mat.PreMul(v);
-        }
-
-        public static Point2d operator *(Point2d p, Matrix2x3d mat)
-        {
-            return mat.PreMul(p);
-        }
-
-        public static Vector3d operator *(Vector3d v, Matrix2x3d mat)
-        {
-            return mat.PreMul(v);
-        }
-
-        public static Point3d operator *(Point3d p, Matrix2x3d mat)
-        {
-            return mat.PreMul(p);
-        }
-
-        public Vector2d PreMul(Vector2d v)
-        {
-            double d = v.X * this.M02 + v.Y * this.M12;
-            return new Vector2d((v.X * this.M00 + v.Y * this.M10) / d,
-                                (v.X * this.M01 + v.Y * this.M11) / d);
-        }
-
-        public Point2d PreMul(Point2d p)
-        {
-            double d = p.X * this.M02 + p.Y * this.M12 + 1;
-            return new Point2d((p.X * this.M00 + p.Y * this.M10) / d,
-                               (p.X * this.M01 + p.Y * this.M11) / d);
-        }
-
-        public Vector3d PreMul(Vector3d v)
-        {
-            return new Vector3d(v.X * this.M00 + v.Y * this.M10,
-                                v.X * this.M01 + v.Y * this.M11,
-                                v.X * this.M02 + v.Y * this.M12 + v.Z);
-        }
-
-        public Point3d PreMul(Point3d p)
-        {
-            return new Point3d(p.X * this.M00 + p.Y * this.M10,
-                               p.X * this.M01 + p.Y * this.M11,
-                               p.X * this.M02 + p.Y * this.M12 + p.Z);
         }
 
         #endregion
@@ -318,7 +270,7 @@ namespace Essence.Geometry.Core.Double
             get
             {
                 return this.EpsilonEquals(1, 0, 0,
-                                          0, 1, 0, MathUtils.ZERO_TOLERANCE);
+                                          0, 1, 0, MathUtils.EPSILON);
             }
         }
 
@@ -706,7 +658,7 @@ namespace Essence.Geometry.Core.Double
 
             return this.EpsilonEquals(mat.M00, mat.M01, mat.M02,
                                       mat.M10, mat.M11, mat.M12,
-                                      epsilon);
+                                      (double)epsilon);
         }
 
         #endregion

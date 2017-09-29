@@ -83,8 +83,8 @@ namespace Essence.Geometry.Core.Double
         /// <returns>Matriz de traslacion, rotacion y escala.</returns>
         public static Matrix3x3d TranslateRotateScale(double tx, double ty, double r, double ex, double ey)
         {
-            double s = Math.Sin(r);
-            double c = Math.Cos(r);
+            double s = (double)Math.Sin(r);
+            double c = (double)Math.Cos(r);
             return new Matrix3x3d(
                 c * ex, -ey * s, tx,
                 ex * s, c * ey, ty,
@@ -161,12 +161,12 @@ namespace Essence.Geometry.Core.Double
         public static Matrix3x3d RotateEuler(double heading, double attitude, double bank)
         {
             // Assuming the angles are in radians.
-            double ch = Math.Cos(heading);
-            double sh = Math.Sin(heading);
-            double ca = Math.Cos(attitude);
-            double sa = Math.Sin(attitude);
-            double cb = Math.Cos(bank);
-            double sb = Math.Sin(bank);
+            double ch = (double)Math.Cos(heading);
+            double sh = (double)Math.Sin(heading);
+            double ca = (double)Math.Cos(attitude);
+            double sa = (double)Math.Sin(attitude);
+            double cb = (double)Math.Cos(bank);
+            double sb = (double)Math.Sin(bank);
             return new Matrix3x3d(
                 ch * ca, sh * sb - ch * sa * cb, ch * sa * sb + sh * cb,
                 sa, ca * cb, -ca * sb,
@@ -219,8 +219,8 @@ namespace Essence.Geometry.Core.Double
         /// <returns>Matriz de rotacion.</returns>
         public static Matrix3x3d Rotate(double r)
         {
-            double c = Math.Cos(r);
-            double s = Math.Sin(r);
+            double c = (double)Math.Cos(r);
+            double s = (double)Math.Sin(r);
             return new Matrix3x3d(
                 c, -s, 0,
                 s, c, 0,
@@ -247,8 +247,8 @@ namespace Essence.Geometry.Core.Double
         /// <returns>Matriz de rotacion.</returns>
         public static Matrix3x3d Rotate(double px, double py, double r)
         {
-            double c = Math.Cos(r);
-            double s = Math.Sin(r);
+            double c = (double)Math.Cos(r);
+            double s = (double)Math.Sin(r);
             return new Matrix3x3d(
                 c, -s, -px * c + py * s + px,
                 s, c, -px * s - py * c + py,

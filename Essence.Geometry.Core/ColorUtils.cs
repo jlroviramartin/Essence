@@ -18,9 +18,6 @@ using Essence.Util.Math.Double;
 
 namespace Essence.Geometry.Core
 {
-    /// <summary>
-    /// Color utilities.
-    /// </summary>
     public static class ColorUtils
     {
         public static float ToChannelFloat(byte c)
@@ -33,46 +30,6 @@ namespace Essence.Geometry.Core
             return (byte)MathUtils.Clamp(c * byte.MaxValue, 0, 255);
         }
 
-        #region IColor
-
-        public static Color3f ToColor3f(this IColor c)
-        {
-            if (c is Color3f)
-            {
-                return (Color3f)c;
-            }
-            return new Color3f(c);
-        }
-
-        public static Color4f ToColor4f(this IColor c)
-        {
-            if (c is Color4f)
-            {
-                return (Color4f)c;
-            }
-            return new Color4f(c);
-        }
-
-        public static Color3b ToColor3b(this IColor c)
-        {
-            if (c is Color3b)
-            {
-                return (Color3b)c;
-            }
-            return new Color3b(c);
-        }
-
-        public static Color4b ToColor4b(this IColor c)
-        {
-            if (c is Color4b)
-            {
-                return (Color4b)c;
-            }
-            return new Color4b(c);
-        }
-
-        #endregion
-
         #region IColor3
 
         public static Color3f ToColor3f(this IColor3 c)
@@ -84,9 +41,9 @@ namespace Essence.Geometry.Core
             return new Color3f(c);
         }
 
-        public static Color4f ToColor4f(this IColor3 c)
+        public static Color4f ToColor4f(this IColor3 c, float alpha = 0)
         {
-            return new Color4f(c);
+            return new Color4f(c, alpha);
         }
 
         public static Color3b ToColor3b(this IColor3 c)
@@ -98,19 +55,19 @@ namespace Essence.Geometry.Core
             return new Color3b(c);
         }
 
-        public static Color4b ToColor4b(this IColor3 c)
+        public static Color4b ToColor4b(this IColor3 c, byte alpha = 0)
         {
-            return new Color4b(c);
+            return new Color4b(c, alpha);
         }
 
         #endregion
 
         #region IColor4
 
-        public static Color3f ToColor3f(this IColor4 c)
+        /*public static Color3f ToColor3f(this IColor4 c)
         {
             return new Color3f(c);
-        }
+        }*/
 
         public static Color4f ToColor4f(this IColor4 c)
         {
@@ -121,10 +78,10 @@ namespace Essence.Geometry.Core
             return new Color4f(c);
         }
 
-        public static Color3b ToColor3b(this IColor4 c)
+        /*public static Color3b ToColor3b(this IColor4 c)
         {
             return new Color3b(c);
-        }
+        }*/
 
         public static Color4b ToColor4b(this IColor4 c)
         {

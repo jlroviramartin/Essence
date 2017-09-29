@@ -24,7 +24,7 @@ using SysMath = System.Math;
 
 namespace Essence.Geometry.Core.Double
 {
-    public struct Point4d : IPoint4D,
+    public struct Point4d : IPoint4, ITuple4_Double,
                             IEpsilonEquatable<Point4d>,
                             IEquatable<Point4d>,
                             IFormattable,
@@ -41,6 +41,8 @@ namespace Essence.Geometry.Core.Double
 
         /// <summary>Name of the property W.</summary>
         public const string _W = "W";
+
+        private const double EPSILON = MathUtils.EPSILON;
 
         /// <summary>Point zero.</summary>
         public static readonly Point4d Zero = new Point4d(0, 0, 0, 0);
@@ -68,41 +70,13 @@ namespace Essence.Geometry.Core.Double
             this.W = w;
         }
 
-        public Point4d(IPoint4D p)
+        public Point4d(IPoint4 p)
         {
-            CoordinateSetter4d setter = new CoordinateSetter4d();
-            p.GetCoordinates(setter);
-            this.X = setter.X;
-            this.Y = setter.Y;
-            this.Z = setter.Z;
-            this.W = setter.W;
-        }
-
-        public Point4d(IPoint p)
-        {
-            IPoint4D p4 = p as IPoint4D;
-            if (p4 != null)
-            {
-                CoordinateSetter4d setter = new CoordinateSetter4d();
-                p4.GetCoordinates(setter);
-                this.X = setter.X;
-                this.Y = setter.Y;
-                this.Z = setter.Z;
-                this.W = setter.W;
-            }
-            else
-            {
-                if (p.Dim < 4)
-                {
-                    throw new Exception("Punto no valido");
-                }
-                CoordinateSetter4d setter = new CoordinateSetter4d();
-                p.GetCoordinates(setter);
-                this.X = setter.X;
-                this.Y = setter.Y;
-                this.Z = setter.Z;
-                this.W = setter.W;
-            }
+            ITuple4_Double _p = p.AsTupleDouble();
+            this.X = _p.X;
+            this.Y = _p.Y;
+            this.Z = _p.Z;
+            this.W = _p.W;
         }
 
         /// <summary>Property X.</summary>
@@ -119,9 +93,6 @@ namespace Essence.Geometry.Core.Double
 
         #region operators
 
-        /// <summary>
-        /// Casting to an array.
-        /// </summary>
         public static explicit operator double[](Point4d v)
         {
             return new[] { v.X, v.Y, v.Z, v.W };
@@ -150,6 +121,12 @@ namespace Essence.Geometry.Core.Double
         #endregion
 
         [Pure]
+        public bool IsNaN
+        {
+            get { return double.IsNaN(this.X) || double.IsNaN(this.Y) || double.IsNaN(this.Z) || double.IsNaN(this.W); }
+        }
+
+        [Pure]
         public int Dim
         {
             get { return 4; }
@@ -173,42 +150,6 @@ namespace Essence.Geometry.Core.Double
                 }
                 throw new IndexOutOfRangeException();
             }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> point is valid (not any coordinate is NaN or infinity).
-        /// </summary>
-        [Pure]
-        public bool IsValid
-        {
-            get { return MathUtils.IsValid(this.X) && MathUtils.IsValid(this.Y) && MathUtils.IsValid(this.Z) && MathUtils.IsValid(this.W); }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> point is NaN (any coordinate is NaN).
-        /// </summary>
-        [Pure]
-        public bool IsNaN
-        {
-            get { return double.IsNaN(this.X) || double.IsNaN(this.Y) || double.IsNaN(this.Z) || double.IsNaN(this.W); }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> point is infinity (any coordinate is infinity).
-        /// </summary>
-        [Pure]
-        public bool IsInfinity
-        {
-            get { return double.IsInfinity(this.X) || double.IsInfinity(this.Y) || double.IsInfinity(this.Z) || double.IsInfinity(this.W); }
-        }
-
-        /// <summary>
-        /// Tests if <code>this</code> point is zero (all coordinates are 0).
-        /// </summary>
-        [Pure]
-        public bool IsZero
-        {
-            get { return this.EpsilonEquals(0, 0, 0, 0); }
         }
 
         [Pure]
@@ -262,46 +203,29 @@ namespace Essence.Geometry.Core.Double
 
         #region parse
 
-        /// <summary>
-        /// Parses the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
-        /// </summary>
-        /// <param name="s">String.</param>
-        /// <param name="provider">Provider.</param>
-        /// <param name="vstyle">Vector style.</param>
-        /// <param name="nstyle">Number style.</param>
-        /// <returns>Point.</returns>
         public static Point4d Parse(string s,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Point4d result;
-            if (!TryParse(s, out result, provider, vstyle, nstyle))
+            if (!TryParse(s, out result, provider, vstyle, style))
             {
                 throw new Exception();
             }
             return result;
         }
 
-        /// <summary>
-        /// Tries to parse the <code>s</code> string using <code>vstyle</code> and <code>nstyle</code> styles.
-        /// </summary>
-        /// <param name="s">String.</param>
-        /// <param name="provider">Provider.</param>
-        /// <param name="vstyle">Vector style.</param>
-        /// <param name="nstyle">Number style.</param>
-        /// <param name="result">Point.</param>
-        /// <returns><code>True</code> if everything is correct, <code>false</code> otherwise.</returns>
         public static bool TryParse(string s,
                                     out Point4d result,
                                     IFormatProvider provider = null,
                                     VectorStyles vstyle = VectorStyles.All,
-                                    NumberStyles nstyle = NumberStyles.Float | NumberStyles.AllowThousands)
+                                    NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Contract.Requires(s != null);
 
             double[] ret;
-            if (!VectorUtils.TryParse(s, 4, out ret, double.TryParse, provider, vstyle, nstyle))
+            if (!VectorUtils.TryParse(s, 4, out ret, double.TryParse, provider, vstyle, style))
             {
                 result = Zero;
                 return false;
@@ -312,19 +236,18 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region protected
-
-        #endregion
-
         #region private
 
-        /// <summary>
-        /// Tests if the coordinates of <code>this</code> point are equals to <code>x</code>, <code>y</code>, <code>z</code> and <code>w</code>.
-        /// </summary>
         [Pure]
-        private bool EpsilonEquals(double x, double y, double z, double w, double epsilon = MathUtils.ZERO_TOLERANCE)
+        private bool EpsilonEquals(double x, double y, double z, double w, double epsilon = EPSILON)
         {
             return this.X.EpsilonEquals(x, epsilon) && this.Y.EpsilonEquals(y, epsilon) && this.Z.EpsilonEquals(z, epsilon) && this.W.EpsilonEquals(w, epsilon);
+        }
+
+        [Pure]
+        private bool Equals(double x, double y, double z, double w)
+        {
+            return (this.X == x) && (this.Y == y) && (this.Z == z) && (this.W == w);
         }
 
         #endregion
@@ -340,12 +263,7 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public override bool Equals(object obj)
         {
-            if (!(obj is Point4d))
-            {
-                return false;
-            }
-
-            return this.Equals((Point4d)obj);
+            return (obj is Point4d) && this.Equals((Point4d)obj);
         }
 
         [Pure]
@@ -356,22 +274,33 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEpsilonEquatable
+        #region IEpsilonEquatable<Point4d>
 
         [Pure]
-        public bool EpsilonEquals(Point4d other, double epsilon = MathUtils.EPSILON)
+        public bool EpsilonEquals(Point4d other, double epsilon = EPSILON)
         {
-            return this.EpsilonEquals(other.X, other.Y, other.Z, other.W, (double)epsilon);
+            return this.EpsilonEquals(other.X, other.Y, other.Z, other.W, epsilon);
         }
 
         #endregion
 
-        #region IEquatable
+        #region IEpsilonEquatable<IPoint4>
+
+        [Pure]
+        public bool EpsilonEquals(IPoint4 other, double epsilon = EPSILON)
+        {
+            ITuple4_Double _other = other.AsTupleDouble();
+            return this.EpsilonEquals(_other.X, _other.Y, _other.Z, _other.W, epsilon);
+        }
+
+        #endregion
+
+        #region IEquatable<Point4d>
 
         [Pure]
         public bool Equals(Point4d other)
         {
-            return other.X == this.X && other.Y == this.Y && other.Z == this.Z && other.W == this.W;
+            return this.Equals(other.X, other.Y, other.Z, other.W);
         }
 
         #endregion
@@ -391,6 +320,17 @@ namespace Essence.Geometry.Core.Double
             }
 
             return VectorUtils.ToString(provider, format, (double[])this);
+        }
+
+        #endregion
+
+        #region IEquatable<IPoint4>
+
+        [Pure]
+        public bool Equals(IPoint4 other)
+        {
+            ITuple4_Double _other = other.AsTupleDouble();
+            return this.Equals(_other.X, _other.Y, _other.Z, _other.W);
         }
 
         #endregion
@@ -415,151 +355,62 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
+        #region ITuple
+
+        [Pure]
+        public bool IsValid
+        {
+            get { return MathUtils.IsValid(this.X) && MathUtils.IsValid(this.Y) && MathUtils.IsValid(this.Z) && MathUtils.IsValid(this.W); }
+        }
+
+        [Pure]
+        public bool IsInfinity
+        {
+            get { return double.IsInfinity(this.X) || double.IsInfinity(this.Y) || double.IsInfinity(this.Z) || double.IsInfinity(this.W); }
+        }
+
+        [Pure]
+        public bool IsZero
+        {
+            get { return this.EpsilonEquals(0, 0, 0, 0); }
+        }
+
+        #endregion
+
+        #region ITuple4_Double
+
+        double ITuple4_Double.X
+        {
+            get { return this.X; }
+        }
+
+        double ITuple4_Double.Y
+        {
+            get { return this.Y; }
+        }
+
+        double ITuple4_Double.Z
+        {
+            get { return this.Z; }
+        }
+
+        double ITuple4_Double.W
+        {
+            get { return this.W; }
+        }
+
+        #endregion
+
         #region IPoint
 
-        //[Pure]
-        //int Dim { get; }
-
-        void IPoint.GetCoordinates(ICoordinateSetter setter)
-        {
-            setter.SetCoords(this.X, this.Y, this.Z, this.W);
-        }
-
         [Pure]
-        IPoint IPoint.Add(IVector v)
+        public double InvLerp(IPoint4 p2, IPoint4 pLerp)
         {
-            return this.Add(v.ToVector4d());
-        }
-
-        [Pure]
-        IPoint IPoint.Sub(IVector v)
-        {
-            return this.Sub(v.ToVector4d());
-        }
-
-        [Pure]
-        IVector IPoint.Sub(IPoint p2)
-        {
-            return this.Sub(p2.ToPoint4d());
-        }
-
-        [Pure]
-        IPoint IPoint.Lerp(IPoint p2, double alpha)
-        {
-            return this.Lerp(p2.ToPoint4d(), alpha);
-        }
-
-        [Pure]
-        double IPoint.InvLerp(IPoint p2, IPoint pLerp)
-        {
-            return this.InvLerp(p2.ToPoint4d(), pLerp.ToPoint4d());
-        }
-
-        [Pure]
-        IPoint IPoint.Lineal(IPoint p2, double alpha, double beta)
-        {
-            return this.Lineal(p2.ToPoint4d(), alpha, beta);
-        }
-
-        #endregion
-
-        #region IPoint4D
-
-        void IPoint4D.GetCoordinates(ICoordinateSetter4D setter)
-        {
-            setter.SetCoords(this.X, this.Y, this.Z, this.W);
-        }
-
-        #endregion
-
-        #region IEpsilonEquatable<IPoint>
-
-        [Pure]
-        bool IEpsilonEquatable<IPoint>.EpsilonEquals(IPoint other, double epsilon)
-        {
-            return this.EpsilonEquals(other.ToPoint4d(), epsilon);
-        }
-
-        #endregion
-
-        #region inner classes
-
-        /// <summary>
-        /// This class compares points by coordinate (X or Y or Z or W).
-        /// </summary>
-        public sealed class CoordComparer : IComparer<Point4d>, IComparer
-        {
-            public CoordComparer(int coord, double epsilon = MathUtils.EPSILON)
-            {
-                this.coord = coord;
-                this.epsilon = epsilon;
-            }
-
-            private readonly int coord;
-            private readonly double epsilon;
-
-            public int Compare(Point4d v1, Point4d v2)
-            {
-                switch (this.coord)
-                {
-                    case 0:
-                        return v1.X.EpsilonCompareTo(v2.X, this.epsilon);
-                    case 1:
-                        return v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
-                    case 2:
-                        return v1.Z.EpsilonCompareTo(v2.Z, this.epsilon);
-                    case 3:
-                        return v1.W.EpsilonCompareTo(v2.W, this.epsilon);
-                }
-                throw new IndexOutOfRangeException();
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Point4d && o2 is Point4d);
-                return this.Compare((Point4d)o1, (Point4d)o2);
-            }
-        }
-
-        /// <summary>
-        /// This class lexicographically compares points: it compares X -> Y -> Z -> W.
-        /// </summary>
-        public sealed class LexComparer : IComparer<Point4d>, IComparer
-        {
-            public LexComparer(double epsilon = MathUtils.EPSILON)
-            {
-                this.epsilon = epsilon;
-            }
-
-            private readonly double epsilon;
-
-            public int Compare(Point4d v1, Point4d v2)
-            {
-                int i;
-                i = v1.X.EpsilonCompareTo(v2.X, this.epsilon);
-                if (i != 0)
-                {
-                    return i;
-                }
-                i = v1.Y.EpsilonCompareTo(v2.Y, this.epsilon);
-                if (i != 0)
-                {
-                    return i;
-                }
-                i = v1.Z.EpsilonCompareTo(v2.Z, this.epsilon);
-                if (i != 0)
-                {
-                    return i;
-                }
-                i = v1.W.EpsilonCompareTo(v2.W, this.epsilon);
-                return i;
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Point4d && o2 is Point4d);
-                return this.Compare((Point4d)o1, (Point4d)o2);
-            }
+            BuffVector4d v12 = new BuffVector4d();
+            v12.Sub(p2, this);
+            BuffVector4d v1Lerp = new BuffVector4d();
+            v1Lerp.Sub(pLerp, this);
+            return v12.Proj(v1Lerp);
         }
 
         #endregion

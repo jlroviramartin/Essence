@@ -14,20 +14,20 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Runtime.Serialization;
 using Essence.Util.Math;
-using Essence.Util.Math.Float;
 
 namespace Essence.Geometry.Core.Byte
 {
-    public struct Color3b : IColor3
+    public struct Color3b : IColor3, ITuple3_Byte
     {
         public const string RED = "Red";
         public const string GREEN = "Green";
         public const string BLUE = "Blue";
 
-        public static Color3b FromRGB(float r, float g, float b)
+        public static Color3b FromRGB(byte r, byte g, byte b)
         {
-            return new Color3b((byte)(r * 255).Clamp(0, 255), (byte)(g * 255).Clamp(0, 255), (byte)(b * 255).Clamp(0, 255));
+            return new Color3b(r, g, b);
         }
 
         public Color3b(byte red, byte green, byte blue)
@@ -37,45 +37,27 @@ namespace Essence.Geometry.Core.Byte
             this.Blue = blue;
         }
 
-        public Color3b(IColor3 c)
+        public Color3b(IColor3 other)
         {
-            ColorSetter3b setter = new ColorSetter3b();
-            c.GetColor(setter);
-            this.Red = setter.C1;
-            this.Green = setter.C2;
-            this.Blue = setter.C3;
+            ITuple3_Byte _other = other.AsTupleByte();
+            this.Red = _other.X;
+            this.Green = _other.Y;
+            this.Blue = _other.Z;
         }
 
-        public Color3b(IColor c)
+        #region operators
+
+        public static explicit operator byte[](Color3b v)
         {
-            IColor3 c3 = c as IColor3;
-            if (c3 != null)
-            {
-                ColorSetter3b setter = new ColorSetter3b();
-                c3.GetColor(setter);
-                this.Red = setter.C1;
-                this.Green = setter.C2;
-                this.Blue = setter.C3;
-            }
-            else
-            {
-                if (c.Dim < 3)
-                {
-                    throw new Exception("Vector no valido");
-                }
-                ColorSetter3b setter = new ColorSetter3b();
-                c.GetColor(setter);
-                this.Red = setter.C1;
-                this.Green = setter.C2;
-                this.Blue = setter.C3;
-            }
+            return new[] { v.Red, v.Green, v.Blue };
         }
 
-        public bool Equals(Color3b other)
+        #endregion operators
+
+        [Pure]
+        public int Dim
         {
-            return this.Red == other.Red
-                   && this.Green == other.Green
-                   && this.Blue == other.Blue;
+            get { return 3; }
         }
 
         [Pure]
@@ -101,47 +83,138 @@ namespace Essence.Geometry.Core.Byte
         public readonly byte Green;
         public readonly byte Blue;
 
-        #region IColor
+        #region private
 
         [Pure]
-        public int Dim
+        private bool EpsilonEquals(byte r, byte g, byte b, byte epsilon)
         {
-            get { return 3; }
+            return (this.Red == r) && (this.Green == g) && (this.Blue == b);
         }
 
-        void IColor.GetColor(IColorSetter setter)
+        [Pure]
+        private bool Equals(byte r, byte g, byte b)
         {
-            setter.SetColor(this.Red, this.Green, this.Blue);
+            return (this.Red == r) && (this.Green == g) && (this.Blue == b);
         }
 
         #endregion
 
-        #region IColor3
+        #region object
 
-        public void GetColor(IColorSetter3 setter)
+        [Pure]
+        public override string ToString()
         {
-            setter.SetColor(this.Red, this.Green, this.Blue);
+            return this.ToString("F3", null);
+        }
+
+        [Pure]
+        public override bool Equals(object obj)
+        {
+            return (obj is IColor3) && this.Equals((IColor3)obj);
+        }
+
+        [Pure]
+        public override int GetHashCode()
+        {
+            return VectorUtils.GetHashCode(this.Red, this.Green, this.Blue);
         }
 
         #endregion
 
-        #region IEpsilonEquatable<IPoint>
+        #region IFormattable
 
         [Pure]
-        bool IEpsilonEquatable<IColor>.EpsilonEquals(IColor other, double epsilon)
+        public string ToString(string format, IFormatProvider provider)
         {
-            //return this.EpsilonEquals(other.ToColor3b(), epsilon);
-            return this.Equals(other.ToColor3b());
+            if (provider != null)
+            {
+                ICustomFormatter formatter = provider.GetFormat(this.GetType()) as ICustomFormatter;
+                if (formatter != null)
+                {
+                    return formatter.Format(format, this, provider);
+                }
+            }
+
+            return VectorUtils.ToString(provider, format, (byte[])this);
         }
 
         #endregion
 
-        #region IEquatable<IPoint>
+        #region ISerializable
+
+        public Color3b(SerializationInfo info, StreamingContext context)
+        {
+            this.Red = info.GetByte(RED);
+            this.Green = info.GetByte(GREEN);
+            this.Blue = info.GetByte(BLUE);
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(RED, this.Red);
+            info.AddValue(GREEN, this.Green);
+            info.AddValue(BLUE, this.Blue);
+        }
+
+        #endregion
+
+        #region IEpsilonEquatable<IColor3>
 
         [Pure]
-        bool IEquatable<IColor>.Equals(IColor other)
+        bool IEpsilonEquatable<IColor3>.EpsilonEquals(IColor3 other, double epsilon)
         {
-            return this.Equals(other.ToColor3b());
+            ITuple3_Byte _other = other.AsTupleByte();
+            return this.EpsilonEquals(_other.X, _other.Y, _other.Z, (byte)epsilon);
+        }
+
+        #endregion
+
+        #region IEpsilonEquatable<Color3b>
+
+        [Pure]
+        public bool EpsilonEquals(Color3b other, double epsilon)
+        {
+            return this.EpsilonEquals(other.Red, other.Green, other.Blue, (byte)epsilon);
+        }
+
+        #endregion
+
+        #region IEquatable<IColor3>
+
+        [Pure]
+        bool IEquatable<IColor3>.Equals(IColor3 other)
+        {
+            ITuple3_Byte _other = other.AsTupleByte();
+            return this.Equals(_other.X, _other.Y, _other.Z);
+        }
+
+        #endregion
+
+        #region IEquatable<Color3b>
+
+        [Pure]
+        public bool Equals(Color3b other)
+        {
+            return this.Equals(other.Red, other.Green, other.Blue);
+        }
+
+        #endregion
+
+        #region ITuple3_Byte
+
+        byte ITuple3_Byte.X
+        {
+            get { return this.Red; }
+        }
+
+        byte ITuple3_Byte.Y
+        {
+            get { return this.Green; }
+        }
+
+        byte ITuple3_Byte.Z
+        {
+            get { return this.Blue; }
         }
 
         #endregion

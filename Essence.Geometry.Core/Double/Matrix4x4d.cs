@@ -132,7 +132,7 @@ namespace Essence.Geometry.Core.Double
             this.Set(vX, vY, vZ, o);
         }
 
-        #region Multiplicacion y Premultiplicacion vectores/puntos
+        #region Multiplicacion vectores/puntos
 
         public static Vector3d operator *(Matrix4x4d mat, Vector3d v)
         {
@@ -187,6 +187,10 @@ namespace Essence.Geometry.Core.Double
                                this.M20 * p.X + this.M21 * p.Y + this.M22 * p.Z + this.M23 * p.W,
                                this.M30 * p.X + this.M31 * p.Y + this.M32 * p.Z + this.M33 * p.W);
         }
+
+        #endregion
+
+        #region Premultiplicacion vectores/puntos
 
         public static Vector3d operator *(Vector3d v, Matrix4x4d mat)
         {
@@ -1128,7 +1132,7 @@ namespace Essence.Geometry.Core.Double
                                       mat.M10, mat.M11, mat.M12, mat.M13,
                                       mat.M20, mat.M21, mat.M22, mat.M23,
                                       mat.M30, mat.M31, mat.M32, mat.M33,
-                                      epsilon);
+                                      (double)epsilon);
         }
 
         #endregion

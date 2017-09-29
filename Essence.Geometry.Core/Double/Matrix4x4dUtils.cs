@@ -269,14 +269,14 @@ namespace Essence.Geometry.Core.Double
         /// <returns>Matriz de rotacion.</returns>
         public static Matrix4x4d Rotate(double rx, double ry, double rz)
         {
-            double ca = Math.Cos(rx);
-            double sa = Math.Sin(rx);
+            double ca = (double)Math.Cos(rx);
+            double sa = (double)Math.Sin(rx);
 
-            double cb = Math.Cos(ry);
-            double sb = Math.Sin(ry);
+            double cb = (double)Math.Cos(ry);
+            double sb = (double)Math.Sin(ry);
 
-            double cg = Math.Cos(rz);
-            double sg = Math.Sin(rz);
+            double cg = (double)Math.Cos(rz);
+            double sg = (double)Math.Sin(rz);
 
             return new Matrix4x4d(
                 cb * cg, sa * sb * cg - ca * sg, ca * sb * cg + sa * sg, 0,
@@ -293,8 +293,8 @@ namespace Essence.Geometry.Core.Double
         /// <returns>Matriz de rotacion.</returns>
         public static Matrix4x4d Rotate(Axis axis, double r)
         {
-            double c = Math.Cos(r);
-            double s = Math.Sin(r);
+            double c = (double)Math.Cos(r);
+            double s = (double)Math.Sin(r);
 
             switch (axis)
             {
@@ -352,15 +352,15 @@ namespace Essence.Geometry.Core.Double
         {
             // Taken from Rick's which is taken from Wertz. pg. 412
             // Bug Fixed and changed into right-handed by hiranabe
-            double n = Math.Sqrt(x * x + y * y + z * z);
+            double n = (double)Math.Sqrt(x * x + y * y + z * z);
             // zero-div may occur
             n = 1 / n;
             x *= n;
             y *= n;
             z *= n;
 
-            double c = Math.Cos(r);
-            double s = Math.Sin(r);
+            double c = (double)Math.Cos(r);
+            double s = (double)Math.Sin(r);
             double umc = 1 - c;
 
             double m00 = x * x * umc + c;
@@ -572,7 +572,7 @@ namespace Essence.Geometry.Core.Double
                                          double aspecto,
                                          double zMin, double zMax)
         {
-            double range = zMin * Math.Tan(campoDeVistaY / 2);
+            double range = zMin * (double)Math.Tan(campoDeVistaY / 2);
 
             return Frustum(-range * aspecto, range * aspecto,
                            -range, range,
