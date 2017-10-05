@@ -12,16 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using Essence.Geometry.Core.Byte;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Essence.Geometry.Core.Double;
 using Essence.Geometry.Core.Float;
-using Essence.Geometry.Core.Int;
-using Essence.Util.Math.Double;
+using Essence.Geometry.Core.Integer;
 using Essence.Util.Math.Float;
 
-namespace Essence.Geometry.Core
+namespace Essence.Geometry.Core.Test
 {
     [TestClass]
     public class VectorUtilsTest
@@ -36,7 +34,7 @@ namespace Essence.Geometry.Core
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
-                ITuple2_Int v = VectorUtils.Convert<ITuple2_Int>(new Vector2d(1, 2));
+                ITuple2_Integer v = VectorUtils.Convert<ITuple2_Integer>(new Vector2d(1, 2));
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
@@ -49,7 +47,7 @@ namespace Essence.Geometry.Core
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
-                ITuple2_Int v = VectorUtils.Convert<ITuple2_Int>(new BuffVector2d(1, 2));
+                ITuple2_Integer v = VectorUtils.Convert<ITuple2_Integer>(new BuffVector2d(1, 2));
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
@@ -64,7 +62,7 @@ namespace Essence.Geometry.Core
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
-                ITuple2_Int v = VectorUtils.Convert<ITuple2_Int>(new Point2d(1, 2));
+                ITuple2_Integer v = VectorUtils.Convert<ITuple2_Integer>(new Point2d(1, 2));
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
@@ -77,7 +75,7 @@ namespace Essence.Geometry.Core
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
-                ITuple2_Int v = VectorUtils.Convert<ITuple2_Int>(new BuffPoint2d(1, 2));
+                ITuple2_Integer v = VectorUtils.Convert<ITuple2_Integer>(new BuffPoint2d(1, 2));
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
@@ -176,7 +174,7 @@ namespace Essence.Geometry.Core
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
-                ITuple2_Int v = VectorUtils.Convert<ITuple2_Int>(new Vector2i(1, 2));
+                ITuple2_Integer v = VectorUtils.Convert<ITuple2_Integer>(new Vector2i(1, 2));
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
@@ -191,7 +189,7 @@ namespace Essence.Geometry.Core
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
-                ITuple2_Int v = VectorUtils.Convert<ITuple2_Int>(new Point2i(1, 2));
+                ITuple2_Integer v = VectorUtils.Convert<ITuple2_Integer>(new Point2i(1, 2));
                 Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
             {
@@ -203,38 +201,15 @@ namespace Essence.Geometry.Core
         [TestMethod]
         public void TestConvert_ColorByte()
         {
-            // 2D - vectors
+            // Colors
 
-            {
-                ITuple3_Double v = VectorUtils.Convert<ITuple3_Double>(new Color3b(0, 128, 255));
-                Assert.IsTrue(v.X.EpsilonEquals(0) && v.Y.EpsilonEquals(0.5, 0.01) && v.Z.EpsilonEquals(1));
-            }
             {
                 ITuple3_Float v = VectorUtils.Convert<ITuple3_Float>(new Color3b(0, 128, 255));
                 Assert.IsTrue(v.X.EpsilonEquals(0) && v.Y.EpsilonEquals(0.5f, 0.01f) && v.Z.EpsilonEquals(1));
             }
-            /*{
-                ITuple3_Int v = VectorUtils.Convert<ITuple3_Int>(new Color3b(0, 128, 255));
-                Assert.IsTrue(v.X.EpsilonEquals(0) && v.Y.EpsilonEquals(0.5) && v.Z.EpsilonEquals(1));
-            }*/
             {
                 ITuple3_Byte v = VectorUtils.Convert<ITuple3_Byte>(new Color3b(0, 128, 255));
                 Assert.IsTrue(v.X == 0 && v.Y == 128 && v.Z == 255);
-            }
-
-            // 2D - points
-
-            {
-                ITuple2_Float v = VectorUtils.Convert<ITuple2_Float>(new Point2i(1, 2));
-                Assert.IsTrue(v.X == 1 && v.Y == 2);
-            }
-            {
-                ITuple2_Int v = VectorUtils.Convert<ITuple2_Int>(new Point2i(1, 2));
-                Assert.IsTrue(v.X == 1 && v.Y == 2);
-            }
-            {
-                ITuple2_Byte v = VectorUtils.Convert<ITuple2_Byte>(new Point2i(1, 2));
-                Assert.IsTrue(v.X == 1 && v.Y == 2);
             }
         }
     }

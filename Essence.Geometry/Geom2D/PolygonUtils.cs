@@ -310,7 +310,7 @@ namespace Essence.Geometry.Geom2D
          */
         public static int FindLeftMost(IList<Point2d> points, double epsilon = MathUtils.EPSILON)
         {
-            IComparer<Point2d> lexComparer = new Point2d.LexComparer(epsilon);
+            IComparer<Point2d> lexComparer = new LexComparer2<Point2d>(epsilon);
 
             int index = 0;
             Point2d min = points[index];

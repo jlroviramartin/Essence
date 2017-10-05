@@ -14,7 +14,7 @@
 
 namespace Essence.Geometry.Core.Double
 {
-    public interface ITuple4_Double
+    public interface ITuple4_Double : ITuple4
     {
         double X { get; }
         double Y { get; }

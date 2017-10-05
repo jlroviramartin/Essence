@@ -53,8 +53,8 @@ namespace Essence.Geometry.Curves
             double r = v01_n.AngleTo(v01);
 
             // Transformacion a aplicar.
-            ITransform2D transform = Transform2D.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
-                                                .Concat(Transform2D.Rotate(p1_n.X, p1_n.Y, r));
+            ITransform2 transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
+                                                .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
 
             ClothoidArc2 left = new ClothoidArc2(transform, l0_n, 0, invertY, a);
             ClothoidArc2 right = new ClothoidArc2(transform, 0, l1_n, invertY, a);
@@ -119,8 +119,8 @@ namespace Essence.Geometry.Curves
             double r = v01_n.AngleTo(v01);
 
             // Transformacion a aplicar.
-            this.transform = Transform2D.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
-                                        .Concat(Transform2D.Rotate(p1_n.X, p1_n.Y, r));
+            this.transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
+                                        .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
 
             this.l0 = l0_n;
             this.l1 = l1_n;
@@ -186,8 +186,8 @@ namespace Essence.Geometry.Curves
             double r = v01_n.AngleTo(v01);
 
             // Transformacion a aplicar.
-            this.transform = Transform2D.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
-                                        .Concat(Transform2D.Rotate(p1_n.X, p1_n.Y, r));
+            this.transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
+                                        .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
 
             this.l0 = l0_n;
             this.l1 = l1_n;
@@ -195,7 +195,7 @@ namespace Essence.Geometry.Curves
             this.SetTInterval(l0, l0 + (this.l1 - this.l0));
         }
 
-        public ClothoidArc2(ITransform2D transform,
+        public ClothoidArc2(ITransform2 transform,
                             double l0, double l1,
                             bool invertY, double a)
         {
@@ -282,7 +282,7 @@ namespace Essence.Geometry.Curves
         private readonly double l1;
 
         /// <summary>Transformacion que se aplica sobre la posicion.</summary>
-        private readonly ITransform2D transform;
+        private readonly ITransform2 transform;
 
         private double tmin;
         private double tmax;

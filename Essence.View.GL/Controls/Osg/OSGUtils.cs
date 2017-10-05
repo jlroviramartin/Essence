@@ -504,28 +504,28 @@ namespace Essence.View.Controls.Osg
 
         #region Transforms/Matrices
 
-        public static Matrixd ToMatrixd(this ITransform3D transform)
+        public static Matrixd ToMatrixd(this ITransform3 transform)
         {
-            if (transform is Transform3DIdentity)
+            if (transform is Transform3Identity)
             {
                 return Matrixd.identity();
             }
-            if (transform is Transform3DMatrix)
+            if (transform is Transform3Matrix)
             {
-                return ((Transform3DMatrix)transform).Matrix.ToMatrixd();
+                return ((Transform3Matrix)transform).Matrix.ToMatrixd();
             }
             throw new NotSupportedException();
         }
 
         public static Matrixd ToMatrixd(this ITransform2D transform)
         {
-            if (transform is Transform2DIdentity)
+            if (transform is Transform2Identity)
             {
                 return Matrixd.identity();
             }
-            if (transform is Transform2DMatrix)
+            if (transform is Transform2Matrix)
             {
-                return ((Transform2DMatrix)transform).Matrix.ToMatrixd();
+                return ((Transform2Matrix)transform).Matrix.ToMatrixd();
             }
             throw new NotSupportedException();
         }
@@ -578,12 +578,12 @@ namespace Essence.View.Controls.Osg
                                   mat.get(0, 3), mat.get(1, 3), mat.get(2, 3), mat.get(3, 3));
         }
 
-        public static TexMat ToTexMat(this Transform3D transform)
+        public static TexMat ToTexMat(this Transform3 transform)
         {
             return new TexMat(transform.ToMatrixd());
         }
 
-        public static TexMat ToTexMat(this Transform2D transform)
+        public static TexMat ToTexMat(this Transform2 transform)
         {
             return new TexMat(transform.ToMatrixd());
         }

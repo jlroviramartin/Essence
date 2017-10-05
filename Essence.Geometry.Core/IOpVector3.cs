@@ -14,7 +14,7 @@
 
 namespace Essence.Geometry.Core
 {
-    public interface IOpVector3 : IVector3
+    public interface IOpVector3 : IVector3, IOpTuple3
     {
         /// <summary>
         /// Vector unitario: this / Length.

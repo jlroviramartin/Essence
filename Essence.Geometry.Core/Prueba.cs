@@ -350,10 +350,10 @@ namespace Essence.Geometry.Core
         {
             void Set(double x, double y, double z, double w);
 
-            double X { set; }
-            double Y { set; }
-            double Z { set; }
-            double W { set; }
+            new double X { set; }
+            new double Y { set; }
+            new double Z { set; }
+            new double W { set; }
         }
 
         public interface IVec : ITup

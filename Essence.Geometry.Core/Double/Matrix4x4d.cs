@@ -154,6 +154,48 @@ namespace Essence.Geometry.Core.Double
             return mat.Mul(p);
         }
 
+        public IVector3 Mul(IVector3 v)
+        {
+            ITuple3_Double _v = v.AsTupleDouble();
+
+            Contract.Requires((this.M30 * _v.X + this.M31 * _v.Y + this.M32 * _v.Z).EpsilonEquals(0));
+            return new Vector3d(this.M00 * _v.X + this.M01 * _v.Y + this.M02 * _v.Z,
+                                this.M10 * _v.X + this.M11 * _v.Y + this.M12 * _v.Z,
+                                this.M20 * _v.X + this.M21 * _v.Y + this.M22 * _v.Z);
+        }
+
+        public void Mul(IVector3 v, IOpVector3 vout)
+        {
+            ITuple3_Double _v = v.AsTupleDouble();
+            IOpTuple3_Double _vout = vout.AsOpTupleDouble();
+
+            Contract.Requires((this.M30 * _v.X + this.M31 * _v.Y + this.M32 * _v.Z).EpsilonEquals(0));
+            _vout.Set(this.M00 * _v.X + this.M01 * _v.Y + this.M02 * _v.Z,
+                      this.M10 * _v.X + this.M11 * _v.Y + this.M12 * _v.Z,
+                      this.M20 * _v.X + this.M21 * _v.Y + this.M22 * _v.Z);
+        }
+
+        public IPoint3 Mul(IPoint3 p)
+        {
+            ITuple3_Double _p = p.AsTupleDouble();
+
+            double d = this.M30 * _p.X + this.M31 * _p.Y + this.M32 * _p.Z + this.M33;
+            return new Point3d((this.M00 * _p.X + this.M01 * _p.Y + this.M02 * _p.Z + this.M03) / d,
+                               (this.M10 * _p.X + this.M11 * _p.Y + this.M12 * _p.Z + this.M13) / d,
+                               (this.M20 * _p.X + this.M21 * _p.Y + this.M22 * _p.Z + this.M23) / d);
+        }
+
+        public void Mul(IPoint3 p, IOpPoint3 pout)
+        {
+            ITuple3_Double _p = p.AsTupleDouble();
+            IOpTuple3_Double _vout = pout.AsOpTupleDouble();
+
+            double d = this.M30 * _p.X + this.M31 * _p.Y + this.M32 * _p.Z + this.M33;
+            _vout.Set((this.M00 * _p.X + this.M01 * _p.Y + this.M02 * _p.Z + this.M03) / d,
+                      (this.M10 * _p.X + this.M11 * _p.Y + this.M12 * _p.Z + this.M13) / d,
+                      (this.M20 * _p.X + this.M21 * _p.Y + this.M22 * _p.Z + this.M23) / d);
+        }
+
         public Vector3d Mul(Vector3d v)
         {
             // NOTE: un vector sigue siendo un vector: w == 0.

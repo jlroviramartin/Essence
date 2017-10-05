@@ -14,7 +14,7 @@
 
 namespace Essence.Geometry.Core
 {
-    public interface IVector4 : IVector<IVector4>
+    public interface IVector4 : IVector<IVector4>, ITuple4
     {
     }
 }

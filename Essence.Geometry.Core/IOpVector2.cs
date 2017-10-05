@@ -14,7 +14,7 @@
 
 namespace Essence.Geometry.Core
 {
-    public interface IOpVector2 : IVector2
+    public interface IOpVector2 : IVector2, IOpTuple2
     {
         /// <summary>
         /// Evaluates the unit vector of <code>this</code> vector.

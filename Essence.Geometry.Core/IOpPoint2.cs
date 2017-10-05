@@ -14,7 +14,7 @@
 
 namespace Essence.Geometry.Core
 {
-    public interface IOpPoint2 : IPoint2
+    public interface IOpPoint2 : IPoint2, IOpTuple2
     {
         void Add(IVector2 v);
 

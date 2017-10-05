@@ -7,7 +7,7 @@ using Essence.Util.Math.Double;
 namespace Essence.Geometry.Core.Double
 {
     /// <summary>
-    /// Lexicographer comparer: 1st compares by X, 2nd by Y, 3rd by Z and 4th by W.
+    /// Lexicographer comparer: 1st compares by X and 2nd by Y.
     /// </summary>
     public sealed class LexComparer2<TTuple> : IComparer<TTuple>, IComparer
         where TTuple : ITuple2_Double, IEpsilonEquatable<TTuple>

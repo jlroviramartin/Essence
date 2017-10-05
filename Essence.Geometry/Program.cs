@@ -89,7 +89,7 @@ namespace Essence.Geometry
             }
         }
 
-        //[Test("VMath.Add(IVector2D,IVector2D,IBufferedVector2D)")]
+        //[Test("VMath.Add(IVector2,IVector2,IBufferedVector2D)")]
         private static void Test_Vector2d_VMath_Add(int count)
         {
             Essence.Maths.Prueba.BufferedVector2d aux = new Essence.Maths.Prueba.BufferedVector2d();
@@ -105,7 +105,7 @@ namespace Essence.Geometry
             Console.WriteLine("result : " + x + " ; " + y + " " + aux);
         }
 
-        //[Test("VMath.Add2(IVector2D, IVector2D, IBufferedVector2D)")]
+        //[Test("VMath.Add2(IVector2, IVector2, IBufferedVector2D)")]
         private static void Test_Vector2d_VMath_Add2(int count)
         {
             Essence.Maths.Prueba.BufferedVector2d aux = new Essence.Maths.Prueba.BufferedVector2d();
@@ -121,13 +121,13 @@ namespace Essence.Geometry
             Console.WriteLine("result : " + x + " ; " + y + " " + aux);
         }
 
-        //[Test("IVector2D.Add2(IVector2D,IBufferedVector2D)")]
+        //[Test("IVector2.Add2(IVector2,IBufferedVector2D)")]
         private static void Test_IVector2D_Add2(int count)
         {
             Essence.Maths.Prueba.BufferedVector2d aux = new Essence.Maths.Prueba.BufferedVector2d();
             double x = 0, y = 0;
-            Essence.Maths.Prueba.IVector2D v1 = new Essence.Maths.Prueba.Vector2d(10, 10);
-            Essence.Maths.Prueba.IVector2D v2 = new Essence.Maths.Prueba.Vector2d(10, 10);
+            Essence.Maths.Prueba.IVector2 v1 = new Essence.Maths.Prueba.Vector2d(10, 10);
+            Essence.Maths.Prueba.IVector2 v2 = new Essence.Maths.Prueba.Vector2d(10, 10);
             for (int i = 0; i < count; i++)
             {
                 v1.Add2(v2, aux);
@@ -137,13 +137,13 @@ namespace Essence.Geometry
             Console.WriteLine("result : " + x + " ; " + y + " " + aux);
         }
 
-        //[Test("IVector2D.Add(IVector2D,IBufferedVector2D)")]
+        //[Test("IVector2.Add(IVector2,IBufferedVector2D)")]
         private static void Test_IVector2D_Add(int count)
         {
             Essence.Maths.Prueba.BufferedVector2d aux = new Essence.Maths.Prueba.BufferedVector2d();
             double x = 0, y = 0;
-            Essence.Maths.Prueba.IVector2D v1 = new Essence.Maths.Prueba.Vector2d(10, 10);
-            Essence.Maths.Prueba.IVector2D v2 = new Essence.Maths.Prueba.Vector2d(10, 10);
+            Essence.Maths.Prueba.IVector2 v1 = new Essence.Maths.Prueba.Vector2d(10, 10);
+            Essence.Maths.Prueba.IVector2 v2 = new Essence.Maths.Prueba.Vector2d(10, 10);
             for (int i = 0; i < count; i++)
             {
                 v1.Add(v2, aux);
@@ -153,16 +153,16 @@ namespace Essence.Geometry
             Console.WriteLine("result : " + x + " ; " + y + " " + aux);
         }
 
-        //[Test("IVector2D.Add(IVector2D) : IVector2D")]
+        //[Test("IVector2.Add(IVector2) : IVector2")]
         private static void Test_IVector2D_Add_Func(int count)
         {
             Essence.Maths.Prueba.BufferedVector2d aux = new Essence.Maths.Prueba.BufferedVector2d();
             double x = 0, y = 0;
-            Essence.Maths.Prueba.IVector2D v1 = new Essence.Maths.Prueba.Vector2d(10, 10);
-            Essence.Maths.Prueba.IVector2D v2 = new Essence.Maths.Prueba.Vector2d(10, 10);
+            Essence.Maths.Prueba.IVector2 v1 = new Essence.Maths.Prueba.Vector2d(10, 10);
+            Essence.Maths.Prueba.IVector2 v2 = new Essence.Maths.Prueba.Vector2d(10, 10);
             for (int i = 0; i < count; i++)
             {
-                Essence.Maths.Prueba.IVector2D v3 = v1.Add(v2);
+                Essence.Maths.Prueba.IVector2 v3 = v1.Add(v2);
                 v3.GetCoords(aux);
                 x += aux.X;
                 y += aux.Y;
@@ -203,13 +203,13 @@ namespace Essence.Geometry
         }
 
 
-        /*[Test("struct IVector2D.Add2(IVector2D,IBufferedVector2D)")]
+        /*[Test("struct IVector2.Add2(IVector2,IBufferedVector2D)")]
         private static void Test_IVector2D_struct_Add2(int count)
         {
             Essence.Maths.Prueba.BufferedVector2d aux = new Essence.Maths.Prueba.BufferedVector2d();
             double x = 0, y = 0;
-            Essence.Maths.Prueba.IVector2D v1 = new Essence.Maths.Prueba.Vector2d_struct(10, 10);
-            Essence.Maths.Prueba.IVector2D v2 = new Essence.Maths.Prueba.Vector2d_struct(10, 10);
+            Essence.Maths.Prueba.IVector2 v1 = new Essence.Maths.Prueba.Vector2d_struct(10, 10);
+            Essence.Maths.Prueba.IVector2 v2 = new Essence.Maths.Prueba.Vector2d_struct(10, 10);
             for (int i = 0; i < count; i++)
             {
                 v1.Add2(v2, aux);
@@ -219,13 +219,13 @@ namespace Essence.Geometry
             Console.WriteLine("result : " + x + " ; " + y + " " + aux);
         }
 
-        [Test("struct IVector2D.Add(IVector2D,IBufferedVector2D)")]
+        [Test("struct IVector2.Add(IVector2,IBufferedVector2D)")]
         private static void Test_IVector2D_struct_Add(int count)
         {
             Essence.Maths.Prueba.BufferedVector2d aux = new Essence.Maths.Prueba.BufferedVector2d();
             double x = 0, y = 0;
-            Essence.Maths.Prueba.IVector2D v1 = new Essence.Maths.Prueba.Vector2d_struct(10, 10);
-            Essence.Maths.Prueba.IVector2D v2 = new Essence.Maths.Prueba.Vector2d_struct(10, 10);
+            Essence.Maths.Prueba.IVector2 v1 = new Essence.Maths.Prueba.Vector2d_struct(10, 10);
+            Essence.Maths.Prueba.IVector2 v2 = new Essence.Maths.Prueba.Vector2d_struct(10, 10);
             for (int i = 0; i < count; i++)
             {
                 v1.Add(v2, aux);
@@ -293,13 +293,13 @@ namespace Essence.Geometry
                 new Essence.Maths.Prueba.Point2d(100, 100),
                 new Essence.Maths.Prueba.Point2d(100, 0),
                 count);
-            List<Essence.Maths.Prueba.IPoint2D> points = new List<Essence.Maths.Prueba.IPoint2D>(count);
+            List<Essence.Maths.Prueba.IPoint2> points = new List<Essence.Maths.Prueba.IPoint2>(count);
             while (ev.MoveNext())
             {
                 points.Add(ev.Current);
             }
             Console.WriteLine(points.Count);
-            /*foreach (Essence.Maths.Prueba.IPoint2D point in points)
+            /*foreach (Essence.Maths.Prueba.IPoint2 point in points)
             {
                 Console.WriteLine(point.GetXDouble().ToString("F3") + " ; " + point.GetYDouble().ToString("F3"));
             }*/
@@ -314,13 +314,13 @@ namespace Essence.Geometry
                 new Essence.Maths.Prueba.Point2d(100, 100),
                 new Essence.Maths.Prueba.Point2d(100, 0),
                 count);
-            List<Essence.Maths.Prueba.IPoint2D> points = new List<Essence.Maths.Prueba.IPoint2D>(count);
+            List<Essence.Maths.Prueba.IPoint2> points = new List<Essence.Maths.Prueba.IPoint2>(count);
             while (ev.MoveNext())
             {
                 points.Add(ev.Current);
             }
             Console.WriteLine(points.Count);
-            /*foreach (Essence.Maths.Prueba.IPoint2D point in points)
+            /*foreach (Essence.Maths.Prueba.IPoint2 point in points)
             {
                 Console.WriteLine(point.GetXDouble().ToString("F3") + " ; " + point.GetYDouble().ToString("F3"));
             }*/

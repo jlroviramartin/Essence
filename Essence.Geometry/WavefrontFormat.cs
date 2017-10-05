@@ -21,6 +21,7 @@ using System.Linq;
 using Essence.Geometry.Core;
 using Essence.Geometry.Core.Byte;
 using Essence.Geometry.Core.Double;
+using Essence.Geometry.Core.Float;
 using Essence.Util;
 
 namespace Essence.Geometry
@@ -44,12 +45,12 @@ namespace Essence.Geometry
 
         public WavefrontFormat(StreamWriter streamWriter)
         {
-            this.Transform = Transform2D.Identity();
+            this.Transform = Transform2.Identity();
             this.streamWriter = streamWriter;
         }
 
         // NOTA: Transform3 !!!
-        public ITransform2D Transform { get; set; }
+        public ITransform2 Transform { get; set; }
 
         public bool UseObjectGroup { get; set; }
 
@@ -378,26 +379,20 @@ namespace Essence.Geometry
             this.streamWriter.WriteLine();
             if (mat.Ambient != null)
             {
-                IColor3 c = mat.Ambient;
-                ColorSetter3b setter = new ColorSetter3b();
-                c.GetColor(setter);
-                this.streamWriter.Write(string.Format(en_US, "  Ka {0:F3} {1:F3} {2:F3}", setter.C1, setter.C2, setter.C3));
+                ITuple3_Float c = mat.Ambient.AsTupleFloat();
+                this.streamWriter.Write(string.Format(en_US, "  Ka {0:F3} {1:F3} {2:F3}", c.X, c.Y, c.Z));
                 this.streamWriter.WriteLine();
             }
             if (mat.Diffuse != null)
             {
-                IColor3 c = mat.Diffuse;
-                ColorSetter3b setter = new ColorSetter3b();
-                c.GetColor(setter);
-                this.streamWriter.Write(string.Format(en_US, "  Kd {0:F3} {1:F3} {2:F3}", setter.C1, setter.C2, setter.C3));
+                ITuple3_Float c = mat.Diffuse.AsTupleFloat();
+                this.streamWriter.Write(string.Format(en_US, "  Kd {0:F3} {1:F3} {2:F3}", c.X, c.Y, c.Z));
                 this.streamWriter.WriteLine();
             }
             if (mat.Specular != null)
             {
-                IColor3 c = mat.Specular;
-                ColorSetter3b setter = new ColorSetter3b();
-                c.GetColor(setter);
-                this.streamWriter.Write(string.Format(en_US, "  Ks {0:F3} {1:F3} {2:F3}", setter.C1, setter.C2, setter.C3));
+                ITuple3_Float c = mat.Specular.AsTupleFloat();
+                this.streamWriter.Write(string.Format(en_US, "  Ks {0:F3} {1:F3} {2:F3}", c.X, c.Y, c.Z));
                 this.streamWriter.WriteLine();
             }
             this.streamWriter.Write(string.Format(en_US, "  illum {0}", (int)mat.Model));

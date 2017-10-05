@@ -56,30 +56,30 @@ namespace Essence.Geometry
         float GetYFloat();
     }
 
-    public interface IPoint2D : ITuple2D
+    public interface IPoint2 : ITuple2D
     {
-        IVector2D ToVector2D();
+        IVector2 ToVector2D();
     }
 
-    public interface IVector2D : ITuple2D
+    public interface IVector2 : ITuple2D
     {
-        IPoint2D ToPoint2D();
+        IPoint2 ToPoint2D();
 
-        IVector2D Add(IVector2D v);
-        IVector2D Sub(IVector2D v);
-        IVector2D Mul(double t);
+        IVector2 Add(IVector2 v);
+        IVector2 Sub(IVector2 v);
+        IVector2 Mul(double t);
 
-        void Add(IVector2D v, IBufferedVector2D result);
-        void Sub(IVector2D v, IBufferedVector2D result);
+        void Add(IVector2 v, IBufferedVector2D result);
+        void Sub(IVector2 v, IBufferedVector2D result);
         void Mul(double t, IBufferedVector2D result);
 
 
-        void Add2(IVector2D v, IBufferedVector2D result);
+        void Add2(IVector2 v, IBufferedVector2D result);
     }
 
     public static class VMath
     {
-        public static void Add(IVector2D a, IVector2D b, IBufferedVector2D result)
+        public static void Add(IVector2 a, IVector2 b, IBufferedVector2D result)
         {
             BufferedTuple2d aux = new BufferedTuple2d();
 
@@ -94,7 +94,7 @@ namespace Essence.Geometry
             result.SetCoords(x, y);
         }
 
-        public static void Add2(IVector2D a, IVector2D b, IBufferedVector2D result)
+        public static void Add2(IVector2 a, IVector2 b, IBufferedVector2D result)
         {
             result.SetCoords(a.GetXDouble() + b.GetXDouble(), a.GetYDouble() + b.GetYDouble());
         }
@@ -104,7 +104,7 @@ namespace Essence.Geometry
     {
         private BufferedTuple2d aux = new BufferedTuple2d();
 
-        public void Add(IVector2D a, IVector2D b, IBufferedVector2D result)
+        public void Add(IVector2 a, IVector2 b, IBufferedVector2D result)
         {
             a.GetCoords(aux);
             double x = aux.X;
@@ -117,7 +117,7 @@ namespace Essence.Geometry
             result.SetCoords(x, y);
         }
 
-        public void Add2(IVector2D a, IVector2D b, IBufferedVector2D result)
+        public void Add2(IVector2 a, IVector2 b, IBufferedVector2D result)
         {
             result.SetCoords(a.GetXDouble() + b.GetXDouble(), a.GetYDouble() + b.GetYDouble());
         }
@@ -169,7 +169,7 @@ namespace Essence.Geometry
         }
     }
 
-    public sealed class Vector2d : Tuple2d, IVector2D
+    public sealed class Vector2d : Tuple2d, IVector2
     {
         public Vector2d(ITuple2D tuple) : base(tuple.GetXDouble(), tuple.GetYDouble())
         {
@@ -183,7 +183,7 @@ namespace Essence.Geometry
         {
         }
 
-        public IPoint2D ToPoint2D()
+        public IPoint2 ToPoint2D()
         {
             return new Point2d(this.x, this.y);
         }
@@ -213,7 +213,7 @@ namespace Essence.Geometry
             result.SetCoords(this.x - v.x, this.y - v.y);
         }
 
-        public IVector2D Add(IVector2D v)
+        public IVector2 Add(IVector2 v)
         {
             Vector2d v2 = v as Vector2d;
             if (v2 != null)
@@ -223,7 +223,7 @@ namespace Essence.Geometry
             throw new Exception();
         }
 
-        public IVector2D Sub(IVector2D v)
+        public IVector2 Sub(IVector2 v)
         {
             Vector2d v2 = v as Vector2d;
             if (v2 != null)
@@ -233,12 +233,12 @@ namespace Essence.Geometry
             throw new Exception();
         }
 
-        public IVector2D Mul(double v)
+        public IVector2 Mul(double v)
         {
             return this.Mul_2(v);
         }
 
-        public void Add(IVector2D v, IBufferedVector2D result)
+        public void Add(IVector2 v, IBufferedVector2D result)
         {
             Vector2d v2 = v as Vector2d;
             if (v2 != null)
@@ -247,7 +247,7 @@ namespace Essence.Geometry
             }
         }
 
-        public void Sub(IVector2D v, IBufferedVector2D result)
+        public void Sub(IVector2 v, IBufferedVector2D result)
         {
             Vector2d v2 = v as Vector2d;
             if (v2 != null)
@@ -261,13 +261,13 @@ namespace Essence.Geometry
             result.SetCoords(this.x * v, this.y * v);
         }
 
-        public void Add2(IVector2D v, IBufferedVector2D result)
+        public void Add2(IVector2 v, IBufferedVector2D result)
         {
             result.SetCoords(this.x + v.GetXDouble(), this.y + v.GetYDouble());
         }
     }
 
-    public sealed class Point2d : Tuple2d, IPoint2D
+    public sealed class Point2d : Tuple2d, IPoint2
     {
         public Point2d(ITuple2D tuple) : base(tuple.GetXDouble(), tuple.GetYDouble())
         {
@@ -281,7 +281,7 @@ namespace Essence.Geometry
         {
         }
 
-        public IVector2D ToVector2D()
+        public IVector2 ToVector2D()
         {
             return new Vector2d(this.x, this.y);
         }
@@ -361,7 +361,7 @@ namespace Essence.Geometry
         }
     }
 
-    public class BufferedVector2d : BufferedTuple2d, IBufferedVector2D, IVector2D
+    public class BufferedVector2d : BufferedTuple2d, IBufferedVector2D, IVector2
     {
         public BufferedVector2d()
         {
@@ -371,12 +371,12 @@ namespace Essence.Geometry
         {
         }
 
-        public IPoint2D ToPoint2D()
+        public IPoint2 ToPoint2D()
         {
             return new BufferedPoint2d(this.X, this.Y);
         }
 
-        public IVector2D Add(IVector2D v)
+        public IVector2 Add(IVector2 v)
         {
             BufferedVector2d bv = v as BufferedVector2d;
             if (bv != null)
@@ -391,7 +391,7 @@ namespace Essence.Geometry
             return new BufferedVector2d(this.X + v.GetXDouble(), this.Y + v.GetYDouble());
         }
 
-        public IVector2D Sub(IVector2D v)
+        public IVector2 Sub(IVector2 v)
         {
             BufferedVector2d bv = v as BufferedVector2d;
             if (bv != null)
@@ -406,12 +406,12 @@ namespace Essence.Geometry
             return new BufferedVector2d(this.X - v.GetXDouble(), this.Y - v.GetYDouble());
         }
 
-        public IVector2D Mul(double t)
+        public IVector2 Mul(double t)
         {
             return new BufferedVector2d(this.X * t, this.Y * t);
         }
 
-        public void Add(IVector2D v, IBufferedVector2D result)
+        public void Add(IVector2 v, IBufferedVector2D result)
         {
             BufferedVector2d bv = v as BufferedVector2d;
             if (bv != null)
@@ -428,7 +428,7 @@ namespace Essence.Geometry
             result.SetCoords(this.X + v.GetXDouble(), this.Y + v.GetYDouble());
         }
 
-        public void Sub(IVector2D v, IBufferedVector2D result)
+        public void Sub(IVector2 v, IBufferedVector2D result)
         {
             BufferedVector2d bv = v as BufferedVector2d;
             if (bv != null)
@@ -450,13 +450,13 @@ namespace Essence.Geometry
             result.SetCoords(this.X * t, this.Y * t);
         }
 
-        public void Add2(IVector2D v, IBufferedVector2D result)
+        public void Add2(IVector2 v, IBufferedVector2D result)
         {
             result.SetCoords(this.X + v.GetXDouble(), this.Y + v.GetYDouble());
         }
     }
 
-    public class BufferedPoint2d : BufferedTuple2d, IBufferedVector2D, IPoint2D
+    public class BufferedPoint2d : BufferedTuple2d, IBufferedVector2D, IPoint2
     {
         public BufferedPoint2d()
         {
@@ -466,7 +466,7 @@ namespace Essence.Geometry
         {
         }
 
-        public IVector2D ToVector2D()
+        public IVector2 ToVector2D()
         {
             return new BufferedVector2d(this.X, this.Y);
         }
@@ -483,7 +483,7 @@ namespace Essence.Geometry
         {
         }
 
-        public IPoint2D ToPoint2D()
+        public IPoint2 ToPoint2D()
         {
             return new BufferedPoint2d(this.X, this.Y);
         }
@@ -539,7 +539,7 @@ namespace Essence.Geometry
 
     /*public class EvaluadorBezierCubica2D
     {
-        public EvaluadorBezierCubica2D(IPoint2D p0, IPoint2D p1, IPoint2D p2, IPoint2D p3, int steps = 100)
+        public EvaluadorBezierCubica2D(IPoint2 p0, IPoint2 p1, IPoint2 p2, IPoint2 p3, int steps = 100)
         {
             this.p0 = p0.ToVector2D();
             this.p1 = p1.ToVector2D();
@@ -549,24 +549,24 @@ namespace Essence.Geometry
             this.Reset();
         }
 
-        private readonly IVector2D p0;
-        private readonly IVector2D p1;
-        private readonly IVector2D p2;
-        private readonly IVector2D p3;
+        private readonly IVector2 p0;
+        private readonly IVector2 p1;
+        private readonly IVector2 p2;
+        private readonly IVector2 p3;
         private readonly int steps;
 
-        private IVector2D f;
-        private IVector2D fd;
-        private IVector2D fdd;
-        private IVector2D fddd;
-        private IVector2D fdd_per_2;
-        private IVector2D fddd_per_2;
-        private IVector2D fddd_per_6;
+        private IVector2 f;
+        private IVector2 fd;
+        private IVector2 fdd;
+        private IVector2 fddd;
+        private IVector2 fdd_per_2;
+        private IVector2 fddd_per_2;
+        private IVector2 fddd_per_6;
         private int loop;
 
-        private IPoint2D current;
+        private IPoint2 current;
 
-        public IPoint2D Current
+        public IPoint2 Current
         {
             get { return this.current; }
         }
@@ -576,10 +576,10 @@ namespace Essence.Geometry
             float t = 1.0f / (float)this.steps;
             float temp = t * t;
 
-            IVector2D v0 = this.p0;
-            IVector2D v1 = this.p1;
-            IVector2D v2 = this.p2;
-            IVector2D v3 = this.p3;
+            IVector2 v0 = this.p0;
+            IVector2 v1 = this.p1;
+            IVector2 v2 = this.p2;
+            IVector2 v3 = this.p3;
 
             // Se inicializa las formulas.
 

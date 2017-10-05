@@ -19,7 +19,7 @@ namespace Essence.Geometry.Core
     public interface IPoint3 : IPoint<IPoint3>
     {
         /// <summary>
-        /// Octant:
+        /// Evaluates the octant of <code>this</code> point.
         /// <pre><![CDATA[
         ///        ^
         ///    1   |   0

@@ -13,8 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -535,6 +533,16 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
+        #region ITuple2
+
+        public void Get(IOpTuple2 setter)
+        {
+            IOpTuple2_Double _setter = setter.AsOpTupleDouble();
+            _setter.Set(this.X, this.Y);
+        }
+
+        #endregion
+
         #region ITuple2_Double
 
         double ITuple2_Double.X
@@ -560,11 +568,11 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public double Length
         {
-            get { return (double)Math.Sqrt(this.Length2); }
+            get { return (double)Math.Sqrt(this.LengthSquared); }
         }
 
         [Pure]
-        public double Length2
+        public double LengthSquared
         {
             get { return this.Dot(this); }
         }
@@ -600,7 +608,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IVector3
+        #region IVector2
 
         [Pure]
         public int Quadrant
@@ -618,178 +626,6 @@ namespace Essence.Geometry.Core.Double
         {
             ITuple2_Double _v2 = v2.AsTupleDouble();
             return this.X * _v2.Y - this.Y * _v2.X;
-        }
-
-        #endregion
-
-        #region inner classes
-
-        /// <summary>
-        /// Compares unit vectors using their angle.
-        /// <pre><![CDATA[
-        /// ^ normal = direccion.PerpLeft
-        /// |
-        /// | /__
-        /// | \  \  incrementa el angulo
-        /// |     |
-        /// +-----+-----------> direccion
-        /// ]]></pre>
-        /// </summary>
-        public struct AngleComparer : IComparer<Vector2d>, IComparer
-        {
-            public AngleComparer(Vector2d direccion, double epsilon)
-                : this(direccion, direccion.PerpLeft, epsilon)
-            {
-            }
-
-            public AngleComparer(Vector2d direccion, Vector2d normal, double epsilon)
-            {
-                Contract.Assert(direccion.IsUnit);
-                this.direccion = direccion;
-                this.normal = normal;
-                this.epsilon = epsilon;
-            }
-
-            private readonly Vector2d direccion;
-            private readonly Vector2d normal;
-            private readonly double epsilon;
-
-            public int Compare(Vector2d v1, Vector2d v2)
-            {
-                if (v1.IsZero)
-                {
-                    if (v2.IsZero)
-                    {
-                        return 0;
-                    }
-                    return -1; // v2 es mayor.
-                }
-                else if (v2.IsZero)
-                {
-                    return 1; // v1 es mayor.
-                }
-
-                Contract.Assert(v1.IsUnit && v2.IsUnit);
-
-                double nv1 = this.normal.Dot(v1);
-                if (nv1 > 0)
-                {
-                    // v1 esta encima.
-                    double nv2 = this.normal.Dot(v2);
-                    if (nv2 > 0)
-                    {
-                        return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
-                    else if (nv2 < 0)
-                    {
-                        return -1; // v2 es mayor.
-                    }
-                    else
-                    {
-                        return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
-                }
-                else if (nv1 < 0)
-                {
-                    // v1 esta debajo.
-                    double nv2 = this.normal.Dot(v2);
-                    if (nv2 > 0)
-                    {
-                        return 1; // v1 es mayor.
-                    }
-                    else if (nv2 < 0)
-                    {
-                        return this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
-                    else
-                    {
-                        return 1;
-                    }
-                }
-                else // if (nv1 == 0)
-                {
-                    // this.direccion.Dot(v1); // Es +1 o -1
-
-                    // v1 esta alineado.
-                    double nv2 = this.normal.Dot(v2);
-                    if (nv2 > 0)
-                    {
-                        return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
-                    else if (nv2 < 0)
-                    {
-                        return -1;
-                    }
-                    else
-                    {
-                        return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
-                }
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Vector2d && o2 is Vector2d);
-                return this.Compare((Vector2d)o1, (Vector2d)o2);
-            }
-        }
-
-        /// <summary>
-        /// Compares unit vectors using their angle.
-        /// <pre><![CDATA[
-        /// ^ normal = direccion.PerpLeft
-        /// |
-        /// | /__
-        /// | \  \  incrementa el angulo
-        /// |     |
-        /// +-----+-----------> direccion
-        /// ]]></pre>
-        /// </summary>
-        public struct AngleComparer2 : IComparer<Vector2d>, IComparer
-        {
-            public int Compare(Vector2d v1, Vector2d v2)
-            {
-                // Se hace un cambio de cuadrande:
-                //   0  |  1
-                //  ----+----
-                //   3  |  2
-                //int c1 = (5 - v1.Cuadrante) % 4;
-                //int c2 = (5 - v2.Cuadrante) % 4;
-                int c1 = v1.Quadrant;
-                int c2 = v2.Quadrant;
-                if (c1 == c2)
-                {
-                    // Se convierten al cuadrante 0.
-                    switch (c1)
-                    {
-                        case 1:
-                            // Rotacion 90 a la derecha.
-                            v1 = Rot(v1, (double)(-Math.PI / 2)); // -1
-                            break;
-                        case 2:
-                            // Rotacion 180 a la derecha.
-                            v1 = Rot(v1, (double)(-Math.PI)); // -2
-                            break;
-                        case 3:
-                            // Rotacion 270 a la derecha.
-                            v1 = Rot(v1, (double)(-3 * Math.PI / 2)); // -3
-                            break;
-                    }
-                    double m1 = v1.Y / v1.X;
-                    double m2 = v2.Y / v2.X;
-                    return m1.CompareTo(m2);
-                }
-                else
-                {
-                    return c1.CompareTo(c2);
-                }
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Vector2d && o2 is Vector2d);
-                return this.Compare((Vector2d)o1, (Vector2d)o2);
-            }
         }
 
         #endregion

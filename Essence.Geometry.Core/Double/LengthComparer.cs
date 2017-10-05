@@ -21,7 +21,7 @@ namespace Essence.Geometry.Core.Double
 
         public int Compare(TVector v1, TVector v2)
         {
-            return v1.Length2.EpsilonCompareTo(v2.Length2, this.epsilon);
+            return v1.LengthSquared.EpsilonCompareTo(v2.LengthSquared, this.epsilon);
         }
 
         int IComparer.Compare(object o1, object o2)

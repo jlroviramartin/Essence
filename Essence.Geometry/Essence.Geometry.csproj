@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -56,11 +56,11 @@
     <Compile Include="Core\Double\BoundingBox3d.cs" />
     <Compile Include="Core\Double\Quaternion.cs" />
     <Compile Include="Core\Double\RectangleUtils.cs" />
-    <Compile Include="Core\Double\Transform3DMatrix.cs" />
-    <Compile Include="Core\ITransform3D.cs" />
+    <Compile Include="Core\Double\Transform3Matrix.cs" />
+    <Compile Include="Core\ITransform3.cs" />
     <Compile Include="Core\Light.cs" />
-    <Compile Include="Core\Transform3DIdentity.cs" />
-    <Compile Include="Core\Transform3D.cs" />
+    <Compile Include="Core\Transform3Identity.cs" />
+    <Compile Include="Core\Transform3.cs" />
     <Compile Include="Curves\BaseCircle2.cs" />
     <Compile Include="Curves\Circle2.cs" />
     <Compile Include="Curves\CircleArc2.cs" />
@@ -90,9 +90,9 @@
     <Compile Include="Geom2D\PointInPoly.cs" />
     <Compile Include="Geom2D\Polygon2d.cs" />
     <Compile Include="Geom2D\PolygonUtils.cs" />
-    <Compile Include="Graphics\IGraphicsContext2D.cs" />
-    <Compile Include="Graphics\IPathIterator2D.cs" />
-    <Compile Include="Graphics\IShape2D.cs" />
+    <Compile Include="Graphics\IGraphicsContext2.cs" />
+    <Compile Include="Graphics\IPathIterator2.cs" />
+    <Compile Include="Graphics\IShape2.cs" />
     <Compile Include="Graphics\PathUtils.cs" />
     <Compile Include="Graphics\SegmentType.cs" />
     <Compile Include="Graphics\WindingRule.cs" />
@@ -105,11 +105,11 @@
     <Compile Include="Core\Int\BoundingBox2i.cs" />
     <Compile Include="Core\Int\BoundingBox2iUtils.cs" />
     <Compile Include="Maths\Double\Transform1.cs" />
-    <Compile Include="Core\Transform2D.cs" />
-    <Compile Include="Core\Transform2DIdentity.cs" />
-    <Compile Include="Core\Double\Transform2DMatrix.cs" />
+    <Compile Include="Core\Transform2.cs" />
+    <Compile Include="Core\Transform2Identity.cs" />
+    <Compile Include="Core\Double\Transform2Matrix.cs" />
     <Compile Include="Core\TransformUtils.cs" />
-    <Compile Include="Core\ITransform2D.cs" />
+    <Compile Include="Core\ITransform2.cs" />
     <Compile Include="Distances\DistPointCircle2.cs" />
     <Compile Include="Distances\DistPointCircleArc2.cs" />
     <Compile Include="Geom2D\Geom2DUtils.cs" />

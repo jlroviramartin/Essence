@@ -20,58 +20,58 @@ namespace Essence.Geometry.Core
 {
     public static class TransformUtils
     {
-        public static Vector2d DoTransform(this ITransform2D transform, Vector2d v)
+        public static Vector2d DoTransform(this ITransform2 transform, Vector2d v)
         {
             return transform.Transform(v).ToVector2d();
         }
 
-        public static Point2d DoTransform(this ITransform2D transform, Point2d p)
+        public static Point2d DoTransform(this ITransform2 transform, Point2d p)
         {
             return transform.Transform(p).ToPoint2d();
         }
 
-        public static BoundingBox2d DoTransform(this ITransform2D transform, BoundingBox2d bbox)
+        public static BoundingBox2d DoTransform(this ITransform2 transform, BoundingBox2d bbox)
         {
             return BoundingBox2d.UnionOfPoints(bbox.GetVertices().Select(v => transform.DoTransform(v)));
         }
 
-        public static Matrix2x3d ToMatrix(this ITransform2D transform)
+        public static Matrix2x3d ToMatrix(this ITransform2 transform)
         {
-            if (transform is Transform2DIdentity)
+            if (transform is Transform2Identity)
             {
                 return Matrix2x3d.Identity;
             }
-            if (transform is Transform2DMatrix)
+            if (transform is Transform2Matrix)
             {
-                return ((Transform2DMatrix)transform).Matrix;
+                return ((Transform2Matrix)transform).Matrix;
             }
             throw new NotSupportedException();
         }
 
-        public static Vector3d DoTransform(this ITransform3D transform, Vector3d v)
+        public static Vector3d DoTransform(this ITransform3 transform, Vector3d v)
         {
             return transform.Transform(v).ToVector3d();
         }
 
-        public static Point3d DoTransform(this ITransform3D transform, Point3d p)
+        public static Point3d DoTransform(this ITransform3 transform, Point3d p)
         {
             return transform.Transform(p).ToPoint3d();
         }
 
-        public static BoundingBox3d DoTransform(this ITransform3D transform, BoundingBox3d bbox)
+        public static BoundingBox3d DoTransform(this ITransform3 transform, BoundingBox3d bbox)
         {
             return BoundingBox3d.Union(bbox.GetVertices().Select(v => transform.DoTransform(v)));
         }
 
-        public static Matrix4x4d ToMatrix(this ITransform3D transform)
+        public static Matrix4x4d ToMatrix(this ITransform3 transform)
         {
-            if (transform is Transform3DIdentity)
+            if (transform is Transform3Identity)
             {
                 return Matrix4x4d.Identity;
             }
-            if (transform is Transform3DMatrix)
+            if (transform is Transform3Matrix)
             {
-                return ((Transform3DMatrix)transform).Matrix;
+                return ((Transform3Matrix)transform).Matrix;
             }
             throw new NotSupportedException();
         }

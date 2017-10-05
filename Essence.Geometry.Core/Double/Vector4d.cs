@@ -13,8 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -436,6 +434,16 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
+        #region ITuple4
+
+        public void Get(IOpTuple4 setter)
+        {
+            IOpTuple4_Double _setter = setter.AsOpTupleDouble();
+            _setter.Set(this.X, this.Y, this.Z, this.W);
+        }
+
+        #endregion
+
         #region ITuple4_Double
 
         double ITuple4_Double.X
@@ -471,11 +479,11 @@ namespace Essence.Geometry.Core.Double
         [Pure]
         public double Length
         {
-            get { return (double)Math.Sqrt(this.Length2); }
+            get { return (double)Math.Sqrt(this.LengthSquared); }
         }
 
         [Pure]
-        public double Length2
+        public double LengthSquared
         {
             get { return this.Dot(this); }
         }
@@ -507,113 +515,6 @@ namespace Essence.Geometry.Core.Double
             BuffVector4d v1Lerp = new BuffVector4d(vLerp);
             v1Lerp.Sub(this);
             return v12.Proj(v1Lerp);
-        }
-
-        #endregion
-
-        #region inner classes
-
-        /// <summary>
-        /// Compares unit vectors using their angle.
-        /// <pre><![CDATA[
-        /// ^ normal = direccion.PerpLeft
-        /// |
-        /// | /__
-        /// | \  \  incrementa el angulo
-        /// |     |
-        /// +-----+-----------> direccion
-        /// ]]></pre>
-        /// </summary>
-        public struct AngleComparer : IComparer<Vector4d>, IComparer
-        {
-            public AngleComparer(Vector4d direccion, Vector4d normal)
-            {
-                Contract.Assert(direccion.IsUnit);
-                this.direccion = direccion;
-                this.normal = normal;
-            }
-
-            private readonly Vector4d direccion;
-            private readonly Vector4d normal;
-
-            public int Compare(Vector4d v1, Vector4d v2)
-            {
-                if (v1.IsZero)
-                {
-                    if (v2.IsZero)
-                    {
-                        return 0;
-                    }
-                    return -1; // v2 es mayor.
-                }
-                else if (v2.IsZero)
-                {
-                    return 1; // v1 es mayor.
-                }
-
-                Contract.Assert(v1.IsUnit && v2.IsUnit);
-
-                double nv1 = this.normal.Dot(v1);
-                if (nv1 > 0)
-                {
-                    // v1 esta encima.
-                    double nv2 = this.normal.Dot(v2);
-                    if (nv2 > 0)
-                    {
-                        return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
-                    else if (nv2 < 0)
-                    {
-                        return -1; // v2 es mayor.
-                    }
-                    else
-                    {
-                        return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
-                }
-                else if (nv1 < 0)
-                {
-                    // v1 esta debajo.
-                    double nv2 = this.normal.Dot(v2);
-                    if (nv2 > 0)
-                    {
-                        return 1; // v1 es mayor.
-                    }
-                    else if (nv2 < 0)
-                    {
-                        return this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
-                    else
-                    {
-                        return 1;
-                    }
-                }
-                else // if (nv1 == 0)
-                {
-                    // this.direccion.Dot(v1); // Es +1 o -1
-
-                    // v1 esta alineado.
-                    double nv2 = this.normal.Dot(v2);
-                    if (nv2 > 0)
-                    {
-                        return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
-                    else if (nv2 < 0)
-                    {
-                        return -1;
-                    }
-                    else
-                    {
-                        return -this.direccion.Dot(v1).CompareTo(this.direccion.Dot(v2));
-                    }
-                }
-            }
-
-            int IComparer.Compare(object o1, object o2)
-            {
-                Contract.Requires(o1 is Vector4d && o2 is Vector4d);
-                return this.Compare((Vector4d)o1, (Vector4d)o2);
-            }
         }
 
         #endregion

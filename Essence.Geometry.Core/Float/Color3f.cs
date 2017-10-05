@@ -201,6 +201,16 @@ namespace Essence.Geometry.Core.Float
 
         #endregion
 
+        #region ITuple3
+
+        public void Get(IOpTuple3 setter)
+        {
+            IOpTuple3_Float _setter = setter.AsOpTupleFloat();
+            _setter.Set(this.Red, this.Green, this.Blue);
+        }
+
+        #endregion
+
         #region ITuple3_Float
 
         float ITuple3_Float.X

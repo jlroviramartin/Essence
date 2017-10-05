@@ -16,10 +16,10 @@ using System.Diagnostics.Contracts;
 
 namespace Essence.Geometry.Core
 {
-    public interface IVector3 : IVector<IVector3>
+    public interface IVector3 : IVector<IVector3>, ITuple3
     {
         /// <summary>
-        /// Octant:
+        /// Evaluates the octant of <code>this</code> vector.
         /// <pre><![CDATA[
         ///        ^
         ///    1   |   0

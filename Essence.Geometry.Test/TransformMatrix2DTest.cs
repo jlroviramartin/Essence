@@ -24,7 +24,7 @@ namespace Essence.Geometry
         [TestMethod]
         public void Test1()
         {
-            ITransform2D transform = new Transform2DMatrix(Matrix3x3dUtils.Translate(10, 10));
+            ITransform2 transform = new Transform2Matrix(Matrix3x3dUtils.Translate(10, 10));
 
             {
                 Vector2d v = new Vector2d(5, 5);

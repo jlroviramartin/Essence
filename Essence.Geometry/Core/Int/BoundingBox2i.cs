@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using Essence.Geometry.Core.Integer;
 using Essence.Util;
 
 namespace Essence.Geometry.Core.Int

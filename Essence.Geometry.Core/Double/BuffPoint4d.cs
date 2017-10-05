@@ -19,7 +19,7 @@ using Essence.Util.Math.Double;
 
 namespace Essence.Geometry.Core.Double
 {
-    public struct BuffPoint4d : IPoint4, IOpPoint4, IOpTuple4_Double
+    public struct BuffPoint4d : IOpPoint4, IOpTuple4_Double
     {
         /// <summary>Name of the property X.</summary>
         public const string _X = "X";
@@ -186,6 +186,26 @@ namespace Essence.Geometry.Core.Double
         public bool IsZero
         {
             get { return this.EpsilonEquals(0, 0, 0, 0); }
+        }
+
+        #endregion
+
+        #region ITuple4
+
+        public void Get(IOpTuple4 setter)
+        {
+            IOpTuple4_Double _setter = setter.AsOpTupleDouble();
+            _setter.Set(this.X, this.Y, this.Z, this.W);
+        }
+
+        #endregion
+
+        #region IOpTuple4
+
+        public void Set(ITuple4 tuple)
+        {
+            ITuple4_Double _tuple = tuple.AsTupleDouble();
+            this.Set(_tuple.X, _tuple.Y, _tuple.Z, _tuple.W);
         }
 
         #endregion

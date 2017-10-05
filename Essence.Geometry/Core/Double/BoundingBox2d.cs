@@ -197,9 +197,7 @@ namespace Essence.Geometry.Core.Double
                    || RangeUtils.TouchPoint(this.YMin, this.YMax, p.Y, epsilon);
         }
 
-        /// <summary>
-        ///     Indica si contiene completamente al rectangulo indicado.
-        /// </summary>
+        /// <summary>This method tests if this bounding box completely contains the <code>rec</code> bounding box.</summary>
         /// <param name="rec">Rectangulo.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si lo contiene completamente.</returns>
@@ -209,9 +207,7 @@ namespace Essence.Geometry.Core.Double
                    && RangeUtils.Contains(this.YMin, this.YMax, rec.YMin, rec.YMax, epsilon);
         }
 
-        /// <summary>
-        ///     Indica si contiene completamente al punto indicado.
-        /// </summary>
+        /// <summary>This method tests if this bounding box completely contains the <code>p</code> point.</summary>
         /// <param name="p">Punto.</param>
         /// <param name="epsilon">Epsilon error.</param>
         /// <returns>Indica si lo contiene completamente.</returns>

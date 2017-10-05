@@ -14,7 +14,7 @@
 
 namespace Essence.Geometry.Core.Byte
 {
-    public interface ITuple4_Byte
+    public interface ITuple4_Byte : ITuple4
     {
         byte X { get; }
         byte Y { get; }

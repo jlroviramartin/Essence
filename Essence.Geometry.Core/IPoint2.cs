@@ -16,10 +16,19 @@ using System.Diagnostics.Contracts;
 
 namespace Essence.Geometry.Core
 {
-    public interface IPoint2 : IPoint<IPoint2>
+    public interface IPoint2 : IPoint<IPoint2>, ITuple2
     {
         /// <summary>
-        /// Evaluates the quadrant of <code>this</code> vector.
+        /// Evaluates the quadrant of <code>this</code> point.
+        /// <pre><![CDATA[
+        ///        ^
+        ///    1   |   0
+        ///        |
+        ///  <-----+----->
+        ///        |
+        ///    2   |   3
+        ///        v
+        ///  ]]></pre>
         /// </summary>
         [Pure]
         int Quadrant { get; }

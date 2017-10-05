@@ -14,18 +14,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using Essence.Geometry.Core.Byte;
 using Essence.Geometry.Core.Double;
-using Essence.Geometry.Core.Float;
-using Essence.Geometry.Core.Int;
+using Essence.Geometry.Core.Integer;
 using Essence.Util;
 using Essence.Util.Logs;
 
@@ -255,6 +250,25 @@ namespace Essence.Geometry.Core
             }
         }
 
+        #region Vector2d
+
+        public static Vector2i Round(this Vector2d p)
+        {
+            return new Vector2i((int)Math.Round(p.X), (int)Math.Round(p.Y));
+        }
+
+        public static Vector2i Ceiling(this Vector2d p)
+        {
+            return new Vector2i((int)Math.Ceiling(p.X), (int)Math.Ceiling(p.Y));
+        }
+
+        public static Vector2i Floor(this Vector2d p)
+        {
+            return new Vector2i((int)Math.Floor(p.X), (int)Math.Floor(p.Y));
+        }
+
+        #endregion
+
         #region Point2d
 
         public static Point2i Round(this Point2d p)
@@ -274,7 +288,7 @@ namespace Essence.Geometry.Core
 
         #endregion
 
-        #region IVector2
+        #region IVector2/3/4
 
         public static Vector2d ToVector2d(this IVector2 p)
         {
@@ -314,7 +328,7 @@ namespace Essence.Geometry.Core
 
         #endregion
 
-        #region IPoint2
+        #region IPoint2/3/4
 
         public static Point2d ToPoint2d(this IPoint2 p)
         {
@@ -354,30 +368,25 @@ namespace Essence.Geometry.Core
 
         #endregion
 
-        public static object Convert(Type sourceType, Type destinationType, object source)
+        #region Converters
+
+        public static void Register(Type sourceType, Type destinationtype, Func<object, object> func, string funcDescription, float weight)
         {
-            if (destinationType.IsAssignableFrom(sourceType))
-            {
-                return source;
-            }
-            return EnsureConvert(sourceType, destinationType, source);
+            Register(new Converter(sourceType, destinationtype, func, funcDescription, weight));
         }
 
-        public static void Register(Type sourceType, Type destinationtype, Func<object, object> func)
+        public static void Register(Type[] sourceTypes, Type[] destinationtypes, Func<object, object> func, string funcDescription, float weight)
         {
-            converters.Add(new Converter(sourceType, destinationtype, func));
+            Register(new Converter(sourceTypes, destinationtypes, func, funcDescription, weight));
         }
 
-        public static void Register(Type[] sourceTypes, Type[] destinationtypes, Func<object, object> func)
-        {
-            converters.Add(new Converter(sourceTypes, destinationtypes, func));
-        }
-
-        public static void Register<TSource1, TSource2, TDestination>(Func<TSource1, TDestination> func)
+        public static void Register<TSource1, TSource2, TDestination>(Func<TSource1, TDestination> func, string funcDescription, float weight)
         {
             Register(new[] { typeof(TSource1), typeof(TSource2) },
                      new[] { typeof(TDestination) },
-                     x => func((TSource1)x));
+                     x => func((TSource1)x),
+                     funcDescription,
+                     weight);
         }
 
         public static void RegisterReflectionRecursively(Type type)
@@ -409,19 +418,23 @@ namespace Essence.Geometry.Core
                 //Type sourceType = constructorInfo.GetParameters()[0].ParameterType;
                 //HashSet<Type> destinationTypes = new HashSet<Type>(type.GetInterfaces());
 
-                foreach (ConvertHelperAttribute attr in type.GetCustomAttributes<ConvertHelperAttribute>())
+                foreach (ConvertHelperAttribute attr in type.GetCustomAttributes<ConvertHelperAttribute>(false))
                 {
                     if (attr.SourceType2 != null)
                     {
                         Register(new[] { attr.SourceType1, attr.SourceType2 },
                                  new[] { attr.DestinationType },
-                                 o => constructorInfo.Invoke(new[] { o }));
+                                 o => constructorInfo.Invoke(new[] { o }),
+                                 " [" + type.Name + "]",
+                                 attr.Weight);
                     }
                     else
                     {
                         Register(attr.SourceType1,
                                  attr.DestinationType,
-                                 o => constructorInfo.Invoke(new[] { o }));
+                                 o => constructorInfo.Invoke(new[] { o }),
+                                 " [" + type.Name + "]",
+                                 attr.Weight);
                     }
                 }
 
@@ -436,13 +449,22 @@ namespace Essence.Geometry.Core
             }
         }
 
+        public static object Convert(Type sourceType, Type destinationType, object source)
+        {
+            if (destinationType.IsAssignableFrom(sourceType))
+            {
+                return source;
+            }
+            return SlowConvert(sourceType, destinationType, source);
+        }
+
         public static TD Convert<TS, TD>(TS source)
         {
             if (source is TD)
             {
                 return (TD)(object)source;
             }
-            return (TD)EnsureConvert(typeof(TS), typeof(TD), source);
+            return (TD)SlowConvert(typeof(TS), typeof(TD), source);
         }
 
         public static TD Convert<TD>(object source)
@@ -451,23 +473,38 @@ namespace Essence.Geometry.Core
             {
                 return (TD)source;
             }
-            return (TD)EnsureConvert(source.GetType(), typeof(TD), source);
+            return (TD)SlowConvert(source.GetType(), typeof(TD), source);
         }
+
+        #endregion
 
         #region private
 
         static VectorUtils()
         {
-            RegisterReflectionRecursively(typeof(FloatConvertibles));
-            RegisterReflectionRecursively(typeof(DoubleConvertibles));
-            RegisterReflectionRecursively(typeof(IntConvertibles));
-            RegisterReflectionRecursively(typeof(ByteConvertibles));
+            Converters.Register();
         }
 
-        private static object EnsureConvert(Type sourceType, Type destinationType, object source)
+        private static void Register(Converter converter)
         {
+            int index = converters.BinarySearch(converter, ConverterComparer.INSTANCE);
+            if (index < 0)
+            {
+                index = ~index;
+            }
+            converters.Insert(index, converter);
+        }
+
+        private static object SlowConvert(Type sourceType, Type destinationType, object source)
+        {
+            Dictionary<Type, Converter> dc;
+            if (!convertersCache.TryGetValue(sourceType, out dc))
+            {
+                dc = new Dictionary<Type, Converter>();
+                convertersCache.Add(sourceType, dc);
+            }
             Converter c;
-            if (!convertersCache.TryGetValue(Tuple.Create(sourceType, destinationType), out c))
+            if (!dc.TryGetValue(destinationType, out c))
             {
                 bool found = false;
                 foreach (Converter caux in converters)
@@ -483,37 +520,117 @@ namespace Essence.Geometry.Core
                 {
                     throw new InvalidCastException();
                 }
-                convertersCache.Add(Tuple.Create(sourceType, destinationType), c);
+                dc.Add(destinationType, c);
             }
             return c.Func(source);
         }
 
-        private static readonly Dictionary<Tuple<Type, Type>, Converter> convertersCache = new Dictionary<Tuple<Type, Type>, Converter>();
+        private static readonly Dictionary<Type, Dictionary<Type, Converter>> convertersCache = new Dictionary<Type, Dictionary<Type, Converter>>();
+        //private static readonly Dictionary<Tuple<Type, Type>, Converter> convertersCache = new Dictionary<Tuple<Type, Type>, Converter>();
         private static readonly List<Converter> converters = new List<Converter>();
 
-        private struct Converter
+        #endregion
+
+        #region Inner classes
+
+        private struct Converter : IComparable<Converter>
         {
             public Converter(Func<Type, bool> predicateSourceType,
                              Func<Type, bool> predicateDestinationType,
-                             Func<object, object> func)
+                             Func<object, object> func,
+                             float weight = 0)
             {
                 this.PredicateSourceType = predicateSourceType;
                 this.PredicateDestinationType = predicateDestinationType;
                 this.Func = func;
+                this.weight = weight;
+
+                StringBuilder buff = new StringBuilder();
+                buff.AppendFormat("[ {0:F3} ] ..", this.weight);
+
+                this.str = buff.ToString();
             }
 
-            public Converter(Type[] sourceTypes, Type[] destinationTypes, Func<object, object> func)
+            public Converter(Type[] sourceTypes, Type[] destinationTypes,
+                             Func<object, object> func,
+                             string funcdescription,
+                             float weight = 0)
             {
-                this.PredicateSourceType = ts => sourceTypes.All(x => x.IsAssignableFrom(ts));
-                this.PredicateDestinationType = td => destinationTypes.All(x => td.IsAssignableFrom(x));
+                this.PredicateSourceType = ts =>
+                {
+                    return sourceTypes.All(x => x.IsAssignableFrom(ts));
+                };
+
+                this.PredicateDestinationType = td =>
+                {
+                    return destinationTypes.Any(x => td.IsAssignableFrom(x));
+                };
                 this.Func = func;
+
+                this.weight = weight;
+
+                StringBuilder buff = new StringBuilder();
+                buff.AppendFormat("[ {0:F3} ]", this.weight);
+                buff.Append("[ ");
+                for (int i = 0; i < sourceTypes.Length; i++)
+                {
+                    if (i > 0)
+                    {
+                        buff.Append(", ");
+                    }
+                    buff.Append(sourceTypes[i].Name);
+                }
+                buff.Append(" ]");
+
+                buff.Append(" -> ");
+
+                buff.Append("[ ");
+                for (int i = 0; i < destinationTypes.Length; i++)
+                {
+                    if (i > 0)
+                    {
+                        buff.Append(", ");
+                    }
+                    buff.Append(destinationTypes[i].Name);
+                }
+                buff.Append(" ] ");
+                buff.Append(funcdescription);
+
+                this.str = buff.ToString();
             }
 
-            public Converter(Type sourceType, Type destinationType, Func<object, object> func)
+            public Converter(Type sourceType, Type destinationType,
+                             Func<object, object> func,
+                             string funcdescription,
+                             float weight = 0)
             {
-                this.PredicateSourceType = ts => sourceType.IsAssignableFrom(ts);
-                this.PredicateDestinationType = td => td.IsAssignableFrom(destinationType);
+                this.PredicateSourceType = ts =>
+                {
+                    return sourceType.IsAssignableFrom(ts);
+                };
+                this.PredicateDestinationType = td =>
+                {
+                    return td.IsAssignableFrom(destinationType);
+                };
                 this.Func = func;
+
+                this.weight = weight;
+
+                StringBuilder buff = new StringBuilder();
+                buff.AppendFormat("[ {0:F3} ]", this.weight);
+
+                buff.Append("[ ");
+                buff.Append(sourceType.Name);
+                buff.Append(" ]");
+
+                buff.Append(" -> ");
+
+                buff.Append("[ ");
+                buff.Append(destinationType.Name);
+                buff.Append(" ] ");
+                buff.Append(funcdescription);
+
+                this.str = buff.ToString();
             }
 
             public bool IsValidFor(Type sourceType, Type destinationType)
@@ -524,6 +641,28 @@ namespace Essence.Geometry.Core
             public readonly Func<Type, bool> PredicateSourceType;
             public readonly Func<Type, bool> PredicateDestinationType;
             public readonly Func<object, object> Func;
+            private readonly string str;
+            private readonly float weight;
+
+            public int CompareTo(Converter other)
+            {
+                return this.weight.CompareTo(other.weight);
+            }
+
+            public override string ToString()
+            {
+                return this.str;
+            }
+        }
+
+        private class ConverterComparer : IComparer<Converter>
+        {
+            public static readonly ConverterComparer INSTANCE = new ConverterComparer();
+
+            public int Compare(Converter x, Converter y)
+            {
+                return x.CompareTo(y);
+            }
         }
 
         private class LogHelper
@@ -531,13 +670,5 @@ namespace Essence.Geometry.Core
         }
 
         #endregion
-    }
-
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class ConvertHelperAttribute : Attribute
-    {
-        public Type SourceType1 { get; set; }
-        public Type SourceType2 { get; set; }
-        public Type DestinationType { get; set; }
     }
 }

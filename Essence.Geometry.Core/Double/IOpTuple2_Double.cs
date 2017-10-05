@@ -14,11 +14,11 @@
 
 namespace Essence.Geometry.Core.Double
 {
-    public interface IOpTuple2_Double : ITuple2_Double
+    public interface IOpTuple2_Double : IOpTuple2, ITuple2_Double
     {
         void Set(double x, double y);
 
-        double X { set; }
-        double Y { set; }
+        new double X { set; }
+        new double Y { set; }
     }
 }

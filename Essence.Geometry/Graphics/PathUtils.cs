@@ -13,20 +13,19 @@
 // limitations under the License.
 
 using System.Collections.Generic;
-using Essence.Geometry.Core.Double;
+using Essence.Geometry.Core;
 
 namespace Essence.Geometry.Graphics
 {
     public static class PathUtils
     {
-        private static IEnumerable<Point2d> GetPoints(IPathIterator2D path)
+        public static IEnumerable<TPoint> GetPoints<TPoint>(IPathIterator2 path)
+            where TPoint : IPoint2
         {
-            List<Point2d> points = new List<Point2d>();
+            List<TPoint> points = new List<TPoint>();
 
-            CoordinateSetter2d setter = new CoordinateSetter2d();
-
-            Point2d pFirst;
-            Point2d p0;
+            TPoint pFirst;
+            TPoint p0;
             while (path.Next())
             {
                 SegmentType segmentType = path.GetType();
@@ -34,8 +33,7 @@ namespace Essence.Geometry.Graphics
                 {
                     case SegmentType.MoveTo:
                     {
-                        path.GetP1(setter);
-                        p0 = setter.GetPoint();
+                        p0 = VectorUtils.Convert<TPoint>(path.GetP1());
                         points.Add(p0);
 
                         pFirst = p0;
@@ -43,8 +41,7 @@ namespace Essence.Geometry.Graphics
                     }
                     case SegmentType.LineTo:
                     {
-                        path.GetP1(setter);
-                        Point2d p1 = setter.GetPoint();
+                        TPoint p1 = VectorUtils.Convert<TPoint>(path.GetP1());
                         points.Add(p1);
 
                         p0 = p1;
@@ -52,12 +49,10 @@ namespace Essence.Geometry.Graphics
                     }
                     case SegmentType.CubicTo:
                     {
-                        path.GetP1(setter);
-                        Point2d p1 = setter.GetPoint();
+                        TPoint p1 = VectorUtils.Convert<TPoint>(path.GetP1());
                         points.Add(p1);
 
-                        path.GetP2(setter);
-                        Point2d p2 = setter.GetPoint();
+                        TPoint p2 = VectorUtils.Convert<TPoint>(path.GetP2());
                         points.Add(p2);
 
                         p0 = p1;
@@ -65,16 +60,13 @@ namespace Essence.Geometry.Graphics
                     }
                     case SegmentType.CuadTo:
                     {
-                        path.GetP1(setter);
-                        Point2d p1 = setter.GetPoint();
+                        TPoint p1 = VectorUtils.Convert<TPoint>(path.GetP1());
                         points.Add(p1);
 
-                        path.GetP2(setter);
-                        Point2d p2 = setter.GetPoint();
+                        TPoint p2 = VectorUtils.Convert<TPoint>(path.GetP2());
                         points.Add(p2);
 
-                        path.GetP2(setter);
-                        Point2d p3 = setter.GetPoint();
+                        TPoint p3 = VectorUtils.Convert<TPoint>(path.GetP3());
                         points.Add(p3);
 
                         p0 = p1;

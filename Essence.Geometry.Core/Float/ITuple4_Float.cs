@@ -14,7 +14,7 @@
 
 namespace Essence.Geometry.Core.Float
 {
-    public interface ITuple4_Float
+    public interface ITuple4_Float : ITuple4
     {
         float X { get; }
         float Y { get; }

@@ -5,12 +5,12 @@ namespace Essence.View.Models
 {
     public interface IRenderContext2D
     {
-        Transform2D ModelView { get; }
+        Transform2 ModelView { get; }
 
         BoundingBox2d BoundingBoxInView { get; }
         BoundingBox2d BoundingBoxInModel { get; }
 
-        void Transform(Transform2D transform);
+        void Transform(Transform2 transform);
 
         void PushAttrib(int attribs);
         void PopAttrib();

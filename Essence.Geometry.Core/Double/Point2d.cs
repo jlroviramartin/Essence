@@ -13,8 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -439,6 +437,16 @@ namespace Essence.Geometry.Core.Double
         public bool IsZero
         {
             get { return this.EpsilonEquals(0, 0); }
+        }
+
+        #endregion
+
+        #region ITuple2
+
+        public void Get(IOpTuple2 setter)
+        {
+            IOpTuple2_Double _setter = setter.AsOpTupleDouble();
+            _setter.Set(this.X, this.Y);
         }
 
         #endregion

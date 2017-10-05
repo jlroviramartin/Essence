@@ -35,7 +35,7 @@ namespace Essence.Geometry.Core
         /// Evaluates the squared length of <code>this</code> vector.
         /// </summary>
         [Pure]
-        double Length2 { get; }
+        double LengthSquared { get; }
 
         /// <summary>
         /// Evaluates the L1 (Manhattan) length of <code>this</code> vector.

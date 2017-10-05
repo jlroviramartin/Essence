@@ -13,8 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -362,6 +360,16 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
+        #region ITuple3
+
+        public void Get(IOpTuple3 setter)
+        {
+            IOpTuple3_Double _setter = setter.AsOpTupleDouble();
+            _setter.Set(this.X, this.Y, this.Z);
+        }
+
+        #endregion
+
         #region ITuple3_Double
 
         double ITuple3_Double.X
@@ -395,7 +403,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IPoint4
+        #region IPoint3
 
         [Pure]
         public int Octant

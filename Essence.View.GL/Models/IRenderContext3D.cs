@@ -11,12 +11,12 @@ namespace Essence.View.Models
     {
         IServiceProvider ServiceProvider { get; }
 
-        ITransform3D ModelView { get; }
+        ITransform3 ModelView { get; }
 
         BoundingBox3d BoundingBoxInView { get; }
         BoundingBox3d BoundingBoxInModel { get; }
 
-        void Transform(ITransform3D transform);
+        void Transform(ITransform3 transform);
 
         void PushAttributes(ulong attribs);
 
@@ -62,7 +62,7 @@ namespace Essence.View.Models
             switch (((RenderAttrib)attrib) & RenderAttrib.Mask)
             {
                 case RenderAttrib.ModelView:
-                    this.modelView = (ITransform3D)this.PopValue();
+                    this.modelView = (ITransform3)this.PopValue();
                     return true;
 
                 case RenderAttrib.BoundingBoxInView:
@@ -103,7 +103,7 @@ namespace Essence.View.Models
 
         #region private
 
-        private ITransform3D modelView;
+        private ITransform3 modelView;
         private BoundingBox3d boundingBoxInView;
         private BoundingBox3d? boundingBoxInModel;
 
@@ -115,7 +115,7 @@ namespace Essence.View.Models
 
         public IServiceProvider ServiceProvider { get; set; }
 
-        public ITransform3D ModelView
+        public ITransform3 ModelView
         {
             get { return this.modelView; }
         }
@@ -137,9 +137,9 @@ namespace Essence.View.Models
             }
         }
 
-        public void Transform(ITransform3D transform)
+        public void Transform(ITransform3 transform)
         {
-            ITransform3D oldValue = this.modelView;
+            ITransform3 oldValue = this.modelView;
             this.modelView = this.modelView.Concat(transform);
             this.OnPropertyChanged(MODEL_VIEW, oldValue, this.modelView);
         }

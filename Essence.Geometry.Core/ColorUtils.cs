@@ -27,7 +27,7 @@ namespace Essence.Geometry.Core
 
         public static byte ToChannelByte(float c)
         {
-            return (byte)MathUtils.Clamp(c * byte.MaxValue, 0, 255);
+            return (byte)MathUtils.Clamp(c * byte.MaxValue, 0, byte.MaxValue);
         }
 
         #region IColor3
@@ -64,11 +64,6 @@ namespace Essence.Geometry.Core
 
         #region IColor4
 
-        /*public static Color3f ToColor3f(this IColor4 c)
-        {
-            return new Color3f(c);
-        }*/
-
         public static Color4f ToColor4f(this IColor4 c)
         {
             if (c is Color4f)
@@ -77,11 +72,6 @@ namespace Essence.Geometry.Core
             }
             return new Color4f(c);
         }
-
-        /*public static Color3b ToColor3b(this IColor4 c)
-        {
-            return new Color3b(c);
-        }*/
 
         public static Color4b ToColor4b(this IColor4 c)
         {

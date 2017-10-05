@@ -217,6 +217,16 @@ namespace Essence.Geometry.Core.Byte
 
         #endregion
 
+        #region ITuple4
+
+        public void Get(IOpTuple4 setter)
+        {
+            IOpTuple4_Byte _setter = setter.AsOpTupleByte();
+            _setter.Set(this.Red, this.Green, this.Blue, this.Alpha);
+        }
+
+        #endregion
+
         #region ITuple4_Byte
 
         byte ITuple4_Byte.X

@@ -17,7 +17,7 @@ using Essence.Util.Math.Double;
 
 namespace Essence.Geometry.Core.Double
 {
-    public struct BuffVector4d : IVector4, IOpVector4, IOpTuple4_Double
+    public struct BuffVector4d : IOpVector4, IOpTuple4_Double
     {
         public BuffVector4d(IVector4 other)
         {
@@ -82,6 +82,26 @@ namespace Essence.Geometry.Core.Double
         public bool IsZero
         {
             get { return this.EpsilonEquals(0, 0, 0, 0); }
+        }
+
+        #endregion
+
+        #region ITuple4
+
+        public void Get(IOpTuple4 setter)
+        {
+            IOpTuple4_Double _setter = setter.AsOpTupleDouble();
+            _setter.Set(this.X, this.Y, this.Z, this.W);
+        }
+
+        #endregion
+
+        #region IOpTuple4
+
+        public void Set(ITuple4 tuple)
+        {
+            ITuple4_Double _tuple = tuple.AsTupleDouble();
+            this.Set(_tuple.X, _tuple.Y, _tuple.Z, _tuple.W);
         }
 
         #endregion
@@ -151,10 +171,10 @@ namespace Essence.Geometry.Core.Double
 
         public double Length
         {
-            get { return Math.Sqrt(this.Length2); }
+            get { return Math.Sqrt(this.LengthSquared); }
         }
 
-        public double Length2
+        public double LengthSquared
         {
             get { return this.Dot(this); }
         }

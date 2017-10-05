@@ -16,10 +16,19 @@ using System.Diagnostics.Contracts;
 
 namespace Essence.Geometry.Core
 {
-    public interface IVector2 : IVector<IVector2>
+    public interface IVector2 : IVector<IVector2>, ITuple2
     {
         /// <summary>
         /// Evaluates the quadrant of <code>this</code> vector.
+        /// <pre><![CDATA[
+        ///        ^
+        ///    1   |   0
+        ///        |
+        ///  <-----+----->
+        ///        |
+        ///    2   |   3
+        ///        v
+        ///  ]]></pre>
         /// </summary>
         [Pure]
         int Quadrant { get; }

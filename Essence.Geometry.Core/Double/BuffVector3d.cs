@@ -17,7 +17,7 @@ using Essence.Util.Math.Double;
 
 namespace Essence.Geometry.Core.Double
 {
-    public struct BuffVector3d : IVector3, IOpVector3, IOpTuple3_Double
+    public struct BuffVector3d : IOpVector3, IOpTuple3_Double
     {
         public BuffVector3d(IVector3 other)
         {
@@ -101,6 +101,26 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
+        #region ITuple3
+
+        public void Get(IOpTuple3 setter)
+        {
+            IOpTuple3_Double _setter = setter.AsOpTupleDouble();
+            _setter.Set(this.X, this.Y, this.Z);
+        }
+
+        #endregion
+
+        #region IOpTuple3
+
+        public void Set(ITuple3 tuple)
+        {
+            ITuple3_Double _tuple = tuple.AsTupleDouble();
+            this.Set(_tuple.X, _tuple.Y, _tuple.Z);
+        }
+
+        #endregion
+
         #region ITuple3_Double / IOpTuple3_Double
 
         public void Set(double x, double y, double z)
@@ -139,10 +159,10 @@ namespace Essence.Geometry.Core.Double
 
         public double Length
         {
-            get { return Math.Sqrt(this.Length2); }
+            get { return Math.Sqrt(this.LengthSquared); }
         }
 
-        public double Length2
+        public double LengthSquared
         {
             get { return this.Dot(this); }
         }

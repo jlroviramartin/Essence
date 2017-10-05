@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,11 +47,19 @@
     <Compile Include="Axis.cs" />
     <Compile Include="Byte\Color3b.cs" />
     <Compile Include="Byte\Color4b.cs" />
-    <Compile Include="Byte\ByteConvertibles.cs" />
+    <Compile Include="Byte\ByteConverters.cs" />
+    <Compile Include="Byte\IOpTuple4_Byte.cs" />
+    <Compile Include="Byte\IOpTuple3_Byte.cs" />
+    <Compile Include="Byte\IOpTuple2_Byte.cs" />
     <Compile Include="Byte\ITuple2_Byte.cs" />
     <Compile Include="Byte\ITuple3_Byte.cs" />
     <Compile Include="Byte\ITuple4_Byte.cs" />
     <Compile Include="ColorUtils.cs" />
+    <Compile Include="Converters.cs" />
+    <Compile Include="ConvertHelperAttribute.cs" />
+    <Compile Include="Double\AngleComparer2.cs" />
+    <Compile Include="Double\AngleComparer3.cs" />
+    <Compile Include="Double\AngleComparer4.cs" />
     <Compile Include="Double\BuffPoint4d.cs" />
     <Compile Include="Double\BuffPoint3d.cs" />
     <Compile Include="Double\BuffPoint2d.cs" />
@@ -61,7 +69,7 @@
     <Compile Include="Double\CoordComparer2.cs" />
     <Compile Include="Double\CoordComparer3.cs" />
     <Compile Include="Double\CoordComparer4.cs" />
-    <Compile Include="Double\DoubleConvertibles.cs" />
+    <Compile Include="Double\DoubleConverters.cs" />
     <Compile Include="Double\IOpTuple4_Double.cs" />
     <Compile Include="Double\IOpTuple3_Double.cs" />
     <Compile Include="Double\IOpTuple2_Double.cs" />
@@ -87,21 +95,33 @@
     <Compile Include="Double\Vector4d.cs" />
     <Compile Include="Float\Color3f.cs" />
     <Compile Include="Float\Color4f.cs" />
-    <Compile Include="Float\FloatConvertibles.cs" />
+    <Compile Include="Float\FloatConverters.cs" />
+    <Compile Include="Float\IOpTuple4_Float.cs" />
+    <Compile Include="Float\IOpTuple3_Float.cs" />
+    <Compile Include="Float\IOpTuple2_Float.cs" />
     <Compile Include="Float\ITuple2_Float.cs" />
     <Compile Include="Float\ITuple4_Float.cs" />
     <Compile Include="Float\ITuple3_Float.cs" />
     <Compile Include="IColor.cs" />
     <Compile Include="IColor3.cs" />
     <Compile Include="IColor4.cs" />
-    <Compile Include="IConvertible.cs" />
-    <Compile Include="Int\IntConvertibles.cs" />
-    <Compile Include="Int\ITuple2_Int.cs" />
-    <Compile Include="Int\Point2i.cs" />
-    <Compile Include="Int\Vector2i.cs" />
+    <Compile Include="Integer\IntegerConverters.cs" />
+    <Compile Include="Integer\IOpTuple3_Integer.cs" />
+    <Compile Include="Integer\IOpTuple4_Integer.cs" />
+    <Compile Include="Integer\IOpTuple2_Integer.cs" />
+    <Compile Include="Integer\ITuple4_Integer.cs" />
+    <Compile Include="Integer\ITuple3_Integer.cs" />
+    <Compile Include="Integer\ITuple2_Integer.cs" />
+    <Compile Include="Integer\Point2i.cs" />
+    <Compile Include="Integer\Vector2i.cs" />
+    <Compile Include="IOpColor3.cs" />
+    <Compile Include="IOpColor4.cs" />
     <Compile Include="IOpPoint4.cs" />
     <Compile Include="IOpPoint3.cs" />
     <Compile Include="IOpPoint2.cs" />
+    <Compile Include="IOpTuple4.cs" />
+    <Compile Include="IOpTuple3.cs" />
+    <Compile Include="IOpTuple2.cs" />
     <Compile Include="IOpVector4.cs" />
     <Compile Include="IOpVector2.cs" />
     <Compile Include="IOpVector3.cs" />
@@ -110,6 +130,9 @@
     <Compile Include="IPoint3.cs" />
     <Compile Include="IPoint4.cs" />
     <Compile Include="ITuple.cs" />
+    <Compile Include="ITuple4.cs" />
+    <Compile Include="ITuple3.cs" />
+    <Compile Include="ITuple2.cs" />
     <Compile Include="IVector.cs" />
     <Compile Include="IVector2.cs" />
     <Compile Include="IVector3.cs" />

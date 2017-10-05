@@ -14,7 +14,7 @@
 
 namespace Essence.Geometry.Core
 {
-    public interface IColor3 : IColor<IColor3>
+    public interface IColor3 : IColor<IColor3>, ITuple3
     {
     }
 }
