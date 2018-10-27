@@ -16,6 +16,7 @@
 
 #endregion
 
+#if !NETSTANDARD
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System;
@@ -120,3 +121,4 @@ namespace Essence.Maths
         }
     }
 }
+#endif

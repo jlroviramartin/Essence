@@ -14,9 +14,9 @@
 
 using System.Diagnostics.Contracts;
 using Essence.Geometry.Core.Double;
+using Essence.Maths;
 using Essence.Maths.Double;
 using Essence.Util.Math.Double;
-using org.apache.commons.math3.analysis.integration;
 using SysMath = System.Math;
 using UnaryFunction = System.Func<double, double>;
 
@@ -63,8 +63,7 @@ namespace Essence.Geometry.Curves
         {
             Contract.Assert(tInSegment0 <= tInSegment1);
 
-            RombergIntegrator iintegral = new RombergIntegrator();
-            return iintegral.integrate(IntegralMaxEval, new DelegateUnivariateFunction(t => this.GetSpeed(index, t)), tInSegment0, tInSegment1);
+            return Integrator.Integrate(t => this.GetSpeed(index, t), tInSegment0, tInSegment1, Integrator.Type.RombergIntegrator, IntegralMaxEval);
         }
 
         protected virtual double GetSpeed(int index, double tInSegment)

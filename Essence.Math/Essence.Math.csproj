@@ -2,7 +2,7 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F63167B4-F34F-4096-92E4-5D6F7889A43E}</ProjectGuid>
@@ -14,23 +14,23 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <OutputPath>..\bin\$(Configuration)</OutputPath>
+    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
+    <BaseIntermediateOutputPath>$(OutputPath)\out\$(AssemblyName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(OutputPath)\Int\$(AssemblyName)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -40,15 +40,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="commons-math3-3.6.1">
-      <HintPath>..\Lib\commons-math3-3.6.1.dll</HintPath>
-    </Reference>
-    <Reference Include="IKVM.OpenJDK.Core">
-      <HintPath>..\Lib\IKVM.OpenJDK.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="IKVM.Runtime">
-      <HintPath>..\Lib\IKVM.Runtime.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -78,7 +69,9 @@
     <Compile Include="Double\Derivative.cs" />
     <Compile Include="Double\Transform1.cs" />
     <Compile Include="Double\DoubleVecMath.cs" />
+    <Compile Include="Integrator.cs" />
     <Compile Include="Int\MathUtils.cs" />
+    <Compile Include="Solver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Double\VecMath.cs" />
@@ -93,6 +86,10 @@
     <ProjectReference Include="..\Essence.Util\Essence.Util.csproj">
       <Project>{8ef57341-1971-4217-baf9-2aa8993e5285}</Project>
       <Name>Essence.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\org.apache.commons.math3_3.6.1\org.apache.commons.math3_3.6.1.csproj">
+      <Project>{dff459dc-5096-4dfd-ac21-d23d39a422b5}</Project>
+      <Name>org.apache.commons.math3_3.6.1</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

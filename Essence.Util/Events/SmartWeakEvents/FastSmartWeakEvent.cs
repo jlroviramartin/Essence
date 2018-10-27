@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if !NETSTANDARD
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -297,3 +298,4 @@ namespace Essence.Util.Events.SmartWeakEvents
         }
     }
 }
+#endif

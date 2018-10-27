@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using Essence.Maths.Double;
 using Essence.Util.Math.Double;
-using java.lang;
 
 namespace Essence.Geometry.Curves
 {
@@ -61,7 +61,7 @@ namespace Essence.Geometry.Curves
                     }
                     return this.poly3;
                 default:
-                    throw new IndexOutOfBoundsException();
+                    throw new IndexOutOfRangeException();
             }
         }
 

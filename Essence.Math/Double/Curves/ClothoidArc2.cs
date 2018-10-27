@@ -17,10 +17,9 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using Essence.Util.Math.Double;
-using org.apache.commons.math3.exception;
-using org.apache.commons.math3.analysis.solvers;
 using SysMath = System.Math;
 
 namespace Essence.Maths.Double.Curves
@@ -256,19 +255,18 @@ namespace Essence.Maths.Double.Curves
                 return a * a * SysMath.PI * (fc10 * fc10 + fs10 * fs10) - d * d;
             };
 
-            //UnivariateSolver solver = new BisectionSolver(DEFAULT_ABSOLUTE_ACCURACY);
-            //UnivariateSolver solver = new SecantSolver(DEFAULT_ABSOLUTE_ACCURACY);
-            UnivariateSolver solver = new BrentSolver(DEFAULT_ABSOLUTE_ACCURACY);
             int maxEval = 50; // 30
 
             try
             {
-                double v = solver.solve(maxEval, new DelegateUnivariateFunction(f), 0, SysMath.Min(SysMath.Abs(r0), SysMath.Abs(r1)) * ClothoUtils.MAX_L);
+                double min = 0;
+                double max = SysMath.Min(SysMath.Abs(r0), SysMath.Abs(r1)) * ClothoUtils.MAX_L;
+                double v = Solver.Solve(f, min, max, Solver.Type.BrentSolver, DEFAULT_ABSOLUTE_ACCURACY, maxEval);
                 return v;
             }
-            catch (TooManyEvaluationsException e)
+            catch (Exception e)
             {
-                Console.WriteLine(e);
+                Debug.WriteLine(e);
                 throw;
             }
         }

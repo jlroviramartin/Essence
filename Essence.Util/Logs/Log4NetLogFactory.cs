@@ -14,6 +14,9 @@
 
 using System;
 using System.IO;
+using System.Reflection;
+using log4net;
+using log4net.Repository;
 
 namespace Essence.Util.Logs
 {
@@ -62,7 +65,8 @@ namespace Essence.Util.Logs
             {
                 // Carga el fichero.
                 FileStream fs = File.Open(DEFAULT_LOG4NET_PATH, FileMode.Open);
-                log4net.Config.XmlConfigurator.Configure(fs);
+                ILoggerRepository logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+                log4net.Config.XmlConfigurator.Configure(logRepository, fs);
             }
             catch (Exception)
             {
@@ -78,7 +82,8 @@ namespace Essence.Util.Logs
             try
             {
                 // Carga la configuracion.
-                log4net.Config.XmlConfigurator.Configure();
+                ILoggerRepository logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+                log4net.Config.XmlConfigurator.Configure(logRepository);
             }
             catch (Exception)
             {

@@ -30,7 +30,7 @@ namespace Essence.Maths.Double.Curves
 
         private readonly Func<double, double> func;
 
-        public double value(double d)
+        public double Value(double d)
         {
             return this.func(d);
         }

@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
 using Essence.Geometry.Core.Double;
 using Essence.Maths.Double;
 using Essence.Util.Math.Double;
-using java.lang;
 
 namespace Essence.Geometry.Curves
 {
@@ -228,7 +228,7 @@ namespace Essence.Geometry.Curves
         {
             double t01_0 = this.GetT01(t0);
             double t01_1 = this.GetT01(t1);
-            return Math.abs(t01_1 - t01_0) * this.TotalLength;
+            return Math.Abs(t01_1 - t01_0) * this.TotalLength;
         }
 
         #endregion

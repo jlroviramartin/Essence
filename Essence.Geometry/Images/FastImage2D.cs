@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿#if !NETSTANDARD
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -231,3 +232,4 @@ namespace Essence.Geometry.Images
         }
 #endif
 }
+#endif

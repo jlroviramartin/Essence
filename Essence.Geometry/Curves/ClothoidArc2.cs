@@ -13,14 +13,15 @@
 // limitations under the License.
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using Essence.Geometry.Core.Double;
 using Essence.Util.Math.Double;
-using org.apache.commons.math3.exception;
-using org.apache.commons.math3.analysis.solvers;
 using Essence.Geometry.Core;
 using Essence.Maths.Double;
+using Solver = Essence.Maths.Solver;
 using SysMath = System.Math;
+using Transform2 = Essence.Geometry.Core.Transform2;
 
 namespace Essence.Geometry.Curves
 {
@@ -250,19 +251,18 @@ namespace Essence.Geometry.Curves
                 return a * a * SysMath.PI * (fc10 * fc10 + fs10 * fs10) - d * d;
             };
 
-            //UnivariateSolver solver = new BisectionSolver(DEFAULT_ABSOLUTE_ACCURACY);
-            //UnivariateSolver solver = new SecantSolver(DEFAULT_ABSOLUTE_ACCURACY);
-            UnivariateSolver solver = new BrentSolver(DEFAULT_ABSOLUTE_ACCURACY);
             int maxEval = 50; // 30
 
             try
             {
-                double v = solver.solve(maxEval, new DelegateUnivariateFunction(f), 0, SysMath.Min(SysMath.Abs(r0), SysMath.Abs(r1)) * ClothoUtils.MAX_L);
+                double min = 0;
+                double max = SysMath.Min(SysMath.Abs(r0), SysMath.Abs(r1)) * ClothoUtils.MAX_L;
+                double v = Solver.Solve(f, min, max, Solver.Type.BrentSolver, DEFAULT_ABSOLUTE_ACCURACY, maxEval);
                 return v;
             }
-            catch (TooManyEvaluationsException e)
+            catch (Exception e)
             {
-                Console.WriteLine(e);
+                Debug.WriteLine(e);
                 throw;
             }
         }

@@ -19,7 +19,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using Essence.Util.Math.Double;
-using org.apache.commons.math3.analysis.integration;
 using SysMath = System.Math;
 using UnaryFunction = System.Func<double, double>;
 
@@ -135,8 +134,7 @@ namespace Essence.Maths.Double.Curves
                 t1 = this.TMax;
             }
 
-            RombergIntegrator iintegral = new RombergIntegrator();
-            return iintegral.integrate(IntegralMaxEval, new DelegateUnivariateFunction(this.GetSpeed), t0, t1);
+            return Integrator.Integrate(this.GetSpeed, t0, t1, Integrator.Type.RombergIntegrator, IntegralMaxEval);
         }
 
         public virtual Vec2d GetLeftNormal(double t)

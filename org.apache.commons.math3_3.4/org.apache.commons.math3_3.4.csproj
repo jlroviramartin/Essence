@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{59AD7BAB-545B-4834-A435-6C64F48379EE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>org.apache.commons.math3</RootNamespace>
+    <AssemblyName>org.apache.commons.math3_3.4</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <Prefer32Bit>false</Prefer32Bit>
+    <OutputPath>..\bin\$(Configuration)</OutputPath>
+    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
+    <BaseIntermediateOutputPath>$(OutputPath)\out\$(AssemblyName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(OutputPath)\Int\$(AssemblyName)\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="analysis\DifferentiableUnivariateFunction.cs" />
+    <Compile Include="exception\ConvergenceException.cs" />
+    <Compile Include="exception\DimensionMismatchException.cs" />
+    <Compile Include="exception\MathArithmeticException.cs" />
+    <Compile Include="exception\MathIllegalArgumentException.cs" />
+    <Compile Include="exception\MathIllegalNumberException.cs" />
+    <Compile Include="exception\MathIllegalStateException.cs" />
+    <Compile Include="exception\MathInternalError.cs" />
+    <Compile Include="exception\MaxCountExceededException.cs" />
+    <Compile Include="exception\NoBracketingException.cs" />
+    <Compile Include="exception\NoDataException.cs" />
+    <Compile Include="exception\NonMonotonicSequenceException.cs" />
+    <Compile Include="exception\NotPositiveException.cs" />
+    <Compile Include="exception\NotStrictlyPositiveException.cs" />
+    <Compile Include="exception\NumberIsTooLargeException.cs" />
+    <Compile Include="exception\NumberIsTooSmallException.cs" />
+    <Compile Include="exception\TooManyEvaluationsException.cs" />
+    <Compile Include="analysis\integration\BaseAbstractUnivariateIntegrator.cs" />
+    <Compile Include="analysis\integration\gauss\BaseRuleFactory.cs" />
+    <Compile Include="analysis\integration\gauss\GaussIntegrator.cs" />
+    <Compile Include="analysis\integration\gauss\GaussIntegratorFactory.cs" />
+    <Compile Include="analysis\integration\gauss\HermiteRuleFactory.cs" />
+    <Compile Include="analysis\integration\gauss\LegendreRuleFactory.cs" />
+    <Compile Include="analysis\integration\gauss\SymmetricGaussIntegrator.cs" />
+    <Compile Include="analysis\integration\IterativeLegendreGaussIntegrator.cs" />
+    <Compile Include="analysis\integration\LegendreGaussIntegrator.cs" />
+    <Compile Include="analysis\integration\MidPointIntegrator.cs" />
+    <Compile Include="analysis\integration\RombergIntegrator.cs" />
+    <Compile Include="analysis\integration\SimpsonIntegrator.cs" />
+    <Compile Include="analysis\integration\TrapezoidIntegrator.cs" />
+    <Compile Include="analysis\integration\UnivariateIntegrator.cs" />
+    <Compile Include="analysis\solvers\AbstractDifferentiableUnivariateSolver.cs" />
+    <Compile Include="analysis\solvers\AbstractUnivariateSolver.cs" />
+    <Compile Include="analysis\solvers\AllowedSolution.cs" />
+    <Compile Include="analysis\solvers\BaseAbstractUnivariateSolver.cs" />
+    <Compile Include="analysis\solvers\BaseSecantSolver.cs" />
+    <Compile Include="analysis\solvers\BaseUnivariateSolver.cs" />
+    <Compile Include="analysis\solvers\BisectionSolver.cs" />
+    <Compile Include="analysis\solvers\BracketedUnivariateSolver.cs" />
+    <Compile Include="analysis\solvers\BracketingNthOrderBrentSolver.cs" />
+    <Compile Include="analysis\solvers\BrentSolver.cs" />
+    <Compile Include="analysis\solvers\DifferentiableUnivariateSolver.cs" />
+    <Compile Include="analysis\solvers\IllinoisSolver.cs" />
+    <Compile Include="analysis\solvers\MullerSolver.cs" />
+    <Compile Include="analysis\solvers\MullerSolver2.cs" />
+    <Compile Include="analysis\solvers\NewtonSolver.cs" />
+    <Compile Include="analysis\solvers\PegasusSolver.cs" />
+    <Compile Include="analysis\solvers\RegulaFalsiSolver.cs" />
+    <Compile Include="analysis\solvers\RiddersSolver.cs" />
+    <Compile Include="analysis\solvers\SecantSolver.cs" />
+    <Compile Include="analysis\solvers\UnivariateSolver.cs" />
+    <Compile Include="analysis\solvers\UnivariateSolverUtils.cs" />
+    <Compile Include="analysis\UnivariateFunction.cs" />
+    <Compile Include="analysis\util\Incrementor.cs" />
+    <Compile Include="analysis\util\MathArrays.cs" />
+    <Compile Include="analysis\util\MyUtils.cs" />
+    <Compile Include="MathUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

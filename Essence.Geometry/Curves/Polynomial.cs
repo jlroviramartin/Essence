@@ -13,9 +13,9 @@
 // limitations under the License.
 
 using System;
+using System.Text;
 using Essence.Util.Math;
 using Essence.Util.Math.Double;
-using java.lang;
 using Exception = System.Exception;
 using Math = System.Math;
 
@@ -263,7 +263,7 @@ namespace Essence.Geometry.Curves
             }
             else
             {
-                StringBuffer s = new StringBuffer();
+                StringBuilder s = new StringBuilder();
 
                 bool first = true;
                 for (int i = 0; i < this.Degree + 1; i++)
@@ -272,24 +272,24 @@ namespace Essence.Geometry.Curves
                     {
                         if (!first)
                         {
-                            s.append(" + ");
+                            s.Append(" + ");
                         }
                         first = false;
 
-                        s.append(this.coefficients[i].ToString(format, provider));
+                        s.Append(this.coefficients[i].ToString(format, provider));
 
                         if (i == 1)
                         {
-                            s.append("x");
+                            s.Append("x");
                         }
                         else
                         {
-                            s.append("x^").append(i.ToString(format, provider));
+                            s.Append("x^").Append(i.ToString(format, provider));
                         }
                     }
                 }
 
-                return s.toString();
+                return s.ToString();
             }
         }
 

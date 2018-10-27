@@ -13,8 +13,8 @@
 // limitations under the License.
 
 using System.Diagnostics.Contracts;
+using Essence.Maths;
 using Essence.Maths.Double;
-using org.apache.commons.math3.analysis.integration;
 using UnaryFunction = System.Func<double, double>;
 
 namespace Essence.Geometry.Curves
@@ -99,8 +99,7 @@ namespace Essence.Geometry.Curves
                 t1 = this.TMax;
             }
 
-            RombergIntegrator iintegral = new RombergIntegrator();
-            return iintegral.integrate(IntegralMaxEval, new DelegateUnivariateFunction(this.GetSpeed), t0, t1);
+            return Integrator.Integrate(this.GetSpeed, t0, t1, Integrator.Type.RombergIntegrator, IntegralMaxEval);
         }
 
         public virtual double GetSpeed(double t)

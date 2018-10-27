@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essence.Math", "Essence.Math.csproj", "{F63167B4-F34F-4096-92E4-5D6F7889A43E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essence.Math.Test", "..\Essence.Math.Test\Essence.Math.Test.csproj", "{666985B8-D655-41D5-BF61-0714A390C38C}"
@@ -12,12 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "org.apache.commons.math3", "..\org.apache.commons.math3\org.apache.commons.math3.csproj", "{DFF459DC-5096-4DFD-AC21-D23D39A422B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "org.apache.commons.math3_3.6.1", "..\org.apache.commons.math3_3.6.1\org.apache.commons.math3_3.6.1.csproj", "{DFF459DC-5096-4DFD-AC21-D23D39A422B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essence.Util", "..\Essence.Util\Essence.Util.csproj", "{8EF57341-1971-4217-BAF9-2AA8993E5285}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Essence.Math.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -52,13 +53,33 @@ Global
 		{DFF459DC-5096-4DFD-AC21-D23D39A422B5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{DFF459DC-5096-4DFD-AC21-D23D39A422B5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{DFF459DC-5096-4DFD-AC21-D23D39A422B5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DFF459DC-5096-4DFD-AC21-D23D39A422B5}.Debug|x86.Build.0 = Debug|Any CPU
 		{DFF459DC-5096-4DFD-AC21-D23D39A422B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFF459DC-5096-4DFD-AC21-D23D39A422B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFF459DC-5096-4DFD-AC21-D23D39A422B5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{DFF459DC-5096-4DFD-AC21-D23D39A422B5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DFF459DC-5096-4DFD-AC21-D23D39A422B5}.Release|x86.ActiveCfg = Release|Any CPU
+		{DFF459DC-5096-4DFD-AC21-D23D39A422B5}.Release|x86.Build.0 = Release|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Debug|x86.Build.0 = Debug|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Release|x86.ActiveCfg = Release|Any CPU
+		{8EF57341-1971-4217-BAF9-2AA8993E5285}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E42CA353-2F3C-48E8-B067-30E49417C2B5}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Essence.Math.vsmdi
 	EndGlobalSection
 EndGlobal
