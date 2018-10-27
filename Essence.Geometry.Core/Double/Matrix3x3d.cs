@@ -174,8 +174,8 @@ namespace Essence.Geometry.Core.Double
         {
             ITuple2_Double _v = p.AsTupleDouble();
 
-            return new Point2d(this.M00 * _v.X + this.M01 * _v.Y,
-                               this.M10 * _v.X + this.M11 * _v.Y);
+            return new Point2d(this.M00 * _v.X + this.M01 * _v.Y + this.M02,
+                               this.M10 * _v.X + this.M11 * _v.Y + this.M12);
         }
 
         public void Mul(IPoint2 p, IOpPoint2 pout)
@@ -183,8 +183,8 @@ namespace Essence.Geometry.Core.Double
             ITuple2_Double _v = p.AsTupleDouble();
             IOpTuple2_Double _vout = pout.AsOpTupleDouble();
 
-            _vout.Set(this.M00 * _v.X + this.M01 * _v.Y,
-                      this.M10 * _v.X + this.M11 * _v.Y);
+            _vout.Set(this.M00 * _v.X + this.M01 * _v.Y + this.M02,
+                      this.M10 * _v.X + this.M11 * _v.Y + this.M12);
         }
 
         public IVector3 Mul(IVector3 v)
