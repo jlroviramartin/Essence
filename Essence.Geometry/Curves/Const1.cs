@@ -25,7 +25,7 @@ namespace Essence.Geometry.Curves
         {
             this.p = p;
 
-            this.len = new Point2d(t0, p).DistanceTo(new Point2d(t1, p));
+            this.len = SysMath.Abs(t1 - t0);
 
             this.SetTInterval(t0, t1);
         }

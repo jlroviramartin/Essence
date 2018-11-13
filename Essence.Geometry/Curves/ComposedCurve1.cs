@@ -57,11 +57,19 @@ namespace Essence.Geometry.Curves
 
         public override double GetTMin(int indice)
         {
+            if (this.segments.Count == 0)
+            {
+                return 0;
+            }
             return this.segments[indice].TMin;
         }
 
         public override double GetTMax(int indice)
         {
+            if (this.segments.Count == 0)
+            {
+                return 0;
+            }
             return this.segments[indice].TMax;
         }
 
