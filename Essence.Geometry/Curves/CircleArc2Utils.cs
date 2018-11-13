@@ -39,36 +39,45 @@ namespace Essence.Geometry.Curves
         /// <returns></returns>
         public static CircleArc2 NewArcWithAdvance(Point2d center, double radius, double angle1, double advAngle)
         {
-            return new CircleArc2(center, radius, angle1, angle1 + advAngle);
+            double angle2 = angle1 + advAngle;
+            if (angle2 > 2.0 * System.Math.PI)
+            {
+                angle1 -= 2.0 * System.Math.PI;
+                angle2 -= 2.0 * System.Math.PI;
+            }
+            else if (angle2 < -2.0 * System.Math.PI)
+            {
+                angle1 += 2.0 * System.Math.PI;
+                angle2 += 2.0 * System.Math.PI;
+            }
+            return new CircleArc2(center, radius, angle1, angle2);
         }
 
         /// <summary>
         ///     Crea un arco de circunferencia indicando puntoInicial, puntoFinal, centro, radio y sentido de giro (cw).
         /// </summary>
-        public static CircleArc2 NewArc(Point2d pt1, Point2d pt2, Point2d center, double radius, bool cw)
+        public static CircleArc2 NewArc(Point2d pt1, Point2d pt2, Point2d center, double radius, ArcDirection dir)
         {
-            double a1 = pt1.Sub(center).Angle;
-            double a2 = pt2.Sub(center).Angle;
-
-            a1 = AngleUtils.Ensure0To2Pi(a1);
-            a2 = AngleUtils.Ensure0To2Pi(a2);
-
-            if (cw)
+            double angle1 = AngleUtils.Ensure0To2Pi(pt1.Sub(center).Angle, false);
+            double angle2 = AngleUtils.Ensure0To2Pi(pt2.Sub(center).Angle, false);
+            if (dir == ArcDirection.Clockwise)
             {
-                if (a2 > a1)
-                {
-                    a2 -= 2 * SysMath.PI;
-                }
+                if (angle2 > angle1)
+                    angle2 -= 2.0 * System.Math.PI;
             }
-            else
+            else if (angle2 < angle1)
+                angle2 += 2.0 * System.Math.PI;
+            if (angle2 > 2.0 * System.Math.PI)
             {
-                if (a2 < a1)
-                {
-                    a2 += 2 * SysMath.PI;
-                }
+                angle1 -= 2.0 * System.Math.PI;
+                angle2 -= 2.0 * System.Math.PI;
             }
-
-            return new CircleArc2(center, radius, a1, a2);
+            else if (angle2 < -2.0 * System.Math.PI)
+            {
+                angle1 += 2.0 * System.Math.PI;
+                angle2 += 2.0 * System.Math.PI;
+            }
+            return new CircleArc2(center, radius, angle1, angle2);
         }
 
         /// <summary>
@@ -78,8 +87,9 @@ namespace Essence.Geometry.Curves
         /// </summary>
         public static CircleArc2 TwoPointsRadius(Point2d pt0, Point2d pt1, double radius, bool leftRule)
         {
-            Point2d centro = EvaluateCenter(pt0, pt1, radius, leftRule);
-            return NewArc(pt0, pt1, centro, SysMath.Abs(radius), leftRule ? (radius < 0) : (radius > 0));
+            Point2d center = CircleArc2Utils.EvaluateCenter(pt0, pt1, radius, leftRule);
+            ArcDirection dir = !leftRule ? (radius > 0.0 ? ArcDirection.Clockwise : ArcDirection.CounterClockwise) : (radius < 0.0 ? ArcDirection.Clockwise : ArcDirection.CounterClockwise);
+            return CircleArc2Utils.NewArc(pt0, pt1, center, System.Math.Abs(radius), dir);
         }
 
         /// <summary>

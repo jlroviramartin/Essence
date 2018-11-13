@@ -231,6 +231,11 @@ namespace Essence.Geometry.Curves
             return Math.Abs(t01_1 - t01_0) * this.TotalLength;
         }
 
+        public override BoundingBox2d BoundingBox
+        {
+            get { return BoundingBox2d.UnionOfPoints(this.p0, this.p1); }
+        }
+
         #endregion
     }
 }

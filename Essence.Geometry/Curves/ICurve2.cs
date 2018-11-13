@@ -55,5 +55,7 @@ namespace Essence.Geometry.Curves
         void GetFrame(double t, ref Point2d position, ref Vector2d tangent, ref Vector2d leftNormal);
 
         #endregion
+
+        BoundingBox2d BoundingBox { get; }
     }
 }

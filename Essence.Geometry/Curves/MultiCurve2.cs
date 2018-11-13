@@ -110,6 +110,8 @@ namespace Essence.Geometry.Curves
 
         protected abstract void FindIndex(double t, out int index, out double tInSegment);
 
+        protected abstract BoundingBox2d GetBoundingBox(int index);
+
         #region private
 
         private void EnsureLengthsEvaluated()
@@ -304,6 +306,17 @@ namespace Essence.Geometry.Curves
             this.FindIndex(t, out index, out tInSegment);
 
             this.GetFrame(index, tInSegment, ref position, ref tangent, ref normal);
+        }
+
+        public BoundingBox2d BoundingBox
+        {
+            get
+            {
+                BoundingBox2d boundingBox = BoundingBox2d.Empty;
+                for (int i = 0; i < this.SegmentsCount; i++)
+                    boundingBox = boundingBox.Union(this.GetBoundingBox(i));
+                return boundingBox;
+            }
         }
 
         #endregion

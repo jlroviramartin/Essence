@@ -14,6 +14,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using Essence.Geometry.Core.Double;
+using Essence.Util.Math.Double;
 
 namespace Essence.Geometry.Curves
 {
@@ -106,10 +109,17 @@ namespace Essence.Geometry.Curves
             if (index < 0)
             {
                 index = ~index;
+                index--;
             }
             index = Essence.Util.Math.Int.MathUtils.Clamp(index, 0, this.segments.Count - 1);
+            Contract.Assert(t.EpsilonL(this.TMin) || t.EpsilonG(this.TMax) || (t.EpsilonGE(this.GetTMin(index)) && t.EpsilonLE(this.GetTMax(index))));
 
             tInSegment = t;
+        }
+
+        protected override BoundingBox1d GetBoundingBox(int indice)
+        {
+            return this.segments[indice].BoundingBox;
         }
 
         #endregion
@@ -189,6 +199,11 @@ namespace Essence.Geometry.Curves
             double ICurve1.GetSpeed(double t)
             {
                 throw new NotImplementedException();
+            }
+
+            BoundingBox1d ICurve1.BoundingBox
+            {
+                get { return BoundingBox1d.Empty; }
             }
         }
 

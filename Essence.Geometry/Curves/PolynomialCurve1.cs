@@ -13,6 +13,9 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using Essence.Geometry.Core.Double;
+using Essence.Maths;
 using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 
@@ -119,6 +122,30 @@ namespace Essence.Geometry.Curves
         {
             double tt = this.GetT0L(t);
             return this.GetPoly(3).Evaluate(tt);
+        }
+
+        public override BoundingBox1d BoundingBox
+        {
+            get
+            {
+                Func<int, Func<double, double>> nthf = (Func<int, Func<double, double>>)(i => new Func<double, double>(this.GetPoly(i + 1).Evaluate));
+                double t0L1 = this.GetT0L(this.TMin);
+                double t0L2 = this.GetT0L(this.TMax);
+                int maxzeros = this.poly.Degree - 1;
+                List<double> doubleList = new List<double>();
+                Solver.SolveMulti(nthf, t0L1, t0L2, maxzeros, (IList<double>)doubleList, Solver.Type.Brent, 1000);
+                double xMin = double.MaxValue;
+                double xMax = double.MinValue;
+                foreach (double x in doubleList)
+                {
+                    double num = this.GetPoly(0).Evaluate(x);
+                    if (num < xMin)
+                        xMin = num;
+                    if (num > xMax)
+                        xMax = num;
+                }
+                return new BoundingBox1d(xMin, xMax);
+            }
         }
 
         #endregion

@@ -20,7 +20,7 @@ namespace Essence.Maths.Double
 {
     public static class AngleUtils
     {
-        private const double twoPi = 2.0 * SysMath.PI;
+        public const double twoPi = 2.0 * SysMath.PI;
 
         /// <summary>
         ///     Comprueba si el angulo indicado esta en el arco indicado.
@@ -104,9 +104,21 @@ namespace Essence.Maths.Double
             return Ensure0To2Pi(a1 - a0, true);
         }
 
-        public static bool EpsilonEquals(double a1, double a2, double epsilon = MathUtils.EPSILON)
+        public static bool AngleEpsilonEquals(this double a1, double a2, double epsilon = MathUtils.EPSILON)
         {
             return Ensure0To2Pi(a1).EpsilonEquals(Ensure0To2Pi(a2), epsilon);
+        }
+
+        public static bool AngleEquals(this double a1, double a2)
+        {
+            return AngleUtils.Ensure0To2Pi(a1, false) == AngleUtils.Ensure0To2Pi(a2, false);
+        }
+
+        public static double EnsureMinus2PITo2Pi(double rad, bool open = false)
+        {
+            if (rad >= 0.0)
+                return AngleUtils.EnsureBranch(rad, 0.0, open);
+            return AngleUtils.EnsureBranch(rad, -2.0 * System.Math.PI, open);
         }
     }
 }

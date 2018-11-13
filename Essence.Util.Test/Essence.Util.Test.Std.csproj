@@ -20,4 +20,8 @@
     <DefineConstants>TRACE;NETSTANDARD</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Essence.Util\Essence.Util.Std.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -30,6 +30,27 @@ namespace Essence.Geometry.Curves
             this.SetTInterval(t0, t1);
         }
 
+        #region private
+
+        private double GetT01(double t)
+        {
+            t = t.Clamp(this.TMin, this.TMax);
+            double t01 = this.ttransform.Get(t);
+            return t01;
+        }
+
+        private readonly double p;
+
+        private double tmin;
+        private double tmax;
+
+        private readonly double len;
+
+        /// <summary>Transformacion que se aplica sobre el parametro.</summary>
+        private Transform1 ttransform;
+
+        #endregion
+
         #region ICurve2
 
         public override double TMin
@@ -81,26 +102,10 @@ namespace Essence.Geometry.Curves
             return SysMath.Abs(t01_1 - t01_0) * this.TotalLength;
         }
 
-        #endregion
-
-        #region private
-
-        private double GetT01(double t)
+        public override BoundingBox1d BoundingBox
         {
-            t = t.Clamp(this.TMin, this.TMax);
-            double t01 = this.ttransform.Get(t);
-            return t01;
+            get { return new BoundingBox1d(this.p, this.p); }
         }
-
-        private readonly double p;
-
-        private double tmin;
-        private double tmax;
-
-        private readonly double len;
-
-        /// <summary>Transformacion que se aplica sobre el parametro.</summary>
-        private Transform1 ttransform;
 
         #endregion
     }

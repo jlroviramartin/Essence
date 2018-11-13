@@ -73,6 +73,31 @@ namespace Essence.Geometry.Geom3D
             return NewNonOrthonormal(p0, p1 - p0, p2 - p0);
         }
 
+        public static Plane3d NewPointDirection(Point3d o, Vector3d normal)
+        {
+            double c = o.X * normal.X + o.Y * normal.Y + o.Z * normal.Z;
+            Vector3d vz = normal.Unit;
+            double num = System.Math.Max(System.Math.Max(System.Math.Abs(normal.X), System.Math.Abs(normal.Y)), System.Math.Abs(normal.Z));
+            if (System.Math.Abs(normal.X) == num)
+            {
+                Func<double, double, Point3d> func = (Func<double, double, Point3d>) ((y, z) => new Point3d((c - (y * vz.Y + z * vz.Z)) / vz.X, y, z));
+                Vector3d unit = (func(1.0, 0.0) - func(0.0, 0.0)).Unit;
+                Vector3d dy = vz.Cross(unit);
+                return new Plane3d(o, unit, dy);
+            }
+            if (System.Math.Abs(normal.Y) == num)
+            {
+                Func<double, double, Point3d> func = (Func<double, double, Point3d>) ((x, z) => new Point3d(x, (c - (x * vz.X + z * vz.Z)) / vz.Y, z));
+                Vector3d unit = (func(1.0, 0.0) - func(0.0, 0.0)).Unit;
+                Vector3d dy = vz.Cross(unit);
+                return new Plane3d(o, unit, dy);
+            }
+            Func<double, double, Point3d> func1 = (Func<double, double, Point3d>) ((x, y) => new Point3d(x, y, (c - (x * vz.X + y * vz.Y)) / vz.Z));
+            Vector3d unit1 = (func1(1.0, 0.0) - func1(0.0, 0.0)).Unit;
+            Vector3d dy1 = vz.Cross(unit1);
+            return new Plane3d(o, unit1, dy1);
+        }
+
         /// <summary>
         ///     Indica si esta degenerado: algun vector direccion es zero o son paralelos.
         /// </summary>

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2F2888F2-B538-44F6-8DD9-23E2E4704AD8}</ProjectGuid>
+    <ProjectGuid>{1FBDED31-4F6D-481A-9101-042F25324654}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Essence.Geometry</RootNamespace>

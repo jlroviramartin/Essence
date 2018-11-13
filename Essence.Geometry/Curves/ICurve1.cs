@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Essence.Geometry.Core.Double;
+
 namespace Essence.Geometry.Curves
 {
     public interface ICurve1
@@ -43,5 +45,7 @@ namespace Essence.Geometry.Curves
         double GetSpeed(double t);
 
         #endregion
+
+        BoundingBox1d BoundingBox { get; }
     }
 }

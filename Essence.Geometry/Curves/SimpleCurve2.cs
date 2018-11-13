@@ -156,6 +156,8 @@ namespace Essence.Geometry.Curves
 
         #endregion
 
+        public abstract BoundingBox2d BoundingBox { get; }
+
         #endregion
     }
 }

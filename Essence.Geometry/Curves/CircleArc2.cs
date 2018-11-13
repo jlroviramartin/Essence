@@ -31,13 +31,19 @@ namespace Essence.Geometry.Curves
         public CircleArc2(Point2d center, double radius, double angle1, double angle2)
             : base(center, radius)
         {
-            Contract.Assert(angle1 >= 0 && angle1 < 2 * SysMath.PI);
-            Contract.Assert(SysMath.Abs(angle2 - angle1) <= 2 * SysMath.PI);
+            Contract.Assert(System.Math.Abs(angle1) < 2.0 * System.Math.PI);
+            Contract.Assert(System.Math.Abs(angle2) < 2.0 * System.Math.PI);
+            Contract.Assert(System.Math.Abs(angle2 - angle1) <= 2.0 * System.Math.PI);
 
             this.Angle1 = angle1;
             this.Angle2 = angle2;
 
             this.SetTInterval(0, this.TotalLength);
+        }
+
+        public bool IsCCW
+        {
+            get { return this.Angle1 < this.Angle2; }
         }
 
         /// <summary>
@@ -110,6 +116,30 @@ namespace Essence.Geometry.Curves
             return ((ca - ai) / aa);
         }
 
+        public bool PointInCurve(Point2d p)
+        {
+            Vector2d vector2d = p - this.Center;
+            if (!vector2d.Length.EpsilonEquals(this.Radius, 0.01))
+            {
+                return false;
+            }
+            double num1 = AngleUtils.Ensure0To2Pi(vector2d.Angle, false);
+            double num2 = AngleUtils.Ensure0To2Pi(this.Angle1, false);
+            double num3 = this.Angle2 - this.Angle1;
+            if (num3 > 0.0)
+            {
+                return num1 >= num2 && num1 <= num2 + num3;
+            }
+            else
+            {
+                return num1 >= num2 + num3 && num1 <= num2;
+            }
+        }
+
+        #region private
+
+        #endregion
+
         #region ICurve2
 
         public override void SetTInterval(double tmin, double tmax)
@@ -121,12 +151,13 @@ namespace Essence.Geometry.Curves
 
         public override double TotalLength
         {
-            get { return AngleUtils.Diff(this.Angle1, this.Angle2) * this.Radius; }
+            get { return System.Math.Abs(this.Angle2 - this.Angle1) * this.Radius; }
         }
 
-        #endregion
-
-        #region private
+        public override BoundingBox2d BoundingBox
+        {
+            get { return BoundingBox2d.FromCoords(this.Center.X - this.Radius, this.Center.Y - this.Radius, this.Center.X + this.Radius, this.Center.Y + this.Radius); }
+        }
 
         #endregion
     }

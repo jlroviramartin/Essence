@@ -22,8 +22,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Essence.Geometry.Core\Essence.Geometry.Core.Std.csproj" />
-    <ProjectReference Include="..\Essence.Math\Essence.Math.Std.csproj" />
     <ProjectReference Include="..\Essence.Util\Essence.Util.Std.csproj" />
+    <ProjectReference Include="..\org.apache.commons.math3_3.6.1\org.apache.commons.math3_3.61.Std.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Wave\" />
   </ItemGroup>
 
 </Project>

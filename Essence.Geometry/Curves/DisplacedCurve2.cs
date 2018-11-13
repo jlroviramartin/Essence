@@ -235,6 +235,11 @@ namespace Essence.Geometry.Curves
 
         #endregion
 
+        public BoundingBox2d BoundingBox
+        {
+            get { return this.curve.BoundingBox.Inflate(this.displacement.BoundingBox.XMax); }
+        }
+
         #endregion
     }
 }

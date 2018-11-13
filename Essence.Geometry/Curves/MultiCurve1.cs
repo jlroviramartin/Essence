@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System.Diagnostics.Contracts;
+using Essence.Geometry.Core.Double;
 using Essence.Maths;
 using Essence.Maths.Double;
 using UnaryFunction = System.Func<double, double>;
@@ -68,6 +69,8 @@ namespace Essence.Geometry.Curves
         #endregion
 
         protected abstract void FindIndex(double t, out int index, out double tInSegment);
+
+        protected abstract BoundingBox1d GetBoundingBox(int index);
 
         #region private
 
@@ -229,6 +232,19 @@ namespace Essence.Geometry.Curves
             this.FindIndex(t, out index, out tInSegment);
 
             return this.GetSpeed(index, tInSegment);
+        }
+
+        public BoundingBox1d BoundingBox
+        {
+            get
+            {
+                BoundingBox1d boundingBox = BoundingBox1d.Empty;
+                for (int i = 0; i < this.SegmentsCount; i++)
+                {
+                    boundingBox = boundingBox.Union(this.GetBoundingBox(i));
+                }
+                return boundingBox;
+            }
         }
 
         #endregion

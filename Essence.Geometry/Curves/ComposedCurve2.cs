@@ -132,10 +132,14 @@ namespace Essence.Geometry.Curves
                 index--;
             }
             index = Essence.Util.Math.Int.MathUtils.Clamp(index, 0, this.segments.Count - 1);
-
             Contract.Assert(t.EpsilonL(this.TMin) || t.EpsilonG(this.TMax) || (t.EpsilonGE(this.GetTMin(index)) && t.EpsilonLE(this.GetTMax(index))));
 
             tInSegment = t;
+        }
+
+        protected override BoundingBox2d GetBoundingBox(int indice)
+        {
+            return this.segments[indice].BoundingBox;
         }
 
         #endregion
@@ -245,6 +249,11 @@ namespace Essence.Geometry.Curves
             void ICurve2.GetFrame(double t, ref Point2d position, ref Vector2d tangent, ref Vector2d normal)
             {
                 throw new NotImplementedException();
+            }
+
+            BoundingBox2d ICurve2.BoundingBox
+            {
+                get { return BoundingBox2d.Empty; }
             }
         }
 

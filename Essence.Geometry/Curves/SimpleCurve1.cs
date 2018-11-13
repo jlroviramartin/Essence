@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System.Diagnostics.Contracts;
+using Essence.Geometry.Core.Double;
 using Essence.Maths;
 using Essence.Maths.Double;
 using UnaryFunction = System.Func<double, double>;
@@ -108,6 +109,8 @@ namespace Essence.Geometry.Curves
         }
 
         #endregion
+
+        public abstract BoundingBox1d BoundingBox { get; }
 
         #endregion
     }

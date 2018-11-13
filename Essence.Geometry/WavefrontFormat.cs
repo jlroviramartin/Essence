@@ -179,26 +179,63 @@ namespace Essence.Geometry
 
         public void AddLines(IEnumerable<int> indices, bool close = false)
         {
-            int? first = null;
-
-            this.WritePadding();
-            this.streamWriter.Write("l");
-            foreach (int index in indices)
+            if (this.hackLines)
             {
-                if (first == null)
+                int? first = null;
+                int? prev = null;
+
+                foreach (int index in indices)
                 {
-                    first = index;
+                    if (first == null)
+                    {
+                        first = index;
+                    }
+                    if (prev != null)
+                    {
+                        this.WritePadding();
+                        this.streamWriter.Write("l");
+                        this.streamWriter.Write(" ");
+                        this.streamWriter.Write(((int)prev).ToString(en_US));
+                        this.streamWriter.Write(" ");
+                        this.streamWriter.Write(index.ToString(en_US));
+                        this.streamWriter.WriteLine();
+                    }
+                    prev = index;
                 }
-
-                this.streamWriter.Write(" ");
-                this.streamWriter.Write(index.ToString(en_US));
+                if (close && (first != null) && (prev != null))
+                {
+                    this.WritePadding();
+                    this.streamWriter.Write("l");
+                    this.streamWriter.Write(" ");
+                    this.streamWriter.Write(((int)prev).ToString(en_US));
+                    this.streamWriter.Write(" ");
+                    this.streamWriter.Write(((int)first).ToString(en_US));
+                    this.streamWriter.WriteLine();
+                }
             }
-            if (close && (first != null))
+            else
             {
-                this.streamWriter.Write(" ");
-                this.streamWriter.Write(((int)first).ToString(en_US));
+                int? first = null;
+
+                this.WritePadding();
+                this.streamWriter.Write("l");
+                foreach (int index in indices)
+                {
+                    if (first == null)
+                    {
+                        first = index;
+                    }
+
+                    this.streamWriter.Write(" ");
+                    this.streamWriter.Write(index.ToString(en_US));
+                }
+                if (close && (first != null))
+                {
+                    this.streamWriter.Write(" ");
+                    this.streamWriter.Write(((int)first).ToString(en_US));
+                }
+                this.streamWriter.WriteLine();
             }
-            this.streamWriter.WriteLine();
         }
 
         public void AddLines(IEnumerable<Point3d> points, bool close = false)
@@ -267,6 +304,28 @@ namespace Essence.Geometry
             this.streamWriter.WriteLine();
         }
 
+        public void AddAxis(Point3d p, double sz)
+        {
+            this.UseMaterial("Red");
+            this.AddLines(new Point3d[2]
+            {
+                p,
+                p + new Vector3d(sz, 0.0, 0.0)
+            }, false);
+            this.UseMaterial("Green");
+            this.AddLines(new Point3d[2]
+            {
+                p,
+                p + new Vector3d(0.0, sz, 0.0)
+            }, false);
+            this.UseMaterial("Blue");
+            this.AddLines(new Point3d[2]
+            {
+                p,
+                p + new Vector3d(0.0, 0.0, sz)
+            }, false);
+        }
+
         #region Miembros privados
 
         /*private CurrentData GetCurrent()
@@ -310,6 +369,8 @@ namespace Essence.Geometry
         private int vertexIndex = 1;
         private int textureIndex = 1;
         private int normalIndex = 1;
+
+        private bool hackLines = true;
 
         #endregion Miembros privados _______________________________________________________________
 

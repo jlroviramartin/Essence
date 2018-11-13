@@ -64,8 +64,6 @@ namespace Essence.Geometry.Curves
             this.coefficients = coeffs;
         }
 
-        public const string COEFFICIENTS = "coefficients";
-
         public double this[int i]
         {
             get { return this.coefficients[i]; }

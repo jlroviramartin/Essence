@@ -37,6 +37,14 @@ namespace Essence.Geometry.Curves
             get { return 2 * SysMath.PI * this.Radius; }
         }
 
+        public override BoundingBox2d BoundingBox
+        {
+            get
+            {
+                return BoundingBox2d.FromCoords(this.Center.X - this.Radius, this.Center.Y - this.Radius, this.Center.X + this.Radius, this.Center.Y + this.Radius);
+            }
+        }
+
         #endregion
     }
 }

@@ -66,78 +66,16 @@ namespace Essence.Geometry.Curves
             return new[] { left, right };
         }
 
+        public ClothoidArc2(Vector2d point0, Vector2d point1,
+                            double radius0, double radius1)
+            : this(0, (Point2d) point0, (Point2d) point1, radius0, radius1)
+        {
+        }
+
         public ClothoidArc2(double l0,
                             Point2d point0, Point2d point1,
                             double radius0, double radius1,
-                            double a)
-        {
-            // Correccion sobre los radios.
-            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
-            {
-                if (double.IsInfinity(radius0))
-                {
-                    radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
-                }
-                else if (double.IsInfinity(radius1))
-                {
-                    radius1 = SysMath.Sign(radius0) * double.PositiveInfinity;
-                }
-                else
-                {
-                    // Se deja tal cual.
-                    //// Se toma el radio inicio como infinito.
-                    ////radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
-                }
-            }
-
-            if (SysMath.Abs(radius0) > SysMath.Abs(radius1))
-            {
-                // t positivas
-                this.InvertY = radius1 < 0;
-            }
-            else
-            {
-                // t negativa
-                this.InvertY = radius1 > 0;
-            }
-
-            // Diferencia de puntos en coordenadas reales.
-            Vector2d v01 = point1.Sub(point0);
-
-            this.A = a;
-
-            // Desarrollo segun el radio en el punto (0) y (1).
-            double l0_n = ClothoUtils.ClothoL(radius0, this.InvertY, this.A);
-            double l1_n = ClothoUtils.ClothoL(radius1, this.InvertY, this.A);
-
-            // Coordenadas en el punto (0) y (1) para una clotoide normalizada.
-            Point2d p0_n = ClothoUtils.Clotho(l0_n, this.InvertY, this.A);
-            Point2d p1_n = ClothoUtils.Clotho(l1_n, this.InvertY, this.A);
-
-            Vector2d v01_n = p1_n.Sub(p0_n);
-
-            // Rotacion de v01_n -> v01.
-            double r = v01_n.AngleTo(v01);
-
-            // Transformacion a aplicar.
-            this.transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
-                                        .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
-
-            this.l0 = l0_n;
-            this.l1 = l1_n;
-
-            this.SetTInterval(l0, l0 + (this.l1 - this.l0));
-        }
-
-        public ClothoidArc2(Vector2d point0, Vector2d point1,
-                            double radius0, double radius1)
-            : this(0, point0, point1, radius0, radius1)
-        {
-        }
-
-        public ClothoidArc2(double l0,
-                            Vector2d point0, Vector2d point1,
-                            double radius0, double radius1)
+                            double? a = null)
         {
             // Correccion sobre los radios.
             if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
@@ -172,6 +110,7 @@ namespace Essence.Geometry.Curves
             Vector2d v01 = point1.Sub(point0);
 
             this.A = SolveParam(v01.Length, radius0, radius1);
+            Contract.Assert(!a.HasValue || this.A.EpsilonEquals(a.Value));
 
             // Desarrollo segun el radio en el punto (0) y (1).
             double l0_n = ClothoUtils.ClothoL(radius0, this.InvertY, this.A);
@@ -228,7 +167,6 @@ namespace Essence.Geometry.Curves
 
         #region private
 
-        private const double DEFAULT_ABSOLUTE_ACCURACY = 1e-6;
         private static readonly double sqrtpi = SysMath.Sqrt(SysMath.PI);
 
         /// <summary>
@@ -257,8 +195,7 @@ namespace Essence.Geometry.Curves
             {
                 double min = 0;
                 double max = SysMath.Min(SysMath.Abs(r0), SysMath.Abs(r1)) * ClothoUtils.MAX_L;
-                double v = Solver.Solve(f, min, max, Solver.Type.BrentSolver, DEFAULT_ABSOLUTE_ACCURACY, maxEval);
-                return v;
+                return Solver.Solve(f, min, max, Solver.Type.Brent, Solver.DEFAULT_ABSOLUTE_ACCURACY, maxEval);
             }
             catch (Exception e)
             {
@@ -400,6 +337,14 @@ namespace Essence.Geometry.Curves
             double dl0 = this.GetL(t0);
             double dl1 = this.GetL(t1);
             return dl1 - dl0;
+        }
+
+        public override BoundingBox2d BoundingBox
+        {
+            get
+            {
+                return BoundingBox2d.UnionOfPoints((Point2d) this.transform.Transform((IPoint2) new Point2d(0.0, 0.0)), (Point2d) this.transform.Transform((IPoint2) new Point2d(1.0, 0.0)), (Point2d) this.transform.Transform((IPoint2) new Point2d(1.0, 1.0)), (Point2d) this.transform.Transform((IPoint2) new Point2d(0.0, 1.0)));
+            }
         }
 
         #endregion
