@@ -44,14 +44,16 @@ namespace Essence.Util.Collections.Iterators
                 do
                 {
                     this.i -= count;
-                } while (this.i >= count);
+                }
+                while (this.i >= count);
             }
             else if (this.i < 0)
             {
                 do
                 {
                     this.i += count;
-                } while (this.i < 0);
+                }
+                while (this.i < 0);
             }
         }
 

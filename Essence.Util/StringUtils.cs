@@ -20,7 +20,7 @@ using Essence.Util.Properties;
 namespace Essence.Util
 {
     /// <summary>
-    ///     Utilidades sobre cadenas de texto.
+    /// Utilidades sobre cadenas de texto.
     /// </summary>
     public static class StringUtils
     {
@@ -50,7 +50,7 @@ namespace Essence.Util
         #endregion
 
         /// <summary>
-        ///     Indica si dos cadenas son iguales independientemente de las mayusculas.
+        /// Indica si dos cadenas son iguales independientemente de las mayusculas.
         /// </summary>
         public static bool EqualsIgnoreCase(this string s1, string s2)
         {
@@ -66,8 +66,8 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Añade el codigo <c>"</c> a cada aparicion del caracter <c>"</c> en
-        ///     la cadena <c>str</c>. Compatible con <c>Parse</c>.
+        /// Añade el codigo <c>"</c> a cada aparicion del caracter <c>"</c> en
+        /// la cadena <c>str</c>. Compatible con <c>Parse</c>.
         /// </summary>
         /// <param name="str">Cadena de texto.</param>
         /// <returns>Cadena resultado.</returns>
@@ -77,8 +77,8 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Añade el codigo <c>scape</c> a cada aparicion de los caracteres <c>toScape</c> en
-        ///     la cadena <c>str</c>.
+        /// Añade el codigo <c>scape</c> a cada aparicion de los caracteres <c>toScape</c> en
+        /// la cadena <c>str</c>.
         /// </summary>
         /// <param name="str">Cadena de texto.</param>
         /// <param name="scape">Caracter de escape.</param>
@@ -103,8 +103,8 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Elimina el codigo <c>"</c> de cada aparicion del caracter <c>"</c> de
-        ///     la cadena <c>str</c>. Compatible con <c>Parse</c>.
+        /// Elimina el codigo <c>"</c> de cada aparicion del caracter <c>"</c> de
+        /// la cadena <c>str</c>. Compatible con <c>Parse</c>.
         /// </summary>
         /// <param name="str">Cadena de texto.</param>
         /// <returns>Cadena resultado.</returns>
@@ -114,16 +114,16 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Elimina el codigo <c>scape</c> de cada aparicion de los caracteres <c>toScape</c> de
-        ///     la cadena <c>str</c>.
+        /// Elimina el codigo <c>scape</c> de cada aparicion de los caracteres <c>toScape</c> de
+        /// la cadena <c>str</c>.
         /// </summary>
         /// <param name="str">Cadena de texto.</param>
         /// <param name="scape">Caracter de escape.</param>
         /// <param name="toUnscape">Caracteres a escapar.</param>
         /// <returns>Cadena resultado.</returns>
         /// <exception cref="ParserException">
-        ///     Si la cadena esta mal construida, lanza la excepcion:
-        ///     <c>ParserException</c>.
+        /// Si la cadena esta mal construida, lanza la excepcion:
+        /// <c>ParserException</c>.
         /// </exception>
         public static string Unscape(this string str, char scape, char[] toUnscape)
         {
@@ -155,7 +155,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Convierte el enumerable <c>enumer</c> en una representación textual.
+        /// Convierte el enumerable <c>enumer</c> en una representación textual.
         /// </summary>
         /// <param name="enumer">Enumerable.</param>
         /// <returns>Representación textual.</returns>
@@ -200,7 +200,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Convierte el enumerable <c>enumer</c> en una representación textual.
+        /// Convierte el enumerable <c>enumer</c> en una representación textual.
         /// </summary>
         /// <param name="enumer">Enumerable.</param>
         /// <returns>Representación textual.</returns>

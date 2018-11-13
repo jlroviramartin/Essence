@@ -38,7 +38,7 @@ namespace Essence.Geometry.Core.Double
         public const string _M12 = "M12";
 
         /// <summary>
-        ///     Matriz identidad.
+        /// Matriz identidad.
         /// </summary>
         public static Matrix2x3d Identity
         {
@@ -50,14 +50,14 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         public Matrix2x3d()
         {
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         public Matrix2x3d(double m00, double m01, double m02,
                           double m10, double m11, double m12)
@@ -67,7 +67,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         /// <param name="items">Elementos.</param>
         public Matrix2x3d(double[] items)
@@ -76,7 +76,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         /// <param name="items">Elementos.</param>
         public Matrix2x3d(double[,] items)
@@ -85,7 +85,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea un mat 3x3 con los vectores directores <c>vX, vY</c>.
+        /// Crea un mat 3x3 con los vectores directores <c>vX, vY</c>.
         /// </summary>
         /// <param name="vX">Vector X.</param>
         /// <param name="vY">Vector Y.</param>
@@ -95,8 +95,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea un mat 3x3 con los vectores directores <c>vX, vY</c>
-        ///     y el origen <c>o</c>.
+        /// Crea un mat 3x3 con los vectores directores <c>vX, vY</c>
+        /// y el origen <c>o</c>.
         /// </summary>
         /// <param name="vX">Vector X.</param>
         /// <param name="vY">Vector Y.</param>
@@ -107,7 +107,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         public Matrix2x3d(Matrix3x3d mat)
         {
@@ -243,7 +243,7 @@ namespace Essence.Geometry.Core.Double
         #region operadores
 
         /// <summary>
-        ///     Operacion multiplicacion: mat1 * mat2.
+        /// Operacion multiplicacion: mat1 * mat2.
         /// </summary>
         public static Matrix2x3d operator *(Matrix2x3d mat1, Matrix2x3d mat2)
         {
@@ -257,7 +257,7 @@ namespace Essence.Geometry.Core.Double
         #region casting
 
         /// <summary>
-        ///     Casting a REAL[].
+        /// Casting a REAL[].
         /// </summary>
         public static explicit operator double[](Matrix2x3d m)
         {
@@ -270,7 +270,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Casting a REAL[,].
+        /// Casting a REAL[,].
         /// </summary>
         public static explicit operator double[,](Matrix2x3d m)
         {
@@ -287,7 +287,7 @@ namespace Essence.Geometry.Core.Double
         #region propiedades
 
         /// <summary>
-        ///     Filas.
+        /// Filas.
         /// </summary>
         public int Rows
         {
@@ -295,7 +295,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Columnas.
+        /// Columnas.
         /// </summary>
         public int Columns
         {
@@ -303,7 +303,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es valido: ningun componente es NaN ni Infinito.
+        /// Indica si es valido: ningun componente es NaN ni Infinito.
         /// </summary>
         public bool IsValid
         {
@@ -311,7 +311,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica que algun componente es NaN.
+        /// Indica que algun componente es NaN.
         /// </summary>
         public bool IsNaN
         {
@@ -323,7 +323,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica que algun componente es infinito.
+        /// Indica que algun componente es infinito.
         /// </summary>
         public bool IsInfinity
         {
@@ -335,7 +335,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es identidad.
+        /// Indica si es identidad.
         /// </summary>
         public bool IsIdentity
         {
@@ -347,7 +347,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es invertible.
+        /// Indica si es invertible.
         /// </summary>
         public bool IsInvertible
         {
@@ -363,7 +363,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es cuadrada.
+        /// Indica si es cuadrada.
         /// </summary>
         public bool IsSquared
         {
@@ -371,7 +371,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Elemento <c>i, j</c>.
+        /// Elemento <c>i, j</c>.
         /// </summary>
         /// <param name="i">Fila.</param>
         /// <param name="j">Columna.</param>
@@ -483,12 +483,12 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Elementos fila 0.
+        /// Elementos fila 0.
         /// </summary>
         public double M00, M01, M02;
 
         /// <summary>
-        ///     Elementos fila 1.
+        /// Elementos fila 1.
         /// </summary>
         public double M10, M11, M12;
 
@@ -497,7 +497,7 @@ namespace Essence.Geometry.Core.Double
         #region sets
 
         /// <summary>
-        ///     Establece los elementos.
+        /// Establece los elementos.
         /// </summary>
         public void Set(double m00, double m01, double m02,
                         double m10, double m11, double m12)
@@ -511,7 +511,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece a <c>elementos</c>.
+        /// Establece a <c>elementos</c>.
         /// </summary>
         /// <param name="items">Elementos.</param>
         public void Set(double[] items)
@@ -524,20 +524,20 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece a <c>elementos</c>.
+        /// Establece a <c>elementos</c>.
         /// </summary>
         /// <param name="items">Elementos.</param>
         public void Set(double[,] items)
         {
             Contract.Requires((items != null) && (items.GetLength(0) == this.Rows)
-                              && (items.GetLength(1) == this.Columns));
+                                              && (items.GetLength(1) == this.Columns));
 
             this.Set(items[0, 0], items[0, 1], items[0, 2],
                      items[1, 0], items[1, 1], items[1, 2]);
         }
 
         /// <summary>
-        ///     Establece a la identidad.
+        /// Establece a la identidad.
         /// </summary>
         public void SetIdentity()
         {
@@ -546,7 +546,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece a <c>mat</c>.
+        /// Establece a <c>mat</c>.
         /// </summary>
         /// <param name="mat">Matriz.</param>
         public void Set(Matrix2x3d mat)
@@ -558,7 +558,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece la mat 3x3 con los vectores directores <c>vX, vY</c>.
+        /// Establece la mat 3x3 con los vectores directores <c>vX, vY</c>.
         /// </summary>
         /// <param name="vX">Vector X.</param>
         /// <param name="vY">Vector Y.</param>
@@ -569,8 +569,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece la mat 3x3 con los vectores directores <c>vX, vY</c>
-        ///     y el punto origen <c>o</c>.
+        /// Establece la mat 3x3 con los vectores directores <c>vX, vY</c>
+        /// y el punto origen <c>o</c>.
         /// </summary>
         /// <param name="vX">Vector X.</param>
         /// <param name="vY">Vector Y.</param>
@@ -586,7 +586,7 @@ namespace Essence.Geometry.Core.Double
         #region operaciones
 
         /// <summary>
-        ///     Operacion multiplicacion: this = this * mat.
+        /// Operacion multiplicacion: this = this * mat.
         /// </summary>
         public void Mul(Matrix2x3d mat)
         {
@@ -594,7 +594,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: this = mat1 * mat2.
+        /// Operacion multiplicacion: this = mat1 * mat2.
         /// </summary>
         public void Mul(Matrix2x3d mat1, Matrix2x3d mat2)
         {
@@ -609,7 +609,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion inversion: this = Invertir( this ).
+        /// Operacion inversion: this = Invertir( this ).
         /// </summary>
         public void Inv()
         {
@@ -617,7 +617,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion inversion: this = Invertir( mat ).
+        /// Operacion inversion: this = Invertir( mat ).
         /// </summary>
         public void Inv(Matrix2x3d mat)
         {
@@ -637,7 +637,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion determinante.
+        /// Operacion determinante.
         /// </summary>
         public double Determinant
         {
@@ -645,7 +645,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una copia.
+        /// Crea una copia.
         /// </summary>
         /// <returns>Copia.</returns>
         public Matrix2x3d Clone()
@@ -659,7 +659,7 @@ namespace Essence.Geometry.Core.Double
         #region privados
 
         /// <summary>
-        ///     Comprueba si son casi iguales.
+        /// Comprueba si son casi iguales.
         /// </summary>
         private bool EpsilonEquals(double m00, double m01, double m02,
                                    double m10, double m11, double m12,
@@ -696,9 +696,9 @@ namespace Essence.Geometry.Core.Double
         public override int GetHashCode()
         {
             return new HashCodeBuilder()
-                .Append(this.M00).Append(this.M01).Append(this.M02)
-                .Append(this.M10).Append(this.M11).Append(this.M12)
-                .GetHashCode();
+                   .Append(this.M00).Append(this.M01).Append(this.M02)
+                   .Append(this.M10).Append(this.M11).Append(this.M12)
+                   .GetHashCode();
         }
 
         #endregion

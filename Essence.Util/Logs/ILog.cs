@@ -17,7 +17,7 @@ using System;
 namespace Essence.Util.Logs
 {
     /// <summary>
-    ///     Log genérico similar a <c>log4net.ILog</c>.
+    /// Log genérico similar a <c>log4net.ILog</c>.
     /// </summary>
     public interface ILog
     {
@@ -32,36 +32,36 @@ namespace Essence.Util.Logs
         void WriteFormat(LogType type, IFormatProvider provider, string format, params object[] args);
 
         /// <summary>
-        ///     Indica si el log de debug esta habilitado.
+        /// Indica si el log de debug esta habilitado.
         /// </summary>
         bool IsDebugEnabled { get; }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información de debug.
+        /// Muestra <c>message</c> como información de debug.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         void Debug(string message);
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepción <c>exception</c>
-        ///     como información de debug.
+        /// Muestra <c>message</c> y la excepción <c>exception</c>
+        /// como información de debug.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
         void Debug(string message, Exception exception);
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información de debug.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información de debug.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
         void DebugFormat(string format, params object[] args);
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información de debug.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información de debug.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>
@@ -69,36 +69,36 @@ namespace Essence.Util.Logs
         void DebugFormat(IFormatProvider provider, string format, params object[] args);
 
         /// <summary>
-        ///     Indica si el log de error esta habilitado.
+        /// Indica si el log de error esta habilitado.
         /// </summary>
         bool IsErrorEnabled { get; }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información de error.
+        /// Muestra <c>message</c> como información de error.
         /// </summary>
         /// <param name="message">Mensaje</param>
         void Error(string message);
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información de error.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información de error.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
         void Error(string message, Exception exception);
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información de error.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información de error.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
         void ErrorFormat(string format, params object[] args);
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información de error.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información de error.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>
@@ -106,36 +106,36 @@ namespace Essence.Util.Logs
         void ErrorFormat(IFormatProvider provider, string format, params object[] args);
 
         /// <summary>
-        ///     Indica si el log de error fatal esta habilitado.
+        /// Indica si el log de error fatal esta habilitado.
         /// </summary>
         bool IsFatalEnabled { get; }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información de error fatal.
+        /// Muestra <c>message</c> como información de error fatal.
         /// </summary>
         /// <param name="message">Mensaje</param>
         void Fatal(string message);
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información de error fatal.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información de error fatal.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
         void Fatal(string message, Exception exception);
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información de error fatal.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información de error fatal.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
         void FatalFormat(string format, params object[] args);
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información de error fatal.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información de error fatal.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>
@@ -143,36 +143,36 @@ namespace Essence.Util.Logs
         void FatalFormat(IFormatProvider provider, string format, params object[] args);
 
         /// <summary>
-        ///     Indica si el log de debug esta habilitado.
+        /// Indica si el log de debug esta habilitado.
         /// </summary>
         bool IsInfoEnabled { get; }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información.
+        /// Muestra <c>message</c> como información.
         /// </summary>
         /// <param name="message">Mensaje</param>
         void Info(string message);
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
         void Info(string message, Exception exception);
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
         void InfoFormat(string format, params object[] args);
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>
@@ -180,36 +180,36 @@ namespace Essence.Util.Logs
         void InfoFormat(IFormatProvider provider, string format, params object[] args);
 
         /// <summary>
-        ///     Indica si el log de advertencia esta habilitado.
+        /// Indica si el log de advertencia esta habilitado.
         /// </summary>
         bool IsWarnEnabled { get; }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información de advertencia.
+        /// Muestra <c>message</c> como información de advertencia.
         /// </summary>
         /// <param name="message">Mensaje</param>
         void Warn(string message);
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información de advertencia.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información de advertencia.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
         void Warn(string message, Exception exception);
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información de advertencia.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información de advertencia.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
         void WarnFormat(string format, params object[] args);
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información de advertencia.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información de advertencia.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>

@@ -15,7 +15,7 @@
 namespace Essence.Util.Events
 {
     /// <summary>
-    ///     Gestor de eventos similar a <c>EventHandler</c> pero <c>contravariant</c>.
+    /// Gestor de eventos similar a <c>EventHandler</c> pero <c>contravariant</c>.
     /// </summary>
     /// <typeparam name="TEventArgs">Tipo de los argumentos.</typeparam>
     /// <param name="sender">Sender del evento.</param>

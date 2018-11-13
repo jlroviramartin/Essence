@@ -15,7 +15,7 @@
 namespace Essence.Util.Collections
 {
     /// <summary>
-    ///     Tipo de dirección.
+    /// Tipo de dirección.
     /// </summary>
     public enum DirectionType
     {

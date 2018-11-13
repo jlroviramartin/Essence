@@ -19,10 +19,10 @@ using Essence.Util.Math.Double;
 namespace Essence.Geometry.Core.Double
 {
     /// <summary>
-    ///     Utilidades para las matrices <c>MATRIX</c>.
-    ///     <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Transformaciones2D/Transformaciones2D.htm" />
-    ///     <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Windows/Windows.htm" />
-    ///     <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Recorte2D/Recorte2D.htm" />
+    /// Utilidades para las matrices <c>MATRIX</c>.
+    /// <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Transformaciones2D/Transformaciones2D.htm" />
+    /// <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Windows/Windows.htm" />
+    /// <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Recorte2D/Recorte2D.htm" />
     /// </summary>
     public static class Matrix3x3dUtils
     {
@@ -46,8 +46,8 @@ namespace Essence.Geometry.Core.Double
         #region Traslacion, rotacion, escala
 
         /// <summary>
-        ///     Crea una matriz con la traslacion, rotacion y escala: mt * mr * me.
-        ///     Primero se escala, despues se rota y finalmente se traslada.
+        /// Crea una matriz con la traslacion, rotacion y escala: mt * mr * me.
+        /// Primero se escala, despues se rota y finalmente se traslada.
         /// </summary>
         /// <param name="t">Traslacion.</param>
         /// <param name="r">Rotacion en radianes.</param>
@@ -59,8 +59,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la traslacion, rotacion y escala: mt * mr * me.
-        ///     Primero se escala, despues se rota y finalmente se traslada.
+        /// Crea una matriz con la traslacion, rotacion y escala: mt * mr * me.
+        /// Primero se escala, despues se rota y finalmente se traslada.
         /// </summary>
         /// <param name="o">Origen.</param>
         /// <param name="r">Rotacion en radianes.</param>
@@ -72,8 +72,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la traslacion, rotacion y escala: mt * mr * me.
-        ///     Primero se escala, despues se rota y finalmente se traslada.
+        /// Crea una matriz con la traslacion, rotacion y escala: mt * mr * me.
+        /// Primero se escala, despues se rota y finalmente se traslada.
         /// </summary>
         /// <param name="tx">Traslacion x.</param>
         /// <param name="ty">Traslacion y.</param>
@@ -96,7 +96,7 @@ namespace Essence.Geometry.Core.Double
         #region Translate
 
         /// <summary>
-        ///     Crea una matriz con la traslacion.
+        /// Crea una matriz con la traslacion.
         /// </summary>
         /// <param name="t">Traslacion.</param>
         /// <returns>Matriz de traslacion.</returns>
@@ -106,7 +106,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la traslacion.
+        /// Crea una matriz con la traslacion.
         /// </summary>
         /// <param name="o">Origen.</param>
         /// <returns>Matriz de traslacion.</returns>
@@ -116,7 +116,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la traslacion.
+        /// Crea una matriz con la traslacion.
         /// </summary>
         /// <param name="tx">Traslacion x.</param>
         /// <param name="ty">Traslacion y.</param>
@@ -132,7 +132,7 @@ namespace Essence.Geometry.Core.Double
         #endregion
 
         /// <summary>
-        ///     Crea una matriz a la que se le han invertido los ejes.
+        /// Crea una matriz a la que se le han invertido los ejes.
         /// </summary>
         /// <param name="axis">Indica que ejes invierte.</param>
         /// <returns>Matriz.</returns>
@@ -213,7 +213,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la rotacion respecto al origen.
+        /// Crea una matriz con la rotacion respecto al origen.
         /// </summary>
         /// <param name="r">Angulo en radianes.</param>
         /// <returns>Matriz de rotacion.</returns>
@@ -228,7 +228,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la rotacion respecto a un punto de aplicacion.
+        /// Crea una matriz con la rotacion respecto a un punto de aplicacion.
         /// </summary>
         /// <param name="p">Punto de aplicacion.</param>
         /// <param name="r">Angulo en radianes.</param>
@@ -239,7 +239,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la rotacion respecto a un punto de aplicacion.
+        /// Crea una matriz con la rotacion respecto a un punto de aplicacion.
         /// </summary>
         /// <param name="px">Punto de aplicacion X.</param>
         /// <param name="py">Punto de aplicacion Y.</param>
@@ -260,7 +260,7 @@ namespace Essence.Geometry.Core.Double
         #region Scale
 
         /// <summary>
-        ///     Crea una matriz con la escala respecto al origen.
+        /// Crea una matriz con la escala respecto al origen.
         /// </summary>
         /// <param name="e">Escala.</param>
         /// <returns>Matriz escala.</returns>
@@ -270,7 +270,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la escala respecto al origen.
+        /// Crea una matriz con la escala respecto al origen.
         /// </summary>
         /// <param name="e">Escala.</param>
         /// <returns>Matriz escala.</returns>
@@ -280,7 +280,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la escala respecto al origen.
+        /// Crea una matriz con la escala respecto al origen.
         /// </summary>
         /// <param name="ex">Escala x.</param>
         /// <param name="ey">Escala y.</param>
@@ -294,7 +294,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la escala respecto a un punto de aplicacion.
+        /// Crea una matriz con la escala respecto a un punto de aplicacion.
         /// </summary>
         /// <param name="p">Punto de aplicacion.</param>
         /// <param name="e">Escala.</param>
@@ -305,7 +305,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la escala respecto a un punto de aplicacion.
+        /// Crea una matriz con la escala respecto a un punto de aplicacion.
         /// </summary>
         /// <param name="p">Punto de aplicacion.</param>
         /// <param name="e">Escala.</param>
@@ -316,7 +316,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la escala respecto a un punto de aplicacion.
+        /// Crea una matriz con la escala respecto a un punto de aplicacion.
         /// </summary>
         /// <param name="px">Punto de aplicacion X.</param>
         /// <param name="py">Punto de aplicacion Y.</param>
@@ -328,7 +328,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la escala respecto a un punto de aplicacion.
+        /// Crea una matriz con la escala respecto a un punto de aplicacion.
         /// </summary>
         /// <param name="px">Punto de aplicacion X.</param>
         /// <param name="py">Punto de aplicacion Y.</param>

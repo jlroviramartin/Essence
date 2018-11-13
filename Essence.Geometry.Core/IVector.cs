@@ -79,9 +79,9 @@ namespace Essence.Geometry.Core
         double Proj(TVector v2);
 
         /// <summary>
-        ///  Evaluates the inverse (alpha) of the interpolation between <code>this</code> and <code>v2</code>
-        ///  at <code>vLerp</code>.
-        ///  It returns (pLerp - this) = (p2 - this) * alpha.
+        /// Evaluates the inverse (alpha) of the interpolation between <code>this</code> and <code>v2</code>
+        /// at <code>vLerp</code>.
+        /// It returns (pLerp - this) = (p2 - this) * alpha.
         /// </summary>
         [Pure]
         double InvLerp(TVector v2, TVector vLerp);

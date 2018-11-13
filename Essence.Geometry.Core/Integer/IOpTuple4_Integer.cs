@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 namespace Essence.Geometry.Core.Integer
 {
     public interface IOpTuple4_Integer : IOpTuple4, ITuple4_Integer

@@ -24,7 +24,7 @@ namespace Essence.Maths.Double
         #region Fresnel integrals
 
         /// <summary>
-        ///     Integral del Fresnel: Integral de Fresnel S(z) = integrate(sin((%pi / 2)*t^2), t, 0, z).
+        /// Integral del Fresnel: Integral de Fresnel S(z) = integrate(sin((%pi / 2)*t^2), t, 0, z).
         /// </summary>
         public static double FresnelS(double z)
         {
@@ -34,7 +34,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Integral del Fresnel: Integral de Fresnel C(z) = integrate(cos((%pi / 2)*t^2), t, 0, z).
+        /// Integral del Fresnel: Integral de Fresnel C(z) = integrate(cos((%pi / 2)*t^2), t, 0, z).
         /// </summary>
         public static double FresnelC(double z)
         {
@@ -44,7 +44,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Derivada iesima de la integral del Fresnel (i = 1..4).
+        /// Derivada iesima de la integral del Fresnel (i = 1..4).
         /// </summary>
         public static double DFresnelS(double z, int i = 1)
         {
@@ -66,7 +66,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Derivada iesima de la integral del Fresnel (i = 1..4).
+        /// Derivada iesima de la integral del Fresnel (i = 1..4).
         /// </summary>
         public static double DFresnelC(double z, int i = 1)
         {
@@ -113,7 +113,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Calcula el radios de la curva.
+        /// Calcula el radios de la curva.
         /// </summary>
         public static double ClothoRadious(double s, bool invertY, double a)
         {
@@ -140,7 +140,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Calcula el desarrollo de la curva para el radio indicado.
+        /// Calcula el desarrollo de la curva para el radio indicado.
         /// </summary>
         public static double ClothoL(double r, bool invertY, double a)
         {
@@ -163,8 +163,8 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Busca el desarrollo de la clotoide cuya tangente es <c>v</c>: DClotho x v = 0.
-        ///     Por simetria, existen 2 soluciones, el desarrollo positivo y el negativo.
+        /// Busca el desarrollo de la clotoide cuya tangente es <c>v</c>: DClotho x v = 0.
+        /// Por simetria, existen 2 soluciones, el desarrollo positivo y el negativo.
         /// </summary>
         public static double FindTangent(bool invertY, double a, Vector2d v)
         {
@@ -173,8 +173,8 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Busca el desarrollo de la clotoide cuya tangente (en radianes) es <c>tg</c>.
-        ///     Por simetria, existen 2 soluciones, el desarrollo positivo y el negativo.
+        /// Busca el desarrollo de la clotoide cuya tangente (en radianes) es <c>tg</c>.
+        /// Por simetria, existen 2 soluciones, el desarrollo positivo y el negativo.
         /// </summary>
         public static double FindTangent(bool invertY, double a, double tg)
         {
@@ -190,7 +190,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Calcula el maximo desarrollo de la curva (pasado dicho desarrollo, aumenta el error).
+        /// Calcula el maximo desarrollo de la curva (pasado dicho desarrollo, aumenta el error).
         /// </summary>
         public static double GetMaxL(double a)
         {
@@ -198,7 +198,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Calcula el mínimo rádio de la curva (por debajo de dicho desarrollo, aumenta el error).
+        /// Calcula el mínimo rádio de la curva (por debajo de dicho desarrollo, aumenta el error).
         /// </summary>
         public static double GetMinRadius(double a)
         {
@@ -453,7 +453,8 @@ namespace Essence.Maths.Double
                 ans = ans * x + coef[icoef];
                 icoef++;
                 i--;
-            } while (i > 0);
+            }
+            while (i > 0);
 
             return ans;
         }
@@ -474,13 +475,14 @@ namespace Essence.Maths.Double
                 ans = ans * x + coef[icoef];
                 icoef++;
                 i--;
-            } while (i > 0);
+            }
+            while (i > 0);
 
             return ans;
         }
 
         /// <summary>
-        ///     Calcula las integrales de Fresnel.
+        /// Calcula las integrales de Fresnel.
         /// </summary>
         /// <param name="z">Desarrollo de la integral/longitud arco.</param>
         /// <param name="sz">S(z)</param>

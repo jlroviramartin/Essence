@@ -17,7 +17,7 @@ using System;
 namespace Essence.Util.Logs
 {
     /// <summary>
-    ///     Log genérico. Encapsula a <c>log4net.ILog</c>.
+    /// Log genérico. Encapsula a <c>log4net.ILog</c>.
     /// </summary>
     public sealed class Log4netLog : ILog
     {
@@ -29,7 +29,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         /// <param name="log">Log que encapsula.</param>
         internal Log4netLog(log4net.ILog log)

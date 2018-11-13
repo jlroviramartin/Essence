@@ -31,7 +31,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         public Transform2Matrix(double a, double b, double tx,
-                                 double c, double d, double ty)
+                                double c, double d, double ty)
         {
             this.Matrix = new Matrix2x3d(a, b, tx,
                                          c, d, ty);

@@ -18,8 +18,8 @@ using System.Collections.Generic;
 namespace Essence.Util.Events
 {
     /// <summary>
-    ///     Gestor de eventos debiles.
-    ///     NOTE: no me convence.
+    /// Gestor de eventos debiles.
+    /// NOTE: no me convence.
     /// </summary>
     /// <typeparam name="TEventHandler">Tipo del handler del evento.</typeparam>
     /// <typeparam name="TEventArgs">Tipo de los argumentos del evento.</typeparam>

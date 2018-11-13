@@ -24,7 +24,7 @@ namespace Essence.Util.Collections
                                             IEventList
     {
         /// <summary>
-        ///     Permite establecer quien sera el 'sender' para los eventos de las colecciones.
+        /// Permite establecer quien sera el 'sender' para los eventos de las colecciones.
         /// </summary>
         public object Container { get; set; }
 
@@ -75,7 +75,7 @@ namespace Essence.Util.Collections
         #endregion
 
         /// <summary>
-        ///     Se emite el evento <c>IEventCollection.CollectionChanged</c>.
+        /// Se emite el evento <c>IEventCollection.CollectionChanged</c>.
         /// </summary>
         /// <param name="args">Argumentos.</param>
         protected virtual void OnListChanged(ListEventArgs args)
@@ -88,7 +88,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Indica si tiene listeners.
+        /// Indica si tiene listeners.
         /// </summary>
         protected bool ContainsListeners
         {

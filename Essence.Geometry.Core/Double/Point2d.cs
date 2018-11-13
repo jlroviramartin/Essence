@@ -208,9 +208,9 @@ namespace Essence.Geometry.Core.Double
         /// This method tests if the {@code p} point is at the left, on or at the right of the {@code a, b} line
         /// {@link http://www.softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm}.
         /// <ul>
-        /// <li>+1 if the {@code p} point is at the left of the line</li>
-        /// <li>0 if the {@code p} point is on the line</li>
-        /// <li>-1 if the {@code p} point is at the right of the line</li>
+        ///     <li>+1 if the {@code p} point is at the left of the line</li>
+        ///     <li>0 if the {@code p} point is on the line</li>
+        ///     <li>-1 if the {@code p} point is at the right of the line</li>
         /// </ul>
         /// </summary>
         /// <param name="a"></param>
@@ -227,9 +227,9 @@ namespace Essence.Geometry.Core.Double
         /// This method tests if the {@code p} point is at the left, on or at the right of the {@code a, b} line
         /// {@link http://www.softsurfer.com/Archive/algorithm_0103/algorithm_0103.htm}.
         /// <ul>
-        /// <li>+1 if the {@code p} point is at the left of the line</li>
-        /// <li>0 if the {@code p} point is on the line</li>
-        /// <li>-1 if the {@code p} point is at the right of the line</li>
+        ///     <li>+1 if the {@code p} point is at the left of the line</li>
+        ///     <li>0 if the {@code p} point is on the line</li>
+        ///     <li>-1 if the {@code p} point is at the right of the line</li>
         /// </ul>
         /// </summary>
         /// <param name="a"></param>

@@ -17,7 +17,7 @@ using System;
 namespace Essence.Util
 {
     /// <summary>
-    ///     Clase de ayuda para prevenir reentradas en el codigo (llamadas recursivas, StackOverflowException).
+    /// Clase de ayuda para prevenir reentradas en el codigo (llamadas recursivas, StackOverflowException).
     /// </summary>
     public sealed class PreventReentry
     {

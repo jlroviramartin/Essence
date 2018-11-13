@@ -22,7 +22,7 @@ namespace Essence.Geometry.Geom3D
     public class Plane3d
     {
         /// <summary>
-        ///     Plano con los vectores ortonormalizados.
+        /// Plano con los vectores ortonormalizados.
         /// </summary>
         public static Plane3d NewOrthonormal(Point3d origin, Vector3d dx, Vector3d dy)
         {
@@ -50,7 +50,7 @@ namespace Essence.Geometry.Geom3D
         }
 
         /// <summary>
-        ///     Plano con los vectores ortonormalizados.
+        /// Plano con los vectores ortonormalizados.
         /// </summary>
         public static Plane3d NewOrthonormal(Point3d p0, Point3d p1, Point3d p2)
         {
@@ -58,7 +58,7 @@ namespace Essence.Geometry.Geom3D
         }
 
         /// <summary>
-        ///     Plano con los vectores sin ortonormalizar.
+        /// Plano con los vectores sin ortonormalizar.
         /// </summary>
         public static Plane3d NewNonOrthonormal(Point3d origin, Vector3d dx, Vector3d dy)
         {
@@ -66,7 +66,7 @@ namespace Essence.Geometry.Geom3D
         }
 
         /// <summary>
-        ///     Plano con los vectores sin ortonormalizar.
+        /// Plano con los vectores sin ortonormalizar.
         /// </summary>
         public static Plane3d NewNonOrthonormal(Point3d p0, Point3d p1, Point3d p2)
         {
@@ -80,26 +80,26 @@ namespace Essence.Geometry.Geom3D
             double num = System.Math.Max(System.Math.Max(System.Math.Abs(normal.X), System.Math.Abs(normal.Y)), System.Math.Abs(normal.Z));
             if (System.Math.Abs(normal.X) == num)
             {
-                Func<double, double, Point3d> func = (Func<double, double, Point3d>) ((y, z) => new Point3d((c - (y * vz.Y + z * vz.Z)) / vz.X, y, z));
+                Func<double, double, Point3d> func = (Func<double, double, Point3d>)((y, z) => new Point3d((c - (y * vz.Y + z * vz.Z)) / vz.X, y, z));
                 Vector3d unit = (func(1.0, 0.0) - func(0.0, 0.0)).Unit;
                 Vector3d dy = vz.Cross(unit);
                 return new Plane3d(o, unit, dy);
             }
             if (System.Math.Abs(normal.Y) == num)
             {
-                Func<double, double, Point3d> func = (Func<double, double, Point3d>) ((x, z) => new Point3d(x, (c - (x * vz.X + z * vz.Z)) / vz.Y, z));
+                Func<double, double, Point3d> func = (Func<double, double, Point3d>)((x, z) => new Point3d(x, (c - (x * vz.X + z * vz.Z)) / vz.Y, z));
                 Vector3d unit = (func(1.0, 0.0) - func(0.0, 0.0)).Unit;
                 Vector3d dy = vz.Cross(unit);
                 return new Plane3d(o, unit, dy);
             }
-            Func<double, double, Point3d> func1 = (Func<double, double, Point3d>) ((x, y) => new Point3d(x, y, (c - (x * vz.X + y * vz.Y)) / vz.Z));
+            Func<double, double, Point3d> func1 = (Func<double, double, Point3d>)((x, y) => new Point3d(x, y, (c - (x * vz.X + y * vz.Y)) / vz.Z));
             Vector3d unit1 = (func1(1.0, 0.0) - func1(0.0, 0.0)).Unit;
             Vector3d dy1 = vz.Cross(unit1);
             return new Plane3d(o, unit1, dy1);
         }
 
         /// <summary>
-        ///     Indica si esta degenerado: algun vector direccion es zero o son paralelos.
+        /// Indica si esta degenerado: algun vector direccion es zero o son paralelos.
         /// </summary>
         public bool IsDegenerate
         {
@@ -116,7 +116,7 @@ namespace Essence.Geometry.Geom3D
         }
 
         /// <summary>
-        ///     Indica si esta ortonormalizado: los vectores direccion son unitarios y perpendiculares.
+        /// Indica si esta ortonormalizado: los vectores direccion son unitarios y perpendiculares.
         /// </summary>
         public bool IsOrthonormal
         {
@@ -139,7 +139,7 @@ namespace Essence.Geometry.Geom3D
         public Vector3d DY { get; private set; }
 
         /// <summary>
-        ///     Obtiene el vector normal normalizado.
+        /// Obtiene el vector normal normalizado.
         /// </summary>
         public Vector3d Normal
         {
@@ -160,8 +160,8 @@ namespace Essence.Geometry.Geom3D
         }
 
         /// <summary>
-        ///     Constante en la ecuacion del plano.
-        ///     nx*x + ny*y + nz*z = c
+        /// Constante en la ecuacion del plano.
+        /// nx*x + ny*y + nz*z = c
         /// </summary>
         public double Constant
         {
@@ -178,7 +178,7 @@ namespace Essence.Geometry.Geom3D
         }
 
         /// <summary>
-        ///     Evalua la proyeccion del punto sobre el plano, respecto del origen.
+        /// Evalua la proyeccion del punto sobre el plano, respecto del origen.
         /// </summary>
         /// <param name="p">Punto.</param>
         /// <returns>Parametro [-Inf, Inf].</returns>
@@ -202,7 +202,7 @@ namespace Essence.Geometry.Geom3D
         }
 
         /// <summary>
-        ///     Evalua el punto.
+        /// Evalua el punto.
         /// </summary>
         /// <param name="u">Parametro [-Inf, Inf].</param>
         /// <param name="v">Parametro [-Inf, Inf].</param>
@@ -215,7 +215,7 @@ namespace Essence.Geometry.Geom3D
         #region Distancia
 
         /// <summary>
-        ///     Distancia (con signo) de un punto a la linea.
+        /// Distancia (con signo) de un punto a la linea.
         /// </summary>
         public double Distance(Point3d p, out Point3d closestPoint)
         {
@@ -229,7 +229,7 @@ namespace Essence.Geometry.Geom3D
         }
 
         /// <summary>
-        ///     Distancia (con signo) de un punto a la linea.
+        /// Distancia (con signo) de un punto a la linea.
         /// </summary>
         public double Distance(Point3d p)
         {
@@ -242,11 +242,11 @@ namespace Essence.Geometry.Geom3D
         }
 
         /// <summary>
-        ///     Indica a que lado esta el punto respecto de la linea:
-        ///     - Si == 0, esta en la linea.
-        ///     - Si &gt; 0 esta debajo/derecha de la linea.
-        ///     - Si &lt; 0 esta encima/izquierda de la linea.
-        ///     <c><![CDATA[
+        /// Indica a que lado esta el punto respecto de la linea:
+        /// - Si == 0, esta en la linea.
+        /// - Si &gt; 0 esta debajo/derecha de la linea.
+        /// - Si &lt; 0 esta encima/izquierda de la linea.
+        /// <c><![CDATA[
         ///             |
         ///             |
         ///   (-)       +-----> (+) normal

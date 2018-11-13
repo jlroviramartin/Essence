@@ -33,7 +33,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Factoría por defecto.
+        /// Factoría por defecto.
         /// </summary>
         public static ILogFactory DefaultFactory
         {
@@ -42,8 +42,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Crea un acceso al log a partir del tipo <c>type</c>,
-        ///     utilizando la fábrica <c>LogUtils.DefaultFactory</c>.
+        /// Crea un acceso al log a partir del tipo <c>type</c>,
+        /// utilizando la fábrica <c>LogUtils.DefaultFactory</c>.
         /// </summary>
         public static ILog GetLog(Type type)
         {
@@ -51,8 +51,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Crea un acceso al log a partir del tipo <c>type</c>,
-        ///     utilizando la fábrica <c>LogUtils.DefaultFactory</c>.
+        /// Crea un acceso al log a partir del tipo <c>type</c>,
+        /// utilizando la fábrica <c>LogUtils.DefaultFactory</c>.
         /// </summary>
         public static ILog GetLog<T>()
         {

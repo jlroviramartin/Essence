@@ -18,7 +18,7 @@ using System.Text;
 namespace Essence.Util
 {
     /// <summary>
-    ///     Construye un filtro para ficheros.
+    /// Construye un filtro para ficheros.
     /// </summary>
     public class FilterBuilder
     {
@@ -32,7 +32,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Añade un nuevo filtro. La extension no contiene *.
+        /// Añade un nuevo filtro. La extension no contiene *.
         /// </summary>
         public FilterBuilder Append(string description, string extension)
         {
@@ -47,7 +47,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Añade un nuevo filtro. La extension no contiene *.
+        /// Añade un nuevo filtro. La extension no contiene *.
         /// </summary>
         public FilterBuilder Append(string description, string[] extensions)
         {
@@ -62,7 +62,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Añade un nuevo filtro. La extension contiene *.
+        /// Añade un nuevo filtro. La extension contiene *.
         /// </summary>
         public FilterBuilder Append2(string description, string extensions)
         {
@@ -77,7 +77,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Añade un nuevo filtro. La extension contiene *.
+        /// Añade un nuevo filtro. La extension contiene *.
         /// </summary>
         public FilterBuilder Append2(string description, string[] extensions)
         {

@@ -81,13 +81,12 @@ namespace Essence.Util.Properties
         }
 
 #if false
-        //#region Set classes
-
-        /// <summary>
-        ///     Establece la propiedad utilizando el operador <c>!=</c> para comprobar si
-        ///     ha cambiado.
-        ///     No se puede utilizar en estructuras.
-        /// </summary>
+//#region Set classes
+/// <summary>
+///     Establece la propiedad utilizando el operador <c>!=</c> para comprobar si
+///     ha cambiado.
+///     No se puede utilizar en estructuras.
+/// </summary>
         public static void SetCl<T>(this INotifyPropertyChangedEx_Helper @this,
                                     string name, T oldValue, T value,
                                     Action<T> setter) where T : class

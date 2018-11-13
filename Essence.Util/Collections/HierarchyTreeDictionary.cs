@@ -38,7 +38,7 @@ namespace Essence.Util.Collections
         #region private
 
         /// <summary>
-        ///     Invalida la cache.
+        /// Invalida la cache.
         /// </summary>
         private void InvalidateCache()
         {
@@ -46,7 +46,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Actualiza la cache.
+        /// Actualiza la cache.
         /// </summary>
         private void UpdateCache()
         {
@@ -60,7 +60,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Busca en la cache (la actualiza si procede).
+        /// Busca en la cache (la actualiza si procede).
         /// </summary>
         private bool FindInCache(TK key, out TV value)
         {

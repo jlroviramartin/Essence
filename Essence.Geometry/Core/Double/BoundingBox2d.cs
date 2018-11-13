@@ -223,7 +223,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si existe intersección con el rectangulo indicado.
+        /// Indica si existe intersección con el rectangulo indicado.
         /// </summary>
         /// <param name="rec">Rectangulo.</param>
         /// <param name="epsilon">Epsilon error.</param>
@@ -235,7 +235,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Amplia el recubrimiento para que contenga al punto indicado.
+        /// Amplia el recubrimiento para que contenga al punto indicado.
         /// </summary>
         /// <param name="point">Punto.</param>
         public BoundingBox2d Union(Point2d point)
@@ -250,7 +250,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Amplia el recubrimiento para que contenga al rectangulo indicado.
+        /// Amplia el recubrimiento para que contenga al rectangulo indicado.
         /// </summary>
         /// <param name="rec">Rectangulo.</param>
         public BoundingBox2d Union(BoundingBox2d rec)
@@ -265,7 +265,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Interseccion entre los recubrimientos.
+        /// Interseccion entre los recubrimientos.
         /// </summary>
         /// <param name="rec">Rectangulo.</param>
         public BoundingBox2d Intersect(BoundingBox2d rec)
@@ -288,7 +288,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Amplia el recubrimiento en cada coordenada.
+        /// Amplia el recubrimiento en cada coordenada.
         /// </summary>
         /// <param name="d">Ancho y alto.</param>
         public BoundingBox2d Inflate(double d)
@@ -297,7 +297,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Amplia el recubrimiento en cada coordenada, por el vector indicado.
+        /// Amplia el recubrimiento en cada coordenada, por el vector indicado.
         /// </summary>
         /// <param name="dx">Ancho.</param>
         /// <param name="dy">Alto.</param>
@@ -307,13 +307,13 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Obtiene la coordenada minima.
+        /// Obtiene la coordenada minima.
         /// </summary>
         /// <param name="i">Indice de la coordenada.</param>
         /// <returns>Coordenada.</returns>
         /// <exception cref="IndexOutOfRangeException">
-        ///     Si el indice esta fuera de rango lanza la
-        ///     excepción: <c>IndexOutOfRangeException</c>.
+        /// Si el indice esta fuera de rango lanza la
+        /// excepción: <c>IndexOutOfRangeException</c>.
         /// </exception>
         public double GetMin(int i)
         {
@@ -329,13 +329,13 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Obtiene la coordenada maxima.
+        /// Obtiene la coordenada maxima.
         /// </summary>
         /// <param name="i">Indice de la coordenada.</param>
         /// <returns>Coordenada.</returns>
         /// <exception cref="IndexOutOfRangeException">
-        ///     Si el indice esta fuera de rango lanza la
-        ///     excepción: <c>IndexOutOfRangeException</c>.
+        /// Si el indice esta fuera de rango lanza la
+        /// excepción: <c>IndexOutOfRangeException</c>.
         /// </exception>
         public double GetMax(int i)
         {
@@ -350,7 +350,8 @@ namespace Essence.Geometry.Core.Double
             }
         }
 
-        /// <summary>This method gets the vertices sorted by coordinates:
+        /// <summary>
+        /// This method gets the vertices sorted by coordinates:
         /// [Y, X] : [min, min], [min, max], [max, min], [max, max]
         /// </summary>
         public Point2d[] GetVertices()

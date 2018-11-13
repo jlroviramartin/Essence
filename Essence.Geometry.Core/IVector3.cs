@@ -42,8 +42,8 @@ namespace Essence.Geometry.Core
         int Octant { get; }
 
         /// <summary>
-        ///     Operacion producto mixto en 3D (Mixed product/Triple product): v1 · ( v2 x v3 ).
-        ///     <see cref="http://en.wikipedia.org/wiki/Mixed_product" />
+        /// Operacion producto mixto en 3D (Mixed product/Triple product): v1 · ( v2 x v3 ).
+        /// <see cref="http://en.wikipedia.org/wiki/Mixed_product" />
         /// </summary>
         [Pure]
         double TripleProduct(IVector3 v2, IVector3 v3);

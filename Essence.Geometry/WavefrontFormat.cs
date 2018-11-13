@@ -370,7 +370,7 @@ namespace Essence.Geometry
         private int textureIndex = 1;
         private int normalIndex = 1;
 
-        private bool hackLines = true;
+        private readonly bool hackLines = true;
 
         #endregion Miembros privados _______________________________________________________________
 

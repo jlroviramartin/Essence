@@ -38,37 +38,37 @@ namespace Essence.Geometry.Core
         void Div(IVector4 v1, double c);
 
         /// <summary>
-        ///     Operacion multiplicacion componente a componente: v1 * v2.
+        /// Operacion multiplicacion componente a componente: v1 * v2.
         /// </summary>
         void SimpleMul(IVector4 v2);
 
         void SimpleMul(IVector4 v1, IVector4 v2);
 
         /// <summary>
-        ///     Operacion cambio signo: -vector.
+        /// Operacion cambio signo: -vector.
         /// </summary>
         void Neg();
 
         void Neg(IVector4 v1);
 
         /// <summary>
-        ///     Operacion valor absoluto: Absoluto( vector ).
+        /// Operacion valor absoluto: Absoluto( vector ).
         /// </summary>
         void Abs();
 
         void Abs(IVector4 v1);
 
         /// <summary>
-        ///     Operacion interpolar: resultado = (1 - alpha) * v1 + alpha * v2 = v1 + (v2 - v1) * alpha.
-        ///     Cuando alpha=0, resultado=v1.
-        ///     Cuando alpha=1, resultado=v2.
+        /// Operacion interpolar: resultado = (1 - alpha) * v1 + alpha * v2 = v1 + (v2 - v1) * alpha.
+        /// Cuando alpha=0, resultado=v1.
+        /// Cuando alpha=1, resultado=v2.
         /// </summary>
         void Lerp(IVector4 v2, double alpha);
 
         void Lerp(IVector4 v1, IVector4 v2, double alpha);
 
         /// <summary>
-        ///     Operacion combinacion lineal: alpha * v1 + beta * v2.
+        /// Operacion combinacion lineal: alpha * v1 + beta * v2.
         /// </summary>
         void Lineal(IVector4 v2, double alpha, double beta);
 

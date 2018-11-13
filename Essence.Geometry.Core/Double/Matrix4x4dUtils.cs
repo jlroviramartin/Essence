@@ -18,11 +18,11 @@ using Essence.Util.Math.Double;
 namespace Essence.Geometry.Core.Double
 {
     /// <summary>
-    ///     Utilidades para las matrices <c>Matriz3x3d</c>.
-    ///     <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Transf3D/Transf3D.htm" />
-    ///     <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Proyecciones/Proyecciones.htm" />
-    ///     <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/View3D/View3D.htm" />
-    ///     <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Clip3D/Clip3D.htm" />
+    /// Utilidades para las matrices <c>Matriz3x3d</c>.
+    /// <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Transf3D/Transf3D.htm" />
+    /// <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Proyecciones/Proyecciones.htm" />
+    /// <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/View3D/View3D.htm" />
+    /// <see cref="http://arantxa.ii.uam.es/~pedro/graficos/teoria/Clip3D/Clip3D.htm" />
     /// </summary>
     public static class Matrix4x4dUtils
     {
@@ -61,7 +61,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la traslacion, rotacion y escala.
+        /// Crea una matriz con la traslacion, rotacion y escala.
         /// </summary>
         /// <param name="t">Traslacion.</param>
         /// <param name="r">Rotacion en radianes.</param>
@@ -76,7 +76,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la traslacion, rotacion y escala.
+        /// Crea una matriz con la traslacion, rotacion y escala.
         /// </summary>
         /// <param name="tx">Traslacion x.</param>
         /// <param name="ty">Traslacion y.</param>
@@ -109,7 +109,7 @@ namespace Essence.Geometry.Core.Double
         #region Translate
 
         /// <summary>
-        ///     Crea una matriz con la traslacion.
+        /// Crea una matriz con la traslacion.
         /// </summary>
         /// <param name="t">Traslacion.</param>
         /// <returns>Matriz de traslacion.</returns>
@@ -119,7 +119,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la traslacion.
+        /// Crea una matriz con la traslacion.
         /// </summary>
         /// <param name="tx">Traslacion x.</param>
         /// <param name="ty">Traslacion y.</param>
@@ -137,7 +137,7 @@ namespace Essence.Geometry.Core.Double
         #endregion
 
         /// <summary>
-        ///     Crea una matriz a la que se le han invertido los ejes.
+        /// Crea una matriz a la que se le han invertido los ejes.
         /// </summary>
         /// <param name="axis">Indica que ejes invierte.</param>
         /// <returns>Matriz.</returns>
@@ -156,7 +156,7 @@ namespace Essence.Geometry.Core.Double
         #region Scale
 
         /// <summary>
-        ///     Crea una matriz con la escala.
+        /// Crea una matriz con la escala.
         /// </summary>
         /// <param name="e">Escala.</param>
         /// <returns>Matriz de escala.</returns>
@@ -166,7 +166,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la escala respecto a un punto de aplicacion.
+        /// Crea una matriz con la escala respecto a un punto de aplicacion.
         /// </summary>
         /// <param name="p">Punto de aplicacion.</param>
         /// <param name="e">Escala.</param>
@@ -177,7 +177,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la escala.
+        /// Crea una matriz con la escala.
         /// </summary>
         /// <param name="ex">Escala x.</param>
         /// <param name="ey">Escala y.</param>
@@ -193,7 +193,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la escala respecto a un punto de aplicacion.
+        /// Crea una matriz con la escala respecto a un punto de aplicacion.
         /// </summary>
         /// <param name="px">Punto de aplicacion X.</param>
         /// <param name="py">Punto de aplicacion Y.</param>
@@ -251,7 +251,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la rotacion.
+        /// Crea una matriz con la rotacion.
         /// </summary>
         /// <param name="r">Angulo en radianes.</param>
         /// <returns>Matriz de rotacion.</returns>
@@ -261,7 +261,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la rotacion.
+        /// Crea una matriz con la rotacion.
         /// </summary>
         /// <param name="rx">Angulo en radianes x respecto al plano YZ.</param>
         /// <param name="ry">Angulo en radianes y respecto al plano XZ.</param>
@@ -286,7 +286,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la rotacion.
+        /// Crea una matriz con la rotacion.
         /// </summary>
         /// <param name="axis">Eje de rotacion (eje X = 0, Y = 1, Z = 2).</param>
         /// <param name="r">Angulo en radianes.</param>
@@ -330,7 +330,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la rotacion.
+        /// Crea una matriz con la rotacion.
         /// </summary>
         /// <param name="v">VECTOR3 de rotacion.</param>
         /// <param name="r">Angulo en radianes.</param>
@@ -341,7 +341,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la rotacion.
+        /// Crea una matriz con la rotacion.
         /// </summary>
         /// <param name="x">X.</param>
         /// <param name="y">Y.</param>
@@ -421,10 +421,10 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la extrusion. Una extrusion representa un plano
-        ///     sobre el que se apoya el elemento. El plano se define a través del
-        ///     vector normal y la distancia minima del plano al origen.
-        ///     Ecuación implícita/normal del plano: ax + by + cz + d = 0.
+        /// Crea una matriz con la extrusion. Una extrusion representa un plano
+        /// sobre el que se apoya el elemento. El plano se define a través del
+        /// vector normal y la distancia minima del plano al origen.
+        /// Ecuación implícita/normal del plano: ax + by + cz + d = 0.
         /// </summary>
         /// <param name="a">Coordenada X del vector normal.</param>
         /// <param name="b">Coordenada Y del vector normal.</param>
@@ -472,8 +472,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz que coloca la camara en <c>posicion</c> mirando en direccion <c>dir</c>.
-        ///     La direccion <c>up</c> marca la coordenada Y.
+        /// Crea una matriz que coloca la camara en <c>posicion</c> mirando en direccion <c>dir</c>.
+        /// La direccion <c>up</c> marca la coordenada Y.
         /// </summary>
         /// <param name="eye">Posicion de la camara.</param>
         /// <param name="dir">Direccion a la que mira la camara.</param>
@@ -497,7 +497,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz de proyeccion ortografica.
+        /// Crea una matriz de proyeccion ortografica.
         /// </summary>
         /// <param name="xMin">Plano X de corte (> 0).</param>
         /// <param name="xMax">Plano X de corte (> 0).</param>
@@ -529,7 +529,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz inversa de proyeccion ortografica.
+        /// Crea una matriz inversa de proyeccion ortografica.
         /// </summary>
         /// <param name="xMin">Plano X de corte (> 0).</param>
         /// <param name="xMax">Plano X de corte (> 0).</param>
@@ -562,7 +562,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz de proyeccion de prespectiva.
+        /// Crea una matriz de proyeccion de prespectiva.
         /// </summary>
         /// <param name="campoDeVistaY">Angulo del campo de vista en radianes en la direccion Y.</param>
         /// <param name="aspecto">Ratio de aspecto que determina la direccion X (ancho / alto).</param>
@@ -580,7 +580,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz de proyeccion de prespectiva.
+        /// Crea una matriz de proyeccion de prespectiva.
         /// </summary>
         /// <param name="xMin">Plano X de corte (> 0).</param>
         /// <param name="xMax">Plano X de corte (> 0).</param>
@@ -613,7 +613,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz inversa de proyeccion de prespectiva.
+        /// Crea una matriz inversa de proyeccion de prespectiva.
         /// </summary>
         /// <param name="xMin">Plano X de corte (> 0).</param>
         /// <param name="xMax">Plano X de corte (> 0).</param>

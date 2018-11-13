@@ -55,7 +55,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Evalua la proyeccion del punto sobre el segmento entre P0 y P1.
+        /// Evalua la proyeccion del punto sobre el segmento entre P0 y P1.
         /// </summary>
         /// <param name="p">Punto.</param>
         /// <param name="adjust">Indica si ajusta a los limites [0, longitud].</param>
@@ -74,7 +74,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Evalua el punto entre P0 y P1.
+        /// Evalua el punto entre P0 y P1.
         /// </summary>
         /// <param name="u">Parametro [0, longitud].</param>
         /// <returns>Punto.</returns>
@@ -84,7 +84,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Evalua la proyeccion del punto sobre el segmento entre P0 y P1.
+        /// Evalua la proyeccion del punto sobre el segmento entre P0 y P1.
         /// </summary>
         /// <param name="p">Punto.</param>
         /// <param name="adjust">Indica si ajusta a los limites [0, 1].</param>
@@ -103,7 +103,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Evalua el punto entre P0 y P1.
+        /// Evalua el punto entre P0 y P1.
         /// </summary>
         /// <param name="u">Parametro [0, 1].</param>
         /// <returns>Punto.</returns>

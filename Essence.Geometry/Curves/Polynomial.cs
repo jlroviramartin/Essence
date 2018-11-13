@@ -24,7 +24,7 @@ namespace Essence.Geometry.Curves
     public class Polynomial : IFormattable, IEpsilonEquatable<Polynomial>, ICloneable
     {
         /// <summary>
-        ///     Computes the monomial x^degree.
+        /// Computes the monomial x^degree.
         /// </summary>
         /// <param name="degree"></param>
         /// <returns></returns>
@@ -70,7 +70,7 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Degree of the polynomial.
+        /// Degree of the polynomial.
         /// </summary>
         public int Degree
         {
@@ -78,7 +78,7 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Checks if given polynomial is zero.
+        /// Checks if given polynomial is zero.
         /// </summary>
         /// <returns></returns>
         public bool IsZero()
@@ -94,7 +94,7 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Evaluates polynomial by using the horner scheme.
+        /// Evaluates polynomial by using the horner scheme.
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
@@ -111,8 +111,8 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Normalizes the polynomial, e.i. divides each coefficient by the
-        ///     coefficient of a_n the greatest term if a_n != 1.
+        /// Normalizes the polynomial, e.i. divides each coefficient by the
+        /// coefficient of a_n the greatest term if a_n != 1.
         /// </summary>
         public void Normalize()
         {
@@ -130,7 +130,7 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Removes unnecessary zero terms.
+        /// Removes unnecessary zero terms.
         /// </summary>
         public void Clean()
         {
@@ -150,7 +150,7 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Differentiates given polynomial p.
+        /// Differentiates given polynomial p.
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
@@ -171,7 +171,7 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Integrates given polynomial p.
+        /// Integrates given polynomial p.
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>

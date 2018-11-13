@@ -17,7 +17,7 @@ using System;
 namespace Essence.Util
 {
     /// <summary>
-    ///     Excepcion en el parseo.
+    /// Excepcion en el parseo.
     /// </summary>
     public class ParserException : Exception
     {

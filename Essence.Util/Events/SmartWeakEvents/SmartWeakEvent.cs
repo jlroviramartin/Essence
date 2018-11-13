@@ -20,7 +20,7 @@ using System.Runtime.CompilerServices;
 namespace Essence.Util.Events.SmartWeakEvents
 {
     /// <summary>
-    ///     A class for managing a weak event.
+    /// A class for managing a weak event.
     /// </summary>
     public sealed class SmartWeakEvent<T> where T : class
     {

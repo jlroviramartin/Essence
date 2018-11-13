@@ -26,7 +26,7 @@ using Transform2 = Essence.Geometry.Core.Transform2;
 namespace Essence.Geometry.Curves
 {
     /// <summary>
-    ///     Arco de clotoide.
+    /// Arco de clotoide.
     /// </summary>
     public class ClothoidArc2 : SimpleCurve2
     {
@@ -55,7 +55,7 @@ namespace Essence.Geometry.Curves
 
             // Transformacion a aplicar.
             ITransform2 transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
-                                                .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
+                                              .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
 
             ClothoidArc2 left = new ClothoidArc2(transform, l0_n, 0, invertY, a);
             ClothoidArc2 right = new ClothoidArc2(transform, 0, l1_n, invertY, a);
@@ -68,7 +68,7 @@ namespace Essence.Geometry.Curves
 
         public ClothoidArc2(Vector2d point0, Vector2d point1,
                             double radius0, double radius1)
-            : this(0, (Point2d) point0, (Point2d) point1, radius0, radius1)
+            : this(0, (Point2d)point0, (Point2d)point1, radius0, radius1)
         {
         }
 
@@ -127,7 +127,7 @@ namespace Essence.Geometry.Curves
 
             // Transformacion a aplicar.
             this.transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
-                                        .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
+                                       .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
 
             this.l0 = l0_n;
             this.l1 = l1_n;
@@ -170,8 +170,8 @@ namespace Essence.Geometry.Curves
         private static readonly double sqrtpi = SysMath.Sqrt(SysMath.PI);
 
         /// <summary>
-        ///     Resuelve el parametro de la clotoide dado los radios <c>r0</c> y <c>r1</c> Con una distancia <c>d</c> entre los
-        ///     puntos.
+        /// Resuelve el parametro de la clotoide dado los radios <c>r0</c> y <c>r1</c> Con una distancia <c>d</c> entre los
+        /// puntos.
         /// </summary>
         private static double SolveParam(double d, double r0, double r1)
         {
@@ -341,10 +341,7 @@ namespace Essence.Geometry.Curves
 
         public override BoundingBox2d BoundingBox
         {
-            get
-            {
-                return BoundingBox2d.UnionOfPoints((Point2d) this.transform.Transform((IPoint2) new Point2d(0.0, 0.0)), (Point2d) this.transform.Transform((IPoint2) new Point2d(1.0, 0.0)), (Point2d) this.transform.Transform((IPoint2) new Point2d(1.0, 1.0)), (Point2d) this.transform.Transform((IPoint2) new Point2d(0.0, 1.0)));
-            }
+            get { return BoundingBox2d.UnionOfPoints((Point2d)this.transform.Transform((IPoint2)new Point2d(0.0, 0.0)), (Point2d)this.transform.Transform((IPoint2)new Point2d(1.0, 0.0)), (Point2d)this.transform.Transform((IPoint2)new Point2d(1.0, 1.0)), (Point2d)this.transform.Transform((IPoint2)new Point2d(0.0, 1.0))); }
         }
 
         #endregion

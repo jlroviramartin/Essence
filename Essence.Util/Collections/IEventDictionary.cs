@@ -20,7 +20,7 @@ namespace Essence.Util.Collections
     public interface IEventDictionary : IDictionary
     {
         /// <summary>
-        ///     Notifica que se ha modificado el diccionario.
+        /// Notifica que se ha modificado el diccionario.
         /// </summary>
         event EventHandler_v2<DictionaryEventArgs> DictionaryChanged;
     }

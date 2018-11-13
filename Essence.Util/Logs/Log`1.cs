@@ -18,13 +18,13 @@ using Essence.Util.Properties;
 namespace Essence.Util.Logs
 {
     /// <summary>
-    ///     Clase de ayuda para los logs. En caso de que el tipo no importe, usar Log@lt;object@gt;.
+    /// Clase de ayuda para los logs. En caso de que el tipo no importe, usar Log@lt;object@gt;.
     /// </summary>
     /// <typeparam name="T">Tipo para el que se asocia el log.</typeparam>
     public static class Log<T>
     {
         /// <summary>
-        ///     Indica si el log esta activo.
+        /// Indica si el log esta activo.
         /// </summary>
         public static bool LogActivo
         {
@@ -33,7 +33,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Obtiene/establece el log actual.
+        /// Obtiene/establece el log actual.
         /// </summary>
         public static ILog LogActual
         {
@@ -41,7 +41,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Indica si el log de debug esta habilitado.
+        /// Indica si el log de debug esta habilitado.
         /// </summary>
         public static bool IsEnabled(LogType type)
         {
@@ -50,7 +50,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información de debug.
+        /// Muestra <c>message</c> como información de debug.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         public static void Write(LogType type, string message)
@@ -63,8 +63,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepción <c>exception</c>
-        ///     como información de debug.
+        /// Muestra <c>message</c> y la excepción <c>exception</c>
+        /// como información de debug.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
@@ -78,8 +78,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepción <c>exception</c>
-        ///     como información de debug.
+        /// Muestra <c>message</c> y la excepción <c>exception</c>
+        /// como información de debug.
         /// </summary>
         /// <param name="exception">Excepción.</param>
         public static void Write(LogType type, Exception exception)
@@ -92,8 +92,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información de debug.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información de debug.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
@@ -108,9 +108,9 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información de debug.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información de debug.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>
@@ -126,7 +126,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Indica si el log de debug esta habilitado.
+        /// Indica si el log de debug esta habilitado.
         /// </summary>
         public static bool IsDebugEnabled
         {
@@ -138,7 +138,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información de debug.
+        /// Muestra <c>message</c> como información de debug.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         public static void Debug(string message)
@@ -151,8 +151,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepción <c>exception</c>
-        ///     como información de debug.
+        /// Muestra <c>message</c> y la excepción <c>exception</c>
+        /// como información de debug.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
@@ -166,8 +166,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepción <c>exception</c>
-        ///     como información de debug.
+        /// Muestra <c>message</c> y la excepción <c>exception</c>
+        /// como información de debug.
         /// </summary>
         /// <param name="exception">Excepción.</param>
         public static void Debug(Exception exception)
@@ -180,8 +180,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información de debug.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información de debug.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
@@ -196,9 +196,9 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información de debug.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información de debug.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>
@@ -214,7 +214,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Indica si el log de error esta habilitado.
+        /// Indica si el log de error esta habilitado.
         /// </summary>
         public static bool IsErrorEnabled
         {
@@ -226,7 +226,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información de error.
+        /// Muestra <c>message</c> como información de error.
         /// </summary>
         /// <param name="message">Mensaje</param>
         public static void Error(string message)
@@ -239,8 +239,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información de error.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información de error.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
@@ -254,8 +254,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información de error.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información de error.
         /// </summary>
         /// <param name="exception">Excepción.</param>
         public static void Error(Exception exception)
@@ -268,8 +268,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información de error.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información de error.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
@@ -284,9 +284,9 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información de error.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información de error.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>
@@ -302,7 +302,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Indica si el log de error fatal esta habilitado.
+        /// Indica si el log de error fatal esta habilitado.
         /// </summary>
         public static bool IsFatalEnabled
         {
@@ -314,7 +314,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información de error fatal.
+        /// Muestra <c>message</c> como información de error fatal.
         /// </summary>
         /// <param name="message">Mensaje</param>
         public static void Fatal(string message)
@@ -327,8 +327,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información de error fatal.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información de error fatal.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
@@ -342,8 +342,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información de error fatal.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información de error fatal.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         public static void Fatal(Exception exception)
@@ -356,8 +356,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información de error fatal.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información de error fatal.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
@@ -372,9 +372,9 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información de error fatal.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información de error fatal.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>
@@ -390,7 +390,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Indica si el log de debug esta habilitado.
+        /// Indica si el log de debug esta habilitado.
         /// </summary>
         public static bool IsInfoEnabled
         {
@@ -402,7 +402,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información.
+        /// Muestra <c>message</c> como información.
         /// </summary>
         /// <param name="message">Mensaje</param>
         public static void Info(string message)
@@ -415,8 +415,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
@@ -430,8 +430,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información.
         /// </summary>
         /// <param name="exception">Excepción.</param>
         public static void Info(Exception exception)
@@ -444,8 +444,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
@@ -460,9 +460,9 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>
@@ -478,7 +478,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Indica si el log de advertencia esta habilitado.
+        /// Indica si el log de advertencia esta habilitado.
         /// </summary>
         public static bool IsWarnEnabled
         {
@@ -490,7 +490,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> como información de advertencia.
+        /// Muestra <c>message</c> como información de advertencia.
         /// </summary>
         /// <param name="message">Mensaje</param>
         public static void Warn(string message)
@@ -503,8 +503,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información de advertencia.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información de advertencia.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         /// <param name="exception">Excepción.</param>
@@ -518,8 +518,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra <c>message</c> y la excepcion <c>exception</c>
-        ///     como información de advertencia.
+        /// Muestra <c>message</c> y la excepcion <c>exception</c>
+        /// como información de advertencia.
         /// </summary>
         /// <param name="message">Mensaje.</param>
         public static void Warn(Exception exception)
@@ -532,8 +532,8 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> como información de advertencia.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> como información de advertencia.
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
@@ -548,9 +548,9 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Muestra el mansaje formateado <c>format</c> con los
-        ///     argumentos <c>args</c> y el proveedor de formato
-        ///     <c>provider</c>, como información de advertencia.
+        /// Muestra el mansaje formateado <c>format</c> con los
+        /// argumentos <c>args</c> y el proveedor de formato
+        /// <c>provider</c>, como información de advertencia.
         /// </summary>
         /// <param name="provider">Proveedor.</param>
         /// <param name="format">Formato.</param>

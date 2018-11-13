@@ -23,7 +23,7 @@ namespace Essence.Maths.Double
         public const double twoPi = 2.0 * SysMath.PI;
 
         /// <summary>
-        ///     Comprueba si el angulo indicado esta en el arco indicado.
+        /// Comprueba si el angulo indicado esta en el arco indicado.
         /// </summary>
         /// <param name="angle0">Angulo inicial.</param>
         /// <param name="advAngle">Angulo de avance (importa el signo del avance).</param>
@@ -47,7 +47,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Ajusta al intervalo closed [0, 2*PI] o open [0, 2*PI).
+        /// Ajusta al intervalo closed [0, 2*PI] o open [0, 2*PI).
         /// </summary>
         public static double Ensure0To2Pi(double rad, bool open = false)
         {
@@ -55,7 +55,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Ajusta al intervalo closed [-PI, PI] o open [-PI, PI).
+        /// Ajusta al intervalo closed [-PI, PI] o open [-PI, PI).
         /// </summary>
         public static double EnsureMinusPiToPi(double rad, bool open = false)
         {
@@ -63,7 +63,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Ajusta al intervalo closed [cut, cut + 2*PI] o open [cut, cut + 2*PI).
+        /// Ajusta al intervalo closed [cut, cut + 2*PI] o open [cut, cut + 2*PI).
         /// </summary>
         /// <param name="rad">Angulo en radianes.</param>
         /// <param name="cut">Angulo inicial de la rama.</param>
@@ -94,7 +94,7 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        ///     Diferencia entre 2 angulos.
+        /// Diferencia entre 2 angulos.
         /// </summary>
         public static double Diff(double a0, double a1)
         {
@@ -111,14 +111,14 @@ namespace Essence.Maths.Double
 
         public static bool AngleEquals(this double a1, double a2)
         {
-            return AngleUtils.Ensure0To2Pi(a1, false) == AngleUtils.Ensure0To2Pi(a2, false);
+            return Ensure0To2Pi(a1, false) == Ensure0To2Pi(a2, false);
         }
 
         public static double EnsureMinus2PITo2Pi(double rad, bool open = false)
         {
             if (rad >= 0.0)
-                return AngleUtils.EnsureBranch(rad, 0.0, open);
-            return AngleUtils.EnsureBranch(rad, -2.0 * System.Math.PI, open);
+                return EnsureBranch(rad, 0.0, open);
+            return EnsureBranch(rad, -2.0 * System.Math.PI, open);
         }
     }
 }

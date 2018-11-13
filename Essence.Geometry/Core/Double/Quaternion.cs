@@ -644,8 +644,8 @@ namespace Essence.Geometry.Core.Double
         #region IEpsilonEquatable<Vector2d>
 
         /// <summary>
-        ///     Comprueba si este vector es igual a <c>vector</c>
-        ///     con un error <c>epsilon</c>.
+        /// Comprueba si este vector es igual a <c>vector</c>
+        /// con un error <c>epsilon</c>.
         /// </summary>
         /// <param name="vector">Vector.</param>
         /// <param name="epsilon">Error.</param>
@@ -663,10 +663,10 @@ namespace Essence.Geometry.Core.Double
         #region IFormattable
 
         /// <summary>
-        ///     Formatea este vector segun el proveedor indicado.
-        ///     Busca en <c>IFormatProvider</c> los formatos:
-        ///     <c>ICustomFormatter</c>: delega el formateo en este objeto.
-        ///     <c>VectorFormatInfo</c>: Obtiene la informacion de formato.
+        /// Formatea este vector segun el proveedor indicado.
+        /// Busca en <c>IFormatProvider</c> los formatos:
+        /// <c>ICustomFormatter</c>: delega el formateo en este objeto.
+        /// <c>VectorFormatInfo</c>: Obtiene la informacion de formato.
         /// </summary>
         public string ToString(string formato, IFormatProvider proveedor)
         {
@@ -691,11 +691,11 @@ namespace Essence.Geometry.Core.Double
                 case 'G':
                 default:
                     return new StringBuilder()
-                        .AppendFormat("W: ").AppendLine(this.W.ToString("F3"))
-                        .AppendFormat("X: ").AppendLine(this.X.ToString("F3"))
-                        .AppendFormat("Y: ").AppendLine(this.Y.ToString("F3"))
-                        .AppendFormat("Z: ").AppendLine(this.Z.ToString("F3"))
-                        .ToString();
+                           .AppendFormat("W: ").AppendLine(this.W.ToString("F3"))
+                           .AppendFormat("X: ").AppendLine(this.X.ToString("F3"))
+                           .AppendFormat("Y: ").AppendLine(this.Y.ToString("F3"))
+                           .AppendFormat("Z: ").AppendLine(this.Z.ToString("F3"))
+                           .ToString();
             }
         }
 

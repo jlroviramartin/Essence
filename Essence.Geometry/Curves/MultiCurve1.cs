@@ -84,7 +84,7 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Inicializa las longitudes y la longitudes acumuladas.
+        /// Inicializa las longitudes y la longitudes acumuladas.
         /// </summary>
         private void EvaluateLengths()
         {

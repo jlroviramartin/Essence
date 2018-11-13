@@ -21,8 +21,8 @@ namespace Essence.Geometry.Core.Double
     public static class RectangleUtils
     {
         /// <summary>
-        ///     Crea una transformacion de un rectangulo.
-        ///     <code><![CDATA[
+        /// Crea una transformacion de un rectangulo.
+        /// <code><![CDATA[
         ///  *
         ///  |                  * p2
         ///  |            ==>   |
@@ -59,8 +59,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una transformacion de un rectangulo.
-        ///     <code><![CDATA[
+        /// Crea una transformacion de un rectangulo.
+        /// <code><![CDATA[
         ///  *
         ///  |                  * pd2   * pd1
         ///  |            ==>    \     /
@@ -99,8 +99,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una transformacion de un rectangulo.
-        ///     <code><![CDATA[
+        /// Crea una transformacion de un rectangulo.
+        /// <code><![CDATA[
         ///                    *
         ///  * po2   * po1     |
         ///   \     /          |
@@ -137,8 +137,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una transformacion de un rectangulo.
-        ///     <code><![CDATA[
+        /// Crea una transformacion de un rectangulo.
+        /// <code><![CDATA[
         ///      * po2
         ///     /               * pd2   * pd1
         ///    /                 \     /
@@ -199,8 +199,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Calcula la transformacion que permite que el rectangulo <c>rec</c> se centre en el punto
-        ///     <c>punto</c>.
+        /// Calcula la transformacion que permite que el rectangulo <c>rec</c> se centre en el punto
+        /// <c>punto</c>.
         /// </summary>
         /// <param name="orig">Rectangulo.</param>
         /// <param name="punto">Posicion.</param>
@@ -213,8 +213,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Calcula la transformacion que permite que el rectangulo <c>orig</c> se ajuste
-        ///     al rectangulo <c>dest</c>.
+        /// Calcula la transformacion que permite que el rectangulo <c>orig</c> se ajuste
+        /// al rectangulo <c>dest</c>.
         /// </summary>
         /// <param name="orig">Rectangulo origen.</param>
         /// <param name="dest">Rectangulo destino.</param>

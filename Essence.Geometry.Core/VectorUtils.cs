@@ -29,7 +29,7 @@ namespace Essence.Geometry.Core
     public delegate bool TryParse<T>(string s, NumberStyles style, IFormatProvider proveedor, out T result);
 
     /// <summary>
-    ///     Utilidades sobre vectores.
+    /// Utilidades sobre vectores.
     /// </summary>
     public static class VectorUtils
     {
@@ -79,7 +79,7 @@ namespace Essence.Geometry.Core
         }
 
         /// <summary>
-        ///     Muestra el array como una cadena de texto.
+        /// Muestra el array como una cadena de texto.
         /// </summary>
         /// <typeparam name="T">Tipo.</typeparam>
         /// <param name="provider">Proveedor.</param>
@@ -127,7 +127,7 @@ namespace Essence.Geometry.Core
         }
 
         /// <summary>
-        ///     Intenta parsear la cadena de texto segun los estilos indicados y devuelve un array de valores.
+        /// Intenta parsear la cadena de texto segun los estilos indicados y devuelve un array de valores.
         /// </summary>
         /// <param name="provider">Proveedor de formato.</param>
         /// <param name="s">Cadena de texto a parsear.</param>
@@ -526,6 +526,7 @@ namespace Essence.Geometry.Core
         }
 
         private static readonly Dictionary<Type, Dictionary<Type, Converter>> convertersCache = new Dictionary<Type, Dictionary<Type, Converter>>();
+
         //private static readonly Dictionary<Tuple<Type, Type>, Converter> convertersCache = new Dictionary<Tuple<Type, Type>, Converter>();
         private static readonly List<Converter> converters = new List<Converter>();
 

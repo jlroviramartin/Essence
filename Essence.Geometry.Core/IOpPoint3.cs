@@ -27,9 +27,9 @@ namespace Essence.Geometry.Core
         /// <summary>
         /// Evaluates the interpolation between <code>this</code> and <code>p2</code> at <code>alpha</code>.
         /// <list type="bullet">
-        /// <item>If alpha=0 it returns this.</item>
-        /// <item>If alpha=1 it returns p2.</item>
-        /// <item>Else it returns (1 - alpha) * this + alpha * p2 = this + (p2 - this) * alpha</item>
+        ///     <item>If alpha=0 it returns this.</item>
+        ///     <item>If alpha=1 it returns p2.</item>
+        ///     <item>Else it returns (1 - alpha) * this + alpha * p2 = this + (p2 - this) * alpha</item>
         /// </list>
         /// </summary>
         void Lerp(IPoint3 p2, double alpha);

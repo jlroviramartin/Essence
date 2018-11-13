@@ -21,19 +21,19 @@ using log4net.Repository;
 namespace Essence.Util.Logs
 {
     /// <summary>
-    ///     Factoría de logs que encapsula a <c>log4net.LogFactory</c>.
+    /// Factoría de logs que encapsula a <c>log4net.LogFactory</c>.
     /// </summary>
     public sealed class Log4NetLogFactory : ILogFactory
     {
         /// <summary>
-        ///     Instancia única.
+        /// Instancia única.
         /// </summary>
         public static readonly Log4NetLogFactory Instance;
 
         #region private
 
         /// <summary>
-        ///     Constructor de clase.
+        /// Constructor de clase.
         /// </summary>
         static Log4NetLogFactory()
         {
@@ -50,14 +50,14 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         private Log4NetLogFactory()
         {
         }
 
         /// <summary>
-        ///     Se configura segun el fichero <c>log4net.xml</c>.
+        /// Se configura segun el fichero <c>log4net.xml</c>.
         /// </summary>
         private static void InitLog4NetXml()
         {
@@ -75,7 +75,7 @@ namespace Essence.Util.Logs
         }
 
         /// <summary>
-        ///     Se configura segun el fichero <c>log4net.config</c>.
+        /// Se configura segun el fichero <c>log4net.config</c>.
         /// </summary>
         private static void InitLog4NetConfig()
         {

@@ -20,7 +20,7 @@ using System.Text;
 namespace Essence.Util.Collections
 {
     /// <summary>
-    ///     Argumentos de los eventos de una lista.
+    /// Argumentos de los eventos de una lista.
     /// </summary>
     public class ListEventArgs : CollectionEventArgs
     {
@@ -31,12 +31,12 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Obtiene los indices de los elementos que han cambiado.
-        ///     - Insert : cuales son los indices que se han insertado (despues de insertar => como
-        ///     queda el resultado final).
-        ///     - Remove : cuales son los indices que se han eliminado (antes de eliminar => como
-        ///     era el resultado previo).
-        ///     - Change : cuales son los indices que se han modificado.
+        /// Obtiene los indices de los elementos que han cambiado.
+        /// - Insert : cuales son los indices que se han insertado (despues de insertar => como
+        /// queda el resultado final).
+        /// - Remove : cuales son los indices que se han eliminado (antes de eliminar => como
+        /// era el resultado previo).
+        /// - Change : cuales son los indices que se han modificado.
         /// </summary>
         public int[] Indices { get; }
 
@@ -270,10 +270,10 @@ namespace Essence.Util.Collections
         public override string ToString()
         {
             return new StringBuilder()
-                .AppendFormat("ChangeType={0}; ", Enum.GetName(typeof(CollectionChangeType), this.ChangeType))
-                .AppendFormat("Indexes={0}; ", this.Indices.ToStringEx())
-                .AppendFormat("Items={0}", this.Items.ToStringEx())
-                .ToString();
+                   .AppendFormat("ChangeType={0}; ", Enum.GetName(typeof(CollectionChangeType), this.ChangeType))
+                   .AppendFormat("Indexes={0}; ", this.Indices.ToStringEx())
+                   .AppendFormat("Items={0}", this.Items.ToStringEx())
+                   .ToString();
         }
 
         #endregion

@@ -39,10 +39,7 @@ namespace Essence.Geometry.Curves
 
         public override BoundingBox2d BoundingBox
         {
-            get
-            {
-                return BoundingBox2d.FromCoords(this.Center.X - this.Radius, this.Center.Y - this.Radius, this.Center.X + this.Radius, this.Center.Y + this.Radius);
-            }
+            get { return BoundingBox2d.FromCoords(this.Center.X - this.Radius, this.Center.Y - this.Radius, this.Center.X + this.Radius, this.Center.Y + this.Radius); }
         }
 
         #endregion

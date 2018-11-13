@@ -24,7 +24,7 @@ using Essence.Util.Properties;
 namespace Essence.Util.WeakEvents
 {
     /// <summary>
-    ///     Mapa que gestiona los eventos debiles y permite deregistarlos.
+    /// Mapa que gestiona los eventos debiles y permite deregistarlos.
     /// </summary>
     [Obsolete]
     public class WeakEventHandlerManager : DisposableObject
@@ -87,8 +87,8 @@ namespace Essence.Util.WeakEvents
         }
 
         /// <summary>
-        ///     Añade el origen de eventos <c>source</c> y lo asocia a todos los
-        ///     delegados que correspondan con el tipo <c>TSource</c>.
+        /// Añade el origen de eventos <c>source</c> y lo asocia a todos los
+        /// delegados que correspondan con el tipo <c>TSource</c>.
         /// </summary>
         public void AddWeak<TSource>(TSource source)
         {
@@ -99,8 +99,8 @@ namespace Essence.Util.WeakEvents
         }
 
         /// <summary>
-        ///     Añade el origen de eventos <c>source</c> y lo asocia al
-        ///     delegado referenciado por <c>name</c>.
+        /// Añade el origen de eventos <c>source</c> y lo asocia al
+        /// delegado referenciado por <c>name</c>.
         /// </summary>
         public void AddWeak<TSource>(string name, TSource source)
         {
@@ -112,8 +112,8 @@ namespace Essence.Util.WeakEvents
         }
 
         /// <summary>
-        ///     Elimina el origen de eventos <c>source</c> y lo desasocia del
-        ///     delegado referenciado por <c>name</c>.
+        /// Elimina el origen de eventos <c>source</c> y lo desasocia del
+        /// delegado referenciado por <c>name</c>.
         /// </summary>
         public void RemoveWeak<TSource>(string name, TSource source)
         {
@@ -125,8 +125,8 @@ namespace Essence.Util.WeakEvents
         }
 
         /// <summary>
-        ///     Elimina el origen de eventos <c>source</c> y lo desasocia a todos los
-        ///     delegados que correspondan con el tipo <c>TSource</c>.
+        /// Elimina el origen de eventos <c>source</c> y lo desasocia a todos los
+        /// delegados que correspondan con el tipo <c>TSource</c>.
         /// </summary>
         public void RemoveWeak<TSource>(TSource source)
         {
@@ -137,8 +137,8 @@ namespace Essence.Util.WeakEvents
         }
 
         /// <summary>
-        ///     Elimina todos los origenes de eventos y los desasocia del
-        ///     delegado referenciado por <c>name</c>.
+        /// Elimina todos los origenes de eventos y los desasocia del
+        /// delegado referenciado por <c>name</c>.
         /// </summary>
         public void ClearWeaks(string name)
         {
@@ -150,8 +150,8 @@ namespace Essence.Util.WeakEvents
         }
 
         /// <summary>
-        ///     Elimina todos los origenes de eventos y los desasocia del
-        ///     delegado que correspondan con el tipo <c>TSource</c>.
+        /// Elimina todos los origenes de eventos y los desasocia del
+        /// delegado que correspondan con el tipo <c>TSource</c>.
         /// </summary>
         public void ClearWeaks<TSource>()
         {
@@ -211,39 +211,39 @@ namespace Essence.Util.WeakEvents
         #region ISourceManager
 
         /// <summary>
-        ///     Interface de apoyo para la gestion del evento.
+        /// Interface de apoyo para la gestion del evento.
         /// </summary>
         internal interface ISourceManager
         {
             /// <summary>
-            ///     Valida el objeto (no ha sido liberado) e indica si es valido.
+            /// Valida el objeto (no ha sido liberado) e indica si es valido.
             /// </summary>
             bool Validate();
 
             /// <summary>
-            ///     Añade un nuevo origen de eventos.
+            /// Añade un nuevo origen de eventos.
             /// </summary>
             void AddSource(object source);
 
             /// <summary>
-            ///     Elimina un origen de eventos.
+            /// Elimina un origen de eventos.
             /// </summary>
             void RemoveSource(object source);
 
             /// <summary>
-            ///     Elimina todos los origenes de eventos.
+            /// Elimina todos los origenes de eventos.
             /// </summary>
             void RemoveAll();
 
             /// <summary>
-            ///     Tipo del origen de eventos.
+            /// Tipo del origen de eventos.
             /// </summary>
             Type SourceType { get; }
         }
 
         /// <summary>
-        ///     Clase de apoyo para la gestion del evento. Permite multiples deregistros.
-        ///     Igual a <c>SourceManager{T, TEventHandler, TEventArgs}</c> pero añade un parametro nuevo, <c>TSource</c>.
+        /// Clase de apoyo para la gestion del evento. Permite multiples deregistros.
+        /// Igual a <c>SourceManager{T, TEventHandler, TEventArgs}</c> pero añade un parametro nuevo, <c>TSource</c>.
         /// </summary>
         /// <typeparam name="T">Tipo de la clase base.</typeparam>
         /// <typeparam name="TSource">Tipo sobre quien se escuchan los eventos.</typeparam>
@@ -255,7 +255,7 @@ namespace Essence.Util.WeakEvents
             where TEventArgs : EventArgs
         {
             /// <summary>
-            ///     Constructor.
+            /// Constructor.
             /// </summary>
             /// <param name="eventHandler">Handler origen.</param>
             /// <param name="register">Delegado para registrar el evento.</param>
@@ -286,7 +286,7 @@ namespace Essence.Util.WeakEvents
             }
 
             /// <summary>
-            ///     Metodo que gestiona la invocacion y deregistra el handler.
+            /// Metodo que gestiona la invocacion y deregistra el handler.
             /// </summary>
             [UsedImplicitly]
             public void Invoke(object sender, TEventArgs e)

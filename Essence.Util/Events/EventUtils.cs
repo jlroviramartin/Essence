@@ -40,7 +40,7 @@ namespace Essence.Util.Events
         #region WeakListen
 
         /// <summary>
-        ///     Crea un handler debil para eventos de tipo <c>EventHandler</c>,
+        /// Crea un handler debil para eventos de tipo <c>EventHandler</c>,
         /// </summary>
         /// <param name="eventHandler">Handler origen.</param>
         /// <param name="register">Delegado para registrar el evento.</param>
@@ -55,7 +55,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Crea un handler debil para eventos de tipo <c>EventHandler</c>,
+        /// Crea un handler debil para eventos de tipo <c>EventHandler</c>,
         /// </summary>
         /// <param name="eventHandler">Handler origen.</param>
         /// <param name="register">Delegado para registrar el evento.</param>
@@ -71,7 +71,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Crea un handler debil para eventos de tipo <c>EventHandler_v2</c>,
+        /// Crea un handler debil para eventos de tipo <c>EventHandler_v2</c>,
         /// </summary>
         /// <param name="eventHandler">Handler origen.</param>
         /// <param name="register">Delegado para registrar el evento.</param>
@@ -87,7 +87,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Escucha con un handler debil para eventos de tipo <c>TEventHandler</c>,
+        /// Escucha con un handler debil para eventos de tipo <c>TEventHandler</c>,
         /// </summary>
         /// <param name="eventHandler">Handler origen.</param>
         /// <param name="register">Delegado para registrar el evento.</param>
@@ -109,7 +109,7 @@ namespace Essence.Util.Events
         #region MakeWeak
 
         /// <summary>
-        ///     Crea un handler debil para eventos de tipo <c>EventHandler</c>,
+        /// Crea un handler debil para eventos de tipo <c>EventHandler</c>,
         /// </summary>
         /// <param name="eventHandler">Handler origen.</param>
         /// <param name="unregister">Delegado para deregistrar el evento.</param>
@@ -122,7 +122,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Crea un handler debil para eventos de tipo <c>EventHandler</c>,
+        /// Crea un handler debil para eventos de tipo <c>EventHandler</c>,
         /// </summary>
         /// <param name="eventHandler">Handler origen.</param>
         /// <param name="unregister">Delegado para deregistrar el evento.</param>
@@ -136,7 +136,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Crea un handler debil para eventos de tipo <c>EventHandler_v2</c>,
+        /// Crea un handler debil para eventos de tipo <c>EventHandler_v2</c>,
         /// </summary>
         /// <param name="eventHandler">Handler origen.</param>
         /// <param name="unregister">Delegado para deregistrar el evento.</param>
@@ -150,7 +150,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Crea un handler debil para eventos de tipo <c>TEventHandler</c>,
+        /// Crea un handler debil para eventos de tipo <c>TEventHandler</c>,
         /// </summary>
         /// <param name="eventHandler">Handler origen.</param>
         /// <param name="unregister">Delegado para deregistrar el evento.</param>
@@ -190,7 +190,7 @@ namespace Essence.Util.Events
         #endregion MakeWeak
 
         /// <summary>
-        ///     Comprueba si la definicion del delegado es correcta.
+        /// Comprueba si la definicion del delegado es correcta.
         /// </summary>
         internal static void TestValidHandler<THandler, TArgs>()
             where TArgs : EventArgs
@@ -230,23 +230,23 @@ namespace Essence.Util.Events
         #region Inner classes
 
         /// <summary>
-        ///     Delegado que gestiona el deregistro del handler.
-        ///     <see cref="http://diditwith.net/2007/03/23/SolvingTheProblemWithEventsWeakEventHandlers.aspx" />
+        /// Delegado que gestiona el deregistro del handler.
+        /// <see cref="http://diditwith.net/2007/03/23/SolvingTheProblemWithEventsWeakEventHandlers.aspx" />
         /// </summary>
         /// <typeparam name="TEventHandler">Tipo del handler.</typeparam>
         /// <param name="eventHandler">Handler.</param>
         public delegate void UnregisterCallback<in TEventHandler>(TEventHandler eventHandler);
 
         /// <summary>
-        ///     Delegado que gestion el registro del handler. Por homogeneidad con <c>UnregisterCallback</c>
-        ///     aunque aqui no se utiliza.
+        /// Delegado que gestion el registro del handler. Por homogeneidad con <c>UnregisterCallback</c>
+        /// aunque aqui no se utiliza.
         /// </summary>
         /// <typeparam name="TEventHandler">Tipo del handler.</typeparam>
         /// <param name="eventHandler">Handler.</param>
         public delegate void RegisterCallback<in TEventHandler>(TEventHandler eventHandler);
 
         /// <summary>
-        ///     Interface de apoyo para la gestion del evento.
+        /// Interface de apoyo para la gestion del evento.
         /// </summary>
         public interface IWeakEventHandler
         {
@@ -256,7 +256,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Interface de apoyo para la gestion del evento.
+        /// Interface de apoyo para la gestion del evento.
         /// </summary>
         /// <typeparam name="TEventHandler">Tipo del handler.</typeparam>
         public interface IWeakEventHandler<out TEventHandler> : IWeakEventHandler
@@ -265,7 +265,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Clase de apoyo para la gestion del evento.
+        /// Clase de apoyo para la gestion del evento.
         /// </summary>
         /// <typeparam name="T">Tipo de la clase base.</typeparam>
         /// <typeparam name="TEventHandler">Tipo del handler.</typeparam>
@@ -276,7 +276,7 @@ namespace Essence.Util.Events
             where TEventArgs : EventArgs
         {
             /// <summary>
-            ///     Constructor.
+            /// Constructor.
             /// </summary>
             /// <param name="eventHandler">Handler origen.</param>
             /// <param name="unregister">Delegado para deregistrar el evento.</param>
@@ -291,7 +291,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Metodo que gestiona la invocacion y deregistra el handler.
+            /// Metodo que gestiona la invocacion y deregistra el handler.
             /// </summary>
             [UsedImplicitly]
             public void Invoke(object sender, TEventArgs e)
@@ -345,11 +345,11 @@ namespace Essence.Util.Events
             public override string ToString()
             {
                 return new ToStringBuilder()
-                    .Append("TargetRef", this.targetRef)
-                    .Append("OpenEventHandler", this.openHandler)
-                    .Append("Handler", this.handler)
-                    .Append("Unregister", this.unregister)
-                    .ToString();
+                       .Append("TargetRef", this.targetRef)
+                       .Append("OpenEventHandler", this.openHandler)
+                       .Append("Handler", this.handler)
+                       .Append("Unregister", this.unregister)
+                       .ToString();
             }
 
             #endregion
@@ -380,7 +380,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Clase de ayuda para fijar los eventos.
+        /// Clase de ayuda para fijar los eventos.
         /// </summary>
         /// <typeparam name="THandler"></typeparam>
         /// <typeparam name="TArgs"></typeparam>

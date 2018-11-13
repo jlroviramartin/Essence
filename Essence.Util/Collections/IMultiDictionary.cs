@@ -17,7 +17,7 @@ using System.Collections.Generic;
 namespace Essence.Util.Collections
 {
     /// <summary>
-    ///     Diccionario que asocia una clave con multiples valores (lista de valores).
+    /// Diccionario que asocia una clave con multiples valores (lista de valores).
     /// </summary>
     /// <typeparam name="TKey">Tipo de las claves del diccionario.</typeparam>
     /// <typeparam name="TValue">Tipo de los valores del diccionario.</typeparam>
@@ -26,7 +26,7 @@ namespace Essence.Util.Collections
         where TCollection : ICollection<TValue>
     {
         /// <summary>
-        ///     Indica si contiene al par <c>key</c>, <c>value</c>.
+        /// Indica si contiene al par <c>key</c>, <c>value</c>.
         /// </summary>
         /// <param name="key">Clave.</param>
         /// <param name="value">Valor.</param>
@@ -34,15 +34,15 @@ namespace Essence.Util.Collections
         bool Contains(TKey key, TValue value);
 
         /// <summary>
-        ///     Añade el par <c>key</c>, <c>value</c>. Si existe la clave, añade el
-        ///     valor a la lista de valores de la clave.
+        /// Añade el par <c>key</c>, <c>value</c>. Si existe la clave, añade el
+        /// valor a la lista de valores de la clave.
         /// </summary>
         /// <param name="key">Clave.</param>
         /// <param name="value">Valor.</param>
         void Add(TKey key, TValue value);
 
         /// <summary>
-        ///     Elimina el par <c>key</c>, <c>value</c>.
+        /// Elimina el par <c>key</c>, <c>value</c>.
         /// </summary>
         /// <param name="key">Clave.</param>
         /// <param name="value">Valor.</param>

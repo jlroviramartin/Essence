@@ -17,12 +17,12 @@ using System;
 namespace Essence.Util.Logs
 {
     /// <summary>
-    ///     Factoría de logs.
+    /// Factoría de logs.
     /// </summary>
     public interface ILogFactory
     {
         /// <summary>
-        ///     Crea un log para asociado al tipo <c>type</c>.
+        /// Crea un log para asociado al tipo <c>type</c>.
         /// </summary>
         /// <param name="type">Tipo.</param>
         /// <returns>Log.</returns>

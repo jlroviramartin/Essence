@@ -19,8 +19,8 @@ using System.Diagnostics.Contracts;
 namespace Essence.Geometry.Core.Double
 {
     /// <summary>
-    ///     Compares unit vectors using their angle.
-    ///     <pre><![CDATA[
+    /// Compares unit vectors using their angle.
+    /// <pre><![CDATA[
     /// ^ normal = direccion.PerpLeft
     /// |
     /// | /__

@@ -21,7 +21,7 @@ using System.Text;
 namespace Essence.Util.Collections
 {
     /// <summary>
-    ///     Argumentos de los eventos de un diccionario.
+    /// Argumentos de los eventos de un diccionario.
     /// </summary>
     public class DictionaryEventArgs : CollectionEventArgs
     {
@@ -215,10 +215,10 @@ namespace Essence.Util.Collections
         public override string ToString()
         {
             return new StringBuilder()
-                .AppendFormat("ChangeType={0}; ", Enum.GetName(typeof(CollectionChangeType), this.ChangeType))
-                .AppendFormat("Keys={0}; ", this.Keys.ToStringEx())
-                .AppendFormat("Values={0}", this.Items.ToStringEx())
-                .ToString();
+                   .AppendFormat("ChangeType={0}; ", Enum.GetName(typeof(CollectionChangeType), this.ChangeType))
+                   .AppendFormat("Keys={0}; ", this.Keys.ToStringEx())
+                   .AppendFormat("Values={0}", this.Items.ToStringEx())
+                   .ToString();
         }
 
         #endregion

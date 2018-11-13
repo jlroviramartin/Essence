@@ -18,7 +18,7 @@ using System.Collections.Generic;
 namespace Essence.Util.Collections
 {
     /// <summary>
-    ///     Utilidades sobre listas.
+    /// Utilidades sobre listas.
     /// </summary>
     public static class ListUtils
     {
@@ -61,7 +61,7 @@ namespace Essence.Util.Collections
         #region IList<T>
 
         /// <summary>
-        ///     Inserta todos los elementos de un enumerable a una lista, en la posicion indicada.
+        /// Inserta todos los elementos de un enumerable a una lista, en la posicion indicada.
         /// </summary>
         /// <typeparam name="T">Tipo de elementos de la lista.</typeparam>
         /// <param name="list">Lista.</param>
@@ -87,7 +87,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Elimina todos los elementos indicados de una lista.
+        /// Elimina todos los elementos indicados de una lista.
         /// </summary>
         /// <typeparam name="T">Tipo de elementos de la lista.</typeparam>
         /// <param name="list">Lista.</param>
@@ -128,7 +128,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Cambia dos elementos de la lista.
+        /// Cambia dos elementos de la lista.
         /// </summary>
         public static void Swap<T>(this IList<T> items, int i, int j)
         {
@@ -138,7 +138,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Da la vuelta a la lista (espejo).
+        /// Da la vuelta a la lista (espejo).
         /// </summary>
         public static void Reverse<T>(this IList<T> input)
         {
@@ -165,7 +165,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Obtiene el primer elemento de una lista.
+        /// Obtiene el primer elemento de una lista.
         /// </summary>
         /// <typeparam name="T">Tipo de elementos.</typeparam>
         /// <param name="list">Lista.</param>
@@ -180,7 +180,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Obtiene el ultimo elemento de una lista.
+        /// Obtiene el ultimo elemento de una lista.
         /// </summary>
         /// <typeparam name="T">Tipo de elementos.</typeparam>
         /// <param name="list">Lista.</param>
@@ -199,13 +199,13 @@ namespace Essence.Util.Collections
         #region BinarySearch
 
         /// <summary>
-        ///     Busca la posicion de <c>value</c> en la lista <c>list</c>.
-        ///     Si hay multiples ocurrencias, devuelve la primera ocurrencia.
-        ///     Si no existe, se devuelve el complemento del indice del elemento mayor mas cercano.
-        ///     Si el elemento mayor mas cercano no existe, devuelve el complemento del indice ultimo+1.
-        ///     Permite la insercion ordenada de elementos.
-        ///     http://www.cs.man.ac.uk/~pt/algorithms/binary.html
-        ///     http://en.wikipedia.org/wiki/Binary_search_algorithm
+        /// Busca la posicion de <c>value</c> en la lista <c>list</c>.
+        /// Si hay multiples ocurrencias, devuelve la primera ocurrencia.
+        /// Si no existe, se devuelve el complemento del indice del elemento mayor mas cercano.
+        /// Si el elemento mayor mas cercano no existe, devuelve el complemento del indice ultimo+1.
+        /// Permite la insercion ordenada de elementos.
+        /// http://www.cs.man.ac.uk/~pt/algorithms/binary.html
+        /// http://en.wikipedia.org/wiki/Binary_search_algorithm
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
@@ -343,13 +343,13 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Busca la posicion de <c>value</c> en la lista <c>list</c>.
-        ///     Si hay multiples ocurrencias, devuelve la primera ocurrencia.
-        ///     Si no existe, se devuelve el complemento del indice del elemento mayor mas cercano.
-        ///     Si el elemento mayor mas cercano no existe, devuelve el complemento del indice ultimo+1.
-        ///     Permite la insercion ordenada de elementos.
-        ///     http://www.cs.man.ac.uk/~pt/algorithms/binary.html
-        ///     http://en.wikipedia.org/wiki/Binary_search_algorithm
+        /// Busca la posicion de <c>value</c> en la lista <c>list</c>.
+        /// Si hay multiples ocurrencias, devuelve la primera ocurrencia.
+        /// Si no existe, se devuelve el complemento del indice del elemento mayor mas cercano.
+        /// Si el elemento mayor mas cercano no existe, devuelve el complemento del indice ultimo+1.
+        /// Permite la insercion ordenada de elementos.
+        /// http://www.cs.man.ac.uk/~pt/algorithms/binary.html
+        /// http://en.wikipedia.org/wiki/Binary_search_algorithm
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
@@ -424,13 +424,13 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Busca la posicion de <c>value</c> en la lista <c>list</c>.
-        ///     Si hay multiples ocurrencias, devuelve la primera ocurrencia.
-        ///     Si no existe, se devuelve el complemento del indice del elemento mayor mas cercano.
-        ///     Si el elemento mayor mas cercano no existe, devuelve el complemento del indice ultimo+1.
-        ///     Permite la insercion ordenada de elementos.
-        ///     http://www.cs.man.ac.uk/~pt/algorithms/binary.html
-        ///     http://en.wikipedia.org/wiki/Binary_search_algorithm
+        /// Busca la posicion de <c>value</c> en la lista <c>list</c>.
+        /// Si hay multiples ocurrencias, devuelve la primera ocurrencia.
+        /// Si no existe, se devuelve el complemento del indice del elemento mayor mas cercano.
+        /// Si el elemento mayor mas cercano no existe, devuelve el complemento del indice ultimo+1.
+        /// Permite la insercion ordenada de elementos.
+        /// http://www.cs.man.ac.uk/~pt/algorithms/binary.html
+        /// http://en.wikipedia.org/wiki/Binary_search_algorithm
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list">Lista.</param>
@@ -529,7 +529,7 @@ namespace Essence.Util.Collections
         #region QuickSort
 
         /// <summary>
-        ///     Aplica una ordenacion quicksort sobre la lista <c>input</c>.
+        /// Aplica una ordenacion quicksort sobre la lista <c>input</c>.
         /// </summary>
         /// <param name="input">Lista a ordenar.</param>
         /// <param name="compare">Comparador.</param>
@@ -552,7 +552,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Aplica una ordenacion quicksort sobre la lista <c>input</c>.
+        /// Aplica una ordenacion quicksort sobre la lista <c>input</c>.
         /// </summary>
         /// <param name="input">Lista a ordenar.</param>
         /// <param name="comparer">Comparador.</param>
@@ -575,7 +575,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Aplica una ordenacion quicksort sobre la lista <c>input</c>.
+        /// Aplica una ordenacion quicksort sobre la lista <c>input</c>.
         /// </summary>
         /// <param name="input">Lista a ordenar.</param>
         public static void QuickSort<T>(this IList<T> input)

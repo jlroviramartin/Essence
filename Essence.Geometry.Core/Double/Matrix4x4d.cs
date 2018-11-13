@@ -48,7 +48,7 @@ namespace Essence.Geometry.Core.Double
         public const string _M33 = "M33";
 
         /// <summary>
-        ///     Matriz identidad.
+        /// Matriz identidad.
         /// </summary>
         public static Matrix4x4d Identity
         {
@@ -62,7 +62,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Matriz cero.
+        /// Matriz cero.
         /// </summary>
         public static Matrix4x4d Zero
         {
@@ -70,14 +70,14 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         public Matrix4x4d()
         {
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         public Matrix4x4d(double m00, double m01, double m02, double m03,
                           double m10, double m11, double m12, double m13,
@@ -91,7 +91,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         /// <param name="items">Elementos.</param>
         public Matrix4x4d(double[] items)
@@ -100,7 +100,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         /// <param name="items">Elementos.</param>
         public Matrix4x4d(double[,] items)
@@ -109,7 +109,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea un mat 4x4 con los vectores directores <c>vX, vY, vZ</c>.
+        /// Crea un mat 4x4 con los vectores directores <c>vX, vY, vZ</c>.
         /// </summary>
         /// <param name="vX">Vector X.</param>
         /// <param name="vY">Vector Y.</param>
@@ -120,8 +120,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea un mat 4x4 con los vectores directores <c>vX, vY, vZ</c>
-        ///     y el punto origen <c>o</c>.
+        /// Crea un mat 4x4 con los vectores directores <c>vX, vY, vZ</c>
+        /// y el punto origen <c>o</c>.
         /// </summary>
         /// <param name="vX">Vector X.</param>
         /// <param name="vY">Vector Y.</param>
@@ -291,7 +291,7 @@ namespace Essence.Geometry.Core.Double
         #region operadores
 
         /// <summary>
-        ///     Operacion sumar: mat1 + mat2.
+        /// Operacion sumar: mat1 + mat2.
         /// </summary>
         public static Matrix4x4d operator +(Matrix4x4d mat1, Matrix4x4d mat2)
         {
@@ -301,7 +301,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion restar: mat1 - mat2.
+        /// Operacion restar: mat1 - mat2.
         /// </summary>
         public static Matrix4x4d operator -(Matrix4x4d mat1, Matrix4x4d mat2)
         {
@@ -311,7 +311,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion restar: mat1 - mat2.
+        /// Operacion restar: mat1 - mat2.
         /// </summary>
         public static Matrix4x4d operator -(Matrix4x4d mat)
         {
@@ -321,7 +321,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: mat * valor.
+        /// Operacion multiplicacion: mat * valor.
         /// </summary>
         public static Matrix4x4d operator *(Matrix4x4d mat, double v)
         {
@@ -331,7 +331,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: valor * mat.
+        /// Operacion multiplicacion: valor * mat.
         /// </summary>
         public static Matrix4x4d operator *(double v, Matrix4x4d mat)
         {
@@ -341,7 +341,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion division: mat / valor.
+        /// Operacion division: mat / valor.
         /// </summary>
         public static Matrix4x4d operator /(Matrix4x4d mat, double v)
         {
@@ -351,7 +351,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: mat1 * mat2.
+        /// Operacion multiplicacion: mat1 * mat2.
         /// </summary>
         public static Matrix4x4d operator *(Matrix4x4d mat1, Matrix4x4d mat2)
         {
@@ -365,7 +365,7 @@ namespace Essence.Geometry.Core.Double
         #region casting
 
         /// <summary>
-        ///     Casting a REAL[].
+        /// Casting a REAL[].
         /// </summary>
         public static explicit operator double[](Matrix4x4d m)
         {
@@ -379,7 +379,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Casting a REAL[,].
+        /// Casting a REAL[,].
         /// </summary>
         public static explicit operator double[,](Matrix4x4d m)
         {
@@ -397,7 +397,7 @@ namespace Essence.Geometry.Core.Double
         #region propiedades
 
         /// <summary>
-        ///     Filas.
+        /// Filas.
         /// </summary>
         public int Rows
         {
@@ -405,7 +405,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Columnas.
+        /// Columnas.
         /// </summary>
         public int Columns
         {
@@ -413,7 +413,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es valido: ningun componente es NaN ni Infinito.
+        /// Indica si es valido: ningun componente es NaN ni Infinito.
         /// </summary>
         public bool IsValid
         {
@@ -421,47 +421,47 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica que algun componente es NaN.
+        /// Indica que algun componente es NaN.
         /// </summary>
         public bool IsNaN
         {
             get
             {
                 return (double.IsNaN(this.M00) || double.IsNaN(this.M01)
-                        || double.IsNaN(this.M02) || double.IsNaN(this.M03))
+                                               || double.IsNaN(this.M02) || double.IsNaN(this.M03))
                        || (double.IsNaN(this.M10) || double.IsNaN(this.M11)
-                           || double.IsNaN(this.M12) || double.IsNaN(this.M13))
+                                                  || double.IsNaN(this.M12) || double.IsNaN(this.M13))
                        || (double.IsNaN(this.M20) || double.IsNaN(this.M21)
-                           || double.IsNaN(this.M22) || double.IsNaN(this.M23))
+                                                  || double.IsNaN(this.M22) || double.IsNaN(this.M23))
                        || (double.IsNaN(this.M20) || double.IsNaN(this.M21)
-                           || double.IsNaN(this.M22) || double.IsNaN(this.M23))
+                                                  || double.IsNaN(this.M22) || double.IsNaN(this.M23))
                        || (double.IsNaN(this.M30) || double.IsNaN(this.M31)
-                           || double.IsNaN(this.M32) || double.IsNaN(this.M33));
+                                                  || double.IsNaN(this.M32) || double.IsNaN(this.M33));
             }
         }
 
         /// <summary>
-        ///     Indica que algun componente es infinito.
+        /// Indica que algun componente es infinito.
         /// </summary>
         public bool IsInfinity
         {
             get
             {
                 return (double.IsInfinity(this.M00) || double.IsInfinity(this.M01)
-                        || double.IsInfinity(this.M02) || double.IsInfinity(this.M03))
+                                                    || double.IsInfinity(this.M02) || double.IsInfinity(this.M03))
                        || (double.IsInfinity(this.M10) || double.IsInfinity(this.M11)
-                           || double.IsInfinity(this.M12) || double.IsInfinity(this.M13))
+                                                       || double.IsInfinity(this.M12) || double.IsInfinity(this.M13))
                        || (double.IsInfinity(this.M20) || double.IsInfinity(this.M21)
-                           || double.IsInfinity(this.M22) || double.IsInfinity(this.M23))
+                                                       || double.IsInfinity(this.M22) || double.IsInfinity(this.M23))
                        || (double.IsInfinity(this.M20) || double.IsInfinity(this.M21)
-                           || double.IsInfinity(this.M22) || double.IsInfinity(this.M23))
+                                                       || double.IsInfinity(this.M22) || double.IsInfinity(this.M23))
                        || (double.IsInfinity(this.M30) || double.IsInfinity(this.M31)
-                           || double.IsInfinity(this.M32) || double.IsInfinity(this.M33));
+                                                       || double.IsInfinity(this.M32) || double.IsInfinity(this.M33));
             }
         }
 
         /// <summary>
-        ///     Indica si es cero.
+        /// Indica si es cero.
         /// </summary>
         public bool IsZero
         {
@@ -475,7 +475,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es identidad.
+        /// Indica si es identidad.
         /// </summary>
         public bool IsIdentity
         {
@@ -489,7 +489,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es invertible.
+        /// Indica si es invertible.
         /// </summary>
         public bool IsInvertible
         {
@@ -497,7 +497,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Indica si es cuadrada.
+        /// Indica si es cuadrada.
         /// </summary>
         public bool IsSquared
         {
@@ -505,7 +505,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Elemento <c>i, j</c>.
+        /// Elemento <c>i, j</c>.
         /// </summary>
         /// <param name="i">Fila.</param>
         /// <param name="j">Columna.</param>
@@ -655,22 +655,22 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Elementos fila 0.
+        /// Elementos fila 0.
         /// </summary>
         public double M00, M01, M02, M03;
 
         /// <summary>
-        ///     Elementos fila 1.
+        /// Elementos fila 1.
         /// </summary>
         public double M10, M11, M12, M13;
 
         /// <summary>
-        ///     Elementos fila 2.
+        /// Elementos fila 2.
         /// </summary>
         public double M20, M21, M22, M23;
 
         /// <summary>
-        ///     Elementos fila 3.
+        /// Elementos fila 3.
         /// </summary>
         public double M30, M31, M32, M33;
 
@@ -679,7 +679,7 @@ namespace Essence.Geometry.Core.Double
         #region sets
 
         /// <summary>
-        ///     Establece los elementos.
+        /// Establece los elementos.
         /// </summary>
         public void Set(double m00, double m01, double m02, double m03,
                         double m10, double m11, double m12, double m13,
@@ -705,7 +705,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece a <c>elementos</c>.
+        /// Establece a <c>elementos</c>.
         /// </summary>
         /// <param name="items">Elementos.</param>
         public void Set(double[] items)
@@ -720,13 +720,13 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece a <c>elementos</c>.
+        /// Establece a <c>elementos</c>.
         /// </summary>
         /// <param name="items">Elementos.</param>
         public void Set(double[,] items)
         {
             Contract.Requires((items != null) && (items.GetLength(0) == this.Rows)
-                              && (items.GetLength(1) == this.Columns));
+                                              && (items.GetLength(1) == this.Columns));
 
             this.Set(items[0, 0], items[0, 1], items[0, 2], items[0, 2],
                      items[1, 0], items[1, 1], items[1, 2], items[1, 2],
@@ -735,7 +735,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece a cero.
+        /// Establece a cero.
         /// </summary>
         public void SetZero()
         {
@@ -746,7 +746,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece a la identidad.
+        /// Establece a la identidad.
         /// </summary>
         public void SetIdentity()
         {
@@ -757,7 +757,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece a <c>mat</c>.
+        /// Establece a <c>mat</c>.
         /// </summary>
         /// <param name="mat">Matriz.</param>
         public void Set(Matrix4x4d mat)
@@ -771,7 +771,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece la mat 4x4 con los vectores directores <c>vX, vY, vZ</c>.
+        /// Establece la mat 4x4 con los vectores directores <c>vX, vY, vZ</c>.
         /// </summary>
         /// <param name="vX">Vector X.</param>
         /// <param name="vY">Vector Y.</param>
@@ -785,8 +785,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Establece la mat 4x4 con los vectores directores <c>vX, vY, vZ</c>
-        ///     y el punto origen <c>o</c>.
+        /// Establece la mat 4x4 con los vectores directores <c>vX, vY, vZ</c>
+        /// y el punto origen <c>o</c>.
         /// </summary>
         /// <param name="vX">Vector X.</param>
         /// <param name="vY">Vector Y.</param>
@@ -805,7 +805,7 @@ namespace Essence.Geometry.Core.Double
         #region operaciones
 
         /// <summary>
-        ///     Operacion suma: this = this + mat.
+        /// Operacion suma: this = this + mat.
         /// </summary>
         public void Add(Matrix4x4d mat)
         {
@@ -813,7 +813,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion suma: this = mat1 + mat2.
+        /// Operacion suma: this = mat1 + mat2.
         /// </summary>
         public void Add(Matrix4x4d mat1, Matrix4x4d mat2)
         {
@@ -826,7 +826,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion resta: this = this - mat.
+        /// Operacion resta: this = this - mat.
         /// </summary>
         public void Sub(Matrix4x4d mat)
         {
@@ -834,7 +834,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion resta: this = mat1 - mat2.
+        /// Operacion resta: this = mat1 - mat2.
         /// </summary>
         public void Sub(Matrix4x4d mat1, Matrix4x4d mat2)
         {
@@ -847,7 +847,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: this = this * valor.
+        /// Operacion multiplicacion: this = this * valor.
         /// </summary>
         public void Mul(double v)
         {
@@ -855,7 +855,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: this = mat * valor.
+        /// Operacion multiplicacion: this = mat * valor.
         /// </summary>
         public void Mul(Matrix4x4d mat, double v)
         {
@@ -868,7 +868,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion division: this = this / valor.
+        /// Operacion division: this = this / valor.
         /// </summary>
         public void Div(double v)
         {
@@ -876,7 +876,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion division: this = mat / valor.
+        /// Operacion division: this = mat / valor.
         /// </summary>
         public void Div(Matrix4x4d mat, double v)
         {
@@ -889,7 +889,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion cambio signo: this = -this.
+        /// Operacion cambio signo: this = -this.
         /// </summary>
         public void Neg()
         {
@@ -897,7 +897,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion cambio signo: this = -mat.
+        /// Operacion cambio signo: this = -mat.
         /// </summary>
         public void Neg(Matrix4x4d mat)
         {
@@ -910,7 +910,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion valor absoluto: this = Absoluto ( this ).
+        /// Operacion valor absoluto: this = Absoluto ( this ).
         /// </summary>
         public void Abs()
         {
@@ -918,7 +918,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion valor absoluto: this = Absoluto ( mat ).
+        /// Operacion valor absoluto: this = Absoluto ( mat ).
         /// </summary>
         public void Abs(Matrix4x4d mat)
         {
@@ -931,7 +931,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: this = this * mat.
+        /// Operacion multiplicacion: this = this * mat.
         /// </summary>
         public void Mul(Matrix4x4d mat)
         {
@@ -939,7 +939,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion multiplicacion: this = mat1 * mat2.
+        /// Operacion multiplicacion: this = mat1 * mat2.
         /// </summary>
         public void Mul(Matrix4x4d mat1, Matrix4x4d mat2)
         {
@@ -964,7 +964,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion trasposicion: this = Trasponer( this ).
+        /// Operacion trasposicion: this = Trasponer( this ).
         /// </summary>
         public void Transpose()
         {
@@ -972,7 +972,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion trasposicion: this = Trasponer( mat ).
+        /// Operacion trasposicion: this = Trasponer( mat ).
         /// </summary>
         public void Transpose(Matrix4x4d mat)
         {
@@ -985,7 +985,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion inversion: this = Invertir( this ).
+        /// Operacion inversion: this = Invertir( this ).
         /// </summary>
         public void Inv()
         {
@@ -993,7 +993,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion inversion: this = Invertir( mat ).
+        /// Operacion inversion: this = Invertir( mat ).
         /// </summary>
         public void Inv(Matrix4x4d mat)
         {
@@ -1055,7 +1055,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Operacion determinante.
+        /// Operacion determinante.
         /// </summary>
         public double Determinant
         {
@@ -1071,7 +1071,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una copia.
+        /// Crea una copia.
         /// </summary>
         /// <returns>Copia.</returns>
         public Matrix4x4d Clone()
@@ -1085,7 +1085,7 @@ namespace Essence.Geometry.Core.Double
         #region privados
 
         /// <summary>
-        ///     Comprueba si son casi iguales.
+        /// Comprueba si son casi iguales.
         /// </summary>
         private bool EpsilonEquals(double m00, double m01, double m02, double m03,
                                    double m10, double m11, double m12, double m13,
@@ -1134,11 +1134,11 @@ namespace Essence.Geometry.Core.Double
         public override int GetHashCode()
         {
             return new HashCodeBuilder()
-                .Append(this.M00).Append(this.M01).Append(this.M02).Append(this.M03)
-                .Append(this.M10).Append(this.M11).Append(this.M12).Append(this.M13)
-                .Append(this.M20).Append(this.M21).Append(this.M22).Append(this.M23)
-                .Append(this.M30).Append(this.M31).Append(this.M32).Append(this.M33)
-                .GetHashCode();
+                   .Append(this.M00).Append(this.M01).Append(this.M02).Append(this.M03)
+                   .Append(this.M10).Append(this.M11).Append(this.M12).Append(this.M13)
+                   .Append(this.M20).Append(this.M21).Append(this.M22).Append(this.M23)
+                   .Append(this.M30).Append(this.M31).Append(this.M32).Append(this.M33)
+                   .GetHashCode();
         }
 
         #endregion

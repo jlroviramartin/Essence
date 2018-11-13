@@ -157,7 +157,7 @@ namespace Essence.Util.Collections
         #region Inner classes
 
         /// <summary>
-        ///     Coleccion de claves para el diccionario.
+        /// Coleccion de claves para el diccionario.
         /// </summary>
         private sealed class CollectionKeys : AbsCollection<TK>
         {
@@ -201,7 +201,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Coleccion de valores para el diccionario.
+        /// Coleccion de valores para el diccionario.
         /// </summary>
         private sealed class CollectionValues : AbsCollection<TV>
         {
@@ -251,7 +251,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Enumerador de claves para el diccionario.
+        /// Enumerador de claves para el diccionario.
         /// </summary>
         private sealed class EnumeratorKeys : AbsEnumerator<TK>
         {
@@ -276,7 +276,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Enumerador de valores para el diccionario.
+        /// Enumerador de valores para el diccionario.
         /// </summary>
         private sealed class EnumeratorValues : AbsEnumerator<TV>
         {

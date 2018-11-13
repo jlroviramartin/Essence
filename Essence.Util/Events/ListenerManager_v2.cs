@@ -23,8 +23,8 @@ using Essence.Util.Collections;
 namespace Essence.Util.Events
 {
     /// <summary>
-    ///     Gestor de 'escuchadores' (listeners). Permite registar escuchadores (listeners) para ciertos eventos.
-    ///     Por ahora no utiliza eventos debiles.
+    /// Gestor de 'escuchadores' (listeners). Permite registar escuchadores (listeners) para ciertos eventos.
+    /// Por ahora no utiliza eventos debiles.
     /// </summary>
     public sealed class ListenerManager_v2<T>
     {
@@ -34,7 +34,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Establece la raiz.
+        /// Establece la raiz.
         /// </summary>
         public void SetRoot(T root)
         {
@@ -216,7 +216,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     Busca los listeners del tipo <c>senderType</c> (no busca en lo tipos de los que deriva).
+        /// Busca los listeners del tipo <c>senderType</c> (no busca en lo tipos de los que deriva).
         /// </summary>
         private IEnumerable<Listener> FindListenersOfExactType(Type senderType)
         {
@@ -454,22 +454,22 @@ namespace Essence.Util.Events
         #region Listener
 
         /// <summary>
-        ///     Clase base de los 'escuchadores' (listeners).
+        /// Clase base de los 'escuchadores' (listeners).
         /// </summary>
         private abstract class Listener
         {
             /// <summary>
-            ///     Gestor de eventos.
+            /// Gestor de eventos.
             /// </summary>
             public ListenerManager_v2<T> Manager { protected get; set; }
 
             /// <summary>
-            ///     Tipo de objetos que emite los eventos.
+            /// Tipo de objetos que emite los eventos.
             /// </summary>
             public Type SenderType { protected get; set; }
 
             /// <summary>
-            ///     Indica si el listener (el handler) esta vivo.
+            /// Indica si el listener (el handler) esta vivo.
             /// </summary>
             public bool IsAlive
             {
@@ -477,7 +477,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Registra el listener en el objeto.
+            /// Registra el listener en el objeto.
             /// </summary>
             public virtual void Register(object sender)
             {
@@ -488,7 +488,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Deregistra el listener en el objeto.
+            /// Deregistra el listener en el objeto.
             /// </summary>
             public virtual void Unregister(object sender)
             {
@@ -508,12 +508,12 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Indica si tambien añade los valores <c>GetValues</c>, al gestor.
+            /// Indica si tambien añade los valores <c>GetValues</c>, al gestor.
             /// </summary>
             public bool ValuesToManager { get; protected set; }
 
             /// <summary>
-            ///     Obtiene los valores asociados al objeto.
+            /// Obtiene los valores asociados al objeto.
             /// </summary>
             public abstract IEnumerable GetValues(object sender);
 
@@ -535,7 +535,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Notifica de un evento.
+            /// Notifica de un evento.
             /// </summary>
             protected void OnEvent(object sender, EventArgs args)
             {
@@ -544,8 +544,8 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Indica si los listeners son compatibles.
-            ///     Ver <c>PropertyListener</c> y <c>PropertiesListener</c>.
+            /// Indica si los listeners son compatibles.
+            /// Ver <c>PropertyListener</c> y <c>PropertiesListener</c>.
             /// </summary>
             /// <returns></returns>
             protected static bool Compatibles(Listener listener1, Listener listener2)
@@ -564,7 +564,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     'Escuchador' (listener) genérico.
+        /// 'Escuchador' (listener) genérico.
         /// </summary>
         private sealed class EventListener : Listener
         {
@@ -608,7 +608,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     'Escuchador' (listener) genérico.
+        /// 'Escuchador' (listener) genérico.
         /// </summary>
         private class EventListener_v2<TEventArgs> : Listener
             where TEventArgs : EventArgs
@@ -661,7 +661,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     'Escuchador' (listener) genérico.
+        /// 'Escuchador' (listener) genérico.
         /// </summary>
         private class EventListener<TEventArgs> : Listener
             where TEventArgs : EventArgs
@@ -706,7 +706,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     'Escuchador' (listener) de una propiedad.
+        /// 'Escuchador' (listener) de una propiedad.
         /// </summary>
         private class PropertyListener : EventListener_v2<PropertyChangedExEventArgs>
         {
@@ -757,7 +757,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     'Escuchador' (listener) de una propiedad.
+        /// 'Escuchador' (listener) de una propiedad.
         /// </summary>
         private sealed class PropertyListener<TItem> : PropertyListener
         {
@@ -776,7 +776,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     'Escuchador' (listener) de múltiples propiedades.
+        /// 'Escuchador' (listener) de múltiples propiedades.
         /// </summary>
         private sealed class PropertiesListener : EventListener_v2<PropertyChangedExEventArgs>
         {
@@ -862,7 +862,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     'Escuchador' (listener) de todas las propiedades.
+        /// 'Escuchador' (listener) de todas las propiedades.
         /// </summary>
         private sealed class AllPropertiesListener : EventListener_v2<PropertyChangedExEventArgs>
         {
@@ -899,7 +899,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     'Escuchador' (listener) de eventos sobre colecciones.
+        /// 'Escuchador' (listener) de eventos sobre colecciones.
         /// </summary>
         private sealed class CollectionListener<TItem> : EventListener_v2<CollectionEventArgs>
         {
@@ -937,7 +937,7 @@ namespace Essence.Util.Events
         }
 
         /// <summary>
-        ///     'Escuchador' (listener) de eventos sobre listas.
+        /// 'Escuchador' (listener) de eventos sobre listas.
         /// </summary>
         private sealed class ListListener<TItem> : EventListener_v2<ListEventArgs>
         {
@@ -989,7 +989,7 @@ namespace Essence.Util.Events
             #region Generics
 
             /// <summary>
-            ///     Gestiona los eventos genericos.
+            /// Gestiona los eventos genericos.
             /// </summary>
             public RegisterForImp<TSender> Register(EventHandler eventHandler,
                                                     RegisterCallback<TSender, EventHandler> register,
@@ -1003,7 +1003,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos genericos.
+            /// Gestiona los eventos genericos.
             /// </summary>
             public RegisterForImp<TSender> Register<TEventArgs>(EventHandler_v2<TEventArgs> eventHandler,
                                                                 RegisterCallback<TSender, EventHandler_v2<TEventArgs>> register,
@@ -1018,7 +1018,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de multiples propiedades.
+            /// Gestiona los eventos de multiples propiedades.
             /// </summary>
             public RegisterForImp<TSender> RegisterAllProperties(EventHandler_v2<PropertyChangedExEventArgs> eventHandler,
                                                                  RegisterCallback<TSender, EventHandler_v2<PropertyChangedExEventArgs>> register,
@@ -1035,7 +1035,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de multiples propiedades.
+            /// Gestiona los eventos de multiples propiedades.
             /// </summary>
             public RegisterForImp<TSender> RegisterAllProperties(EventHandler_v2<PropertyChangedExEventArgs> eventHandler,
                                                                  bool valuesToManager = true)
@@ -1051,7 +1051,7 @@ namespace Essence.Util.Events
             #region Property
 
             /// <summary>
-            ///     Gestiona los eventos de una propiedad.
+            /// Gestiona los eventos de una propiedad.
             /// </summary>
             public RegisterForImp<TSender> RegisterProperty<TItem>(string propertyName, Func<TSender, TItem> getValue,
                                                                    bool valuesToManager = true)
@@ -1060,7 +1060,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de una propiedad.
+            /// Gestiona los eventos de una propiedad.
             /// </summary>
             public RegisterForImp<TSender> RegisterProperty<TItem>(string propertyName, Func<TSender, TItem> getValue,
                                                                    EventHandler_v2<PropertyChangedExEventArgs> eventHandler,
@@ -1073,7 +1073,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de una propiedad.
+            /// Gestiona los eventos de una propiedad.
             /// </summary>
             public RegisterForImp<TSender> RegisterProperty<TItem>(string propertyName, Func<TSender, TItem> getValue,
                                                                    RegisterCallback<TSender, EventHandler_v2<PropertyChangedExEventArgs>> register,
@@ -1084,7 +1084,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de una propiedad.
+            /// Gestiona los eventos de una propiedad.
             /// </summary>
             public RegisterForImp<TSender> RegisterProperty<TItem>(string propertyName, Func<TSender, TItem> getValue,
                                                                    EventHandler_v2<PropertyChangedExEventArgs> eventHandler,
@@ -1147,7 +1147,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de multiples propiedades.
+            /// Gestiona los eventos de multiples propiedades.
             /// </summary>
             public RegisterForImp<TSender> RegisterProperties(Type[] propertyTypes, string[] propertyNames, Func<TSender, object>[] getValues,
                                                               bool valuesToManager = true)
@@ -1156,7 +1156,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de multiples propiedades.
+            /// Gestiona los eventos de multiples propiedades.
             /// </summary>
             public RegisterForImp<TSender> RegisterProperties(Type[] propertyTypes, string[] propertyNames, Func<TSender, object>[] getValues,
                                                               EventHandler_v2<PropertyChangedExEventArgs> eventHandler,
@@ -1170,7 +1170,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de multiples propiedades.
+            /// Gestiona los eventos de multiples propiedades.
             /// </summary>
             public RegisterForImp<TSender> RegisterProperties(Type[] propertyTypes, string[] propertyNames, Func<TSender, object>[] getValues,
                                                               RegisterCallback<TSender, EventHandler_v2<PropertyChangedExEventArgs>> register,
@@ -1181,7 +1181,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de multiples propiedades.
+            /// Gestiona los eventos de multiples propiedades.
             /// </summary>
             public RegisterForImp<TSender> RegisterProperties(Type[] propertyTypes, string[] propertyNames, Func<TSender, object>[] getValues,
                                                               EventHandler_v2<PropertyChangedExEventArgs> eventHandler,
@@ -1206,7 +1206,7 @@ namespace Essence.Util.Events
             #region Collections
 
             /// <summary>
-            ///     Gestiona los eventos de una coleccion.
+            /// Gestiona los eventos de una coleccion.
             /// </summary>
             public RegisterForImp<TSender> RegisterCollection<TItem>(Func<TSender, ICollection<TItem>> getValues,
                                                                      RegisterCallback<TSender, EventHandler_v2<CollectionEventArgs>> register,
@@ -1217,7 +1217,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de una coleccion.
+            /// Gestiona los eventos de una coleccion.
             /// </summary>
             public RegisterForImp<TSender> RegisterCollection<TItem>(Func<TSender, ICollection<TItem>> getValues,
                                                                      EventHandler_v2<CollectionEventArgs> eventHandler,
@@ -1235,7 +1235,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de una coleccion.
+            /// Gestiona los eventos de una coleccion.
             /// </summary>
             public RegisterForImp<TSender> RegisterCollection<TItem>(Func<TSender, IEventCollection<TItem>> getValues,
                                                                      bool valuesToManager = true)
@@ -1244,7 +1244,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de una coleccion.
+            /// Gestiona los eventos de una coleccion.
             /// </summary
             public RegisterForImp<TSender> RegisterCollection<TItem>(Func<TSender, IEventCollection<TItem>> getValues,
                                                                      EventHandler_v2<CollectionEventArgs> eventHandler,
@@ -1262,7 +1262,7 @@ namespace Essence.Util.Events
             #region Lists
 
             /// <summary>
-            ///     Gestiona los eventos de una lista.
+            /// Gestiona los eventos de una lista.
             /// </summary>
             public RegisterForImp<TSender> RegisterList<TItem>(Func<TSender, IList<TItem>> getValues,
                                                                RegisterCallback<TSender, EventHandler_v2<ListEventArgs>> register,
@@ -1273,7 +1273,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de una lista.
+            /// Gestiona los eventos de una lista.
             /// </summary>
             public RegisterForImp<TSender> RegisterList<TItem>(Func<TSender, IList<TItem>> getValues,
                                                                EventHandler_v2<ListEventArgs> eventHandler,
@@ -1291,7 +1291,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de una lista.
+            /// Gestiona los eventos de una lista.
             /// </summary>
             public RegisterForImp<TSender> RegisterList<TItem>(Func<TSender, IEventList<TItem>> getValues,
                                                                bool valuesToManager = true)
@@ -1300,7 +1300,7 @@ namespace Essence.Util.Events
             }
 
             /// <summary>
-            ///     Gestiona los eventos de una lista.
+            /// Gestiona los eventos de una lista.
             /// </summary>
             public RegisterForImp<TSender> RegisterList<TItem>(Func<TSender, IEventList<TItem>> getValues,
                                                                EventHandler_v2<ListEventArgs> eventHandler,

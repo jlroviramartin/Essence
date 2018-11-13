@@ -47,12 +47,12 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Rectangulo vacio.
+        /// Rectangulo vacio.
         /// </summary>
         public static readonly BoundingBox2i Empty = new BoundingBox2i(0, -1, 0, -1);
 
         /// <summary>
-        ///     Une todos los rectangulos.
+        /// Une todos los rectangulos.
         /// </summary>
         public static BoundingBox2i Union(params BoundingBox2i[] bboxes)
         {
@@ -69,7 +69,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Une todos los puntos.
+        /// Une todos los puntos.
         /// </summary>
         public static BoundingBox2i Union(params Point2i[] points)
         {
@@ -94,7 +94,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Indica si es vacio.
+        /// Indica si es vacio.
         /// </summary>
         public bool IsEmpty
         {
@@ -135,8 +135,8 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Indica si el rectangulo toca al rectangulo indicado por algun lado desde el interior.
-        ///     <c><![CDATA[
+        /// Indica si el rectangulo toca al rectangulo indicado por algun lado desde el interior.
+        /// <c><![CDATA[
         ///  +-+----+---+
         ///  | |    |   |
         ///  | +----+   |
@@ -153,7 +153,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Indica si el rectangulo toca al punto indicado por algun lado.
+        /// Indica si el rectangulo toca al punto indicado por algun lado.
         /// </summary>
         /// <param name="p">Punto.</param>
         /// <returns>Indica si lo toca.</returns>
@@ -164,7 +164,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Indica si contiene completamente al rectangulo indicado.
+        /// Indica si contiene completamente al rectangulo indicado.
         /// </summary>
         /// <param name="rec">Rectangulo.</param>
         /// <returns>Indica si lo contiene completamente.</returns>
@@ -175,7 +175,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Indica si contiene completamente al punto indicado.
+        /// Indica si contiene completamente al punto indicado.
         /// </summary>
         /// <param name="p">Punto.</param>
         /// <returns>Indica si lo contiene completamente.</returns>
@@ -186,7 +186,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Indica si existe intersección con el rectangulo indicado.
+        /// Indica si existe intersección con el rectangulo indicado.
         /// </summary>
         /// <param name="rec">Rectangulo.</param>
         /// <returns>Indica si existe intersección.</returns>
@@ -197,7 +197,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Amplia el recubrimiento para que contenga al punto indicado.
+        /// Amplia el recubrimiento para que contenga al punto indicado.
         /// </summary>
         /// <param name="point">Punto.</param>
         public BoundingBox2i Union(Point2i point)
@@ -212,7 +212,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Amplia el recubrimiento para que contenga al rectangulo indicado.
+        /// Amplia el recubrimiento para que contenga al rectangulo indicado.
         /// </summary>
         /// <param name="rec">Rectangulo.</param>
         public BoundingBox2i Union(BoundingBox2i rec)
@@ -227,7 +227,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Interseccion entre los recubrimientos.
+        /// Interseccion entre los recubrimientos.
         /// </summary>
         /// <param name="rec">Rectangulo.</param>
         public BoundingBox2i Intersect(BoundingBox2i rec)
@@ -242,7 +242,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Amplia el recubrimiento en cada coordenada.
+        /// Amplia el recubrimiento en cada coordenada.
         /// </summary>
         /// <param name="d">Ancho y alto.</param>
         public BoundingBox2i Inflate(int d)
@@ -251,7 +251,7 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Amplia el recubrimiento en cada coordenada, por el vector indicado.
+        /// Amplia el recubrimiento en cada coordenada, por el vector indicado.
         /// </summary>
         /// <param name="dx">Ancho.</param>
         /// <param name="dy">Alto.</param>
@@ -261,13 +261,13 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Obtiene la coordenada minima.
+        /// Obtiene la coordenada minima.
         /// </summary>
         /// <param name="i">Indice de la coordenada.</param>
         /// <returns>Coordenada.</returns>
         /// <exception cref="IndexOutOfRangeException">
-        ///     Si el indice esta fuera de rango lanza la
-        ///     excepción: <c>IndexOutOfRangeException</c>.
+        /// Si el indice esta fuera de rango lanza la
+        /// excepción: <c>IndexOutOfRangeException</c>.
         /// </exception>
         public int GetMin(int i)
         {
@@ -283,13 +283,13 @@ namespace Essence.Geometry.Core.Int
         }
 
         /// <summary>
-        ///     Obtiene la coordenada maxima.
+        /// Obtiene la coordenada maxima.
         /// </summary>
         /// <param name="i">Indice de la coordenada.</param>
         /// <returns>Coordenada.</returns>
         /// <exception cref="IndexOutOfRangeException">
-        ///     Si el indice esta fuera de rango lanza la
-        ///     excepción: <c>IndexOutOfRangeException</c>.
+        /// Si el indice esta fuera de rango lanza la
+        /// excepción: <c>IndexOutOfRangeException</c>.
         /// </exception>
         public int GetMax(int i)
         {

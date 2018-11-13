@@ -19,7 +19,7 @@ namespace Essence.Util.IO
     public static class FileUtils
     {
         /// <summary>
-        ///     Reemplaza la extension del fichero.
+        /// Reemplaza la extension del fichero.
         /// </summary>
         /// <param name="fileInfo">Fichero.</param>
         /// <param name="newExt">Nueva extensión sin incluir el '.'.</param>

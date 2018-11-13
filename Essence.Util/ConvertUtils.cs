@@ -139,19 +139,19 @@ namespace Essence.Util
         private struct Int32SingleUnion
         {
             /// <summary>
-            ///     Int32 version of the value.
+            /// Int32 version of the value.
             /// </summary>
             [FieldOffset(0)]
             private readonly int i;
 
             /// <summary>
-            ///     Single version of the value.
+            /// Single version of the value.
             /// </summary>
             [FieldOffset(0)]
             private readonly float f;
 
             /// <summary>
-            ///     Creates an instance representing the given integer.
+            /// Creates an instance representing the given integer.
             /// </summary>
             /// <param name="i">The integer value of the new instance./param>
             internal Int32SingleUnion(int i)
@@ -161,11 +161,11 @@ namespace Essence.Util
             }
 
             /// <summary>
-            ///     Creates an instance representing the given floating point
-            ///     number.
+            /// Creates an instance representing the given floating point
+            /// number.
             /// </summary>
             /// <param name="f">
-            ///     The floating point value of the new instance
+            /// The floating point value of the new instance
             /// </param>
             internal Int32SingleUnion(float f)
             {
@@ -174,7 +174,7 @@ namespace Essence.Util
             }
 
             /// <summary>
-            ///     Returns the value of the instance as an integer.
+            /// Returns the value of the instance as an integer.
             /// </summary>
             internal int AsInt32
             {
@@ -182,7 +182,7 @@ namespace Essence.Util
             }
 
             /// <summary>
-            ///     Returns the value of the instance as a floating point number.
+            /// Returns the value of the instance as a floating point number.
             /// </summary>
             internal float AsSingle
             {

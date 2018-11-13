@@ -15,7 +15,7 @@
 namespace Essence.Util.Collections
 {
     /// <summary>
-    ///     Utilidades sobre sets.
+    /// Utilidades sobre sets.
     /// </summary>
     public static class SetUtils
     {

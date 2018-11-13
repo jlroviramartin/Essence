@@ -18,7 +18,7 @@ using System.Text;
 namespace Essence.Util.IO
 {
     /// <summary>
-    ///     Implementacion de TextWriter que permite añadir texto indentado.
+    /// Implementacion de TextWriter que permite añadir texto indentado.
     /// </summary>
     public class TextWriterEx : TextWriter
     {

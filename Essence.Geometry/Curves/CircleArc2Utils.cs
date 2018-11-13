@@ -25,12 +25,12 @@ namespace Essence.Geometry.Curves
     public class CircleArc2Utils
     {
         /// <summary>
-        ///     Crea un arco indicando el angulo inicial y el angulo de avance.
-        ///     El angulo inicial puede ser positivo o negativo e indica el punto donde empieza el
-        ///     arco.
-        ///     El angulo de avance indica cuanto avanza el arco.
-        ///     Si es positivo, avanza en sentido contrario a las agujas del reloj.
-        ///     Si es negativo, avanza en sentido de las agujas del reloj.
+        /// Crea un arco indicando el angulo inicial y el angulo de avance.
+        /// El angulo inicial puede ser positivo o negativo e indica el punto donde empieza el
+        /// arco.
+        /// El angulo de avance indica cuanto avanza el arco.
+        /// Si es positivo, avanza en sentido contrario a las agujas del reloj.
+        /// Si es negativo, avanza en sentido de las agujas del reloj.
         /// </summary>
         /// <param name="center">Centro.</param>
         /// <param name="radius">Radio.</param>
@@ -54,7 +54,7 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Crea un arco de circunferencia indicando puntoInicial, puntoFinal, centro, radio y sentido de giro (cw).
+        /// Crea un arco de circunferencia indicando puntoInicial, puntoFinal, centro, radio y sentido de giro (cw).
         /// </summary>
         public static CircleArc2 NewArc(Point2d pt1, Point2d pt2, Point2d center, double radius, ArcDirection dir)
         {
@@ -81,28 +81,28 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Crea un arco de circunferencia indicando dos puntos y un radio. El arco creado es siempre el que
-        ///     no contiene el extremo positivo del eje X.
-        ///     Cuidado con los radios negativos!!!
+        /// Crea un arco de circunferencia indicando dos puntos y un radio. El arco creado es siempre el que
+        /// no contiene el extremo positivo del eje X.
+        /// Cuidado con los radios negativos!!!
         /// </summary>
         public static CircleArc2 TwoPointsRadius(Point2d pt0, Point2d pt1, double radius, bool leftRule)
         {
-            Point2d center = CircleArc2Utils.EvaluateCenter(pt0, pt1, radius, leftRule);
+            Point2d center = EvaluateCenter(pt0, pt1, radius, leftRule);
             ArcDirection dir = !leftRule ? (radius > 0.0 ? ArcDirection.Clockwise : ArcDirection.CounterClockwise) : (radius < 0.0 ? ArcDirection.Clockwise : ArcDirection.CounterClockwise);
-            return CircleArc2Utils.NewArc(pt0, pt1, center, System.Math.Abs(radius), dir);
+            return NewArc(pt0, pt1, center, System.Math.Abs(radius), dir);
         }
 
         /// <summary>
-        ///     Obtiene el centro de la circunferencia que pasa por los 2 puntos, con el radio indicado.
-        ///     Dependiendo del criterio (leftRule), se interpreta el signo del radio:
-        ///     Si leftRule entonces el radio se multiplica por la normal a la izquierda (leftNormal) para obtener el centro de la
-        ///     circunferencia.
-        ///     Si rightRule (!leftRule) entonces el radio se multiplica por la normal a la derecha (rightNormal) para obtener el
-        ///     centro de la circunferencia.
-        ///     Clip utiliza un criterio rightRule.
-        ///     <p />
-        ///     Criterio rightRule:
-        ///     <c><![CDATA[
+        /// Obtiene el centro de la circunferencia que pasa por los 2 puntos, con el radio indicado.
+        /// Dependiendo del criterio (leftRule), se interpreta el signo del radio:
+        /// Si leftRule entonces el radio se multiplica por la normal a la izquierda (leftNormal) para obtener el centro de la
+        /// circunferencia.
+        /// Si rightRule (!leftRule) entonces el radio se multiplica por la normal a la derecha (rightNormal) para obtener el
+        /// centro de la circunferencia.
+        /// Clip utiliza un criterio rightRule.
+        /// <p />
+        /// Criterio rightRule:
+        /// <c><![CDATA[
         ///            _                  _
         ///         _ /                    \c
         ///       _/ O pf                   O
@@ -115,7 +115,7 @@ namespace Essence.Geometry.Curves
         ///   O pi                   O__/
         ///    \                   _/
         /// ]]></c>
-        ///     <![CDATA[
+        /// <![CDATA[
         ///  p1   a/2  pm   a/2   p2
         ///  x---------+-------->x
         ///   \        |        /
@@ -129,16 +129,16 @@ namespace Essence.Geometry.Curves
         ///           \|/
         ///            pc
         /// ]]>
-        ///     Teniendo como dato p1, p2 y r, tenemos que obtener el centro del circulo que pasa por
-        ///     p1 y p2, con radio r.
-        ///     Con el vector 1-2 obtenemos la distancia a.
-        ///     b es calculado mediante la fórmula b = raizcua(r * r + a/2 * a/2).
-        ///     Creamos un vector perpendicular al 1-2 a una distacion a/2 desde p1 y obtenemos
-        ///     el punto central de la circunferencia.
-        ///     Con este dato y conociendo el radio ya simplemente calculamos la esquina del rectangulo.
-        ///     Si el radio es positivo, avanza en sentido contrario a las agujas del reloj.
-        ///     Si el radio es negativo, avanza en sentido de las agujas del reloj.
-        ///     <![CDATA[
+        /// Teniendo como dato p1, p2 y r, tenemos que obtener el centro del circulo que pasa por
+        /// p1 y p2, con radio r.
+        /// Con el vector 1-2 obtenemos la distancia a.
+        /// b es calculado mediante la fórmula b = raizcua(r * r + a/2 * a/2).
+        /// Creamos un vector perpendicular al 1-2 a una distacion a/2 desde p1 y obtenemos
+        /// el punto central de la circunferencia.
+        /// Con este dato y conociendo el radio ya simplemente calculamos la esquina del rectangulo.
+        /// Si el radio es positivo, avanza en sentido contrario a las agujas del reloj.
+        /// Si el radio es negativo, avanza en sentido de las agujas del reloj.
+        /// <![CDATA[
         ///                   + p2
         ///                  /|\
         ///                   |
@@ -154,8 +154,8 @@ namespace Essence.Geometry.Curves
         /// ]]>
         /// </summary>
         /// <exception cref="CalculoImposibleException">
-        ///     Indica que no se puede calcular el
-        ///     centro.
+        /// Indica que no se puede calcular el
+        /// centro.
         /// </exception>
         public static Point2d EvaluateCenter(Point2d pt0, Point2d pt1, double radius, bool leftRule)
         {
@@ -203,14 +203,14 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Indica si los puntos estan alineados.
+        /// Indica si los puntos estan alineados.
         /// </summary>
         /// <param name="pt0">Punto 1.</param>
         /// <param name="pt1">Punto 2.</param>
         /// <param name="pt2">Punto 3.</param>
         /// <returns>
-        ///     Indica si los puntos estan al
-        ///     ineados.
+        /// Indica si los puntos estan al
+        /// ineados.
         /// </returns>
         public static bool AreAligned(Point2d pt0, Point2d pt1, Point2d pt2)
         {
@@ -221,11 +221,11 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Arco que pasa por los puntos <c>pinicial</c>, <c>ppaso</c>, <c>pfinal</c>.
+        /// Arco que pasa por los puntos <c>pinicial</c>, <c>ppaso</c>, <c>pfinal</c>.
         /// </summary>
         /// <exception cref="PuntosAlineadosException">
-        ///     Indica que los puntos estan
-        ///     alineados.
+        /// Indica que los puntos estan
+        /// alineados.
         /// </exception>
         public static CircleArc2 ThreePoints(Point2d p1, Point2d pp, Point2d p2)
         {
@@ -310,7 +310,7 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Calcula el centro de la circunferencia que pasa por los 3 puntos.
+        /// Calcula el centro de la circunferencia que pasa por los 3 puntos.
         /// </summary>
         public static Point2d GetCenter(Point2d p1, Point2d p2, Point2d p3)
         {

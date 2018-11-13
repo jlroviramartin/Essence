@@ -41,7 +41,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Añade todos los elementos de un enumerable a una coleccion, al final.
+        /// Añade todos los elementos de un enumerable a una coleccion, al final.
         /// </summary>
         /// <typeparam name="T">Tipo de elementos de la lista.</typeparam>
         /// <param name="collection">Coleccion.</param>
@@ -66,7 +66,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Elimina todos los elementos indicados de una lista.
+        /// Elimina todos los elementos indicados de una lista.
         /// </summary>
         /// <typeparam name="T">Tipo de elementos de la lista.</typeparam>
         /// <param name="collection">Coleccion.</param>
@@ -87,7 +87,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Elimina todos los elementos que cumplan un predicado de una lista.
+        /// Elimina todos los elementos que cumplan un predicado de una lista.
         /// </summary>
         /// <typeparam name="T">Tipo de elementos de la lista.</typeparam>
         /// <param name="collection">Coleccion.</param>
@@ -125,7 +125,7 @@ namespace Essence.Util.Collections
         #region Stack<T>
 
         /// <summary>
-        ///     Añade todos los elementos indicados a una pila.
+        /// Añade todos los elementos indicados a una pila.
         /// </summary>
         /// <typeparam name="T">Tipo de la pila.</typeparam>
         /// <param name="collection">Pila.</param>
@@ -143,7 +143,7 @@ namespace Essence.Util.Collections
         #region Queue<T>
 
         /// <summary>
-        ///     Añade todos los elementos indicados a una cola.
+        /// Añade todos los elementos indicados a una cola.
         /// </summary>
         /// <typeparam name="T">Tipo de la cola.</typeparam>
         /// <param name="collection">Cola.</param>

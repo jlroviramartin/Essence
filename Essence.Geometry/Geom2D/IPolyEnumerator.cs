@@ -113,7 +113,8 @@ namespace Essence.Geometry.Geom2D
                 {
                     this.index = 0;
                 }
-            } while ((count < this.points.Count) && this.points[this.index].EpsilonEquals(curr, this.epsilon));
+            }
+            while ((count < this.points.Count) && this.points[this.index].EpsilonEquals(curr, this.epsilon));
             return count < this.points.Count;
         }
 
@@ -129,7 +130,8 @@ namespace Essence.Geometry.Geom2D
                 {
                     this.index = this.points.Count - 1;
                 }
-            } while ((count < this.points.Count) && this.points[this.index].EpsilonEquals(curr, this.epsilon));
+            }
+            while ((count < this.points.Count) && this.points[this.index].EpsilonEquals(curr, this.epsilon));
             if (count >= this.points.Count)
             {
                 return false;
@@ -174,7 +176,8 @@ namespace Essence.Geometry.Geom2D
                 {
                     prevIndex = this.points.Count - 1;
                 }
-            } while ((count < this.points.Count) && this.points[prevIndex].EpsilonEquals(curr, this.epsilon));
+            }
+            while ((count < this.points.Count) && this.points[prevIndex].EpsilonEquals(curr, this.epsilon));
             return count < this.points.Count;
         }
 

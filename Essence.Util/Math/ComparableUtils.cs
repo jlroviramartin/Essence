@@ -19,8 +19,8 @@ namespace Essence.Util.Math
     public static class ComparableUtils
     {
         /// <summary>
-        ///     Ajusta el valor entre el minimo y el maximo.
-        ///     <c><![CDATA[
+        /// Ajusta el valor entre el minimo y el maximo.
+        /// <c><![CDATA[
         /// [min, max] : return >= min && return <= max
         /// ]]></c>
         /// </summary>
@@ -45,8 +45,8 @@ namespace Essence.Util.Math
         }
 
         /// <summary>
-        ///     Ajusta el valor entre el minimo y el maximo.
-        ///     <c><![CDATA[
+        /// Ajusta el valor entre el minimo y el maximo.
+        /// <c><![CDATA[
         /// [min, max] : value >= min && value <= max
         /// ]]></c>
         /// </summary>

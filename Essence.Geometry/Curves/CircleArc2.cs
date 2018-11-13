@@ -24,9 +24,9 @@ namespace Essence.Geometry.Curves
     public class CircleArc2 : BaseCircle2
     {
         /// <summary>
-        ///     Crea un arco de circunferencia:
-        ///     Si angle2 > angle1 el arco es CCW.
-        ///     Si angle2 &lt; angle1 el arco es CW.
+        /// Crea un arco de circunferencia:
+        /// Si angle2 > angle1 el arco es CCW.
+        /// Si angle2 &lt; angle1 el arco es CW.
         /// </summary>
         public CircleArc2(Point2d center, double radius, double angle1, double angle2)
             : base(center, radius)
@@ -47,20 +47,20 @@ namespace Essence.Geometry.Curves
         }
 
         /// <summary>
-        ///     Initial angle.
-        ///     <![CDATA[ Angle1 in [ 0, 2 * PI ) ]]>
+        /// Initial angle.
+        /// <![CDATA[ Angle1 in [ 0, 2 * PI ) ]]>
         /// </summary>
         public double Angle1 { get; }
 
         /// <summary>
-        ///     Initial angle.
-        ///     <![CDATA[ Angle2 in [ -2 * PI, 4 * PI ) ó Abs(Angle2 - Angle1) <= 2 * PI]]>
+        /// Initial angle.
+        /// <![CDATA[ Angle2 in [ -2 * PI, 4 * PI ) ó Abs(Angle2 - Angle1) <= 2 * PI]]>
         /// </summary>
         public double Angle2 { get; }
 
         /// <summary>
-        ///     Advance angle.
-        ///     <![CDATA[ AdvAngle in [ -2 * PI, 2 * PI ] ]]>
+        /// Advance angle.
+        /// <![CDATA[ AdvAngle in [ -2 * PI, 2 * PI ] ]]>
         /// </summary>
         public double AdvAngle
         {

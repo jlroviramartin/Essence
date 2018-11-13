@@ -47,7 +47,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Para cada elemento en <c>enumer</c> realiza la operacion <c>action</c>.
+        /// Para cada elemento en <c>enumer</c> realiza la operacion <c>action</c>.
         /// </summary>
         /// <typeparam name="T">Tipo de los enumerables.</typeparam>
         /// <param name="enumer">Enumerable.</param>
@@ -61,8 +61,8 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Aplica la accion <c>action</c> hasta que se cumpla <c>pred</c>.
-        ///     Indica si ha terminado prematuramente.
+        /// Aplica la accion <c>action</c> hasta que se cumpla <c>pred</c>.
+        /// Indica si ha terminado prematuramente.
         /// </summary>
         /// <typeparam name="T">Tipo de los enumerables.</typeparam>
         /// <param name="enumer">Enumerable.</param>
@@ -82,8 +82,8 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Aplica la accion <c>action</c> mientras se cumpla <c>pred</c>.
-        ///     Indica si ha terminado prematuramente.
+        /// Aplica la accion <c>action</c> mientras se cumpla <c>pred</c>.
+        /// Indica si ha terminado prematuramente.
         /// </summary>
         /// <typeparam name="T">Tipo de los enumerables.</typeparam>
         /// <param name="enumer">Enumerable.</param>
@@ -102,7 +102,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Busca el primer elemento en <c>enumer</c> que pase el test <c>predicate</c>.
+        /// Busca el primer elemento en <c>enumer</c> que pase el test <c>predicate</c>.
         /// </summary>
         /// <typeparam name="T">Tipo de los enumerables.</typeparam>
         /// <param name="enumer">Enumerable.</param>
@@ -120,7 +120,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Busca el primer elemento en <c>enumer</c> que pase el test <c>predicate</c>.
+        /// Busca el primer elemento en <c>enumer</c> que pase el test <c>predicate</c>.
         /// </summary>
         /// <typeparam name="T">Tipo de los enumerables.</typeparam>
         /// <param name="enumer">Enumerable.</param>
@@ -142,7 +142,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Indica si existe al menos un elemento en <c>enumer</c> que pase el test <c>predicate</c>.
+        /// Indica si existe al menos un elemento en <c>enumer</c> que pase el test <c>predicate</c>.
         /// </summary>
         /// <typeparam name="T">Tipo de los enumerables.</typeparam>
         /// <param name="enumer">Enumerable.</param>
@@ -161,7 +161,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Indica si existe exactamente un elemento en <c>enumer</c> que pase el test <c>predicate</c>.
+        /// Indica si existe exactamente un elemento en <c>enumer</c> que pase el test <c>predicate</c>.
         /// </summary>
         /// <typeparam name="T">Tipo de los enumerables.</typeparam>
         /// <param name="enumer">Enumerable.</param>

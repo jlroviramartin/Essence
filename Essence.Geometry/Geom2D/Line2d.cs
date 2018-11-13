@@ -22,7 +22,7 @@ namespace Essence.Geometry.Geom2D
     public sealed class Line2d
     {
         /// <summary>
-        ///     Plano con el vector normalizado.
+        /// Plano con el vector normalizado.
         /// </summary>
         public static Line2d NewNormal(Point2d origin, Vector2d direction)
         {
@@ -44,7 +44,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Plano con el vector normalizado.
+        /// Plano con el vector normalizado.
         /// </summary>
         public static Line2d NewNormal(Point2d p0, Point2d p1)
         {
@@ -52,7 +52,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Plano con el vector sin normalizar.
+        /// Plano con el vector sin normalizar.
         /// </summary>
         public static Line2d NewNonNormal(Point2d origin, Vector2d direction)
         {
@@ -60,7 +60,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Plano con el vector sin normalizar.
+        /// Plano con el vector sin normalizar.
         /// </summary>
         public static Line2d NewNonNormal(Point2d p0, Point2d p1)
         {
@@ -68,7 +68,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Indica si esta degenerado: el vector direccion es zero.
+        /// Indica si esta degenerado: el vector direccion es zero.
         /// </summary>
         public bool IsDegenerate
         {
@@ -85,7 +85,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Indica si esta normalizado: el vector direccion es unitario.
+        /// Indica si esta normalizado: el vector direccion es unitario.
         /// </summary>
         public bool IsNormal
         {
@@ -106,7 +106,7 @@ namespace Essence.Geometry.Geom2D
         public Vector2d Direction { get; private set; }
 
         /// <summary>
-        ///     Obtiene el vector normal (perpendicular a la derecha) normalizado.
+        /// Obtiene el vector normal (perpendicular a la derecha) normalizado.
         /// </summary>
         public Vector2d Normal
         {
@@ -127,8 +127,8 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Constante en la ecuacion de la recta.
-        ///     nx*x + ny*y = c
+        /// Constante en la ecuacion de la recta.
+        /// nx*x + ny*y = c
         /// </summary>
         public double Constant
         {
@@ -145,7 +145,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Evalua la proyeccion del punto sobre la linea, respecto del origen.
+        /// Evalua la proyeccion del punto sobre la linea, respecto del origen.
         /// </summary>
         /// <param name="p">Punto.</param>
         /// <returns>Parametro [-Inf, Inf].</returns>
@@ -168,7 +168,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Evalua el punto.
+        /// Evalua el punto.
         /// </summary>
         /// <param name="u">Parametro [-Inf, Inf].</param>
         /// <returns>Punto.</returns>
@@ -180,7 +180,7 @@ namespace Essence.Geometry.Geom2D
         #region Distancia
 
         /// <summary>
-        ///     Distancia (con signo) de un punto a la linea.
+        /// Distancia (con signo) de un punto a la linea.
         /// </summary>
         public double Distance(Point2d p, out Point2d closestPoint)
         {
@@ -194,7 +194,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Distancia (con signo) de un punto a la linea.
+        /// Distancia (con signo) de un punto a la linea.
         /// </summary>
         public double Distance(Point2d p)
         {
@@ -207,11 +207,11 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Indica a que lado esta el punto respecto de la linea:
-        ///     - Si == 0, esta en la linea.
-        ///     - Si &gt; 0 esta debajo/derecha de la linea.
-        ///     - Si &lt; 0 esta encima/izquierda de la linea.
-        ///     <c><![CDATA[
+        /// Indica a que lado esta el punto respecto de la linea:
+        /// - Si == 0, esta en la linea.
+        /// - Si &gt; 0 esta debajo/derecha de la linea.
+        /// - Si &lt; 0 esta encima/izquierda de la linea.
+        /// <c><![CDATA[
         ///             ^ direction
         ///             |
         ///             |
@@ -241,10 +241,10 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Indica a que lado esta el rectangulo respecto de la linea:
-        ///     - Si == 0, toca la linea o la cruza.
-        ///     - Si &gt; 0 esta debajo/derecha de la linea.
-        ///     - Si &lt; 0 esta encima/izquierda de la linea.
+        /// Indica a que lado esta el rectangulo respecto de la linea:
+        /// - Si == 0, toca la linea o la cruza.
+        /// - Si &gt; 0 esta debajo/derecha de la linea.
+        /// - Si &lt; 0 esta encima/izquierda de la linea.
         /// </summary>
         public LineSide WhichSide(BoundingBox2d r)
         {

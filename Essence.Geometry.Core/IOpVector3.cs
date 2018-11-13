@@ -38,37 +38,37 @@ namespace Essence.Geometry.Core
         void Div(IVector3 v1, double c);
 
         /// <summary>
-        ///     Operacion multiplicacion componente a componente: v1 * v2.
+        /// Operacion multiplicacion componente a componente: v1 * v2.
         /// </summary>
         void SimpleMul(IVector3 v2);
 
         void SimpleMul(IVector3 v1, IVector3 v2);
 
         /// <summary>
-        ///     Operacion cambio signo: -vector.
+        /// Operacion cambio signo: -vector.
         /// </summary>
         void Neg();
 
         void Neg(IVector3 v1);
 
         /// <summary>
-        ///     Operacion valor absoluto: Absoluto( vector ).
+        /// Operacion valor absoluto: Absoluto( vector ).
         /// </summary>
         void Abs();
 
         void Abs(IVector3 v1);
 
         /// <summary>
-        ///     Operacion interpolar: resultado = (1 - alpha) * v1 + alpha * v2 = v1 + (v2 - v1) * alpha.
-        ///     Cuando alpha=0, resultado=v1.
-        ///     Cuando alpha=1, resultado=v2.
+        /// Operacion interpolar: resultado = (1 - alpha) * v1 + alpha * v2 = v1 + (v2 - v1) * alpha.
+        /// Cuando alpha=0, resultado=v1.
+        /// Cuando alpha=1, resultado=v2.
         /// </summary>
         void Lerp(IVector3 v2, double alpha);
 
         void Lerp(IVector3 v1, IVector3 v2, double alpha);
 
         /// <summary>
-        ///     Operacion combinacion lineal: alpha * v1 + beta * v2.
+        /// Operacion combinacion lineal: alpha * v1 + beta * v2.
         /// </summary>
         void Lineal(IVector3 v2, double alpha, double beta);
 
@@ -92,10 +92,10 @@ namespace Essence.Geometry.Core
         void ProjV(IVector3 v1, IVector3 v2);
 
         /// <summary>
-        ///     Operacion producto vectorial (cross) en 3D: v1 x v2.
-        ///     Regla de la mano derecha (OpenGL): VZ = VX * VY
-        ///     <see cref="http://en.wikipedia.org/wiki/Cross_product" />
-        ///     <code><![CDATA[
+        /// Operacion producto vectorial (cross) en 3D: v1 x v2.
+        /// Regla de la mano derecha (OpenGL): VZ = VX * VY
+        /// <see cref="http://en.wikipedia.org/wiki/Cross_product" />
+        /// <code><![CDATA[
         /// ^ v1 x v2 ( + )
         /// |
         /// |   _
@@ -104,7 +104,7 @@ namespace Essence.Geometry.Core
         /// | /  |\
         /// +------+---> v1
         /// ]]></code>
-        ///     Base ortonormal: Vx * Vy = Vz ; Vy * Vz = Vx ; Vz * Vx = Vy
+        /// Base ortonormal: Vx * Vy = Vz ; Vy * Vz = Vx ; Vz * Vx = Vy
         /// </summary>
         void Cross(IVector3 v2);
 

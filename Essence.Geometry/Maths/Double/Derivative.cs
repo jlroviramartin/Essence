@@ -20,10 +20,10 @@ using UnaryFunction = System.Func<double, double>;
 namespace Essence.Maths.Double
 {
     /// <summary>
-    ///     http://stackoverflow.com/questions/373186/mathematical-derivation-with-c
-    ///     http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/
-    ///     http://www.variousconsequences.com/2009/05/maxima-functions-to-generate-finite.html
-    ///     http://mathfaculty.fullerton.edu/mathews/n2003/NumericalDiffFormulaeMod.html
+    /// http://stackoverflow.com/questions/373186/mathematical-derivation-with-c
+    /// http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/
+    /// http://www.variousconsequences.com/2009/05/maxima-functions-to-generate-finite.html
+    /// http://mathfaculty.fullerton.edu/mathews/n2003/NumericalDiffFormulaeMod.html
     /// </summary>
     public static class Derivative
     {

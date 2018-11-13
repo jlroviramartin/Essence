@@ -17,7 +17,7 @@ using System;
 namespace Essence.Util
 {
     /// <summary>
-    ///     Utilidades miscelaneas.
+    /// Utilidades miscelaneas.
     /// </summary>
     public static class MiscUtils
     {

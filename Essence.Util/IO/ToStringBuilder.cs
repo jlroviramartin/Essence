@@ -21,10 +21,10 @@ using Essence.Util.Properties;
 namespace Essence.Util.IO
 {
     /// <summary>
-    ///     Constructor para el metodo <c>Object.ToString()</c>.
-    ///     Permite de forma sencilla, implementar el metodo
-    ///     <c>Object.ToString()</c>.
-    ///     <example><![CDATA[
+    /// Constructor para el metodo <c>Object.ToString()</c>.
+    /// Permite de forma sencilla, implementar el metodo
+    /// <c>Object.ToString()</c>.
+    /// <example><![CDATA[
     /// public override String ToString()
     /// {
     ///     return new ToStringBuilder(this)
@@ -37,7 +37,7 @@ namespace Essence.Util.IO
     public sealed class ToStringBuilder
     {
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         public ToStringBuilder()
         {
@@ -46,7 +46,7 @@ namespace Essence.Util.IO
         }
 
         /// <summary>
-        ///     Añade el objeto con valor <c>obj</c> .
+        /// Añade el objeto con valor <c>obj</c> .
         /// </summary>
         /// <param name="format">Formato.</param>
         /// <param name="args">Argumentos.</param>
@@ -66,7 +66,7 @@ namespace Essence.Util.IO
         }
 
         /// <summary>
-        ///     Añade el objeto con valor <c>obj</c> .
+        /// Añade el objeto con valor <c>obj</c> .
         /// </summary>
         /// <param name="obj">Valor.</param>
         /// <param name="format">Formato.</param>
@@ -89,7 +89,7 @@ namespace Essence.Util.IO
         }
 
         /// <summary>
-        ///     Añade el objeto con valores <c>objs</c> .
+        /// Añade el objeto con valores <c>objs</c> .
         /// </summary>
         /// <param name="objs">Valores.</param>
         /// <param name="format">Formato.</param>
@@ -132,7 +132,7 @@ namespace Essence.Util.IO
         #region private
 
         /// <summary>
-        ///     Añade el objeto con valor <c>obj</c> .
+        /// Añade el objeto con valor <c>obj</c> .
         /// </summary>
         private void AppendInner(object obj, string format, IFormatProvider provider)
         {
@@ -151,7 +151,7 @@ namespace Essence.Util.IO
         }
 
         /// <summary>
-        ///     Añade el objeto con valores <c>objs</c> .
+        /// Añade el objeto con valores <c>objs</c> .
         /// </summary>
         private void AppendRangeInner<T>(IEnumerable<T> objs, string format, IFormatProvider provider)
         {
@@ -200,8 +200,8 @@ namespace Essence.Util.IO
         public override string ToString()
         {
             return new StringBuilder()
-                .Append(this.builder)
-                .ToString();
+                   .Append(this.builder)
+                   .ToString();
         }
 
         #endregion

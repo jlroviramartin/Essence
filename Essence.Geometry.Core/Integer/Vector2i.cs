@@ -234,7 +234,7 @@ namespace Essence.Geometry.Core.Integer
                                      NumberStyles style = NumberStyles.Float | NumberStyles.AllowThousands)
         {
             Vector2i result;
-            if (!Vector2i.TryParse(s, out result, provider, vstyle, style))
+            if (!TryParse(s, out result, provider, vstyle, style))
             {
                 throw new Exception();
             }
@@ -252,7 +252,7 @@ namespace Essence.Geometry.Core.Integer
             int[] ret;
             if (!VectorUtils.TryParse(s, 2, out ret, int.TryParse, provider, vstyle, style))
             {
-                result = Vector2i.Zero;
+                result = Zero;
                 return false;
             }
             result = new Vector2i(ret[0], ret[1]);
@@ -348,14 +348,14 @@ namespace Essence.Geometry.Core.Integer
 
         public Vector2i(SerializationInfo info, StreamingContext context)
         {
-            this.X = info.GetInt32(Vector2i._X);
-            this.Y = info.GetInt32(Vector2i._Y);
+            this.X = info.GetInt32(_X);
+            this.Y = info.GetInt32(_Y);
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(Vector2i._X, this.X);
-            info.AddValue(Vector2i._Y, this.Y);
+            info.AddValue(_X, this.X);
+            info.AddValue(_Y, this.Y);
         }
 
         #endregion

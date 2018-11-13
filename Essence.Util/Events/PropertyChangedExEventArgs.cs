@@ -32,10 +32,10 @@ namespace Essence.Util.Events
         public override string ToString()
         {
             return new PropertiesStringBuilder()
-                .AppendNamed("PropertyName", this.PropertyName)
-                .AppendNamed("OldValue", this.OldValue)
-                .AppendNamed("NewValue", this.NewValue)
-                .ToString();
+                   .AppendNamed("PropertyName", this.PropertyName)
+                   .AppendNamed("OldValue", this.OldValue)
+                   .AppendNamed("NewValue", this.NewValue)
+                   .ToString();
         }
     }
 }

@@ -19,10 +19,10 @@ using System.Collections.Generic;
 namespace Essence.Util.Builders
 {
     /// <summary>
-    ///     Constructor para el metodo <c>Object.GetHashCode()</c>.
-    ///     Permite de forma sencilla, implementar el metodo
-    ///     <c>Object.GetHashCode()</c>.
-    ///     <example><![CDATA[
+    /// Constructor para el metodo <c>Object.GetHashCode()</c>.
+    /// Permite de forma sencilla, implementar el metodo
+    /// <c>Object.GetHashCode()</c>.
+    /// <example><![CDATA[
     /// public override int GetHashCode()
     /// {
     ///     return new GetHashCodeBuilder()

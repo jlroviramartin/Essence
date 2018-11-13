@@ -19,7 +19,7 @@ namespace Essence.Util.IO
     public static class IOUtils
     {
         /// <summary>
-        ///     Copia el stream <c>input</c> en el stream <c>output</c>.
+        /// Copia el stream <c>input</c> en el stream <c>output</c>.
         /// </summary>
         /// <param name="input">Stream de entrada.</param>
         /// <param name="output">Stream de salida.</param>

@@ -213,7 +213,8 @@ namespace Essence.Geometry.Geom2D
 
                 e.Next();
                 eNext.Next();
-            } while (!e.Equals(eFirst));
+            }
+            while (!e.Equals(eFirst));
 
             if (!first.Equals(e))
             {
@@ -373,7 +374,8 @@ namespace Essence.Geometry.Geom2D
 
                 e.Next();
                 eNext.Next();
-            } while (!e.Equals(eFirst));
+            }
+            while (!e.Equals(eFirst));
 
             return false;
         }
@@ -460,7 +462,8 @@ namespace Essence.Geometry.Geom2D
 
                 e.Next();
                 eNext.Next();
-            } while (!e.Equals(eFirst));
+            }
+            while (!e.Equals(eFirst));
 
             // 0 = outside, 1 = inside
             // 0 if even (out), and 1 if odd (in)
@@ -570,7 +573,8 @@ namespace Essence.Geometry.Geom2D
 
                 e.Next();
                 eNext.Next();
-            } while (!e.Equals(eFirst));
+            }
+            while (!e.Equals(eFirst));
 
             // == 0 only if P is outside
             return ((wn != 0) ? PointInPoly.Inside : PointInPoly.Outside);
@@ -677,7 +681,8 @@ namespace Essence.Geometry.Geom2D
                 area += e.Point.X * eNext.Point.Y - e.Point.Y * eNext.Point.X;
                 e.Next();
                 eNext.Next();
-            } while (!e.Equals(eFirst));
+            }
+            while (!e.Equals(eFirst));
 
             return area / 2;
         }
@@ -764,7 +769,8 @@ namespace Essence.Geometry.Geom2D
                 e1.Next();
                 e2.Next();
                 e3.Next();
-            } while (!e1.Equals(eFirst));
+            }
+            while (!e1.Equals(eFirst));
 
             // Si no se ha encontrado giro, caso degenerado.
             if (!leftTurn && !rightTurn)

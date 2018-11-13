@@ -67,7 +67,8 @@ namespace Essence.Geometry.Algorithms
                         current = next;
                         result(current);
                     }
-                } while (enumer.MoveNext());
+                }
+                while (enumer.MoveNext());
 
                 // El ultimo punto siempre se añade.
                 if (!lastInResult)
@@ -116,7 +117,8 @@ namespace Essence.Geometry.Algorithms
                         current = next;
                         yield return current;
                     }
-                } while (enumer.MoveNext());
+                }
+                while (enumer.MoveNext());
 
                 // El ultimo punto siempre se añade.
                 if (!lastInResult)
@@ -166,7 +168,8 @@ namespace Essence.Geometry.Algorithms
                         current = next;
                         result(current);
                     }
-                } while (enumer.MoveNext());
+                }
+                while (enumer.MoveNext());
 
                 // El ultimo punto siempre se añade.
                 if (!lastInResult)
@@ -213,7 +216,8 @@ namespace Essence.Geometry.Algorithms
                         current = next;
                         yield return current;
                     }
-                } while (enumer.MoveNext());
+                }
+                while (enumer.MoveNext());
 
                 // El ultimo punto siempre se añade.
                 if (!lastInResult)

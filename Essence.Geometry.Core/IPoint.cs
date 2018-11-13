@@ -20,9 +20,9 @@ namespace Essence.Geometry.Core
         where TPoint : IPoint<TPoint>
     {
         /// <summary>
-        ///  Evaluates the inverse (alpha) of the interpolation between <code>this</code> and <code>p2</code>
-        ///  at <code>pLerp</code>.
-        ///  It returns (pLerp - this) = (p2 - this) * alpha.
+        /// Evaluates the inverse (alpha) of the interpolation between <code>this</code> and <code>p2</code>
+        /// at <code>pLerp</code>.
+        /// It returns (pLerp - this) = (p2 - this) * alpha.
         /// </summary>
         [Pure]
         double InvLerp(TPoint p2, TPoint pLerp);

@@ -36,8 +36,8 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Obtiene los valores asociados a la clave (this [index] devuelve solo
-        ///     el primer valor).
+        /// Obtiene los valores asociados a la clave (this [index] devuelve solo
+        /// el primer valor).
         /// </summary>
         public IEnumerable<TV> Get(TK key)
         {
@@ -49,7 +49,7 @@ namespace Essence.Util.Collections
         #region private
 
         /// <summary>
-        ///     Invalida la cache.
+        /// Invalida la cache.
         /// </summary>
         private void InvalidateCache()
         {
@@ -57,7 +57,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Actualiza la cache.
+        /// Actualiza la cache.
         /// </summary>
         private void UpdateCache()
         {
@@ -71,7 +71,7 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Busca en la cache (la actualiza si procede).
+        /// Busca en la cache (la actualiza si procede).
         /// </summary>
         private bool FindInCache(TK key, out ICollection<TV> values)
         {

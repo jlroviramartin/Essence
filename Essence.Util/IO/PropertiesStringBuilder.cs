@@ -20,10 +20,10 @@ using System.Text;
 namespace Essence.Util.IO
 {
     /// <summary>
-    ///     Constructor para el metodo <c>Object.ToString()</c>.
-    ///     Permite de forma sencilla, implementar el metodo
-    ///     <c>Object.ToString()</c>.
-    ///     <example><![CDATA[
+    /// Constructor para el metodo <c>Object.ToString()</c>.
+    /// Permite de forma sencilla, implementar el metodo
+    /// <c>Object.ToString()</c>.
+    /// <example><![CDATA[
     /// public override String ToString()
     /// {
     ///     return new PropertiesStringBuilder(this)
@@ -36,7 +36,7 @@ namespace Essence.Util.IO
     public sealed class PropertiesStringBuilder
     {
         /// <summary>
-        ///     Constructor.
+        /// Constructor.
         /// </summary>
         public PropertiesStringBuilder()
         {
@@ -45,7 +45,7 @@ namespace Essence.Util.IO
         }
 
         /// <summary>
-        ///     Añade el objeto con nombre <c>nombre</c> y valor <c>obj</c> .
+        /// Añade el objeto con nombre <c>nombre</c> y valor <c>obj</c> .
         /// </summary>
         /// <param name="name">Nombre.</param>
         /// <param name="obj">Valor.</param>
@@ -78,7 +78,7 @@ namespace Essence.Util.IO
         }
 
         /// <summary>
-        ///     Añade el objeto con nombre <c>nombre</c> y valores <c>objs</c> .
+        /// Añade el objeto con nombre <c>nombre</c> y valores <c>objs</c> .
         /// </summary>
         /// <param name="name">Nombre.</param>
         /// <param name="objs">Valores.</param>
@@ -131,7 +131,7 @@ namespace Essence.Util.IO
         #region private
 
         /// <summary>
-        ///     Añade el objeto con valor <c>obj</c> .
+        /// Añade el objeto con valor <c>obj</c> .
         /// </summary>
         private void AppendInner(object obj, string format, IFormatProvider provider)
         {
@@ -154,7 +154,7 @@ namespace Essence.Util.IO
         }
 
         /// <summary>
-        ///     Añade el objeto con valores <c>objs</c> .
+        /// Añade el objeto con valores <c>objs</c> .
         /// </summary>
         private void AppendRangeInner<T>(IEnumerable<T> objs, string format, IFormatProvider provider)
         {
@@ -224,10 +224,10 @@ namespace Essence.Util.IO
         public override string ToString()
         {
             return new StringBuilder()
-                .Append(InicioToString)
-                .Append(this.builder)
-                .Append(FinToString)
-                .ToString();
+                   .Append(InicioToString)
+                   .Append(this.builder)
+                   .Append(FinToString)
+                   .ToString();
         }
 
         #endregion

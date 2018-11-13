@@ -20,7 +20,7 @@ using System.Text;
 namespace Essence.Util.Collections
 {
     /// <summary>
-    ///     Argumentos de los eventos de una colección.
+    /// Argumentos de los eventos de una colección.
     /// </summary>
     public class CollectionEventArgs : EventArgs
     {
@@ -37,22 +37,22 @@ namespace Essence.Util.Collections
         }
 
         /// <summary>
-        ///     Obtiene el objeto que contiene la lista. Puede ser <c>null</c> si no se indica.
+        /// Obtiene el objeto que contiene la lista. Puede ser <c>null</c> si no se indica.
         /// </summary>
         public object Who { get; set; }
 
         /// <summary>
-        ///     Obtiene el tipo de cambio que se ha producido.
+        /// Obtiene el tipo de cambio que se ha producido.
         /// </summary>
         public CollectionChangeType ChangeType { get; }
 
         /// <summary>
-        ///     Obtiene los elementos.
+        /// Obtiene los elementos.
         /// </summary>
         public object[] Items { get; }
 
         /// <summary>
-        ///     Obtiene los elementos antiguos (solo para ChangeItems).
+        /// Obtiene los elementos antiguos (solo para ChangeItems).
         /// </summary>
         public object[] OldItems { get; }
 
@@ -234,9 +234,9 @@ namespace Essence.Util.Collections
         public override string ToString()
         {
             return new StringBuilder()
-                .AppendFormat("ChangeType={0}; ", Enum.GetName(typeof(CollectionChangeType), this.ChangeType))
-                .AppendFormat("Items={0}", this.Items.ToStringEx())
-                .ToString();
+                   .AppendFormat("ChangeType={0}; ", Enum.GetName(typeof(CollectionChangeType), this.ChangeType))
+                   .AppendFormat("Items={0}", this.Items.ToStringEx())
+                   .ToString();
         }
 
         #endregion

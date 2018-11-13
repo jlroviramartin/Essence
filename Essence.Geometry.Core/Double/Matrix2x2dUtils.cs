@@ -19,7 +19,7 @@ namespace Essence.Geometry.Core.Double
     public static class Matrix2x2dUtils
     {
         /// <summary>
-        ///     Crea una matriz con la rotacion.
+        /// Crea una matriz con la rotacion.
         /// </summary>
         /// <param name="r">Angulo en radianes.</param>
         /// <returns>Matriz de rotacion.</returns>
@@ -33,7 +33,7 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la escala.
+        /// Crea una matriz con la escala.
         /// </summary>
         /// <param name="ex">Escala x.</param>
         /// <param name="ey">Escala y.</param>
@@ -48,8 +48,8 @@ namespace Essence.Geometry.Core.Double
         #region Traslacion, rotacion, escala
 
         /// <summary>
-        ///     Crea una matriz con la rotación y escala: mr * me.
-        ///     Primero se escala y después se rota.
+        /// Crea una matriz con la rotación y escala: mr * me.
+        /// Primero se escala y después se rota.
         /// </summary>
         /// <param name="r">Rotación en radianes.</param>
         /// <param name="e">Escala.</param>
@@ -60,8 +60,8 @@ namespace Essence.Geometry.Core.Double
         }
 
         /// <summary>
-        ///     Crea una matriz con la rotación y escala: mt * mr * me.
-        ///     Primero se escala y después se rota.
+        /// Crea una matriz con la rotación y escala: mt * mr * me.
+        /// Primero se escala y después se rota.
         /// </summary>
         /// <param name="r">Rotación en radianes.</param>
         /// <param name="ex">Escala x.</param>

@@ -20,10 +20,10 @@ namespace Essence.Geometry.Geom2D
     public static class Geom2DUtils
     {
         /// <summary>
-        ///     Resuelve las ecuaciones:
-        ///     u * uux + v * vvx = pox
-        ///     u * uuy + v * vvy = poy
-        ///     Ayuda a determinar las coordenadas del punto <c>po</c> segun el plano formado por <c>uu</c> y <c>vv</c>.
+        /// Resuelve las ecuaciones:
+        /// u * uux + v * vvx = pox
+        /// u * uuy + v * vvy = poy
+        /// Ayuda a determinar las coordenadas del punto <c>po</c> segun el plano formado por <c>uu</c> y <c>vv</c>.
         /// </summary>
         internal static void Resolve(Vector2d uu, Vector2d vv, Vector2d po,
                                      out double u, out double v)

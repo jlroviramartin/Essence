@@ -17,14 +17,14 @@ using System;
 namespace Essence.Util
 {
     /// <summary>
-    ///     Utilidades sobre propiedades.
+    /// Utilidades sobre propiedades.
     /// </summary>
     public static class PropertyUtils
     {
         /// <summary>
-        ///     Si la entrada no es <c>null</c>, realiza la evalucion sobre la entrada
-        ///     y devuelve el resultado. En otro caso devuelve <c>null</c>. Equivale a:
-        ///     <code><![CDATA[
+        /// Si la entrada no es <c>null</c>, realiza la evalucion sobre la entrada
+        /// y devuelve el resultado. En otro caso devuelve <c>null</c>. Equivale a:
+        /// <code><![CDATA[
         /// if (o == null)
         /// {
         ///     return null;
@@ -49,9 +49,9 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Si la entrada no es <c>null</c>, realiza la evalucion sobre la entrada
-        ///     y devuelve el resultado. En otro caso devuelve el valor de fallo. Equivale a:
-        ///     <code><![CDATA[
+        /// Si la entrada no es <c>null</c>, realiza la evalucion sobre la entrada
+        /// y devuelve el resultado. En otro caso devuelve el valor de fallo. Equivale a:
+        /// <code><![CDATA[
         /// if (o == null)
         /// {
         ///     return failureValue;
@@ -97,10 +97,10 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Si la entrada no es <c>null</c>, realiza una accion sobre la
-        ///     entrada. Permite encadenar multiples acciones sobre la misma
-        ///     entrada. Equivale a:
-        ///     <code><![CDATA[
+        /// Si la entrada no es <c>null</c>, realiza una accion sobre la
+        /// entrada. Permite encadenar multiples acciones sobre la misma
+        /// entrada. Equivale a:
+        /// <code><![CDATA[
         /// if (o == null)
         /// {
         ///     return null;

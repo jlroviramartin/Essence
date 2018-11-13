@@ -44,7 +44,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Obtiene el vertice con indice <c>i</c>.
+        /// Obtiene el vertice con indice <c>i</c>.
         /// </summary>
         /// <param name="i">Indice del vertice.</param>
         /// <returns>Vertice.</returns>
@@ -75,7 +75,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Indica si el triangulo es valido: todos sus puntos son validos.
+        /// Indica si el triangulo es valido: todos sus puntos son validos.
         /// </summary>
         public bool IsValid
         {
@@ -83,7 +83,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Indica si el triangulo es degenerado: recta o punto.
+        /// Indica si el triangulo es degenerado: recta o punto.
         /// </summary>
         public bool IsDegenerate
         {
@@ -107,7 +107,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Area del triangulo.
+        /// Area del triangulo.
         /// </summary>
         public double Area
         {
@@ -126,12 +126,12 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Orientacion del triangulo:
-        ///     <list>
-        ///         <item>&gt; 0 AntiHoraria, CounterClockWise, CCW ( + )</item>
-        ///         <item>= 0 ninguna, degenrado</item>
-        ///         <item>&lt; 0 Horaria, ClockWise, CW ( - )</item>
-        ///     </list>
+        /// Orientacion del triangulo:
+        /// <list>
+        ///     <item>&gt; 0 AntiHoraria, CounterClockWise, CCW ( + )</item>
+        ///     <item>= 0 ninguna, degenrado</item>
+        ///     <item>&lt; 0 Horaria, ClockWise, CW ( - )</item>
+        /// </list>
         /// </summary>
         public Orientation Orientation
         {
@@ -168,7 +168,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Reordena los vertices del triangulo.
+        /// Reordena los vertices del triangulo.
         /// </summary>
         public Triangle2d EnsureCCW()
         {
@@ -181,8 +181,8 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Evalua un punto en el triangulo utilizando los vectores unitarios.
-        ///     NOTA: <![CDATA[u + v <= 1]]>
+        /// Evalua un punto en el triangulo utilizando los vectores unitarios.
+        /// NOTA: <![CDATA[u + v <= 1]]>
         /// </summary>
         /// <param name="u">Parametro u: segun el vector unitario 'vertice1 - vertice0'.</param>
         /// <param name="v">Parametro v: segun el vector unitario 'vertice2 - vertice0'.</param>
@@ -194,7 +194,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Localiza un punto en el triangulo utilizando los vectores unitarios (coordenadas trilineales).
+        /// Localiza un punto en el triangulo utilizando los vectores unitarios (coordenadas trilineales).
         /// </summary>
         /// <param name="p">Punto.</param>
         /// <returns>Parametros u, v.</returns>
@@ -209,7 +209,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Evalua las coordenadas baricentricas del triangulo.
+        /// Evalua las coordenadas baricentricas del triangulo.
         /// </summary>
         public Point2d EvaluateBar(double u, double v)
         {
@@ -217,8 +217,8 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Evalua las coordenadas baricentricas del triangulo.
-        ///     NOTA: <![CDATA[u + v + w = 1]]>
+        /// Evalua las coordenadas baricentricas del triangulo.
+        /// NOTA: <![CDATA[u + v + w = 1]]>
         /// </summary>
         public Point2d EvaluateBar(double u, double v, double w)
         {
@@ -228,12 +228,12 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Localiza las coordenadas baricentricas del triangulo.
-        ///     <see cref="ocs/core/toxi/geom/Triangle3D.html" />
-        ///     <see cref="http://en.wikipedia.org/wiki/Barycentric_coordinate_system" />
-        ///     <see cref="http://mathworld.wolfram.com/BarycentricCoordinates.html" />
-        ///     <see
-        ///         cref="http://gamedev.stackexchange.com/questions/23743/whats-the-most-efficient-way-to-find-barycentric-coordinates" />
+        /// Localiza las coordenadas baricentricas del triangulo.
+        /// <see cref="ocs/core/toxi/geom/Triangle3D.html" />
+        /// <see cref="http://en.wikipedia.org/wiki/Barycentric_coordinate_system" />
+        /// <see cref="http://mathworld.wolfram.com/BarycentricCoordinates.html" />
+        /// <see
+        ///     cref="http://gamedev.stackexchange.com/questions/23743/whats-the-most-efficient-way-to-find-barycentric-coordinates" />
         /// </summary>
         public double[] ProjectBar(Point2d p)
         {
@@ -243,7 +243,7 @@ namespace Essence.Geometry.Geom2D
         }
 
         /// <summary>
-        ///     Localiza las coordenadas baricentricas del triangulo.
+        /// Localiza las coordenadas baricentricas del triangulo.
         /// </summary>
         public void ProjectBar(Point2d p, out double u, out double v, out double w)
         {

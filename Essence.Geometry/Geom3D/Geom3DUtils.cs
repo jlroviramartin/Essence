@@ -24,12 +24,12 @@ namespace Essence.Geometry.Geom3D
     public static class Geom3DUtils
     {
         /// <summary>
-        ///     Resuelve las ecuaciones:
-        ///     u * uux + v * vvx = pox
-        ///     u * uuy + v * vvy = poy
-        ///     u * uuz + v * vvz = poz
-        ///     Ayuda a determinar las coordenadas del punto <c>po</c> segun el plano formado por <c>uu</c> y <c>vv</c>.
-        ///     Importante: <c>po</c> ha de estar sobre el plano.
+        /// Resuelve las ecuaciones:
+        /// u * uux + v * vvx = pox
+        /// u * uuy + v * vvy = poy
+        /// u * uuz + v * vvz = poz
+        /// Ayuda a determinar las coordenadas del punto <c>po</c> segun el plano formado por <c>uu</c> y <c>vv</c>.
+        /// Importante: <c>po</c> ha de estar sobre el plano.
         /// </summary>
         internal static void Resolve(Vector3d uu, Vector3d vv, Vector3d po,
                                      out double u, out double v)
@@ -110,11 +110,11 @@ namespace Essence.Geometry.Geom3D
         }
 
         /// <summary>
-        ///     Resuelve las ecuaciones:
-        ///     u * uux + v * vvx + w * wwx = pox
-        ///     u * uuy + v * vvy + w * wwy = poy
-        ///     u * uuz + v * vvz + w * wwz = poz
-        ///     Ayuda a determinar las coordenadas del punto <c>po</c> segun el plano formado por <c>uu</c> y <c>vv</c>.
+        /// Resuelve las ecuaciones:
+        /// u * uux + v * vvx + w * wwx = pox
+        /// u * uuy + v * vvy + w * wwy = poy
+        /// u * uuz + v * vvz + w * wwz = poz
+        /// Ayuda a determinar las coordenadas del punto <c>po</c> segun el plano formado por <c>uu</c> y <c>vv</c>.
         /// </summary>
         internal static void Resolve(Vector3d uu, Vector3d vv, Vector3d ww, Vector3d po,
                                      out double u, out double v, out double w)

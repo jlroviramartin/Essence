@@ -37,7 +37,7 @@ namespace Essence.Util.Math.Long
         #endregion Clamp
 
         /// <summary>
-        ///     Formatea un valor largo en una cadena de texto binaria.
+        /// Formatea un valor largo en una cadena de texto binaria.
         /// </summary>
         /// <param name="valor">Valor largo para formatear.</param>
         /// <param name="blancos">Indica si se ponen blancos cada 4 bits.</param>
@@ -61,7 +61,7 @@ namespace Essence.Util.Math.Long
         }
 
         /// <summary>
-        ///     Interpolación lineal.
+        /// Interpolación lineal.
         /// </summary>
         public static long Lerp(long x, long x1, long y1, long x2, long y2)
         {
@@ -73,7 +73,7 @@ namespace Essence.Util.Math.Long
         }
 
         /// <summary>
-        ///     Interpolación lineal.
+        /// Interpolación lineal.
         /// </summary>
         public static long Lerp(long x, long x1, long y1, long x2, long y2, out long result)
         {

@@ -17,25 +17,25 @@ using System;
 namespace Essence.Geometry.Core
 {
     /// <summary>
-    ///     Informacion de formato para vectores y puntos.
+    /// Informacion de formato para vectores y puntos.
     /// </summary>
     public class VectorFormatInfo : ICloneable, IFormatProvider
     {
         /// <summary>
-        ///     Instancia con la informacion de coordenadas para la cultura actual. Similar a
-        ///     <c>NumberFormatInfo.CurrentInfo</c>
+        /// Instancia con la informacion de coordenadas para la cultura actual. Similar a
+        /// <c>NumberFormatInfo.CurrentInfo</c>
         /// </summary>
         public static VectorFormatInfo CurrentInfo;
 
         /// <summary>
-        ///     Instancia con la informacion de coordenadas independiente de la cultura. Similar a
-        ///     <c>NumberFormatInfo.InvariantInfo</c>
+        /// Instancia con la informacion de coordenadas independiente de la cultura. Similar a
+        /// <c>NumberFormatInfo.InvariantInfo</c>
         /// </summary>
         public static VectorFormatInfo InvariantInfo;
 
         /// <summary>
-        ///     Instancia con la informacion de coordenadas independiente de la cultura. Similar a
-        ///     <c>NumberFormatInfo.InvariantInfo</c>
+        /// Instancia con la informacion de coordenadas independiente de la cultura. Similar a
+        /// <c>NumberFormatInfo.InvariantInfo</c>
         /// </summary>
         public VectorFormatInfo()
         {
@@ -45,8 +45,8 @@ namespace Essence.Geometry.Core
         }
 
         /// <summary>
-        ///     Instancia con la informacion de coordenadas independiente de la cultura. Similar a
-        ///     <c>NumberFormatInfo.InvariantInfo</c>
+        /// Instancia con la informacion de coordenadas independiente de la cultura. Similar a
+        /// <c>NumberFormatInfo.InvariantInfo</c>
         /// </summary>
         public VectorFormatInfo(string beg, string sep, string end)
         {
@@ -66,17 +66,17 @@ namespace Essence.Geometry.Core
         }
 
         /// <summary>
-        ///     Inicio de un punto.
+        /// Inicio de un punto.
         /// </summary>
         public string Beg { get; set; }
 
         /// <summary>
-        ///     Separador de coordenadas.
+        /// Separador de coordenadas.
         /// </summary>
         public string Sep { get; set; }
 
         /// <summary>
-        ///     Fin de un punto.
+        /// Fin de un punto.
         /// </summary>
         public string End { get; set; }
 

@@ -20,7 +20,7 @@ namespace Essence.Util.Collections
     public interface IEventDictionary<TK, TV> : IDictionary<TK, TV>
     {
         /// <summary>
-        ///     Notifica que se ha modificado el diccionario.
+        /// Notifica que se ha modificado el diccionario.
         /// </summary>
         event EventHandler_v2<DictionaryEventArgs> DictionaryChanged;
     }

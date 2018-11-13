@@ -11,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// ReSharper disable InconsistentNaming
-// ReSharper disable RedundantCast
 
 using System;
 using System.Collections;
@@ -70,7 +68,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Comprueba si el valor <c>v</c> no es NaN ni Infinito.
+        /// Comprueba si el valor <c>v</c> no es NaN ni Infinito.
         /// </summary>
         /// <param name="v">Valor.</param>
         /// <returns>Indica si no es NaN ni Infinito.</returns>
@@ -161,7 +159,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Comprueba si el valor <c>v</c> es igual a cero con un error.
+        /// Comprueba si el valor <c>v</c> es igual a cero con un error.
         /// </summary>
         /// <param name="v">Valor.</param>
         /// <param name="epsilon">Error maximo.</param>
@@ -172,7 +170,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Comprueba si los valores <c>v1</c> y <c>v2</c> son iguales con un error.
+        /// Comprueba si los valores <c>v1</c> y <c>v2</c> son iguales con un error.
         /// </summary>
         /// <param name="v1">Valor 1.</param>
         /// <param name="v2">Valor 2.</param>
@@ -193,7 +191,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Compara los valores <c>v1</c> y <c>v2</c>.
+        /// Compara los valores <c>v1</c> y <c>v2</c>.
         /// </summary>
         /// <param name="v1">Valor 1.</param>
         /// <param name="v2">Valor 2.</param>
@@ -209,7 +207,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Comprueba si los valores <c>v1s</c> y <c>v2s</c> son iguales con un error.
+        /// Comprueba si los valores <c>v1s</c> y <c>v2s</c> son iguales con un error.
         /// </summary>
         /// <param name="v1s">Valores 1.</param>
         /// <param name="v2s">Valores 2.</param>
@@ -231,8 +229,8 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Comprueba si el valor <c>v</c> es mayor o igual que un minimo con un error.
-        ///     <![CDATA[(min - error) <= v]]>
+        /// Comprueba si el valor <c>v</c> es mayor o igual que un minimo con un error.
+        /// <![CDATA[(min - error) <= v]]>
         /// </summary>
         /// <param name="v">Valor a comprobar.</param>
         /// <param name="min">Minimo.</param>
@@ -244,8 +242,8 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Comprueba si el valor <c>v</c> es extrictamente mayor que un minimo con un error.
-        ///     <![CDATA[(min + error) < v]]>
+        /// Comprueba si el valor <c>v</c> es extrictamente mayor que un minimo con un error.
+        /// <![CDATA[(min + error) < v]]>
         /// </summary>
         /// <param name="v">Valor a comprobar.</param>
         /// <param name="min">Minimo.</param>
@@ -257,8 +255,8 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Comprueba si el valor <c>v</c> es extrictamente menor que un maximo con un error.
-        ///     <![CDATA[v < (max - error)]]>
+        /// Comprueba si el valor <c>v</c> es extrictamente menor que un maximo con un error.
+        /// <![CDATA[v < (max - error)]]>
         /// </summary>
         /// <param name="v">Valor a comprobar.</param>
         /// <param name="max">Maximo.</param>
@@ -270,8 +268,8 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Comprueba si el valor <c>v</c> es menor o igual que un maximo con un error.
-        ///     <![CDATA[v <= (max + error)]]>
+        /// Comprueba si el valor <c>v</c> es menor o igual que un maximo con un error.
+        /// <![CDATA[v <= (max + error)]]>
         /// </summary>
         /// <param name="v">Valor a comprobar.</param>
         /// <param name="max">Maximo.</param>
@@ -283,9 +281,9 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Comprueba si el valor <c>v</c> esta entre el minimo y maximo con un error.
-        ///     <![CDATA[(min - error) <= v Y v <= (max + error)]]>
-        ///     <![CDATA[ v en [ min - error,  max + error ] OPEN ]]>
+        /// Comprueba si el valor <c>v</c> esta entre el minimo y maximo con un error.
+        /// <![CDATA[(min - error) <= v Y v <= (max + error)]]>
+        /// <![CDATA[ v en [ min - error,  max + error ] OPEN ]]>
         /// </summary>
         /// <param name="v">Valor a comprobar.</param>
         /// <param name="min">Minimo.</param>
@@ -298,9 +296,9 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Comprueba si el valor <c>v</c> esta estrictamente comprendido entre el minimo y maximo con un error.
-        ///     <![CDATA[(min - error) < v Y v < (max + error)]]>
-        ///     <![CDATA[ v en ( min - error,  max + error ) CLOSED ]]>
+        /// Comprueba si el valor <c>v</c> esta estrictamente comprendido entre el minimo y maximo con un error.
+        /// <![CDATA[(min - error) < v Y v < (max + error)]]>
+        /// <![CDATA[ v en ( min - error,  max + error ) CLOSED ]]>
         /// </summary>
         /// <param name="v">Valor a comprobar.</param>
         /// <param name="min">Minimo.</param>
@@ -320,7 +318,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Conversion de grados a radianes.
+        /// Conversion de grados a radianes.
         /// </summary>
         /// <param name="grad">Grados.</param>
         /// <returns>Radianes.</returns>
@@ -330,7 +328,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Conversion de grados centesimales a radianes.
+        /// Conversion de grados centesimales a radianes.
         /// </summary>
         /// <param name="grad">Grados centesimales.</param>
         /// <returns>Radianes.</returns>
@@ -340,7 +338,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Conversion de radianes a grados.
+        /// Conversion de radianes a grados.
         /// </summary>
         /// <param name="rad">Radianes.</param>
         /// <returns>Grados.</returns>
@@ -350,7 +348,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Une dos enumerados ordenados.
+        /// Une dos enumerados ordenados.
         /// </summary>
         public static IEnumerable<double> ConcatSorted(IEnumerable<double> t1, IEnumerable<double> t2, double error = EPSILON)
         {
@@ -397,7 +395,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Interpolación lineal.
+        /// Interpolación lineal.
         /// </summary>
         public static double Lerp(double d1, double d2, double alpha)
         {
@@ -405,7 +403,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Interpolación lineal.
+        /// Interpolación lineal.
         /// </summary>
         public static double Lerp(double x, double x1, double y1, double x2, double y2)
         {
@@ -463,7 +461,7 @@ namespace Essence.Util.Math.Double
         #region Inner clases
 
         /// <summary>
-        ///     Compara los valores indicados.
+        /// Compara los valores indicados.
         /// </summary>
         public sealed class EpsilonEqualityComparer : IEqualityComparer<double>, IEqualityComparer
         {
@@ -506,7 +504,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Compara los valores indicados.
+        /// Compara los valores indicados.
         /// </summary>
         public sealed class EpsilonComparer : IComparer<double>, IComparer
         {
@@ -538,7 +536,7 @@ namespace Essence.Util.Math.Double
         }
 
         /// <summary>
-        ///     Compara los valores indicados.
+        /// Compara los valores indicados.
         /// </summary>
         public sealed class Comparer : IComparer<double>, IComparer
         {

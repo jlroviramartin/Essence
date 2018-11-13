@@ -127,112 +127,112 @@ namespace Essence.Geometry.Core
         public Point3d Position { get; set; }
 
         /// <summary>
-        ///     Contains four floating-point values that specify
-        ///     the ambient RGBA intensity of the light.
-        ///     Floating-point values are mapped directly.
-        ///     Neither integer nor floating-point values are clamped.
-        ///     The initial ambient light intensity is (0, 0, 0, 1).
+        /// Contains four floating-point values that specify
+        /// the ambient RGBA intensity of the light.
+        /// Floating-point values are mapped directly.
+        /// Neither integer nor floating-point values are clamped.
+        /// The initial ambient light intensity is (0, 0, 0, 1).
         /// </summary>
         public Color4f Ambient { get; set; }
 
         /// <summary>
-        ///     Contains four floating-point values that specify
-        ///     the diffuse RGBA intensity of the light.
-        ///     Floating-point values are mapped directly.
-        ///     Neither integer nor floating-point values are clamped.
-        ///     The initial value
-        ///     for GL_LIGHT0 is (1, 1, 1, 1); for other lights, the
-        ///     initial value is (0, 0, 0, 1).
+        /// Contains four floating-point values that specify
+        /// the diffuse RGBA intensity of the light.
+        /// Floating-point values are mapped directly.
+        /// Neither integer nor floating-point values are clamped.
+        /// The initial value
+        /// for GL_LIGHT0 is (1, 1, 1, 1); for other lights, the
+        /// initial value is (0, 0, 0, 1).
         /// </summary>
         public Color4f Diffuse { get; set; }
 
         /// <summary>
-        ///     Contains four floating-point values that specify
-        ///     the specular RGBA intensity of the light.
-        ///     Floating-point values are mapped directly.
-        ///     Neither integer nor floating-point values are clamped.
-        ///     The initial value
-        ///     for GL_LIGHT0 is (1, 1, 1, 1); for other lights, the
-        ///     initial value is (0, 0, 0, 1).
+        /// Contains four floating-point values that specify
+        /// the specular RGBA intensity of the light.
+        /// Floating-point values are mapped directly.
+        /// Neither integer nor floating-point values are clamped.
+        /// The initial value
+        /// for GL_LIGHT0 is (1, 1, 1, 1); for other lights, the
+        /// initial value is (0, 0, 0, 1).
         /// </summary>
         public Color4f Specular { get; set; }
 
         public Vector3d Direction { get; set; }
 
         /// <summary>
-        ///     Is a floating-point value that specifies
-        ///     one of the three light attenuation factors.
-        ///     Floating-point values are mapped directly.
-        ///     Only nonnegative values are accepted.
-        ///     If the light is positional,
-        ///     rather than directional,
-        ///     its intensity is attenuated by the reciprocal of the sum of the constant
-        ///     factor, the linear factor times the distance between the light
-        ///     and the vertex being lighted,
-        ///     and the quadratic factor times the square of the same distance.
-        ///     The initial attenuation factors are (1, 0, 0),
-        ///     resulting in no attenuation.
+        /// Is a floating-point value that specifies
+        /// one of the three light attenuation factors.
+        /// Floating-point values are mapped directly.
+        /// Only nonnegative values are accepted.
+        /// If the light is positional,
+        /// rather than directional,
+        /// its intensity is attenuated by the reciprocal of the sum of the constant
+        /// factor, the linear factor times the distance between the light
+        /// and the vertex being lighted,
+        /// and the quadratic factor times the square of the same distance.
+        /// The initial attenuation factors are (1, 0, 0),
+        /// resulting in no attenuation.
         /// </summary>
         public float ConstantAttenuation { get; set; }
 
         /// <summary>
-        ///     Is a floating-point value that specifies
-        ///     one of the three light attenuation factors.
-        ///     Floating-point values are mapped directly.
-        ///     Only nonnegative values are accepted.
-        ///     If the light is positional,
-        ///     rather than directional,
-        ///     its intensity is attenuated by the reciprocal of the sum of the constant
-        ///     factor, the linear factor times the distance between the light
-        ///     and the vertex being lighted,
-        ///     and the quadratic factor times the square of the same distance.
-        ///     The initial attenuation factors are (1, 0, 0),
-        ///     resulting in no attenuation.
+        /// Is a floating-point value that specifies
+        /// one of the three light attenuation factors.
+        /// Floating-point values are mapped directly.
+        /// Only nonnegative values are accepted.
+        /// If the light is positional,
+        /// rather than directional,
+        /// its intensity is attenuated by the reciprocal of the sum of the constant
+        /// factor, the linear factor times the distance between the light
+        /// and the vertex being lighted,
+        /// and the quadratic factor times the square of the same distance.
+        /// The initial attenuation factors are (1, 0, 0),
+        /// resulting in no attenuation.
         /// </summary>
         public float LinearAttenuation { get; set; }
 
         /// <summary>
-        ///     Is a floating-point value that specifies
-        ///     one of the three light attenuation factors.
-        ///     Floating-point values are mapped directly.
-        ///     Only nonnegative values are accepted.
-        ///     If the light is positional,
-        ///     rather than directional,
-        ///     its intensity is attenuated by the reciprocal of the sum of the constant
-        ///     factor, the linear factor times the distance between the light
-        ///     and the vertex being lighted,
-        ///     and the quadratic factor times the square of the same distance.
-        ///     The initial attenuation factors are (1, 0, 0),
-        ///     resulting in no attenuation.
+        /// Is a floating-point value that specifies
+        /// one of the three light attenuation factors.
+        /// Floating-point values are mapped directly.
+        /// Only nonnegative values are accepted.
+        /// If the light is positional,
+        /// rather than directional,
+        /// its intensity is attenuated by the reciprocal of the sum of the constant
+        /// factor, the linear factor times the distance between the light
+        /// and the vertex being lighted,
+        /// and the quadratic factor times the square of the same distance.
+        /// The initial attenuation factors are (1, 0, 0),
+        /// resulting in no attenuation.
         /// </summary>
         public float QuadraticAttenuation { get; set; }
 
         /// <summary>
-        ///     Is a floating-point value that specifies the
-        ///     maximum spread angle of a light source. Floating-point
-        ///     values are mapped directly. Only values in the range [0,90] and
-        ///     the special value 180 are accepted. If the angle between the
-        ///     direction of the light and the direction from the light to the
-        ///     vertex being lighted is greater than the spot cutoff angle, the
-        ///     light is completely masked. Otherwise, its intensity is
-        ///     controlled by the spot exponent and the attenuation factors. The
-        ///     initial spot cutoff is 180, resulting in uniform light distribution.
+        /// Is a floating-point value that specifies the
+        /// maximum spread angle of a light source. Floating-point
+        /// values are mapped directly. Only values in the range [0,90] and
+        /// the special value 180 are accepted. If the angle between the
+        /// direction of the light and the direction from the light to the
+        /// vertex being lighted is greater than the spot cutoff angle, the
+        /// light is completely masked. Otherwise, its intensity is
+        /// controlled by the spot exponent and the attenuation factors. The
+        /// initial spot cutoff is 180, resulting in uniform light distribution.
         /// </summary>
         public float SpotCutoff { get; set; }
 
         /// <summary>
-        ///     Is a floating-point value that specifies
-        ///     the intensity distribution of the light.
-        ///     Floating-point values are mapped directly.
-        ///     Only values in the range [0,128] are accepted.
-        ///     Effective light intensity is attenuated by the cosine of the angle between
-        ///     the direction of the light and the direction from the light to the vertex
-        ///     being lighted,
-        ///     raised to the power of the spot exponent.
-        ///     Thus, higher spot exponents result in a more focused light source,
-        ///     regardless of the spot cutoff angle (see GL_SPOT_CUTOFF).
-        ///     The initial spot exponent is 0,
-        ///     resulting in uniform light distribution.
+        /// Is a floating-point value that specifies
+        /// the intensity distribution of the light.
+        /// Floating-point values are mapped directly.
+        /// Only values in the range [0,128] are accepted.
+        /// Effective light intensity is attenuated by the cosine of the angle between
+        /// the direction of the light and the direction from the light to the vertex
+        /// being lighted,
+        /// raised to the power of the spot exponent.
+        /// Thus, higher spot exponents result in a more focused light source,
+        /// regardless of the spot cutoff angle (see GL_SPOT_CUTOFF).
+        /// The initial spot exponent is 0,
+        /// resulting in uniform light distribution.
         /// </summary>
         public float SpotExponent { get; set; }
 

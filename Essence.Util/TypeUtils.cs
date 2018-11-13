@@ -20,7 +20,7 @@ using System.Runtime.Serialization;
 namespace Essence.Util
 {
     /// <summary>
-    ///     Utilidades sobre tipos.
+    /// Utilidades sobre tipos.
     /// </summary>
     public static class TypeUtils
     {
@@ -47,7 +47,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Crea una instancia del la clase indicada, completamente vacia.
+        /// Crea una instancia del la clase indicada, completamente vacia.
         /// </summary>
         /// <typeparam name="T">Tipo de la clase a crear instancia.</typeparam>
         /// <returns>Instancia.</returns>
@@ -57,7 +57,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Crea una instancia del la clase indicada, completamente vacia.
+        /// Crea una instancia del la clase indicada, completamente vacia.
         /// </summary>
         /// <returns>Instancia.</returns>
         public static object NewEmpty(this Type type)
@@ -66,7 +66,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Indica si el valor es <c>null</c> o si es <c>nullable</c> y no tiene valor.
+        /// Indica si el valor es <c>null</c> o si es <c>nullable</c> y no tiene valor.
         /// </summary>
         /// <typeparam name="T">Tipo del valor.</typeparam>
         /// <param name="value">Valor.</param>
@@ -77,7 +77,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Indica si el tipo admite null (no es ValueType o es Nullable).
+        /// Indica si el tipo admite null (no es ValueType o es Nullable).
         /// </summary>
         /// <param name="type">Tipo.</param>
         /// <returns>Indica si el tipo admite null.</returns>
@@ -88,7 +88,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Indica si es Nullable el tipo indicado.
+        /// Indica si es Nullable el tipo indicado.
         /// </summary>
         /// <param name="type">Tipo.</param>
         /// <returns>Indica si es Nullable.</returns>
@@ -98,7 +98,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Indica si el tipo es un enumerado Nullable.
+        /// Indica si el tipo es un enumerado Nullable.
         /// </summary>
         /// <param name="type">Tipo.</param>
         /// <returns>Indica si es un enumerado Nullable.</returns>
@@ -117,7 +117,7 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Obtiene el tamaño del tipo. No es aplicable a objetos ni structuras.
+        /// Obtiene el tamaño del tipo. No es aplicable a objetos ni structuras.
         /// </summary>
         /// <param name="primitiveType"></param>
         /// <returns></returns>
@@ -138,8 +138,8 @@ namespace Essence.Util
         }
 
         /// <summary>
-        ///     Convert a TypeCode ordinal into it's corresponding Type instance.
-        ///     <see cref="http://stackoverflow.com/questions/5915740/how-to-convert-a-typecode-to-an-actual-type" />
+        /// Convert a TypeCode ordinal into it's corresponding Type instance.
+        /// <see cref="http://stackoverflow.com/questions/5915740/how-to-convert-a-typecode-to-an-actual-type" />
         /// </summary>
         public static Type ToType(this TypeCode typeCode)
         {
@@ -151,7 +151,7 @@ namespace Essence.Util
         #region private
 
         /// <summary>
-        ///     Table that maps TypeCode to it's corresponding Type.
+        /// Table that maps TypeCode to it's corresponding Type.
         /// </summary>
         private static readonly Dictionary<TypeCode, Type> typeCodeToTypeMap = new Dictionary<TypeCode, Type>
         {
@@ -176,7 +176,7 @@ namespace Essence.Util
         };
 
         /// <summary>
-        ///     Table that maps TypeCode to it's corresponding Type.
+        /// Table that maps TypeCode to it's corresponding Type.
         /// </summary>
         private static readonly Dictionary<TypeCode, int> typeCodeToSize = new Dictionary<TypeCode, int>
         {

@@ -17,12 +17,12 @@ using System;
 namespace Essence.Util
 {
     /// <summary>
-    ///     Utilidades sobre proveedores de formato <c>IFormatProvider</c>.
+    /// Utilidades sobre proveedores de formato <c>IFormatProvider</c>.
     /// </summary>
     public static class ProviderUtils
     {
         /// <summary>
-        ///     Obtiene el formato asociado al tipo del parametro generico.
+        /// Obtiene el formato asociado al tipo del parametro generico.
         /// </summary>
         /// <typeparam name="T">Tipo de formato.</typeparam>
         /// <param name="provider">Proveedor.</param>
