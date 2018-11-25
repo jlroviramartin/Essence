@@ -38,6 +38,16 @@ namespace Essence.Geometry.Curves
             return a;
         }
 
+        #region private
+
+        protected double tmin;
+        protected double tmax;
+
+        /// <summary>Transformacion que se aplica sobre el parametro.</summary>
+        protected Transform1 ttransform;
+
+        #endregion
+
         #region Curve2
 
         public override double TMin
@@ -143,16 +153,6 @@ namespace Essence.Geometry.Curves
             double a1 = this.GetAngle(t1);
             return AngleUtils.Diff(a0, a1) * this.Radius;
         }
-
-        #endregion
-
-        #region private
-
-        protected double tmin;
-        protected double tmax;
-
-        /// <summary>Transformacion que se aplica sobre el parametro.</summary>
-        protected Transform1 ttransform;
 
         #endregion
     }
