@@ -482,7 +482,33 @@ namespace Essence.Maths.Double
         }
 
         /// <summary>
-        /// Calcula las integrales de Fresnel.
+        /// Evaluates the Fresnel integrals.
+        /// <c><![CDATA[
+        ///           x
+        ///           -
+        ///          | |
+        /// C(x) =   |   cos(pi/2 t**2) dt,
+        ///        | |
+        ///         -
+        ///          0
+        ///
+        ///           x
+        ///           -
+        ///          | |
+        /// S(x) =   |   sin(pi/2 t**2) dt.
+        ///        | |
+        ///         -
+        ///          0
+        /// ]]></c>
+        ///
+        /// The integrals are evaluated by a power series for <![CDATA[x < 1]]>.
+        /// For <![CDATA[x >= 1]]> auxiliary functions f(x) and g(x) are employed
+        /// such that
+        ///
+        /// C(x) = 0.5 + f(x) sin( pi/2 x**2 ) - g(x) cos( pi/2 x**2 )
+        /// S(x) = 0.5 - f(x) cos( pi/2 x**2 ) - g(x) sin( pi/2 x**2 )
+        ///
+        ///
         /// </summary>
         /// <param name="z">Desarrollo de la integral/longitud arco.</param>
         /// <param name="sz">S(z)</param>
@@ -508,6 +534,8 @@ namespace Essence.Maths.Double
             }
             else
             {
+                // Asymptotic power series auxiliary functions
+                // for large argument
                 x2 = x * x;
                 t = SysMath.PI * x2;
                 u = 1.0 / (t * t);

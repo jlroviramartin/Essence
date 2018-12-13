@@ -18,6 +18,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Essence.Geometry.Core;
 using Essence.Geometry.Core.Double;
 using Essence.Geometry.Core.Float;
@@ -37,21 +38,27 @@ namespace Essence.Geometry.Wave
         {
         }
 
-        public WavefrontFormat(Stream stream)
-            : this(new StreamWriter(stream))
+        public WavefrontFormat(Stream stream, bool leaveOpen = false)
+            : this(new StreamWriter(stream, Encoding.Default, 1000, leaveOpen))
         {
         }
 
-        public WavefrontFormat(StreamWriter streamWriter)
+        public WavefrontFormat(StreamWriter streamWriter, bool leaveOpen = false)
         {
             this.Transform = Transform2.Identity();
             this.streamWriter = streamWriter;
+            this.leaveOpen = leaveOpen;
         }
 
         // NOTA: Transform3 !!!
         public ITransform2 Transform { get; set; }
 
         public bool UseObjectGroup { get; set; }
+
+        public void Flush()
+        {
+            this.streamWriter.Flush();
+        }
 
         public void Close()
         {
@@ -364,6 +371,7 @@ namespace Essence.Geometry.Wave
         private static readonly CultureInfo en_US = new CultureInfo("en-US");
 
         private readonly StreamWriter streamWriter;
+        private readonly bool leaveOpen = false;
 
         private int vertexIndex = 1;
         private int textureIndex = 1;
@@ -377,8 +385,11 @@ namespace Essence.Geometry.Wave
 
         protected override void DisposeOfManagedResources()
         {
-            this.Close();
-
+            this.Flush();
+            if (!this.leaveOpen)
+            {
+                this.Close();
+            }
             base.DisposeOfManagedResources();
         }
 
@@ -416,14 +427,20 @@ namespace Essence.Geometry.Wave
         {
         }
 
-        public MaterialFormat(Stream stream)
-            : this(new StreamWriter(stream))
+        public MaterialFormat(Stream stream, bool leaveOpen = false)
+            : this(new StreamWriter(stream, Encoding.Default, 1000, leaveOpen))
         {
         }
 
-        public MaterialFormat(StreamWriter streamWriter)
+        public MaterialFormat(StreamWriter streamWriter, bool leaveOpen = false)
         {
             this.streamWriter = streamWriter;
+            this.leaveOpen = leaveOpen;
+        }
+
+        public void Flush()
+        {
+            this.streamWriter.Flush();
         }
 
         public void Close()
@@ -482,6 +499,7 @@ namespace Essence.Geometry.Wave
         private readonly Dictionary<string, Mat> map = new Dictionary<string, Mat>();
 
         private readonly StreamWriter streamWriter;
+        private readonly bool leaveOpen = false;
 
         #endregion Miembros privados _______________________________________________________________
 
@@ -489,8 +507,11 @@ namespace Essence.Geometry.Wave
 
         protected override void DisposeOfManagedResources()
         {
-            this.Close();
-
+            this.Flush();
+            if (!this.leaveOpen)
+            {
+                this.Close();
+            }
             base.DisposeOfManagedResources();
         }
 

@@ -72,7 +72,7 @@ namespace Essence.Geometry.Curves
         {
         }
 
-        public ClothoidArc2(double l0,
+        public ClothoidArc2(double l0,/* No es necesario: se utiliza como estacion inicial. */
                             Point2d point0, Point2d point1,
                             double radius0, double radius1,
                             double? a = null)
