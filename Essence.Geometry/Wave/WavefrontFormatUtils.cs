@@ -184,6 +184,15 @@ namespace Essence.Geometry.Wave
             return wf;
         }
 
+        public static WavefrontFormat DrawVector(this WavefrontFormat wf,
+                                                 string color,
+                                                 Point3d o, Vector3d v)
+        {
+            wf.UseMaterial(color);
+            wf.AddLines(new[] { o, o + v });
+            return wf;
+        }
+
         public static WavefrontFormat DrawVectors(this WavefrontFormat wf,
                                                   string color,
                                                   IEnumerable<Tuple<Point2d, Vector2d>> vectors)

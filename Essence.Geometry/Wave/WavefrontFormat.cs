@@ -130,6 +130,14 @@ namespace Essence.Geometry.Wave
             return this.vertexIndex++;
         }
 
+        public IEnumerable<int> AddVertices(IEnumerable<Point3d> ps)
+        {
+            foreach (Point3d p in ps)
+            {
+                yield return this.AddVertex(p);
+            }
+        }
+
         public int AddVertex(Point2d v)
         {
             Point2d v2 = this.Transform.DoTransform(v);
@@ -138,6 +146,14 @@ namespace Essence.Geometry.Wave
                                                       "v {0:F3} {1:F3} {2:F3}",
                                                       v2.X, v2.Y, 0));
             return this.vertexIndex++;
+        }
+
+        public IEnumerable<int> AddVertices(IEnumerable<Point2d> ps)
+        {
+            foreach (Point2d p in ps)
+            {
+                yield return this.AddVertex(p);
+            }
         }
 
         public int AddTexture(Vector2d tex)
@@ -154,7 +170,7 @@ namespace Essence.Geometry.Wave
             Vector2d n2 = this.Transform.DoTransform(new Vector2d(n.X, n.Y));
             this.WritePadding();
             this.streamWriter.WriteLine(string.Format(en_US,
-                                                      "vn  {0:F3} {1:F3} {2:F3}",
+                                                      "vn {0:F3} {1:F3} {2:F3}",
                                                       n2.X, n2.Y, n.Z));
             return this.normalIndex++;
         }
