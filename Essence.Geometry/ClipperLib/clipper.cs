@@ -362,10 +362,10 @@ namespace ClipperLib
       this.X = x; this.Y = y; this.Z = z;
     }
     
-    public IntPoint(double x, double y, double z = 0)
+    /*public IntPoint(double x, double y, double z = 0)
     {
       this.X = (cInt)x; this.Y = (cInt)y; this.Z = (cInt)z;
-    }
+    }*/
     
     public IntPoint(DoublePoint dp)
     {
@@ -4741,7 +4741,7 @@ namespace ClipperLib
     }
     //------------------------------------------------------------------------------
 
-    public void Execute(ref Paths solution, double delta)
+    public void Execute(/*ref*/ Paths solution, double delta)
     {
       solution.Clear();
       FixOrientations();
@@ -4772,7 +4772,7 @@ namespace ClipperLib
     }
     //------------------------------------------------------------------------------
 
-    public void Execute(ref PolyTree solution, double delta)
+    public void Execute(/*ref*/ PolyTree solution, double delta)
     {
       solution.Clear();
       FixOrientations();
