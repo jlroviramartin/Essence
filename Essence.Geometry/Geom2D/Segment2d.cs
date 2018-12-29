@@ -60,7 +60,7 @@ namespace Essence.Geometry.Geom2D
         /// <param name="p">Punto.</param>
         /// <param name="adjust">Indica si ajusta a los limites [0, longitud].</param>
         /// <returns>Parametro [0, longitud].</returns>
-        public double Proyect0L(Point2d p, bool adjust = true)
+        public double Project0L(Point2d p, bool adjust = true)
         {
             Vector2d diff = p - this.P0;
             double param = this.Direction.Dot(diff);
@@ -89,7 +89,7 @@ namespace Essence.Geometry.Geom2D
         /// <param name="p">Punto.</param>
         /// <param name="adjust">Indica si ajusta a los limites [0, 1].</param>
         /// <returns>Parametro [0, 1].</returns>
-        public double Proyect01(Point2d p, bool adjust = true)
+        public double Project01(Point2d p, bool adjust = true)
         {
             Vector2d diff = p - this.P0;
             double u = this.Direction.Dot(diff) / this.Length;

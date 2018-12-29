@@ -70,15 +70,15 @@ namespace Essence.Geometry.Intersection
                     this.IntersectionType = IntersectionType.POINT;
                     this.Intersections = new[]
                     {
-                        new IntrPoint2(parameters[0], this.Item1.Proyect0L(pt), pt),
+                        new IntrPoint2(parameters[0], this.Item1.Project0L(pt), pt),
                     };
                     break;
                 }
                 case IntersectionType.LINE:
                 {
                     // Proyectamos en 'Item0' los extremos de 'Item1'.
-                    double param0 = this.Item0.Proyect0L(this.Item1.P0, false);
-                    double param1 = this.Item0.Proyect0L(this.Item1.P1, false);
+                    double param0 = this.Item0.Project0L(this.Item1.P0, false);
+                    double param1 = this.Item0.Project0L(this.Item1.P1, false);
 
                     // Si ambos caen fuera, no hay interseccion.
                     if (Math.Max(param0, param1).EpsilonL(0, this.Error) || Math.Min(param0, param1).EpsilonG(this.Item0.Length, this.Error))
@@ -98,7 +98,7 @@ namespace Essence.Geometry.Intersection
                         this.IntersectionType = IntersectionType.POINT;
                         this.Intersections = new[]
                         {
-                            new IntrPoint2(param0, this.Item1.Proyect0L(pt), pt),
+                            new IntrPoint2(param0, this.Item1.Project0L(pt), pt),
                         };
                     }
                     else
@@ -109,8 +109,8 @@ namespace Essence.Geometry.Intersection
                         this.IntersectionType = IntersectionType.SEGMENT;
                         this.Intersections = new[]
                         {
-                            new IntrPoint2(param0, this.Item1.Proyect0L(pt0), pt0),
-                            new IntrPoint2(param1, this.Item1.Proyect0L(pt1), pt1),
+                            new IntrPoint2(param0, this.Item1.Project0L(pt0), pt0),
+                            new IntrPoint2(param1, this.Item1.Project0L(pt1), pt1),
                         };
                     }
                     break;
