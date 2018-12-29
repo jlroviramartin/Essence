@@ -86,5 +86,39 @@ namespace Essence.Util.Math.Int
             }
             return System.Math.DivRem((y1 * (x2 - x) + y2 * (x - x1)), (x2 - x1), out result);
         }
+
+        public static int Pow(int x, int y)
+        {
+            switch (y)
+            {
+                case 0:
+                {
+                    return 1;
+                }
+                case 1:
+                {
+                    return x;
+                }
+                case 2:
+                {
+                    return x * x;
+                }
+                case 3:
+                {
+                    return x * x * x;
+                }
+                case 4:
+                {
+                    int xx = x * x;
+                    return xx * xx;
+                }
+            }
+            int result = x;
+            for (int i = 1; i < y; i++)
+            {
+                result *= x;
+            }
+            return result;
+        }
     }
 }
