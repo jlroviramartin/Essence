@@ -114,6 +114,11 @@ namespace Essence.Geometry.Core.Int
             return new[] { new Point2i(this.XMin, this.YMin), new Point2i(this.XMax, this.YMin), new Point2i(this.XMax, this.YMax), new Point2i(this.XMin, this.YMax) };
         }
 
+        public Point2i Center
+        {
+            get { return new Point2i((this.XMin + this.XMax) / 2, (this.YMin + this.YMax) / 2); }
+        }
+
         public Point2i Origin
         {
             get { return new Point2i(this.XMin, this.YMin); }
