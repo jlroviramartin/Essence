@@ -309,14 +309,17 @@ namespace Essence.Geometry.Wave
             {
                 this.streamWriter.Write(" ");
                 this.streamWriter.Write(face.Vertex.ToString(en_US));
-                if (mask == FaceMask.Tex || mask == FaceMask.Normal)
+
+                bool tex = ((mask & FaceMask.Tex) == FaceMask.Tex);
+                bool nor = ((mask & FaceMask.Normal) == FaceMask.Normal);
+                if (tex || nor)
                 {
                     this.streamWriter.Write("/");
-                    if (mask == FaceMask.Tex)
+                    if (tex)
                     {
                         this.streamWriter.Write(face.Tex.ToString(en_US));
                     }
-                    if (mask == FaceMask.Normal)
+                    if (nor)
                     {
                         this.streamWriter.Write("/");
                         this.streamWriter.Write(face.Normal.ToString(en_US));
