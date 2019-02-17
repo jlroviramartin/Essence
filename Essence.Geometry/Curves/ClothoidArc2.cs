@@ -30,7 +30,7 @@ namespace Essence.Geometry.Curves
     /// </summary>
     public class ClothoidArc2 : SimpleCurve2
     {
-        public static ClothoidArc2[] Split(double l0,
+        public static ClothoidArc2[] Split(double tmin,
                                            Point2d point0, Point2d point1,
                                            double radius0, double radius1,
                                            double a)
@@ -60,8 +60,8 @@ namespace Essence.Geometry.Curves
             ClothoidArc2 left = new ClothoidArc2(transform, l0_n, 0, invertY, a);
             ClothoidArc2 right = new ClothoidArc2(transform, 0, l1_n, invertY, a);
 
-            left.SetTInterval(l0, l0 + (-l0_n)); // l0_n < 0
-            right.SetTInterval(l0 + (-l0_n), l0 + (-l0_n) + l1_n);
+            left.SetTInterval(tmin, tmin + (-l0_n)); // l0_n < 0
+            right.SetTInterval(tmin + (-l0_n), tmin + (-l0_n) + l1_n);
 
             return new[] { left, right };
         }
@@ -72,7 +72,7 @@ namespace Essence.Geometry.Curves
         {
         }
 
-        public ClothoidArc2(double l0,/* No es necesario: se utiliza como estacion inicial. */
+        public ClothoidArc2(double tmin, /* No es necesario: se utiliza como estacion inicial. */
                             Point2d point0, Point2d point1,
                             double radius0, double radius1,
                             double? a = null)
@@ -109,7 +109,7 @@ namespace Essence.Geometry.Curves
             // Diferencia de puntos en coordenadas reales.
             Vector2d v01 = point1.Sub(point0);
 
-            this.A = SolveParam(v01.Length, radius0, radius1);
+            this.A = ClothoUtils.SolveParam(v01.Length, radius0, radius1);
             Contract.Assert(!a.HasValue || this.A.EpsilonEquals(a.Value));
 
             // Desarrollo segun el radio en el punto (0) y (1).
@@ -132,7 +132,189 @@ namespace Essence.Geometry.Curves
             this.l0 = l0_n;
             this.l1 = l1_n;
 
-            this.SetTInterval(l0, l0 + (this.l1 - this.l0));
+            this.SetTInterval(tmin, tmin + (this.l1 - this.l0));
+        }
+
+        public static ClothoidArc2 BuildSimple(double tmin,
+                                               Point2d point0, Point2d point1,
+                                               double radius0, double radius1,
+                                               double a)
+        {
+            // Correccion sobre los radios.
+            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
+            {
+                if (double.IsInfinity(radius0))
+                {
+                    radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
+                }
+                else if (double.IsInfinity(radius1))
+                {
+                    radius1 = SysMath.Sign(radius0) * double.PositiveInfinity;
+                }
+                else
+                {
+                    // No se permite cambio de signo en el radio. Funcionaria???
+                    Contract.Assert(false);
+                }
+            }
+
+            bool invertY;
+            if (SysMath.Abs(radius0) > SysMath.Abs(radius1))
+            {
+                // t positivas
+                invertY = radius1 < 0;
+            }
+            else
+            {
+                // t negativa
+                invertY = radius1 > 0;
+            }
+
+            // Diferencia de puntos en coordenadas reales.
+            Vector2d v01 = point1.Sub(point0);
+
+            // Desarrollo segun el radio en el punto (0) y (1).
+            double l0_n = ClothoUtils.ClothoL(radius0, invertY, a);
+            double l1_n = ClothoUtils.ClothoL(radius1, invertY, a);
+
+            // Coordenadas en el punto (0) y (1) para una clotoide normalizada.
+            Point2d p0_n = ClothoUtils.Clotho(l0_n, invertY, a);
+            Point2d p1_n = ClothoUtils.Clotho(l1_n, invertY, a);
+
+            Vector2d v01_n = p1_n.Sub(p0_n);
+
+            // Rotacion de v01_n -> v01.
+            double r = v01_n.AngleTo(v01);
+
+            // Transformacion a aplicar.
+            ITransform2 transform = Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
+                                              .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
+
+            double l0 = l0_n;
+            double l1 = l1_n;
+
+            ClothoidArc2 clotho = new ClothoidArc2(transform, l0, l1, invertY, a);
+            clotho.SetTInterval(tmin, tmin + (l1 - l0));
+            return clotho;
+        }
+
+        public static ClothoidArc2 BuildSimple2(double tmin,
+                                                ITransform2 transform,
+                                                double radius0, double radius1, double a)
+        {
+            // Correccion sobre los radios.
+            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
+            {
+                if (double.IsInfinity(radius0))
+                {
+                    radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
+                }
+                else if (double.IsInfinity(radius1))
+                {
+                    radius1 = SysMath.Sign(radius0) * double.PositiveInfinity;
+                }
+                else
+                {
+                    // No se permite cambio de signo en el radio. Funcionaria???
+                    Contract.Assert(false);
+                }
+            }
+
+            // Desarrollo segun el radio en el punto (0) y (1).
+            double l0 = ClothoUtils.ClothoL(radius0, false, a);
+            double l1 = ClothoUtils.ClothoL(radius1, false, a);
+
+            ClothoidArc2 clotho = new ClothoidArc2(transform, l0, l1, false, a);
+            clotho.SetTInterval(tmin, tmin + Math.Abs(l1 - l0));
+            return clotho;
+        }
+
+        public static ClothoidArc2 BuildSimple(double radius0, double radius1, double a)
+        {
+            // Correccion sobre los radios.
+            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
+            {
+                if (double.IsInfinity(radius0))
+                {
+                    radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
+                }
+                else if (double.IsInfinity(radius1))
+                {
+                    radius1 = SysMath.Sign(radius0) * double.PositiveInfinity;
+                }
+                else
+                {
+                    // No se permite cambio de signo en el radio. Funcionaria???
+                    Contract.Assert(false);
+                }
+            }
+
+            // Desarrollo segun el radio en el punto (0) y (1).
+            double l0 = ClothoUtils.ClothoL(radius0, false, a);
+            double l1 = ClothoUtils.ClothoL(radius1, false, a);
+
+            // Transformacion a aplicar.
+            ITransform2 transform = Transform2.Identity();
+
+            ClothoidArc2 clotho = new ClothoidArc2(transform, l0, l1, false, a);
+            clotho.SetTInterval(0, Math.Abs(l1 - l0));
+            return clotho;
+        }
+
+        public static ITransform2 EvaluateTransform(double tmin,
+                                                    Point2d point0, Point2d point1,
+                                                    double radius0, double radius1,
+                                                    double a)
+        {
+            // Correccion sobre los radios.
+            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
+            {
+                if (double.IsInfinity(radius0))
+                {
+                    radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
+                }
+                else if (double.IsInfinity(radius1))
+                {
+                    radius1 = SysMath.Sign(radius0) * double.PositiveInfinity;
+                }
+                else
+                {
+                    // No se permite cambio de signo en el radio. Funcionaria???
+                    Contract.Assert(false);
+                }
+            }
+
+            bool invertY;
+            if (SysMath.Abs(radius0) > SysMath.Abs(radius1))
+            {
+                // t positivas
+                invertY = radius1 < 0;
+            }
+            else
+            {
+                // t negativa
+                invertY = radius1 > 0;
+            }
+
+            // Diferencia de puntos en coordenadas reales.
+            Vector2d v01 = point1.Sub(point0);
+
+            // Desarrollo segun el radio en el punto (0) y (1).
+            double l0_n = ClothoUtils.ClothoL(radius0, invertY, a);
+            double l1_n = ClothoUtils.ClothoL(radius1, invertY, a);
+
+            // Coordenadas en el punto (0) y (1) para una clotoide normalizada.
+            Point2d p0_n = ClothoUtils.Clotho(l0_n, invertY, a);
+            Point2d p1_n = ClothoUtils.Clotho(l1_n, invertY, a);
+
+            Vector2d v01_n = p1_n.Sub(p0_n);
+
+            // Rotacion de v01_n -> v01.
+            double r = v01_n.AngleTo(v01);
+
+            // Transformacion a aplicar.
+            return Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
+                             .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
         }
 
         public ClothoidArc2(ITransform2 transform,
@@ -166,43 +348,6 @@ namespace Essence.Geometry.Curves
         }
 
         #region private
-
-        private static readonly double sqrtpi = SysMath.Sqrt(SysMath.PI);
-
-        /// <summary>
-        /// Resuelve el parametro de la clotoide dado los radios <c>r0</c> y <c>r1</c> Con una distancia <c>d</c> entre los
-        /// puntos.
-        /// </summary>
-        private static double SolveParam(double d, double r0, double r1)
-        {
-            Func<double, double> f = (a) =>
-            {
-                double fs0, fc0;
-                ClothoUtils.Fresnel(a / (r0 * sqrtpi), out fs0, out fc0);
-
-                double fs1, fc1;
-                ClothoUtils.Fresnel(a / (r1 * sqrtpi), out fs1, out fc1);
-
-                double fc10 = (fc1 - fc0);
-                double fs10 = (fs1 - fs0);
-
-                return a * a * SysMath.PI * (fc10 * fc10 + fs10 * fs10) - d * d;
-            };
-
-            int maxEval = 50; // 30
-
-            try
-            {
-                double min = 0;
-                double max = SysMath.Min(SysMath.Abs(r0), SysMath.Abs(r1)) * ClothoUtils.MAX_L;
-                return Solver.Solve(f, min, max, Solver.Type.Brent, Solver.DEFAULT_ABSOLUTE_ACCURACY, maxEval);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                throw;
-            }
-        }
 
         private double GetL(double t)
         {
@@ -329,19 +474,26 @@ namespace Essence.Geometry.Curves
 
         public override double TotalLength
         {
-            get { return this.l1 - this.l0; }
+            get { return Math.Abs(this.l1 - this.l0); }
         }
 
         public override double GetLength(double t0, double t1)
         {
             double dl0 = this.GetL(t0);
             double dl1 = this.GetL(t1);
-            return dl1 - dl0;
+            return Math.Abs(dl1 - dl0);
         }
 
         public override BoundingBox2d BoundingBox
         {
-            get { return BoundingBox2d.UnionOfPoints((Point2d)this.transform.Transform((IPoint2)new Point2d(0.0, 0.0)), (Point2d)this.transform.Transform((IPoint2)new Point2d(1.0, 0.0)), (Point2d)this.transform.Transform((IPoint2)new Point2d(1.0, 1.0)), (Point2d)this.transform.Transform((IPoint2)new Point2d(0.0, 1.0))); }
+            get
+            {
+                return BoundingBox2d.UnionOfPoints(
+                    (Point2d)this.transform.Transform(new Point2d(0.0, 0.0)),
+                    (Point2d)this.transform.Transform(new Point2d(1.0, 0.0)),
+                    (Point2d)this.transform.Transform(new Point2d(1.0, 1.0)),
+                    (Point2d)this.transform.Transform(new Point2d(0.0, 1.0)));
+            }
         }
 
         #endregion

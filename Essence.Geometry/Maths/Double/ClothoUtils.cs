@@ -13,88 +13,146 @@
 // limitations under the License.
 
 using System;
+using System.Diagnostics;
 using Essence.Geometry.Core.Double;
 using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
+/// <summary>
+/// Clothoid:
+/// 
+/// </summary>
 namespace Essence.Maths.Double
 {
     public static class ClothoUtils
     {
-        #region Fresnel integrals
-
         /// <summary>
-        /// Integral del Fresnel: Integral de Fresnel S(z) = integrate(sin((%pi / 2)*t^2), t, 0, z).
+        /// Evaluates the A parameter of the clothoid equation: A^2 = R*l.
+        /// This method uses an aproximation.
         /// </summary>
-        public static double FresnelS(double z)
+        /// <param name="len">Length of the clothoid arc between points 1 and 2.</param>
+        /// <param name="r1">Radious ot the clothoid arc at point 1.</param>
+        /// <param name="r2">Radious ot the clothoid arc at point 2.</param>
+        /// <returns>Clothoid parameter.</returns>
+        public static double SolveParam_2(double len, double r1, double r2)
         {
-            double sz, cz;
-            Fresnel(z, out sz, out cz);
-            return sz;
-        }
-
-        /// <summary>
-        /// Integral del Fresnel: Integral de Fresnel C(z) = integrate(cos((%pi / 2)*t^2), t, 0, z).
-        /// </summary>
-        public static double FresnelC(double z)
-        {
-            double sz, cz;
-            Fresnel(z, out sz, out cz);
-            return cz;
-        }
-
-        /// <summary>
-        /// Derivada iesima de la integral del Fresnel (i = 1..4).
-        /// </summary>
-        public static double DFresnelS(double z, int i = 1)
-        {
-            double zz = (SysMath.PI / 2) * z * z;
-            switch (i)
+            Func<double, double> f = (a) =>
             {
-                case 1:
-                    return SysMath.Sin(zz);
-                case 2:
-                    return SysMath.PI * z * SysMath.Cos(zz);
-                case 3:
-                    return SysMath.PI * SysMath.Cos(zz) - PI_e2 * z * z * SysMath.Sin(zz);
-                case 4:
-                    return -3 * PI_e2 * z * SysMath.Sin(zz) - PI_e3 * z * z * z * SysMath.Cos(zz);
-                case 5:
-                    return -3 * PI_e2 * SysMath.Sin(zz) - 6 * PI_e3 * z * z * SysMath.Cos(zz) + PI_e4 * z * z * z * z * SysMath.Sin(zz);
+                double fs1, fc1;
+                FresnelUtils.Fresnel(a / (r1 * sqrtpi), out fs1, out fc1);
+
+                double fs2, fc2;
+                FresnelUtils.Fresnel(a / (r2 * sqrtpi), out fs2, out fc2);
+
+                double fc21 = (fc2 - fc1);
+                double fs21 = (fs2 - fs1);
+
+                return a * a * SysMath.PI * (fc21 * fc21 + fs21 * fs21) - len * len;
+            };
+
+            int maxEval = 50; // 30
+
+            try
+            {
+                double min = 0;
+                double max = SysMath.Min(SysMath.Abs(r1), SysMath.Abs(r2)) * MAX_L;
+                return Solver.Solve(f, min, max, Solver.Type.Brent, Solver.DEFAULT_ABSOLUTE_ACCURACY, maxEval);
             }
-            throw new NotImplementedException();
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                throw;
+            }
         }
 
         /// <summary>
-        /// Derivada iesima de la integral del Fresnel (i = 1..4).
+        /// Evaluates the A parameter of the clothoid equation: A^2 = R*l.
+        /// This method gets the exact value.
+        /// Solve the equation system:
+        /// <![CDATA[
+        /// if r1 = inf
+        ///     A^2 = r2 * len (l2 = len)
+        /// if r2 = inf
+        ///     A^2 = r1 * len (l1 = len)
+        /// else
+        ///     A^2 = r1 * l1
+        ///     A^2 = r2 * l2
+        ///     if l2 > l1
+        ///         l2 - l1 = len
+        ///     else (l2 < l1)
+        ///         l1 - l2 = len
+        /// ]]>
         /// </summary>
-        public static double DFresnelC(double z, int i = 1)
+        /// <param name="len">Length of the clothoid arc between points 1 and 2.</param>
+        /// <param name="r1">Radious ot the clothoid arc at point 1.</param>
+        /// <param name="r2">Radious ot the clothoid arc at point 2.</param>
+        /// <returns>Clothoid parameter.</returns>
+        public static double SolveParam(double len, double r1, double r2)
         {
-            double zz = (SysMath.PI / 2) * z * z;
-            switch (i)
+            // A^2
+            double a2;
+            if (double.IsInfinity(r1))
             {
-                case 1:
-                    return SysMath.Cos(zz);
-                case 2:
-                    return -SysMath.PI * z * SysMath.Sin(zz);
-                case 3:
-                    return -SysMath.PI * SysMath.Sin(zz) - PI_e2 * z * z * SysMath.Cos(zz);
-                case 4:
-                    return -3 * PI_e2 * z * SysMath.Cos(zz) + PI_e3 * z * z * z * SysMath.Sin(zz);
-                case 5:
-                    return -3 * PI_e2 * SysMath.Cos(zz) + 6 * PI_e3 * z * z * SysMath.Sin(zz) + PI_e4 * z * z * z * z * SysMath.Cos(zz);
+                a2 = r2 * len;
             }
-            throw new NotImplementedException();
+            else if (double.IsInfinity(r2))
+            {
+                a2 = r1 * len;
+            }
+            else
+            {
+                a2 = (r1 * r2 * len) / (r1 - r2);
+            }
+            return Math.Sqrt(Math.Abs(a2));
         }
 
-        #endregion
+        /// <summary>
+        /// Evaluates the length of the clothoid equation: A^2 / R = l.
+        /// This method gets the exact value.
+        /// Solve the equation system:
+        /// <![CDATA[
+        /// if r1 = inf
+        ///     len = A^2 / r2 (l2 = len)
+        /// if r2 = inf
+        ///     len = A^2 / r1 (l1 = len)
+        /// else
+        ///     l1 = A^2 / r1
+        ///     l2 = A^2 / r2
+        ///     if l2 > l1
+        ///         len = l2 - l1
+        ///     else (l2 < l1)
+        ///         len = l1 - l2
+        /// ]]>
+        /// </summary>
+        /// <param name="len">Length of the clothoid arc between points 1 and 2.</param>
+        /// <param name="r1">Radious ot the clothoid arc at point 1.</param>
+        /// <param name="r2">Radious ot the clothoid arc at point 2.</param>
+        /// <returns>Clothoid parameter.</returns>
+        public static double SolveLength(double a, double r1, double r2)
+        {
+            double a2 = a * a;
+            double len;
+            if (double.IsInfinity(r1))
+            {
+                len = a2 / r2;
+            }
+            else if (double.IsInfinity(r2))
+            {
+                len = a2 / r1;
+            }
+            else
+            {
+                len = Math.Abs((a2 / r2) - (a2 / r1));
+            }
+            return len;
+        }
 
         public static void Clotho(double s, bool invertY, double a, out double x, out double y)
         {
             double a_sqrtpi = a * sqrtpi;
 
             double fs, fc;
-            Fresnel(s / a_sqrtpi, out fs, out fc);
+            FresnelUtils.Fresnel(s / a_sqrtpi, out fs, out fc);
 
             x = a_sqrtpi * fc;
             y = a_sqrtpi * fs;
@@ -232,16 +290,6 @@ namespace Essence.Maths.Double
             return ClothoDir(s, invertY, a).PerpRight;
         }
 
-        /*public static double ClothoLeftNormal(double s, bool invertY, double a)
-        {
-            return ClothoTangent(s, invertY, a) + SysMath.PI / 2;
-        }
-
-        public static double ClothoRightNormal(double s, bool invertY, double a)
-        {
-            return ClothoTangent(s, invertY, a) - SysMath.PI / 2;
-        }*/
-
         #region Derivadas
 
         public static void DClotho(double s, bool invertY, double a, out double x, out double y)
@@ -322,244 +370,7 @@ namespace Essence.Maths.Double
         /// <summary>Valor de corte para el desarrollo de la clotoide.</summary>
         internal const double MAX_L = 2.23; // sqrt(5)
 
-        /* S(x) for small x */
-
-        private static readonly double[] sn =
-        {
-            -2.99181919401019853726E3,
-            7.08840045257738576863E5,
-            -6.29741486205862506537E7,
-            2.54890880573376359104E9,
-            -4.42979518059697779103E10,
-            3.18016297876567817986E11,
-        };
-
-        private static readonly double[] sd =
-        {
-            /* 1.00000000000000000000E0,*/
-            2.81376268889994315696E2,
-            4.55847810806532581675E4,
-            5.17343888770096400730E6,
-            4.19320245898111231129E8,
-            2.24411795645340920940E10,
-            6.07366389490084639049E11,
-        };
-
-        /* C(x) for small x */
-
-        private static readonly double[] cn =
-        {
-            -4.98843114573573548651E-8,
-            9.50428062829859605134E-6,
-            -6.45191435683965050962E-4,
-            1.88843319396703850064E-2,
-            -2.05525900955013891793E-1,
-            9.99999999999999998822E-1,
-        };
-
-        private static readonly double[] cd =
-        {
-            3.99982968972495980367E-12,
-            9.15439215774657478799E-10,
-            1.25001862479598821474E-7,
-            1.22262789024179030997E-5,
-            8.68029542941784300606E-4,
-            4.12142090722199792936E-2,
-            1.00000000000000000118E0,
-        };
-
-        /* Auxiliary function f(x) */
-
-        private static readonly double[] fn =
-        {
-            4.21543555043677546506E-1,
-            1.43407919780758885261E-1,
-            1.15220955073585758835E-2,
-            3.45017939782574027900E-4,
-            4.63613749287867322088E-6,
-            3.05568983790257605827E-8,
-            1.02304514164907233465E-10,
-            1.72010743268161828879E-13,
-            1.34283276233062758925E-16,
-            3.76329711269987889006E-20,
-        };
-
-        private static readonly double[] fd =
-        {
-            /*  1.00000000000000000000E0,*/
-            7.51586398353378947175E-1,
-            1.16888925859191382142E-1,
-            6.44051526508858611005E-3,
-            1.55934409164153020873E-4,
-            1.84627567348930545870E-6,
-            1.12699224763999035261E-8,
-            3.60140029589371370404E-11,
-            5.88754533621578410010E-14,
-            4.52001434074129701496E-17,
-            1.25443237090011264384E-20,
-        };
-
-        /* Auxiliary function g(x) */
-
-        private static readonly double[] gn =
-        {
-            5.04442073643383265887E-1,
-            1.97102833525523411709E-1,
-            1.87648584092575249293E-2,
-            6.84079380915393090172E-4,
-            1.15138826111884280931E-5,
-            9.82852443688422223854E-8,
-            4.45344415861750144738E-10,
-            1.08268041139020870318E-12,
-            1.37555460633261799868E-15,
-            8.36354435630677421531E-19,
-            1.86958710162783235106E-22,
-        };
-
-        private static readonly double[] gd =
-        {
-            /*  1.00000000000000000000E0,*/
-            1.47495759925128324529E0,
-            3.37748989120019970451E-1,
-            2.53603741420338795122E-2,
-            8.14679107184306179049E-4,
-            1.27545075667729118702E-5,
-            1.04314589657571990585E-7,
-            4.60680728146520428211E-10,
-            1.10273215066240270757E-12,
-            1.38796531259578871258E-15,
-            8.39158816283118707363E-19,
-            1.86958710162783236342E-22,
-        };
-
         private static readonly double sqrtpi = SysMath.Sqrt(SysMath.PI);
-        private const double PI_e2 = SysMath.PI * SysMath.PI;
-        private const double PI_e3 = PI_e2 * SysMath.PI;
-        private const double PI_e4 = PI_e3 * SysMath.PI;
-
-        private static double polevl(double x, double[] coef, int n)
-        {
-            double ans;
-            //double p = coef;
-            int icoef = 0;
-            int i;
-
-            ans = coef[icoef];
-            icoef++;
-            i = n;
-
-            do
-            {
-                ans = ans * x + coef[icoef];
-                icoef++;
-                i--;
-            }
-            while (i > 0);
-
-            return ans;
-        }
-
-        private static double p1evl(double x, double[] coef, int n)
-        {
-            double ans;
-            //double p = coef;
-            int icoef = 0;
-            int i;
-
-            ans = x + coef[icoef];
-            icoef++;
-            i = n - 1;
-
-            do
-            {
-                ans = ans * x + coef[icoef];
-                icoef++;
-                i--;
-            }
-            while (i > 0);
-
-            return ans;
-        }
-
-        /// <summary>
-        /// Evaluates the Fresnel integrals.
-        /// <c><![CDATA[
-        ///           x
-        ///           -
-        ///          | |
-        /// C(x) =   |   cos(pi/2 t**2) dt,
-        ///        | |
-        ///         -
-        ///          0
-        ///
-        ///           x
-        ///           -
-        ///          | |
-        /// S(x) =   |   sin(pi/2 t**2) dt.
-        ///        | |
-        ///         -
-        ///          0
-        /// ]]></c>
-        ///
-        /// The integrals are evaluated by a power series for <![CDATA[x < 1]]>.
-        /// For <![CDATA[x >= 1]]> auxiliary functions f(x) and g(x) are employed
-        /// such that
-        ///
-        /// C(x) = 0.5 + f(x) sin( pi/2 x**2 ) - g(x) cos( pi/2 x**2 )
-        /// S(x) = 0.5 - f(x) cos( pi/2 x**2 ) - g(x) sin( pi/2 x**2 )
-        ///
-        ///
-        /// </summary>
-        /// <param name="z">Desarrollo de la integral/longitud arco.</param>
-        /// <param name="sz">S(z)</param>
-        /// <param name="cz">C(z)</param>
-        internal static void Fresnel(double z, out double sz, out double cz)
-        {
-            double f, g, cc, ss, c, s, t, u;
-            double x, x2;
-
-            x = SysMath.Abs(z);
-            x2 = x * x;
-
-            if (x2 < 2.5625)
-            {
-                t = x2 * x2;
-                ss = x * x2 * polevl(t, sn, 5) / p1evl(t, sd, 6);
-                cc = x * polevl(t, cn, 5) / polevl(t, cd, 6);
-            }
-            else if (x > 36974.0)
-            {
-                cc = 0.5;
-                ss = 0.5;
-            }
-            else
-            {
-                // Asymptotic power series auxiliary functions
-                // for large argument
-                x2 = x * x;
-                t = SysMath.PI * x2;
-                u = 1.0 / (t * t);
-                t = 1.0 / t;
-                f = 1.0 - u * polevl(u, fn, 9) / p1evl(u, fd, 10);
-                g = t * polevl(u, gn, 10) / p1evl(u, gd, 11);
-
-                t = SysMath.PI * 0.5 * x2;
-                c = SysMath.Cos(t);
-                s = SysMath.Sin(t);
-                t = SysMath.PI * x;
-                cc = 0.5 + (f * s - g * c) / t;
-                ss = 0.5 - (f * c + g * s) / t;
-            }
-
-            if (z < 0.0)
-            {
-                cc = -cc;
-                ss = -ss;
-            }
-
-            cz = cc;
-            sz = ss;
-        }
 
         #endregion
     }

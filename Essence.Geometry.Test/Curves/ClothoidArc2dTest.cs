@@ -14,6 +14,7 @@
 
 using System.IO;
 using Essence.Geometry.Core.Double;
+using Essence.Geometry.Wave;
 using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

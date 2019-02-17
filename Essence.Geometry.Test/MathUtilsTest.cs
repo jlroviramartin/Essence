@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Essence.Geometry.Wave;
 using Essence.Maths.Double;
 using Essence.Util.Math.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -92,8 +93,8 @@ namespace Essence.Geometry
             while (i < this.testData3_sc.Length)
             {
                 double v1 = this.testData3_sc[i++];
-                double s1 = ClothoUtils.FresnelS(v1);
-                double c1 = ClothoUtils.FresnelC(v1);
+                double s1 = FresnelUtils.FresnelS(v1);
+                double c1 = FresnelUtils.FresnelC(v1);
 
                 double s2 = this.testData3_sc[i++];
                 double c2 = this.testData3_sc[i++];
