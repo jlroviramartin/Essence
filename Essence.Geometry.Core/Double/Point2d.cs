@@ -373,7 +373,7 @@ namespace Essence.Geometry.Core.Double
 
         #endregion
 
-        #region IEquatable<Point2d>
+        #region IEquatable<IPoint2d>
 
         [Pure]
         public bool Equals(IPoint2 other)

@@ -23,6 +23,11 @@ namespace Essence.Geometry.Core
 
         public abstract Point2d Transform(Point2d v);
 
+        public Transform2 Concat(Transform2 transform)
+        {
+            return (Transform2)this.Concat((ITransform2)transform);
+        }
+
         #region ITransform2
 
         public virtual IVector2 Transform(IVector2 v)
@@ -108,6 +113,11 @@ namespace Essence.Geometry.Core
             return Translate(px2 - px, py2 - py);
         }
 
+        public static Transform2 Scale(double e)
+        {
+            return Scale(e, e);
+        }
+
         public static Transform2 Scale(double ex, double ey)
         {
             return new Transform2Matrix(
@@ -120,6 +130,36 @@ namespace Essence.Geometry.Core
             return new Transform2Matrix(
                 ex, 0, px - ex * px,
                 0, ey, py - ey * py);
+        }
+
+        public static Transform2 MirrorX()
+        {
+            return new Transform2Matrix(
+                -1, 0, 0,
+                0, 1, 0);
+        }
+
+        public static Transform2 MirrorY()
+        {
+            return new Transform2Matrix(
+                1, 0, 0,
+                0, -1, 0);
+        }
+
+        public static Transform2 Transform(Point2d source1, Point2d source2, Point2d target1, Point2d target2)
+        {
+            double sourceLen = source1.DistanceTo(source2);
+            double targetLen = target1.DistanceTo(target2);
+
+            Vector2d vsource = source2 - source1;
+            Vector2d vtarget = target2 - target1;
+
+            double angle = vsource.AngleTo(vtarget);
+
+            return Transform2.Translate(target1.X, target1.Y)
+                             .Concat(Transform2.Scale(targetLen / sourceLen))
+                             .Concat(Transform2.Rotate(angle))
+                             .Concat(Transform2.Translate(-source1.X, -source1.Y));
         }
     }
 }
