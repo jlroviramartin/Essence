@@ -106,7 +106,7 @@ namespace Essence.Geometry.Curves
         [TestMethod]
         public void Test7()
         {
-            bool toWavefront = false;
+            bool toWavefront = true;
 
             // Test de una clotoide sin invertir en el cuadrante positivo.
             TestClotho(5, false, false, SysMath.PI / 10, 4 * SysMath.PI / 10, new Point2d(5, 5), new Point2d(0, 1), @"C:\Temp\ClothoidArc2dTest_Test7_1.obj", toWavefront);
@@ -157,15 +157,15 @@ namespace Essence.Geometry.Curves
             double l0 = sign * ClothoUtils.FindTangent(invertY, a, tg0);
             double l1 = sign * ClothoUtils.FindTangent(invertY, a, tg1);
 
-            double r0 = ClothoUtils.ClothoRadious(l0, invertY, a);
-            double r1 = ClothoUtils.ClothoRadious(l1, invertY, a);
+            double r0 = ClothoUtils.ClothoRadius(l0, invertY, a);
+            double r1 = ClothoUtils.ClothoRadius(l1, invertY, a);
             Point2d pp0 = ClothoUtils.Clotho(l0, invertY, a);
             Point2d pp1 = ClothoUtils.Clotho(l1, invertY, a);
 
             //Point2d p0 = new Point2d(5, 5);
             Point2d p1 = p0.Add(dir.Mul(pp1.Sub(pp0).Length));
 
-            ClothoidArc2 arc = new ClothoidArc2(l0, p0, p1, r0, r1);
+            ClothoidArc2 arc = new ClothoidArc2(l0, p0, p1, r0, r1, a);
 
             Assert.IsTrue(arc.Point0.EpsilonEquals(p0, ERROR));
             Assert.IsTrue(arc.Point1.EpsilonEquals(p1, ERROR));

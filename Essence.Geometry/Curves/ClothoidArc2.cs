@@ -13,13 +13,11 @@
 // limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using Essence.Geometry.Core.Double;
 using Essence.Util.Math.Double;
 using Essence.Geometry.Core;
 using Essence.Maths.Double;
-using Solver = Essence.Maths.Solver;
 using SysMath = System.Math;
 using Transform2 = Essence.Geometry.Core.Transform2;
 
@@ -66,16 +64,11 @@ namespace Essence.Geometry.Curves
             return new[] { left, right };
         }
 
-        public ClothoidArc2(Vector2d point0, Vector2d point1,
-                            double radius0, double radius1)
-            : this(0, (Point2d)point0, (Point2d)point1, radius0, radius1)
-        {
-        }
-
-        public ClothoidArc2(double tmin, /* No es necesario: se utiliza como estacion inicial. */
+        [Obsolete]
+        public ClothoidArc2(double tmin, // It is only needed as start station
                             Point2d point0, Point2d point1,
                             double radius0, double radius1,
-                            double? a = null)
+                            double a)
         {
             // Correccion sobre los radios.
             if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
@@ -106,11 +99,7 @@ namespace Essence.Geometry.Curves
                 this.InvertY = radius1 > 0;
             }
 
-            // Diferencia de puntos en coordenadas reales.
-            Vector2d v01 = point1.Sub(point0);
-
-            this.A = ClothoUtils.SolveParam(v01.Length, radius0, radius1);
-            Contract.Assert(!a.HasValue || this.A.EpsilonEquals(a.Value));
+            this.A = a;
 
             // Desarrollo segun el radio en el punto (0) y (1).
             double l0_n = ClothoUtils.ClothoL(radius0, this.InvertY, this.A);
@@ -121,6 +110,7 @@ namespace Essence.Geometry.Curves
             Point2d p1_n = ClothoUtils.Clotho(l1_n, this.InvertY, this.A);
 
             Vector2d v01_n = p1_n.Sub(p0_n);
+            Vector2d v01 = point1.Sub(point0);
 
             // Rotacion de v01_n -> v01.
             double r = v01_n.AngleTo(v01);
@@ -132,9 +122,44 @@ namespace Essence.Geometry.Curves
             this.l0 = l0_n;
             this.l1 = l1_n;
 
-            this.SetTInterval(tmin, tmin + (this.l1 - this.l0));
+            this.SetTInterval(tmin, tmin + Math.Abs(this.l1 - this.l0));
         }
 
+        public static ClothoidArc2 BuildSimple(double radius0, double radius1, double a, ITransform2 transform)
+        {
+            // Correccion sobre los radios.
+            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
+            {
+                if (double.IsInfinity(radius0))
+                {
+                    radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
+                }
+                else if (double.IsInfinity(radius1))
+                {
+                    radius1 = SysMath.Sign(radius0) * double.PositiveInfinity;
+                }
+                else
+                {
+                    // No se permite cambio de signo en el radio. Funcionaria???
+                    Contract.Assert(false);
+                }
+            }
+
+            // Desarrollo segun el radio en el punto (0) y (1).
+            double l0 = ClothoUtils.ClothoL(radius0, false, a);
+            double l1 = ClothoUtils.ClothoL(radius1, false, a);
+
+            ClothoidArc2 clotho = new ClothoidArc2(transform, l0, l1, false, a);
+            clotho.SetTInterval(0, Math.Abs(l1 - l0));
+            return clotho;
+        }
+
+        public static ClothoidArc2 BuildSimple(double radius0, double radius1, double a)
+        {
+            return BuildSimple(radius0, radius1, a, Transform2.Identity());
+        }
+
+#if false
         public static ClothoidArc2 BuildSimple(double tmin,
                                                Point2d point0, Point2d point1,
                                                double radius0, double radius1,
@@ -194,75 +219,17 @@ namespace Essence.Geometry.Curves
             double l1 = l1_n;
 
             ClothoidArc2 clotho = new ClothoidArc2(transform, l0, l1, invertY, a);
-            clotho.SetTInterval(tmin, tmin + (l1 - l0));
-            return clotho;
-        }
-
-        public static ClothoidArc2 BuildSimple2(double tmin,
-                                                ITransform2 transform,
-                                                double radius0, double radius1, double a)
-        {
-            // Correccion sobre los radios.
-            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
-            {
-                if (double.IsInfinity(radius0))
-                {
-                    radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
-                }
-                else if (double.IsInfinity(radius1))
-                {
-                    radius1 = SysMath.Sign(radius0) * double.PositiveInfinity;
-                }
-                else
-                {
-                    // No se permite cambio de signo en el radio. Funcionaria???
-                    Contract.Assert(false);
-                }
-            }
-
-            // Desarrollo segun el radio en el punto (0) y (1).
-            double l0 = ClothoUtils.ClothoL(radius0, false, a);
-            double l1 = ClothoUtils.ClothoL(radius1, false, a);
-
-            ClothoidArc2 clotho = new ClothoidArc2(transform, l0, l1, false, a);
             clotho.SetTInterval(tmin, tmin + Math.Abs(l1 - l0));
             return clotho;
         }
 
-        public static ClothoidArc2 BuildSimple(double radius0, double radius1, double a)
+        public ClothoidArc2(Vector2d point0, Vector2d point1,
+                            double radius0, double radius1)
+            : this(0, (Point2d)point0, (Point2d)point1, radius0, radius1)
         {
-            // Correccion sobre los radios.
-            if (SysMath.Sign(radius1) != SysMath.Sign(radius0))
-            {
-                if (double.IsInfinity(radius0))
-                {
-                    radius0 = SysMath.Sign(radius1) * double.PositiveInfinity;
-                }
-                else if (double.IsInfinity(radius1))
-                {
-                    radius1 = SysMath.Sign(radius0) * double.PositiveInfinity;
-                }
-                else
-                {
-                    // No se permite cambio de signo en el radio. Funcionaria???
-                    Contract.Assert(false);
-                }
-            }
-
-            // Desarrollo segun el radio en el punto (0) y (1).
-            double l0 = ClothoUtils.ClothoL(radius0, false, a);
-            double l1 = ClothoUtils.ClothoL(radius1, false, a);
-
-            // Transformacion a aplicar.
-            ITransform2 transform = Transform2.Identity();
-
-            ClothoidArc2 clotho = new ClothoidArc2(transform, l0, l1, false, a);
-            clotho.SetTInterval(0, Math.Abs(l1 - l0));
-            return clotho;
         }
 
-        public static ITransform2 EvaluateTransform(double tmin,
-                                                    Point2d point0, Point2d point1,
+        public static ITransform2 EvaluateTransform(Point2d point0, Point2d point1,
                                                     double radius0, double radius1,
                                                     double a)
         {
@@ -316,6 +283,7 @@ namespace Essence.Geometry.Curves
             return Transform2.Translate(point1.X - p1_n.X, point1.Y - p1_n.Y)
                              .Concat(Transform2.Rotate(p1_n.X, p1_n.Y, r));
         }
+#endif
 
         public ClothoidArc2(ITransform2 transform,
                             double l0, double l1,
@@ -338,7 +306,7 @@ namespace Essence.Geometry.Curves
         public double GetRadius(double t)
         {
             double dl = this.GetL(t);
-            return ClothoUtils.ClothoRadious(dl, this.InvertY, this.A);
+            return ClothoUtils.ClothoRadius(dl, this.InvertY, this.A);
         }
 
         public new double GetTangent(double t)
@@ -420,7 +388,17 @@ namespace Essence.Geometry.Curves
              *  z:      1;
              *  result: diff([ x, y, z ], t, 1); 
              *  
-             *  result: [m*cos((m*t+n)^2/(2*a^2)),m*sin((m*t+n)^2/(2*a^2)),0]
+             *  result: [m*cos((m*t+n)^2 / (2*a^2)),
+             *           m*sin((m*t+n)^2 / (2*a^2)),
+             *           0]
+             *
+             *          m*[cos((m*t+n)^2 / (2*a^2)),
+             *             sin((m*t+n)^2 / (2*a^2)),
+             *             0]
+             *
+             *          m*[cos(s^2 / (2*a^2)),
+             *             sin(s^2 / (2*a^2)),
+             *             0]
              */
             double m = this.ttransform.A;
 
@@ -440,7 +418,17 @@ namespace Essence.Geometry.Curves
              *  z:      1;
              *  result: diff([ x, y, z ], t, 2); 
              *  
-             *  result: [-(m^2*(m*t+n)*sin((m*t+n)^2/(2*a^2)))/a^2,(m^2*(m*t+n)*cos((m*t+n)^2/(2*a^2)))/a^2,0]
+             *  result: [-(m^2*(m*t+n)*sin((m*t+n)^2 / (2*a^2))) / a^2,
+             *            (m^2*(m*t+n)*cos((m*t+n)^2 / (2*a^2))) / a^2,
+             *            0]
+             *
+             *          m^2*[-((m*t+n)*sin((m*t+n)^2 / (2*a^2))) / a^2,
+             *                ((m*t+n)*cos((m*t+n)^2 / (2*a^2))) / a^2,
+             *                0]
+             *
+             *          m^2*[-(s*sin(s^2 / (2*a^2))) / a^2,
+             *                (s*cos(s^2 / (2*a^2))) / a^2,
+             *                0]
              */
             double m = this.ttransform.A;
             double m2 = m * m;
@@ -461,7 +449,17 @@ namespace Essence.Geometry.Curves
              *  z:      1;
              *  result: diff([ x, y, z ], t, 3); 
              *  
-             *  result: [-(m^3*sin((m*t+n)^2/(2*a^2)))/a^2-(m^3*(m*t+n)^2*cos((m*t+n)^2/(2*a^2)))/a^4,(m^3*cos((m*t+n)^2/(2*a^2)))/a^2-(m^3*(m*t+n)^2*sin((m*t+n)^2/(2*a^2)))/a^4,0]
+             *  result: [-(m^3*sin((m*t+n)^2 / (2*a^2))) / a^2 - (m^3*(m*t+n)^2*cos((m*t+n)^2 / (2*a^2))) / a^4,
+             *            (m^3*cos((m*t+n)^2 / (2*a^2))) / a^2 - (m^3*(m*t+n)^2*sin((m*t+n)^2 / (2*a^2))) / a^4,
+             *            0]
+             *
+             *          m^3*[-(sin((m*t+n)^2 / (2*a^2))) / a^2 - ((m*t+n)^2*cos((m*t+n)^2 / (2*a^2))) / a^4,
+             *                (cos((m*t+n)^2 / (2*a^2))) / a^2 - ((m*t+n)^2*sin((m*t+n)^2 / (2*a^2))) / a^4,
+             *                0]
+             *
+             *          m^3*[-(sin(s^2 / (2*a^2))) / a^2 - (s^2*cos(s^2 / (2*a^2))) / a^4,
+             *                (cos(s^2 / (2*a^2))) / a^2 - (s^2*sin(s^2 / (2*a^2))) / a^4,
+             *                0]
              */
             double m = this.ttransform.A;
             double m3 = m * m * m;

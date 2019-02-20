@@ -19,8 +19,53 @@ using Essence.Util.Math.Double;
 using SysMath = System.Math;
 
 /// <summary>
-/// Clothoid:
-/// 
+/// Clothoid
+/// <![CDATA[
+///                                                           .                                                           
+///                                                           .                         ,/*,.   .,/*.                     
+///                                                           .                      **               ,,                  
+///                                                           .                    ,*     .,**,.        *,                
+///                                                           .                   ..   .* .***,  *.       /               
+///                                                           .                   /   /.//.    *// /.      ,              
+///                                                           .                  ,,  /.(.        /* /       *             
+///                                                           .                  ,,  /,/         ,* ,,      ,.            
+///                                                           .                   /  *,(,        // ,.      .,            
+///                                                           .                   ..  *,((,    ./* ./       .*            
+///                                                           .                     /   ,/*,****  /.        ,,            
+///                                                           .                       **       .**          *             
+///                                                           .                          .,,,.              *             
+///                                                           .                                            *              
+///                                                           .                                           *.              
+///                                                           .                                         ,*                
+///                                                           .                                        /.                 
+///                                                           .                                      /.                   
+///                                                           .                                   ,*                      
+///                                                           .                                ./,                        
+///                                                           .                           .*/.                            
+///                                                           .                    .,*/*.                                 
+///.........................................,**///////********/********,,,,,,,..................... ......................
+///                                 .*/*,.                    .                                                           
+///                            ./*.                           .                                                           
+///                        ,/.                                .                                                           
+///                      /,                                   .                                                           
+///                   *,                                      .                                                           
+///                  /                                        .                                                           
+///                *,                                         .                                                           
+///               *                                           .                                                           
+///              *                                            .                                                           
+///             *.             .,,,.                          .                                                           
+///             *          **.       **                       .                                                           
+///            ,,        ./  **,*,*/,   /                     .                                                           
+///            *.       *. */.    ,((,*  ..                   .                                                           
+///            ,.      ., //        ,(,*  /                   .                                                           
+///            .*      ,, *,         /,/  ,,                  .                                                           
+///             *.      / */        ././  ,,                  .                                                           
+///              /      ./ /**    .//./   /                   .                                                           
+///               /       .*  ,***. *.   ..                   .                                                           
+///                ,*        .,**,.     *,                    .                                                           
+///                   /.             ./.                      .                                                           
+///                     .*/,.   .,*/,                         .                                                           
+/// ]]>
 /// </summary>
 namespace Essence.Maths.Double
 {
@@ -34,6 +79,7 @@ namespace Essence.Maths.Double
         /// <param name="r1">Radious ot the clothoid arc at point 1.</param>
         /// <param name="r2">Radious ot the clothoid arc at point 2.</param>
         /// <returns>Clothoid parameter.</returns>
+        [Obsolete]
         public static double SolveParam_2(double len, double r1, double r2)
         {
             Func<double, double> f = (a) =>
@@ -173,7 +219,7 @@ namespace Essence.Maths.Double
         /// <summary>
         /// Calcula el radios de la curva.
         /// </summary>
-        public static double ClothoRadious(double s, bool invertY, double a)
+        public static double ClothoRadius(double s, bool invertY, double a)
         {
             double radius;
             if (s.EpsilonEquals(0))
@@ -294,6 +340,10 @@ namespace Essence.Maths.Double
 
         public static void DClotho(double s, bool invertY, double a, out double x, out double y)
         {
+            /*
+             * [ cos( s^2 / (2 * a^2) ),
+             *   sin( s^2 / (2 * a^2) ) ]
+             */
             double s2_2a2 = (s * s) / (2 * a * a);
 
             x = SysMath.Cos(s2_2a2);
@@ -314,6 +364,10 @@ namespace Essence.Maths.Double
 
         public static void DClotho2(double s, bool invertY, double a, out double x, out double y)
         {
+            /*
+             * [ -sin( s^2 / (2 * a^2) ) * s / a^2,
+             *    cos( s^2 / (2 * a^2) ) * s / a^2 ]
+             */
             double s2_2a2 = (s * s) / (2 * a * a);
 
             double s_s2 = s / (a * a);
@@ -336,6 +390,10 @@ namespace Essence.Maths.Double
 
         public static void DClotho3(double s, bool invertY, double a, out double x, out double y)
         {
+            /*
+             * [ -sin( s^2 / (2 * a^2) ) / a^2 - cos( s^2 / (2 * a^2) ) * s^2 / a^4,
+             *    cos( s^2 / (2 * a^2) ) / a^2 - sin( s^2 / (2 * a^2) ) * s^2 / a^4 ]
+             */
             double s2_2a2 = (s * s) / (2 * a * a);
             double sin = SysMath.Sin(s2_2a2);
             double cos = SysMath.Cos(s2_2a2);

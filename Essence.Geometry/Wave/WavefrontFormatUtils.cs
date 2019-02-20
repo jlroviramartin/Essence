@@ -81,7 +81,7 @@ namespace Essence.Geometry.Wave
                 int v2 = wf.AddVertex(xy.Add(d.Mul(5)));
                 dirs.Add(Tuple.Create(v0, v2));
 
-                double r = ClothoUtils.ClothoRadious(s, invertY, a);
+                double r = ClothoUtils.ClothoRadius(s, invertY, a);
                 if (double.IsInfinity(r))
                 {
                     r = SysMath.Sign(r) * 100;
@@ -156,7 +156,7 @@ namespace Essence.Geometry.Wave
             {
                 double s = i * lmax / c;
 
-                double r = ClothoUtils.ClothoRadious(s, invertY, a);
+                double r = ClothoUtils.ClothoRadius(s, invertY, a);
                 if (double.IsInfinity(r))
                 {
                     r = SysMath.Sign(r) * 1000;
