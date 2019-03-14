@@ -302,44 +302,4 @@ namespace Essence.Util.Collections
 
         #endregion
     }
-
-    public class BaseDictionary<TK, TV> : AbsDictionary<TK, TV>
-    {
-        #region IDictionary<TK,TV>
-
-        public override void Add(TK key, TV value)
-        {
-            throw new NotSupportedException();
-        }
-
-        public override bool Remove(TK key)
-        {
-            throw new NotSupportedException();
-        }
-
-        public override bool TryGetValue(TK key, out TV value)
-        {
-            throw new NotSupportedException();
-        }
-
-        #endregion
-
-        #region ICollection<KeyValuePair<TK,TV>>
-
-        public override int Count
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        #endregion
-
-        #region ICollection<KeyValuePair<TK,TV>>
-
-        public override IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
-        {
-            throw new NotSupportedException();
-        }
-
-        #endregion
-    }
 }

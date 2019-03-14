@@ -194,6 +194,16 @@ namespace Essence.Util.Collections
             return list[list.Count - 1];
         }
 
+        public static IList<TO> UpCast<TI, TO>(this IList<TI> list) where TI : TO
+        {
+            return new TransformList<TI, TO>(list, x => x, x => (TI)x);
+        }
+
+        public static IList<TO> DownCast<TI, TO>(this IList<TI> list) where TO : TI
+        {
+            return new TransformList<TI, TO>(list, x => (TO)x, x => x);
+        }
+
         #endregion
 
         #region BinarySearch

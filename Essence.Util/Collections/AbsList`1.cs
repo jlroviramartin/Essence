@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -38,6 +37,15 @@ namespace Essence.Util.Collections
             }
         }
 
+        #region AbsCollection<T>
+
+        protected override void CollectionAdd(T item)
+        {
+            this.Insert(this.Count, item);
+        }
+
+        #endregion
+
         #region IList<T>
 
         public virtual int IndexOf(T item)
@@ -57,15 +65,6 @@ namespace Essence.Util.Collections
         public abstract void RemoveAt(int index);
 
         public abstract T this[int index] { get; set; }
-
-        #endregion
-
-        #region ICollection<T>
-
-        public override bool Contains(T item)
-        {
-            return this.IndexOf(item) != -1;
-        }
 
         #endregion
 
@@ -111,16 +110,20 @@ namespace Essence.Util.Collections
 
         #endregion
 
-        #region IEnumerable<T>
+        #region ICollection<T>
 
-        public override IEnumerator<T> GetEnumerator()
+        public override void Clear()
         {
-            return new Enumerator(this);
+            for (int i = this.Count - 1; i >= 0; i--)
+            {
+                this.RemoveAt(i);
+            }
         }
 
-        #endregion
-
-        #region ICollection<T>
+        public override bool Contains(T item)
+        {
+            return this.IndexOf(item) != -1;
+        }
 
         public override bool Remove(T item)
         {
@@ -134,21 +137,13 @@ namespace Essence.Util.Collections
             return true;
         }
 
-        public override void Clear()
-        {
-            for (int i = this.Count - 1; i >= 0; i--)
-            {
-                this.RemoveAt(i);
-            }
-        }
-
         #endregion
 
-        #region AbsCollection<T>
+        #region IEnumerable<T>
 
-        protected override void CollectionAdd(T item)
+        public override IEnumerator<T> GetEnumerator()
         {
-            this.Insert(this.Count, item);
+            return new Enumerator(this);
         }
 
         #endregion
@@ -178,24 +173,5 @@ namespace Essence.Util.Collections
         }
 
         #endregion
-    }
-
-    public class BaseList<T> : AbsList<T>
-    {
-        public override void Insert(int index, T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override T this[int index]
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
     }
 }

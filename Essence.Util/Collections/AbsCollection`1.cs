@@ -52,7 +52,11 @@ namespace Essence.Util.Collections
 
         protected abstract void CollectionAdd(T item);
 
+        #region private
+
         private IEqualityComparer<T> comparer = EqualityComparer<T>.Default;
+        
+        #endregion
 
         #region ICollection<T>
 
@@ -161,23 +165,5 @@ namespace Essence.Util.Collections
         }
 
         #endregion
-    }
-
-    public class BaseCollection<T> : AbsCollection<T>
-    {
-        protected override void CollectionAdd(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool Remove(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IEnumerator<T> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
