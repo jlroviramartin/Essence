@@ -62,6 +62,14 @@ namespace Essence.Geometry.Curves
         {
         }
 
+        public virtual double GetT(double length, int iterations, double tolerance)
+        {
+            return CurveUtils.FindTime(t => this.GetLength(this.TMin, t), this.GetSpeed,
+                                      this.TMin, this.TMax,
+                                      length, this.TotalLength,
+                                      iterations, tolerance);
+        }
+
         #region Position and derivatives
 
         public abstract Point2d GetPosition(double t);
@@ -147,7 +155,7 @@ namespace Essence.Geometry.Curves
             return this.GetTangent(t).PerpLeft;
         }
 
-        public virtual void GetFrame(double t, ref Point2d position, ref Vector2d tangent, ref Vector2d leftNormal)
+        public virtual void GetFrame(double t, out Point2d position, out Vector2d tangent, out Vector2d leftNormal)
         {
             position = this.GetPosition(t);
             tangent = this.GetTangent(t);

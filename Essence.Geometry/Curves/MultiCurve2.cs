@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using Essence.Geometry.Core.Double;
 using Essence.Maths;
 using Essence.Maths.Double;
@@ -24,56 +27,70 @@ namespace Essence.Geometry.Curves
 {
     public abstract class MultiCurve2 : ICurve2
     {
-        public abstract int SegmentsCount { get; }
+        public MultiCurve2(IEnumerable<double> times)
+        {
+            this.times = times.ToArray();
+        }
 
-        public abstract double GetTMin(int indice);
+        public virtual int NumSegments
+        {
+            get { return this.times.Length - 1; }
+        }
 
-        public abstract double GetTMax(int indice);
+        public virtual double GetTMin(int key)
+        {
+            return this.times[key];
+        }
+
+        public virtual double GetTMax(int key)
+        {
+            return this.times[key + 1];
+        }
 
         #region Position and derivatives
 
-        protected abstract Point2d GetPosition(int index, double t);
+        protected abstract Point2d GetPosition(int key, double dt);
 
-        protected virtual Vector2d GetFirstDerivative(int index, double t)
+        protected virtual Vector2d GetFirstDerivative(int key, double dt)
         {
-            UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(index, tt).X, 1, 5);
-            UnaryFunction fdy = Derivative.Central(tt => this.GetPosition(index, tt).Y, 1, 5);
-            return new Vector2d(fdx(t), fdy(t));
+            UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(key, tt).X, 1, 5);
+            UnaryFunction fdy = Derivative.Central(tt => this.GetPosition(key, tt).Y, 1, 5);
+            return new Vector2d(fdx(dt), fdy(dt));
         }
 
-        protected virtual Vector2d GetSecondDerivative(int index, double t)
+        protected virtual Vector2d GetSecondDerivative(int key, double dt)
         {
-            UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(index, tt).X, 2, 5);
-            UnaryFunction fdy = Derivative.Central(tt => this.GetPosition(index, tt).Y, 2, 5);
-            return new Vector2d(fdx(t), fdy(t));
+            UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(key, tt).X, 2, 5);
+            UnaryFunction fdy = Derivative.Central(tt => this.GetPosition(key, tt).Y, 2, 5);
+            return new Vector2d(fdx(dt), fdy(dt));
         }
 
-        protected virtual Vector2d GetThirdDerivative(int index, double t)
+        protected virtual Vector2d GetThirdDerivative(int key, double dt)
         {
-            UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(index, tt).X, 3, 5);
-            UnaryFunction fdy = Derivative.Central(tt => this.GetPosition(index, tt).Y, 3, 5);
-            return new Vector2d(fdx(t), fdy(t));
+            UnaryFunction fdx = Derivative.Central(tt => this.GetPosition(key, tt).X, 3, 5);
+            UnaryFunction fdy = Derivative.Central(tt => this.GetPosition(key, tt).Y, 3, 5);
+            return new Vector2d(fdx(dt), fdy(dt));
         }
 
         #endregion
 
         #region Differential geometric quantities
 
-        protected virtual double GetLength(int index, double tInSegment0, double tInSegment1)
+        protected virtual double GetLength(int key, double dt0, double dt1)
         {
-            Contract.Assert(tInSegment0 <= tInSegment1);
+            Contract.Assert(dt0 <= dt1);
 
-            return Integrator.Integrate(t => this.GetSpeed(index, t), tInSegment0, tInSegment1, Integrator.Type.RombergIntegrator, IntegralMaxEval);
+            return Integrator.Integrate(t => this.GetSpeed(key, t), dt0, dt1, Integrator.Type.RombergIntegrator, IntegralMaxEval);
         }
 
-        protected virtual double GetSpeed(int index, double tInSegment)
+        protected virtual double GetSpeed(int key, double dt)
         {
-            return this.GetFirstDerivative(index, tInSegment).Length;
+            return this.GetFirstDerivative(key, dt).Length;
         }
 
-        protected virtual double GetCurvature(int index, double tInSegment)
+        protected virtual double GetCurvature(int key, double dt)
         {
-            Vector2d der1 = this.GetFirstDerivative(index, tInSegment);
+            Vector2d der1 = this.GetFirstDerivative(key, dt);
             double speed2 = der1.LengthSquared;
 
             if (speed2.EpsilonEquals(0))
@@ -82,74 +99,109 @@ namespace Essence.Geometry.Curves
                 return 0;
             }
 
-            Vector2d der2 = this.GetSecondDerivative(index, tInSegment);
+            Vector2d der2 = this.GetSecondDerivative(key, dt);
 
             double numer = der1.Dot(der2);
             double denom = SysMath.Pow(speed2, 1.5);
             return numer / denom;
         }
 
-        protected virtual Vector2d GetTangent(int index, double tInSegment)
+        protected virtual Vector2d GetTangent(int key, double dt)
         {
-            return this.GetFirstDerivative(index, tInSegment).Unit;
+            return this.GetFirstDerivative(key, dt).Unit;
         }
 
-        protected virtual Vector2d GetLeftNormal(int index, double tInSegment)
+        protected virtual Vector2d GetLeftNormal(int key, double dt)
         {
-            return this.GetTangent(index, tInSegment).PerpLeft;
+            return this.GetTangent(key, dt).PerpLeft;
         }
 
-        protected virtual void GetFrame(int index, double tInSegment, ref Point2d position, ref Vector2d tangent, ref Vector2d normal)
+        protected virtual void GetFrame(int key, double dt,
+                                        out Point2d position, out Vector2d tangent, out Vector2d normal)
         {
-            position = this.GetPosition(index, tInSegment);
-            tangent = this.GetTangent(index, tInSegment);
+            position = this.GetPosition(key, dt);
+            tangent = this.GetTangent(key, dt);
             normal = tangent.PerpLeft;
         }
 
         #endregion
 
-        protected abstract void FindIndex(double t, out int index, out double tInSegment);
+        protected virtual void GetKeyInfo(double t, out int key, out double dt)
+        {
+            int numSegments = this.NumSegments;
 
-        protected abstract BoundingBox2d GetBoundingBox(int index);
+            if (t <= this.times[0])
+            {
+                key = 0;
+                dt = 0;
+            }
+            else if (t >= this.times[numSegments])
+            {
+                key = numSegments - 1;
+                dt = this.times[numSegments] - this.times[numSegments - 1];
+            }
+            else
+            {
+                for (int i = 0; i < numSegments; ++i)
+                {
+                    if (t < this.times[i + 1])
+                    {
+                        key = i;
+                        dt = t - this.times[i];
+                        return;
+                    }
+                }
+
+                key = -1;
+                dt = -1;
+            }
+        }
+
+        protected abstract BoundingBox2d GetBoundingBox(int key);
 
         #region private
 
-        private void EnsureLengthsEvaluated()
+        /// <summary>
+        /// Ensures that the lengths and accumulated lengths are initialized.
+        /// </summary>
+        private void EnsureLengthsInitialized()
         {
             if (this.lengths == null)
             {
-                this.EvaluateLengths();
-                Contract.Assert((this.lengths != null) && (this.accLengths != null));
+                this.InitializeLength();
+                Contract.Assert((this.lengths != null) && (this.accumLengths != null));
             }
         }
 
         /// <summary>
-        /// Inicializa las longitudes y la longitudes acumuladas.
+        /// Initializes the lengths and accumulated lengths.
         /// </summary>
-        private void EvaluateLengths()
+        private void InitializeLength()
         {
-            int numSegmentos = this.SegmentsCount;
+            int numSegments = this.NumSegments;
 
-            this.lengths = new double[numSegmentos];
-            this.accLengths = new double[numSegmentos];
+            this.lengths = new double[numSegments];
+            this.accumLengths = new double[numSegments];
 
             // Arc lengths and accumulative arc length of the segments.
-            double longitudAcum = 0;
-            for (int i = 0; i < numSegmentos; i++)
+            double accumLength = 0;
+            for (int i = 0; i < numSegments; i++)
             {
-                double longitud = this.GetLength(i, this.GetTMin(i), this.GetTMax(i));
-                longitudAcum += longitud;
+                double length = this.GetLength(i, 0, this.times[i + 1] - this.times[i]);
+                accumLength += length;
 
-                this.lengths[i] = longitud;
-                this.accLengths[i] = longitudAcum;
+                this.lengths[i] = length;
+                this.accumLengths[i] = accumLength;
             }
         }
 
-        /// <summary>Longitudes.</summary>
+        private readonly double[] times;
+
+        /// <summary>Lengths.</summary>
         private double[] lengths;
 
-        /// <summary>Longitudes acumuladas.</summary>
-        private double[] accLengths;
+        /// <summary>Accumulated lengths.</summary>
+        private double[] accumLengths;
 
         /// <summary>Número máximo de evaluaciones para el cálculo de la integral.</summary>
         private const int IntegralMaxEval = 1000;
@@ -162,66 +214,117 @@ namespace Essence.Geometry.Curves
 
         public virtual double TMin
         {
-            get { return this.GetTMin(0); }
+            get { return this.times[0]; }
         }
 
         public virtual double TMax
         {
-            get { return this.GetTMax(this.SegmentsCount - 1); }
+            get { return this.times[this.NumSegments]; }
         }
 
         public virtual void SetTInterval(double tmin, double tmax)
         {
         }
 
+        public virtual double GetT(double length, int iterations = 32, double tolerance = 1e-06)
+        {
+            int numSegments = this.NumSegments;
+
+            this.EnsureLengthsInitialized();
+
+            if (length <= 0)
+            {
+                return this.TMin;
+            }
+
+            if (length >= this.accumLengths[numSegments - 1])
+            {
+                return this.TMax;
+            }
+
+            //Array.BinarySearch(this.accumLengths, longitud);
+            int key = 0;
+            for (; key < numSegments; key++)
+            {
+                if (length < this.accumLengths[key])
+                {
+                    break;
+                }
+            }
+
+            Debug.Assert(key < numSegments);
+            if (key >= numSegments)
+            {
+                return this.TMax;
+            }
+
+            double len0;
+            if (key == 0)
+            {
+                len0 = length;
+            }
+            else
+            {
+                len0 = length - this.accumLengths[key - 1];
+            }
+            double len1 = this.lengths[key];
+
+            return this.GetTMin(key) + CurveUtils.FindTime(dt => this.GetLength(key, 0, dt), dt => this.GetSpeed(key, dt),
+                                                          0, this.times[key + 1] - this.times[key],
+                                                          len0, len1,
+                                                          iterations, tolerance);
+        }
+
         public virtual Point2d GetPosition(double t)
         {
-            int index;
-            double tInSegment;
-            this.FindIndex(t, out index, out tInSegment);
+            int key;
+            double dt;
+            this.GetKeyInfo(t, out key, out dt);
 
-            return this.GetPosition(index, tInSegment);
+            return this.GetPosition(key, dt);
         }
 
         public virtual Vector2d GetFirstDerivative(double t)
         {
-            int index;
-            double tInSegment;
-            this.FindIndex(t, out index, out tInSegment);
+            int key;
+            double dt;
+            this.GetKeyInfo(t, out key, out dt);
 
-            return this.GetFirstDerivative(index, tInSegment);
+            return this.GetFirstDerivative(key, dt);
         }
 
         public virtual Vector2d GetSecondDerivative(double t)
         {
-            int index;
-            double tInSegment;
-            this.FindIndex(t, out index, out tInSegment);
+            int key;
+            double dt;
+            this.GetKeyInfo(t, out key, out dt);
 
-            return this.GetSecondDerivative(index, tInSegment);
+            return this.GetSecondDerivative(key, dt);
         }
 
         public virtual Vector2d GetThirdDerivative(double t)
         {
-            int index;
-            double tInSegment;
-            this.FindIndex(t, out index, out tInSegment);
+            int key;
+            double dt;
+            this.GetKeyInfo(t, out key, out dt);
 
-            return this.GetThirdDerivative(index, tInSegment);
+            return this.GetThirdDerivative(key, dt);
         }
 
         public virtual double TotalLength
         {
             get
             {
-                this.EnsureLengthsEvaluated();
-                return this.accLengths[this.accLengths.Length - 1];
+                this.EnsureLengthsInitialized();
+                return this.accumLengths[this.accumLengths.Length - 1];
             }
         }
 
         public virtual double GetLength(double t0, double t1)
         {
-            Contract.Assert(t1 >= t0);
+            Debug.Assert(this.TMin <= t0 && t0 <= this.TMax, "Invalid input\n");
+            Debug.Assert(this.TMin <= t1 && t1 <= this.TMax, "Invalid input\n");
+            Debug.Assert(t0 <= t1, "Invalid input\n");
 
             if (t0 < this.TMin)
             {
@@ -233,56 +336,54 @@ namespace Essence.Geometry.Curves
                 t1 = this.TMax;
             }
 
-            this.EnsureLengthsEvaluated();
+            this.EnsureLengthsInitialized();
 
-            int index0, index1;
-            double tInSegment0, tInSegment1;
-            this.FindIndex(t0, out index0, out tInSegment0);
-            this.FindIndex(t1, out index1, out tInSegment1);
+            int key0, key1;
+            double dt0, dt1;
+            this.GetKeyInfo(t0, out key0, out dt0);
+            this.GetKeyInfo(t1, out key1, out dt1);
 
-            double longitud;
-            if (index0 != index1)
+            double length;
+            if (key0 != key1)
             {
                 // Add on partial first segment.
-                longitud = this.GetLength(index0, tInSegment0, this.GetTMax(index0));
+                length = this.GetLength(key0, dt0, this.times[key0 + 1] - this.times[key0]);
 
                 // NOTA: mas eficiente utilizar accLengths!
                 // Accumulate full-segment lengths.
-                for (int i = index0 + 1; i < index1; i++)
+                for (int i = key0 + 1; i < key1; i++)
                 {
-                    longitud += this.lengths[i];
+                    length += this.lengths[i];
                 }
 
                 // Add on partial last segment.
-                if (index1 < this.SegmentsCount)
-                {
-                    longitud += this.GetLength(index1, this.GetTMin(index1), tInSegment1);
-                }
+                //if (key1 < this.NumSegments)
+                length += this.GetLength(key1, 0, dt1);
             }
             else
             {
-                longitud = this.GetLength(index0, tInSegment0, tInSegment1);
+                length = this.GetLength(key0, dt0, dt1);
             }
 
-            return longitud;
+            return length;
         }
 
         public virtual double GetSpeed(double t)
         {
-            int index;
-            double tInSegment;
-            this.FindIndex(t, out index, out tInSegment);
+            int key;
+            double dt;
+            this.GetKeyInfo(t, out key, out dt);
 
-            return this.GetSpeed(index, tInSegment);
+            return this.GetSpeed(key, dt);
         }
 
         public virtual double GetCurvature(double t)
         {
-            int index;
-            double tInSegment;
-            this.FindIndex(t, out index, out tInSegment);
+            int key;
+            double dt;
+            this.GetKeyInfo(t, out key, out dt);
 
-            return this.GetCurvature(index, tInSegment);
+            return this.GetCurvature(key, dt);
         }
 
         public virtual Vector2d GetTangent(double t)
@@ -292,20 +393,20 @@ namespace Essence.Geometry.Curves
 
         public virtual Vector2d GetLeftNormal(double t)
         {
-            int index;
-            double tInSegment;
-            this.FindIndex(t, out index, out tInSegment);
+            int key;
+            double dt;
+            this.GetKeyInfo(t, out key, out dt);
 
-            return this.GetLeftNormal(index, tInSegment);
+            return this.GetLeftNormal(key, dt);
         }
 
-        public virtual void GetFrame(double t, ref Point2d position, ref Vector2d tangent, ref Vector2d normal)
+        public virtual void GetFrame(double t, out Point2d position, out Vector2d tangent, out Vector2d normal)
         {
-            int index;
-            double tInSegment;
-            this.FindIndex(t, out index, out tInSegment);
+            int key;
+            double dt;
+            this.GetKeyInfo(t, out key, out dt);
 
-            this.GetFrame(index, tInSegment, ref position, ref tangent, ref normal);
+            this.GetFrame(key, dt, out position, out tangent, out normal);
         }
 
         public BoundingBox2d BoundingBox
@@ -313,8 +414,10 @@ namespace Essence.Geometry.Curves
             get
             {
                 BoundingBox2d boundingBox = BoundingBox2d.Empty;
-                for (int i = 0; i < this.SegmentsCount; i++)
+                for (int i = 0; i < this.NumSegments; i++)
+                {
                     boundingBox = boundingBox.Union(this.GetBoundingBox(i));
+                }
                 return boundingBox;
             }
         }

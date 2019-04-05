@@ -15,19 +15,27 @@
 using Essence.Geometry.Core.Double;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using Essence.Util.Math.Double;
 
 namespace Essence.Geometry.Curves
 {
     public class ComposedCurve2 : MultiCurve2
     {
+        public ComposedCurve2(IEnumerable<ICurve2> segments)
+            : base(EvaluateTimes(segments))
+        {
+            foreach (ICurve2 segment in segments)
+            {
+                segment.SetTInterval(0, segment.TMax - segment.TMin);
+                this.segments.Add(segment);
+            }
+        }
+
         public IEnumerable<ICurve2> GetSegments()
         {
             return this.segments;
         }
 
-        public void Add(ICurve2 curve)
+        /*public void Add(ICurve2 curve)
         {
             if (this.segments.Count == 0)
             {
@@ -41,7 +49,7 @@ namespace Essence.Geometry.Curves
                 curve.SetTInterval(tmin, tmin + tlen);
                 this.segments.Add(curve);
             }
-        }
+        }*/
 
         public void SetClosed(bool closed)
         {
@@ -50,104 +58,105 @@ namespace Essence.Geometry.Curves
 
         #region MultiCurve2
 
-        public override int SegmentsCount
+        /*public override int NumSegments
         {
             get { return this.segments.Count; }
         }
 
-        public override double GetTMin(int indice)
+        public override double GetTMin(int key)
         {
             if (this.segments.Count == 0)
             {
                 return 0;
             }
-            return this.segments[indice].TMin;
+            return this.segments[key].TMin;
         }
 
-        public override double GetTMax(int indice)
+        public override double GetTMax(int key)
         {
             if (this.segments.Count == 0)
             {
                 return 0;
             }
-            return this.segments[indice].TMax;
-        }
+            return this.segments[key].TMax;
+        }*/
 
         #region Position and derivatives
 
-        protected override Point2d GetPosition(int index, double tInSegment)
+        protected override Point2d GetPosition(int key, double dt)
         {
-            return this.segments[index].GetPosition(tInSegment);
+            return this.segments[key].GetPosition(dt);
         }
 
-        protected override Vector2d GetFirstDerivative(int index, double tInSegment)
+        protected override Vector2d GetFirstDerivative(int key, double dt)
         {
-            return this.segments[index].GetFirstDerivative(tInSegment);
+            return this.segments[key].GetFirstDerivative(dt);
         }
 
-        protected override Vector2d GetSecondDerivative(int index, double tInSegment)
+        protected override Vector2d GetSecondDerivative(int key, double dt)
         {
-            return this.segments[index].GetSecondDerivative(tInSegment);
+            return this.segments[key].GetSecondDerivative(dt);
         }
 
-        protected override Vector2d GetThirdDerivative(int index, double tInSegment)
+        protected override Vector2d GetThirdDerivative(int key, double dt)
         {
-            return this.segments[index].GetThirdDerivative(tInSegment);
+            return this.segments[key].GetThirdDerivative(dt);
         }
 
         #endregion
 
         #region Differential geometric quantities
 
-        protected override double GetLength(int index, double tInSegment0, double tInSegment1)
+        protected override double GetLength(int key, double dt0, double dt1)
         {
-            return this.segments[index].GetLength(tInSegment0, tInSegment1);
+            return this.segments[key].GetLength(dt0, dt1);
         }
 
-        protected override double GetSpeed(int index, double tInSegment)
+        protected override double GetSpeed(int key, double dt)
         {
-            return this.segments[index].GetSpeed(tInSegment);
+            return this.segments[key].GetSpeed(dt);
         }
 
-        protected override Vector2d GetTangent(int index, double tInSegment)
+        protected override Vector2d GetTangent(int key, double dt)
         {
-            return this.segments[index].GetTangent(tInSegment);
+            return this.segments[key].GetTangent(dt);
         }
 
-        protected override Vector2d GetLeftNormal(int index, double tInSegment)
+        protected override Vector2d GetLeftNormal(int key, double dt)
         {
-            return this.segments[index].GetLeftNormal(tInSegment);
+            return this.segments[key].GetLeftNormal(dt);
         }
 
-        protected override void GetFrame(int index, double tInSegment, ref Point2d position, ref Vector2d tangent, ref Vector2d normal)
+        protected override void GetFrame(int key, double dt,
+                                         out Point2d position, out Vector2d tangent, out Vector2d normal)
         {
-            this.segments[index].GetFrame(tInSegment, ref position, ref tangent, ref normal);
+            this.segments[key].GetFrame(dt, out position, out tangent, out normal);
         }
 
-        protected override double GetCurvature(int index, double tInSegment)
+        protected override double GetCurvature(int key, double dt)
         {
-            return this.segments[index].GetCurvature(tInSegment);
+            return this.segments[key].GetCurvature(dt);
         }
 
         #endregion
 
-        protected override void FindIndex(double t, out int index, out double tInSegment)
+        /*protected override void GetKeyInfo(double t, out int key, out double dt)
         {
-            index = this.segments.BinarySearch(new CurveForSearch(t), CurveComparer.Instance);
-            if (index < 0)
+            key = this.segments.BinarySearch(new CurveForSearch(t), CurveComparer.Instance);
+            if (key < 0)
             {
-                index = ~index;
-                index--;
+                key = ~key;
+                key--;
             }
-            index = Essence.Util.Math.Int.MathUtils.Clamp(index, 0, this.segments.Count - 1);
-            Contract.Assert(t.EpsilonL(this.TMin) || t.EpsilonG(this.TMax) || (t.EpsilonGE(this.GetTMin(index)) && t.EpsilonLE(this.GetTMax(index))));
+            key = Essence.Util.Math.Int.MathUtils.Clamp(key, 0, this.segments.Count - 1);
+            Contract.Assert(t.EpsilonL(this.TMin) || t.EpsilonG(this.TMax) || (t.EpsilonGE(this.GetTMin(key)) && t.EpsilonLE(this.GetTMax(key))));
 
-            tInSegment = t;
-        }
+            dt = t;
+        }*/
 
-        protected override BoundingBox2d GetBoundingBox(int indice)
+        protected override BoundingBox2d GetBoundingBox(int key)
         {
-            return this.segments[indice].BoundingBox;
+            return this.segments[key].BoundingBox;
         }
 
         #endregion
@@ -162,6 +171,18 @@ namespace Essence.Geometry.Curves
         #endregion
 
         #region private
+
+        private static IEnumerable<double> EvaluateTimes(IEnumerable<ICurve2> segments)
+        {
+            double t = 0;
+            yield return t;
+
+            foreach (ICurve2 curve in segments)
+            {
+                t += curve.TMax - curve.TMin;
+                yield return t;
+            }
+        }
 
         private bool closed = false;
         private readonly List<ICurve2> segments = new List<ICurve2>();
@@ -192,7 +213,7 @@ namespace Essence.Geometry.Curves
                 get { throw new NotImplementedException(); }
             }
 
-            public double TMin { get; private set; }
+            public double TMin { get; }
 
             double ICurve2.TMax
             {
@@ -200,6 +221,11 @@ namespace Essence.Geometry.Curves
             }
 
             void ICurve2.SetTInterval(double tmin, double tmax)
+            {
+                throw new NotImplementedException();
+            }
+
+            double ICurve2.GetT(double length, int iterations, double tolerance)
             {
                 throw new NotImplementedException();
             }
@@ -254,7 +280,7 @@ namespace Essence.Geometry.Curves
                 throw new NotImplementedException();
             }
 
-            void ICurve2.GetFrame(double t, ref Point2d position, ref Vector2d tangent, ref Vector2d normal)
+            void ICurve2.GetFrame(double t, out Point2d position, out Vector2d tangent, out Vector2d normal)
             {
                 throw new NotImplementedException();
             }

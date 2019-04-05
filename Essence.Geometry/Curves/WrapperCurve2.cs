@@ -45,6 +45,11 @@ namespace Essence.Geometry.Curves
             this.curve.SetTInterval(tmin, tmax);
         }
 
+        public virtual double GetT(double length, int iterations = 32, double tolerance = 1e-06)
+        {
+            return this.curve.GetT(length, iterations, tolerance);
+        }
+
         public virtual Point2d GetPosition(double t)
         {
             return this.curve.GetPosition(t);
@@ -95,9 +100,9 @@ namespace Essence.Geometry.Curves
             return this.curve.GetLeftNormal(t);
         }
 
-        public virtual void GetFrame(double t, ref Point2d position, ref Vector2d tangent, ref Vector2d leftNormal)
+        public virtual void GetFrame(double t, out Point2d position, out Vector2d tangent, out Vector2d leftNormal)
         {
-            this.curve.GetFrame(t, ref position, ref tangent, ref leftNormal);
+            this.curve.GetFrame(t, out position, out tangent, out leftNormal);
         }
 
         public virtual BoundingBox2d BoundingBox

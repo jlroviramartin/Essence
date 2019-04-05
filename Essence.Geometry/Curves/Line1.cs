@@ -58,7 +58,7 @@ namespace Essence.Geometry.Curves
 
         #endregion
 
-        #region ICurve2
+        #region ICurve1
 
         public override double TMin
         {

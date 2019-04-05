@@ -71,7 +71,7 @@ namespace Essence.Geometry.Curves
             {
                 TimeList times = new TimeList();
                 MultiCurve2 multi = (MultiCurve2)curve;
-                for (int i = 0; i < multi.SegmentsCount; i++)
+                for (int i = 0; i < multi.NumSegments; i++)
                 {
                     double tmin = multi.GetTMin(i);
                     double tmax = multi.GetTMax(i);
@@ -112,7 +112,7 @@ namespace Essence.Geometry.Curves
             {
                 TimeList times = new TimeList();
                 MultiCurve1 multi = (MultiCurve1)curve;
-                for (int i = 0; i < multi.SegmentsCount; i++)
+                for (int i = 0; i < multi.NumSegments; i++)
                 {
                     double tmin = multi.GetTMin(i);
                     double tmax = multi.GetTMax(i);

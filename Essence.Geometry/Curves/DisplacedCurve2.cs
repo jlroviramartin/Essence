@@ -77,6 +77,95 @@ namespace Essence.Geometry.Curves
             this.displacement.SetTInterval(tmin, tmax);
         }
 
+        public virtual double GetT(double length, int iterations, double tolerance)
+        {
+            if (length <= 0)
+            {
+                return this.TMin;
+            }
+
+            if (length >= this.TotalLength)
+            {
+                return this.TMax;
+            }
+
+            // If L(t) is the length function for t in [tmin,tmax], the derivative is
+            // L'(t) = |x'(t)| >= 0 (the magnitude of speed).  Therefore, L(t) is a
+            // nondecreasing function (and it is assumed that x'(t) is zero only at
+            // isolated points; that is, no degenerate curves allowed).  The second
+            // derivative is L"(t).  If L"(t) >= 0 for all t, L(t) is a convex
+            // function and Newton's method for root finding is guaranteed to
+            // converge.  However, L"(t) can be negative, which can lead to Newton
+            // iterates outside the domain [tmin,tmax].  The algorithm here avoids
+            // this problem by using a hybrid of Newton's method and bisection.
+
+            // Initial guess for Newton's method.
+            double ratio = length / this.TotalLength;
+            double oneMinusRatio = 1 - ratio;
+            double t = oneMinusRatio * this.TMin + ratio * this.TMax;
+
+            // Initial root-bounding interval for bisection.
+            double lower = this.TMin, upper = this.TMax;
+
+            for (int i = 0; i < iterations; ++i)
+            {
+                double difference = this.GetLength(this.TMin, t) - length;
+                if (SysMath.Abs(difference) < tolerance)
+                {
+                    // |L(t)-length| is close enough to zero, report t as the time
+                    // at which 'length' is attained.
+                    return t;
+                }
+
+                // Generate a candidate for Newton's method.
+                double tCandidate = t - difference / this.GetSpeed(t);
+
+                // Update the root-bounding interval and test for containment of the
+                // candidate.
+                if (difference > 0)
+                {
+                    upper = t;
+                    if (tCandidate <= lower)
+                    {
+                        // Candidate is outside the root-bounding interval.  Use
+                        // bisection instead.
+                        t = 0.5 * (upper + lower);
+                    }
+                    else
+                    {
+                        // There is no need to compare to 'upper' because the tangent
+                        // line has positive slope, guaranteeing that the t-axis
+                        // intercept is smaller than 'upper'.
+                        t = tCandidate;
+                    }
+                }
+                else
+                {
+                    lower = t;
+                    if (tCandidate >= upper)
+                    {
+                        // Candidate is outside the root-bounding interval.  Use
+                        // bisection instead.
+                        t = 0.5 * (upper + lower);
+                    }
+                    else
+                    {
+                        // There is no need to compare to 'lower' because the tangent
+                        // line has positive slope, guaranteeing that the t-axis
+                        // intercept is larger than 'lower'.
+                        t = tCandidate;
+                    }
+                }
+            }
+
+            // A root was not found according to the specified number of iterations
+            // and tolerance.  You might want to increase iterations or tolerance or
+            // integration accuracy.  However, in this application it is likely that
+            // the time values are oscillating, due to the limited numerical
+            // precision of 32-bit floats.  It is safe to use the last computed time.
+            return t;
+        }
+
         #region Position and derivatives
 
         public virtual Point2d GetPosition(double t)
@@ -226,7 +315,7 @@ namespace Essence.Geometry.Curves
             return this.GetTangent(t).PerpLeft;
         }
 
-        public virtual void GetFrame(double t, ref Point2d position, ref Vector2d tangent, ref Vector2d leftNormal)
+        public virtual void GetFrame(double t, out Point2d position, out Vector2d tangent, out Vector2d leftNormal)
         {
             position = this.GetPosition(t);
             tangent = this.GetTangent(t);

@@ -23,10 +23,10 @@ namespace Essence.Geometry.Curves
 {
     public class PolynomialCurve1 : SimpleCurve1
     {
-        public PolynomialCurve1(Polynomial poly, double t0, double t1)
+        public PolynomialCurve1(Polynomial poly, double hlen, double t0, double t1)
         {
             this.poly = poly;
-
+            this.hlen = hlen;
             this.SetTInterval(t0, t1);
         }
 
@@ -75,6 +75,7 @@ namespace Essence.Geometry.Curves
         private Transform1 ttransform;
 
         private readonly Polynomial poly;
+        private readonly double hlen;
         private Polynomial poly1;
         private Polynomial poly2;
         private Polynomial poly3;
@@ -97,7 +98,7 @@ namespace Essence.Geometry.Curves
         {
             this.tmin = tmin;
             this.tmax = tmax;
-            this.ttransform = new Transform1(this.tmin, this.tmax, 0, this.tmax - this.tmin);
+            this.ttransform = new Transform1(this.tmin, this.tmax, 0, this.hlen);
         }
 
         public override double GetPosition(double t)
@@ -128,21 +129,25 @@ namespace Essence.Geometry.Curves
         {
             get
             {
-                Func<int, Func<double, double>> nthf = (Func<int, Func<double, double>>)(i => new Func<double, double>(this.GetPoly(i + 1).Evaluate));
+                Func<int, Func<double, double>> nthf = (i => this.GetPoly(i + 1).Evaluate);
                 double t0L1 = this.GetT0L(this.TMin);
                 double t0L2 = this.GetT0L(this.TMax);
                 int maxzeros = this.poly.Degree - 1;
                 List<double> doubleList = new List<double>();
-                Solver.SolveMulti(nthf, t0L1, t0L2, maxzeros, (IList<double>)doubleList, Solver.Type.Brent, 1000);
+                Solver.SolveMulti(nthf, t0L1, t0L2, maxzeros, doubleList, Solver.Type.Brent, 1000);
                 double xMin = double.MaxValue;
                 double xMax = double.MinValue;
                 foreach (double x in doubleList)
                 {
                     double num = this.GetPoly(0).Evaluate(x);
                     if (num < xMin)
+                    {
                         xMin = num;
+                    }
                     if (num > xMax)
+                    {
                         xMax = num;
+                    }
                 }
                 return new BoundingBox1d(xMin, xMax);
             }

@@ -26,6 +26,8 @@ namespace Essence.Geometry.Curves
 
         void SetTInterval(double tmin, double tmax);
 
+        double GetT(double length, int iterations = 32, double tolerance = 1e-06);
+
         #region Position and derivatives
 
         Point2d GetPosition(double t);
@@ -52,7 +54,7 @@ namespace Essence.Geometry.Curves
 
         Vector2d GetLeftNormal(double t);
 
-        void GetFrame(double t, ref Point2d position, ref Vector2d tangent, ref Vector2d leftNormal);
+        void GetFrame(double t, out Point2d position, out Vector2d tangent, out Vector2d leftNormal);
 
         #endregion
 

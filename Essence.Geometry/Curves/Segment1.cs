@@ -63,7 +63,7 @@ namespace Essence.Geometry.Curves
 
         #endregion
 
-        #region Curve2
+        #region ICurve1
 
         public override double TMin
         {
