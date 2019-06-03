@@ -17,6 +17,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Drawing;
+using System.Drawing.Imaging;
 using Essence.Geometry.Core.Byte;
 
 namespace Essence.Geometry.Images
