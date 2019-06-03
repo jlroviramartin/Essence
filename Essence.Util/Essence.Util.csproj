@@ -12,12 +12,10 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-
     <OutputPath>..\bin\$(Configuration)</OutputPath>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
     <BaseIntermediateOutputPath>$(OutputPath)\out\$(AssemblyName)\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(OutputPath)\Int\$(AssemblyName)\$(Configuration)\</IntermediateOutputPath>
-
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,10 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\BaseCollection.cs" />
+    <Compile Include="Collections\BaseDictionary.cs" />
+    <Compile Include="Collections\BaseList.cs" />
     <Compile Include="Collections\CircularList.cs" />
     <Compile Include="Collections\DictionaryUtils.cs" />
     <Compile Include="Collections\RangeList.cs" />
     <Compile Include="Collections\ShiftedList.cs" />
+    <Compile Include="Collections\TransformCollection.cs" />
+    <Compile Include="Collections\TransformEnumerator.cs" />
+    <Compile Include="Collections\TransformList.cs" />
     <Compile Include="Converters\IParseable.cs" />
     <Compile Include="Converters\ICustomParser.cs" />
     <Compile Include="EmptyServiceProvider.cs" />
@@ -136,6 +140,8 @@
     <Compile Include="ProviderUtils.cs" />
     <Compile Include="Converters\StringConverter.cs" />
     <Compile Include="RandomUtils.cs" />
+    <Compile Include="Reflection\MethodInfoUtils.cs" />
+    <Compile Include="Reflection\TypeUtils.cs" />
     <Compile Include="Services\EmptyServiceProvider.cs" />
     <Compile Include="Services\JoinServiceProvider.cs" />
     <Compile Include="Services\MapServiceProvider.cs" />

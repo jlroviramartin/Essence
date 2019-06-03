@@ -49,14 +49,17 @@
   <ItemGroup>
     <Compile Include="Algorithms\PolylineSimplification.cs" />
     <Compile Include="ClipperLib\clipper.cs" />
+    <Compile Include="Core\Double\BoundingBox1d.cs" />
     <Compile Include="Core\Double\BoundingBox3d.cs" />
     <Compile Include="Core\Double\Quaternion.cs" />
     <Compile Include="Core\Double\RectangleUtils.cs" />
     <Compile Include="Core\Double\Transform3Matrix.cs" />
+    <Compile Include="Core\IColorConvertible.cs" />
     <Compile Include="Core\ITransform3.cs" />
     <Compile Include="Core\Light.cs" />
     <Compile Include="Core\Transform3Identity.cs" />
     <Compile Include="Core\Transform3.cs" />
+    <Compile Include="Curves\ArcDirection.cs" />
     <Compile Include="Curves\BaseCircle2.cs" />
     <Compile Include="Curves\Circle2.cs" />
     <Compile Include="Curves\CircleArc2.cs" />
@@ -65,6 +68,7 @@
     <Compile Include="Curves\ComposedCurve1.cs" />
     <Compile Include="Curves\ComposedCurve2.cs" />
     <Compile Include="Curves\CurveEvaluator2.cs" />
+    <Compile Include="Curves\CurveUtils.cs" />
     <Compile Include="Curves\DisplacedCurve2.cs" />
     <Compile Include="Curves\ICurve1.cs" />
     <Compile Include="Curves\ICurve2.cs" />
@@ -79,6 +83,8 @@
     <Compile Include="Curves\Segment2.cs" />
     <Compile Include="Curves\SimpleCurve1.cs" />
     <Compile Include="Curves\SimpleCurve2.cs" />
+    <Compile Include="Curves\WrapperCurve1.cs" />
+    <Compile Include="Curves\WrapperCurve2.cs" />
     <Compile Include="Distances\DistPointSegment2.cs" />
     <Compile Include="Distances\IDistance.cs" />
     <Compile Include="Geom2D\IPolyEnumerator.cs" />
@@ -91,6 +97,11 @@
     <Compile Include="Graphics\PathUtils.cs" />
     <Compile Include="Graphics\SegmentType.cs" />
     <Compile Include="Graphics\WindingRule.cs" />
+    <Compile Include="Images\FastImage1D.cs" />
+    <Compile Include="Images\FastImage2D.cs" />
+    <Compile Include="Images\ImageType.cs" />
+    <Compile Include="Maths\DelegateDifferentiableUnivariateFunction.cs" />
+    <Compile Include="Maths\DelegateUnivariateFunction.cs" />
     <Compile Include="Maths\Double\AngleUtils.cs" />
     <Compile Include="Core\Double\BoundingBox2d.cs" />
     <Compile Include="Core\Double\BoundingBox2dUtils.cs" />
@@ -99,6 +110,7 @@
     <Compile Include="Core\Double\Rectangle2d.cs" />
     <Compile Include="Core\Int\BoundingBox2i.cs" />
     <Compile Include="Core\Int\BoundingBox2iUtils.cs" />
+    <Compile Include="Maths\Double\FresnelUtils.cs" />
     <Compile Include="Maths\Double\Transform1.cs" />
     <Compile Include="Core\Transform2.cs" />
     <Compile Include="Core\Transform2Identity.cs" />
@@ -120,31 +132,33 @@
     <Compile Include="Intersection\IntrLine2dLine2d.cs" />
     <Compile Include="Intersection\IntrPoint2.cs" />
     <Compile Include="Intersection\IntrSegment2dSegment2d.cs" />
+    <Compile Include="Maths\Integrator.cs" />
+    <Compile Include="Maths\Solver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Prueba.cs" />
     <Compile Include="Prueba2.cs" />
-    <Compile Include="WavefrontFormat.cs" />
-    <Compile Include="WavefrontFormatGDIUtils.cs" />
-    <Compile Include="WavefrontFormatUtils.cs" />
+    <Compile Include="Wave\WavefrontColor.cs" />
+    <Compile Include="Wave\WavefrontFormat.cs" />
+    <Compile Include="Wave\WavefrontFormatGDIUtils.cs" />
+    <Compile Include="Wave\WavefrontFormatUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Byte\" />
     <Folder Include="Core\Float\" />
-    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Essence.Geometry.Core\Essence.Geometry.Core.csproj">
       <Project>{678c7b81-7bf4-4053-995b-8320b810efaa}</Project>
       <Name>Essence.Geometry.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Essence.Math\Essence.Math.csproj">
-      <Project>{F63167B4-F34F-4096-92E4-5D6F7889A43E}</Project>
-      <Name>Essence.Math</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Essence.Util\Essence.Util.csproj">
       <Project>{8ef57341-1971-4217-baf9-2aa8993e5285}</Project>
       <Name>Essence.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\org.apache.commons.math3_3.6.1\org.apache.commons.math3_3.6.1.csproj">
+      <Project>{dff459dc-5096-4dfd-ac21-d23d39a422b5}</Project>
+      <Name>org.apache.commons.math3_3.6.1</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
