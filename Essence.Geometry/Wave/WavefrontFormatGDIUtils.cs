@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using Essence.Geometry.Core.Double;
 using Essence.Maths.Double;
+using Essence.Geometry.Wave;
 
 namespace Essence.Geometry
 {

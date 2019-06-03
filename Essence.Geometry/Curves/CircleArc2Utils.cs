@@ -63,10 +63,14 @@ namespace Essence.Geometry.Curves
             if (dir == ArcDirection.Clockwise)
             {
                 if (angle2 > angle1)
+                {
                     angle2 -= 2.0 * System.Math.PI;
+                }
             }
             else if (angle2 < angle1)
+            {
                 angle2 += 2.0 * System.Math.PI;
+            }
             if (angle2 > 2.0 * System.Math.PI)
             {
                 angle1 -= 2.0 * System.Math.PI;
