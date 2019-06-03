@@ -172,7 +172,7 @@ namespace Essence.Util.Math.Float
         {
             //return (System.Math.Abs(v2 - v1) <= epsilon);
             // Resuelve las comparaciones con PositiveInfinity / NegativeInfinity.
-            if (v2 > v1)
+            if (v1 < v2)
             {
                 return v2 <= v1 + epsilon;
             }
@@ -191,11 +191,22 @@ namespace Essence.Util.Math.Float
         /// <returns>Comparacion.</returns>
         public static int EpsilonCompareTo(this float v1, float v2, float epsilon = EPSILON)
         {
-            if (v1.EpsilonEquals(v2, epsilon))
+            if (v1 < v2)
             {
-                return 0;
+                if (v2 <= v1 + epsilon)
+                {
+                    return 0;
+                }
+                return -1;
             }
-            return v1.CompareTo(v2);
+            else
+            {
+                if (v1 <= v2 + epsilon)
+                {
+                    return 0;
+                }
+                return +1;
+            }
         }
 
         /// <summary>

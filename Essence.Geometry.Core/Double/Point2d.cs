@@ -252,8 +252,17 @@ namespace Essence.Geometry.Core.Double
         /// <returns></returns>
         public static LineSide WhichSide(Point2d a, Point2d b, Point2d p, double epsilon)
         {
-            double v = ((b.X - a.X) * (p.Y - a.Y) - (b.Y - a.Y) * (p.X - a.X));
-            return (MathUtils.EpsilonEquals(v, 0, epsilon) ? LineSide.Middle : (v < 0 ? LineSide.Right : LineSide.Left));
+            switch (MathUtils.EpsilonCompareTo((b.X - a.X) * (p.Y - a.Y), (b.Y - a.Y) * (p.X - a.X), epsilon))
+            {
+                case -1:
+                    return LineSide.Right;
+                case 0:
+                    return LineSide.Middle;
+                case 1:
+                    return LineSide.Left;
+                default:
+                    throw new IndexOutOfRangeException();
+            }
         }
 
         /// <summary>
