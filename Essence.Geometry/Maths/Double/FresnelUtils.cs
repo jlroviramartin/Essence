@@ -14,6 +14,7 @@
 
 using System;
 using SysMath = System.Math;
+using static System.Math;
 
 namespace Essence.Maths.Double
 {
@@ -77,7 +78,7 @@ namespace Essence.Maths.Double
             double f, g, cc, ss, c, s, t, u;
             double x, x2;
 
-            x = SysMath.Abs(z);
+            x = Abs(z);
             x2 = x * x;
 
             if (x2 < 2.5625)
@@ -96,16 +97,16 @@ namespace Essence.Maths.Double
                 // Asymptotic power series auxiliary functions
                 // for large argument
                 x2 = x * x;
-                t = SysMath.PI * x2;
+                t = PI * x2;
                 u = 1.0 / (t * t);
                 t = 1.0 / t;
                 f = 1.0 - u * polevl(u, fn, 9) / p1evl(u, fd, 10);
                 g = t * polevl(u, gn, 10) / p1evl(u, gd, 11);
 
-                t = SysMath.PI * 0.5 * x2;
-                c = SysMath.Cos(t);
-                s = SysMath.Sin(t);
-                t = SysMath.PI * x;
+                t = PI * 0.5 * x2;
+                c = Cos(t);
+                s = Sin(t);
+                t = PI * x;
                 cc = 0.5 + (f * s - g * c) / t;
                 ss = 0.5 - (f * c + g * s) / t;
             }
@@ -125,9 +126,9 @@ namespace Essence.Maths.Double
         /// </summary>
         public static void DFresnel(double z, out double sz, out double cz, int i = 1)
         {
-            double zz = (SysMath.PI / 2) * z * z;
-            double s = SysMath.Sin(zz);
-            double c = SysMath.Cos(zz);
+            double zz = (PI / 2) * z * z;
+            double s = Sin(zz);
+            double c = Cos(zz);
 
             switch (i)
             {
@@ -137,7 +138,7 @@ namespace Essence.Maths.Double
                     return;
                 case 2:
                 {
-                    double PI_z = SysMath.PI * z;
+                    double PI_z = PI * z;
 
                     sz = PI_z * c;
                     cz = -PI_z * s;
@@ -147,8 +148,8 @@ namespace Essence.Maths.Double
                 {
                     double PI_e2_z2 = PI_e2 * z * z;
 
-                    sz = SysMath.PI * c - PI_e2_z2 * s;
-                    cz = -SysMath.PI * s - PI_e2_z2 * c;
+                    sz = PI * c - PI_e2_z2 * s;
+                    cz = -PI * s - PI_e2_z2 * c;
                     return;
                 }
                 case 4:
@@ -199,19 +200,19 @@ namespace Essence.Maths.Double
         /// </summary>
         public static double DFresnelS(double z, int i = 1)
         {
-            double zz = (SysMath.PI / 2) * z * z;
+            double zz = (PI / 2) * z * z;
             switch (i)
             {
                 case 1:
-                    return SysMath.Sin(zz);
+                    return Sin(zz);
                 case 2:
-                    return SysMath.PI * z * SysMath.Cos(zz);
+                    return PI * z * Cos(zz);
                 case 3:
-                    return SysMath.PI * SysMath.Cos(zz) - PI_e2 * z * z * SysMath.Sin(zz);
+                    return PI * Cos(zz) - PI_e2 * z * z * Sin(zz);
                 case 4:
-                    return -3 * PI_e2 * z * SysMath.Sin(zz) - PI_e3 * z * z * z * SysMath.Cos(zz);
+                    return -3 * PI_e2 * z * Sin(zz) - PI_e3 * z * z * z * Cos(zz);
                 case 5:
-                    return -3 * PI_e2 * SysMath.Sin(zz) - 6 * PI_e3 * z * z * SysMath.Cos(zz) + PI_e4 * z * z * z * z * SysMath.Sin(zz);
+                    return -3 * PI_e2 * Sin(zz) - 6 * PI_e3 * z * z * Cos(zz) + PI_e4 * z * z * z * z * Sin(zz);
             }
             throw new NotImplementedException();
         }
@@ -221,19 +222,19 @@ namespace Essence.Maths.Double
         /// </summary>
         public static double DFresnelC(double z, int i = 1)
         {
-            double zz = (SysMath.PI / 2) * z * z;
+            double zz = (PI / 2) * z * z;
             switch (i)
             {
                 case 1:
-                    return SysMath.Cos(zz);
+                    return Cos(zz);
                 case 2:
-                    return -SysMath.PI * z * SysMath.Sin(zz);
+                    return -PI * z * Sin(zz);
                 case 3:
-                    return -SysMath.PI * SysMath.Sin(zz) - PI_e2 * z * z * SysMath.Cos(zz);
+                    return -PI * Sin(zz) - PI_e2 * z * z * Cos(zz);
                 case 4:
-                    return -3 * PI_e2 * z * SysMath.Cos(zz) + PI_e3 * z * z * z * SysMath.Sin(zz);
+                    return -3 * PI_e2 * z * Cos(zz) + PI_e3 * z * z * z * Sin(zz);
                 case 5:
-                    return -3 * PI_e2 * SysMath.Cos(zz) + 6 * PI_e3 * z * z * SysMath.Sin(zz) + PI_e4 * z * z * z * z * SysMath.Cos(zz);
+                    return -3 * PI_e2 * Cos(zz) + 6 * PI_e3 * z * z * Sin(zz) + PI_e4 * z * z * z * z * Cos(zz);
             }
             throw new NotImplementedException();
         }
@@ -242,6 +243,7 @@ namespace Essence.Maths.Double
 
         /* S(x) for small x */
 
+        /** S(x) for small x numerator. */
         private static readonly double[] sn =
         {
             -2.99181919401019853726E3,
@@ -252,6 +254,7 @@ namespace Essence.Maths.Double
             3.18016297876567817986E11,
         };
 
+        /** S(x) for small x denominator. */
         private static readonly double[] sd =
         {
             /* 1.00000000000000000000E0,*/
@@ -265,6 +268,7 @@ namespace Essence.Maths.Double
 
         /* C(x) for small x */
 
+        /** C(x) for small x numerator. */
         private static readonly double[] cn =
         {
             -4.98843114573573548651E-8,
@@ -275,6 +279,7 @@ namespace Essence.Maths.Double
             9.99999999999999998822E-1,
         };
 
+        /** C(x) for small x denominator. */
         private static readonly double[] cd =
         {
             3.99982968972495980367E-12,
@@ -288,6 +293,7 @@ namespace Essence.Maths.Double
 
         /* Auxiliary function f(x) */
 
+        /** Auxiliary function f(x) numerator. */
         private static readonly double[] fn =
         {
             4.21543555043677546506E-1,
@@ -302,6 +308,7 @@ namespace Essence.Maths.Double
             3.76329711269987889006E-20,
         };
 
+        /** Auxiliary function f(x) denominator. */
         private static readonly double[] fd =
         {
             /*  1.00000000000000000000E0,*/
@@ -319,6 +326,7 @@ namespace Essence.Maths.Double
 
         /* Auxiliary function g(x) */
 
+        /** Auxiliary function g(x) numerator. */
         private static readonly double[] gn =
         {
             5.04442073643383265887E-1,
@@ -334,6 +342,7 @@ namespace Essence.Maths.Double
             1.86958710162783235106E-22,
         };
 
+        /** Auxiliary function g(x) denominator. */
         private static readonly double[] gd =
         {
             /*  1.00000000000000000000E0,*/
@@ -350,10 +359,16 @@ namespace Essence.Maths.Double
             1.86958710162783236342E-22,
         };
 
-        private const double PI_e2 = SysMath.PI * SysMath.PI;
-        private const double PI_e3 = PI_e2 * SysMath.PI;
-        private const double PI_e4 = PI_e3 * SysMath.PI;
+        private const double PI_e2 = PI * PI;
+        private const double PI_e3 = PI_e2 * PI;
+        private const double PI_e4 = PI_e3 * PI;
 
+        /**
+         * Compute a polynomial in x.
+         * @param x double; x
+         * @param coef double[]; coefficients
+         * @return polynomial in x
+         */
         private static double polevl(double x, double[] coef, int n)
         {
             double ans;
@@ -376,6 +391,12 @@ namespace Essence.Maths.Double
             return ans;
         }
 
+        /**
+         * Compute a polynomial in x.
+         * @param x double; x
+         * @param coef double[]; coefficients
+         * @return polynomial in x
+         */
         private static double p1evl(double x, double[] coef, int n)
         {
             double ans;

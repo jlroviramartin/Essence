@@ -251,11 +251,11 @@ namespace Essence.Geometry.Core.Double
         ///   |        _/
         ///   |      _/
         ///   |    _/ __
-        ///   |  _/   |\ angulo +
+        ///   |  _/   |\ angulo + CCW
         ///   |_/       |
         /// --+------------> X
         /// origen      |
-        ///   |   \_  |/  angulo -
+        ///   |   \_  |/  angulo - CW
         ///   |     \_|--
         ///   |       \_
         ///   |         \_
@@ -272,15 +272,15 @@ namespace Essence.Geometry.Core.Double
 
         /// <summary>
         /// Evaluates the angle of <c>other</c> vector with respect to <code>this</code> vector.
-        /// Es positivo si el giro es sentido horario [0, PI].
-        /// Es negativo si el giro es sentido anti-horario [-PI, 0].
+        /// Es positivo si el giro es sentido anti-horario [0, PI].
+        /// Es negativo si el giro es sentido horario [-PI, 0].
         /// <pre><![CDATA[
         ///               __
         ///              _/| other
         ///            _/
         ///          _/
         ///        _/ __
-        ///      _/   |\ angulo +
+        ///      _/   |\ angulo + CCW
         ///    _/       |
         ///   +          |
         /// origen      |
@@ -340,7 +340,7 @@ namespace Essence.Geometry.Core.Double
 
         /// <summary>
         /// Dot product of <code>this</code> and the perpendicular vector to the right of <c>v2</c> (dotPerp).
-        /// returns DotPerp((x,y),(V.x,V.y)) = Dot((x,y),PerpRight(v)) = x*V.y - y*V.x
+        /// returns DotPerp((v1.x, v1.y), (v2.x, v2.y)) = Dot((v1.x, v1.y), PerpRight(v2)) = v1.x*v2.y - v1.y*v2.x
         /// NOTA: It is the same as the cross product.
         /// </summary>
         [Pure]

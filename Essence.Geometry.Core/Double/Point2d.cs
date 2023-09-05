@@ -175,19 +175,19 @@ namespace Essence.Geometry.Core.Double
 
         /// <summary>
         /// Evaluates the angle of <c>p2 - 0</c> with respect to <c>p1 - 0</c>.
-        /// Es positivo si el giro es sentido horario [0, PI].
-        /// Es negativo si el giro es sentido anti-horario [-PI, 0].
+        /// Es positivo si el giro es sentido anti-horario [0, PI].
+        /// Es negativo si el giro es sentido horario [-PI, 0].
         /// <pre><![CDATA[
         ///               __
         ///              _/| p2
         ///            _/
         ///          _/
         ///        _/ __
-        ///      _/   |\ angulo +
+        ///      _/   |\ angulo + CCW
         ///    _/       |
         ///   +--------------------> p1
         /// Origin      |
-        ///       \_  |/  angulo -
+        ///       \_  |/  angulo - CW
         ///         \_|--
         ///           \_
         ///             \_

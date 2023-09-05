@@ -16,7 +16,8 @@ using System;
 using System.Diagnostics;
 using Essence.Geometry.Core.Double;
 using Essence.Util.Math.Double;
-using SysMath = System.Math;
+using static Essence.Maths.Double.FresnelUtils;
+using static System.Math;
 
 /// <summary>
 /// Clothoid
@@ -85,15 +86,15 @@ namespace Essence.Maths.Double
             Func<double, double> f = (a) =>
             {
                 double fs1, fc1;
-                FresnelUtils.Fresnel(a / (r1 * sqrtpi), out fs1, out fc1);
+                Fresnel(a / (r1 * sqrtpi), out fs1, out fc1);
 
                 double fs2, fc2;
-                FresnelUtils.Fresnel(a / (r2 * sqrtpi), out fs2, out fc2);
+                Fresnel(a / (r2 * sqrtpi), out fs2, out fc2);
 
                 double fc21 = (fc2 - fc1);
                 double fs21 = (fs2 - fs1);
 
-                return a * a * SysMath.PI * (fc21 * fc21 + fs21 * fs21) - len * len;
+                return a * a * PI * (fc21 * fc21 + fs21 * fs21) - len * len;
             };
 
             int maxEval = 50; // 30
@@ -101,7 +102,7 @@ namespace Essence.Maths.Double
             try
             {
                 double min = 0;
-                double max = SysMath.Min(SysMath.Abs(r1), SysMath.Abs(r2)) * MAX_L;
+                double max = Min(Abs(r1), Abs(r2)) * MAX_L;
                 return Solver.Solve(f, min, max, Solver.Type.Brent, Solver.DEFAULT_ABSOLUTE_ACCURACY, maxEval);
             }
             catch (Exception e)
@@ -198,7 +199,7 @@ namespace Essence.Maths.Double
             double a_sqrtpi = a * sqrtpi;
 
             double fs, fc;
-            FresnelUtils.Fresnel(s / a_sqrtpi, out fs, out fc);
+            Fresnel(s / a_sqrtpi, out fs, out fc);
 
             x = a_sqrtpi * fc;
             y = a_sqrtpi * fs;
@@ -230,9 +231,9 @@ namespace Essence.Maths.Double
             {
                 radius = (a * a / s);
 
-                if (SysMath.Abs(radius) >= MAX_RADIUS)
+                if (Abs(radius) >= MAX_RADIUS)
                 {
-                    radius = SysMath.Sign(radius) * double.PositiveInfinity;
+                    radius = Sign(radius) * double.PositiveInfinity;
                 }
             }
 
@@ -249,9 +250,9 @@ namespace Essence.Maths.Double
         public static double ClothoL(double r, bool invertY, double a)
         {
             double l;
-            if (SysMath.Abs(r) >= MAX_RADIUS)
+            if (Abs(r) >= MAX_RADIUS)
             {
-                //r = SysMath.Sign(r) * double.PositiveInfinity;
+                //r = Sign(r) * double.PositiveInfinity;
                 l = 0;
             }
             else
@@ -273,7 +274,7 @@ namespace Essence.Maths.Double
         public static double FindTangent(bool invertY, double a, Vector2d v)
         {
             int ysign = (invertY ? -1 : 1);
-            return SysMath.Sqrt(2 * a * a * SysMath.Atan2(ysign * v.Y, v.X));
+            return Sqrt(2 * a * a * Atan2(ysign * v.Y, v.X));
         }
 
         /// <summary>
@@ -284,12 +285,12 @@ namespace Essence.Maths.Double
         {
             if (invertY)
             {
-                tg = 2 * SysMath.PI - tg;
+                tg = 2 * PI - tg;
             }
 
             tg = AngleUtils.Ensure0To2Pi(tg, true);
 
-            double dl = SysMath.Sqrt(2 * a * a * tg);
+            double dl = Sqrt(2 * a * a * tg);
             return dl;
         }
 
@@ -346,8 +347,8 @@ namespace Essence.Maths.Double
              */
             double s2_2a2 = (s * s) / (2 * a * a);
 
-            x = SysMath.Cos(s2_2a2);
-            y = SysMath.Sin(s2_2a2);
+            x = Cos(s2_2a2);
+            y = Sin(s2_2a2);
 
             if (invertY)
             {
@@ -372,8 +373,8 @@ namespace Essence.Maths.Double
 
             double s_s2 = s / (a * a);
 
-            x = -SysMath.Sin(s2_2a2) * s_s2;
-            y = SysMath.Cos(s2_2a2) * s_s2;
+            x = -Sin(s2_2a2) * s_s2;
+            y = Cos(s2_2a2) * s_s2;
 
             if (invertY)
             {
@@ -395,8 +396,8 @@ namespace Essence.Maths.Double
              *    cos( s^2 / (2 * a^2) ) / a^2 - sin( s^2 / (2 * a^2) ) * s^2 / a^4 ]
              */
             double s2_2a2 = (s * s) / (2 * a * a);
-            double sin = SysMath.Sin(s2_2a2);
-            double cos = SysMath.Cos(s2_2a2);
+            double sin = Sin(s2_2a2);
+            double cos = Cos(s2_2a2);
 
             double a2 = a * a;
             double one_a2 = 1 / a2;
@@ -428,7 +429,7 @@ namespace Essence.Maths.Double
         /// <summary>Valor de corte para el desarrollo de la clotoide.</summary>
         internal const double MAX_L = 2.23; // sqrt(5)
 
-        private static readonly double sqrtpi = SysMath.Sqrt(SysMath.PI);
+        private static readonly double sqrtpi = Sqrt(PI);
 
         #endregion
     }

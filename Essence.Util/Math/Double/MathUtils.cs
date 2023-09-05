@@ -243,52 +243,52 @@ namespace Essence.Util.Math.Double
         /// Comprueba si el valor <c>v</c> es mayor o igual que un minimo con un error.
         /// <![CDATA[(min - error) <= v]]>
         /// </summary>
-        /// <param name="v">Valor a comprobar.</param>
-        /// <param name="min">Minimo.</param>
+        /// <param name="v1">Valor a comprobar.</param>
+        /// <param name="v2">Minimo.</param>
         /// <param name="epsilon">Error.</param>
         /// <returns>Indica si el valor es mayor que el minimo.</returns>
-        public static bool EpsilonGE(this double v, double min, double epsilon = EPSILON)
+        public static bool EpsilonGE(this double v1, double v2, double epsilon = EPSILON)
         {
-            return ((min - epsilon) <= v);
+            return (v1 >= (v2 - epsilon));
         }
 
         /// <summary>
         /// Comprueba si el valor <c>v</c> es extrictamente mayor que un minimo con un error.
         /// <![CDATA[(min + error) < v]]>
         /// </summary>
-        /// <param name="v">Valor a comprobar.</param>
-        /// <param name="min">Minimo.</param>
+        /// <param name="v1">Valor a comprobar.</param>
+        /// <param name="v2">Minimo.</param>
         /// <param name="epsilon">Error.</param>
         /// <returns>Indica si el valor es mayor que el minimo.</returns>
-        public static bool EpsilonG(this double v, double min, double epsilon = EPSILON)
+        public static bool EpsilonG(this double v1, double v2, double epsilon = EPSILON)
         {
-            return ((min + epsilon) < v);
+            return (v1 > (v2 + epsilon));
         }
 
         /// <summary>
         /// Comprueba si el valor <c>v</c> es extrictamente menor que un maximo con un error.
         /// <![CDATA[v < (max - error)]]>
         /// </summary>
-        /// <param name="v">Valor a comprobar.</param>
-        /// <param name="max">Maximo.</param>
+        /// <param name="v1">Valor a comprobar.</param>
+        /// <param name="v2">Maximo.</param>
         /// <param name="epsilon">Error.</param>
         /// <returns>Indica si el valor es menor que el maximo.</returns>
-        public static bool EpsilonL(this double v, double max, double epsilon = EPSILON)
+        public static bool EpsilonL(this double v1, double v2, double epsilon = EPSILON)
         {
-            return (v < (max - epsilon));
+            return (v1 < (v2 - epsilon));
         }
 
         /// <summary>
         /// Comprueba si el valor <c>v</c> es menor o igual que un maximo con un error.
         /// <![CDATA[v <= (max + error)]]>
         /// </summary>
-        /// <param name="v">Valor a comprobar.</param>
-        /// <param name="max">Maximo.</param>
+        /// <param name="v1">Valor a comprobar.</param>
+        /// <param name="v2">Maximo.</param>
         /// <param name="epsilon">Error.</param>
         /// <returns>Indica si el valor es menor que el maximo.</returns>
-        public static bool EpsilonLE(this double v, double max, double epsilon = EPSILON)
+        public static bool EpsilonLE(this double v1, double v2, double epsilon = EPSILON)
         {
-            return (v <= (max + epsilon));
+            return (v1 <= (v2 + epsilon));
         }
 
         /// <summary>

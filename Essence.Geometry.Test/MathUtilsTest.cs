@@ -94,5 +94,69 @@ namespace Essence.Geometry
                 Assert.IsTrue(c1.EpsilonEquals(c2));
             }
         }
+
+        [TestMethod]
+        public void Test4()
+        {
+            Assert.IsFalse(0.0.EpsilonEquals(1));
+            Assert.IsTrue(0.0.EpsilonEquals(0.01, 0.1));
+            Assert.IsTrue(0.0.EpsilonEquals(0.0));
+            Assert.IsTrue(0.0.EpsilonEquals(-0.01, 0.1));
+            Assert.IsFalse(0.0.EpsilonEquals(-1));
+            Assert.IsFalse(0.0.EpsilonEquals(double.PositiveInfinity));
+            Assert.IsFalse(0.0.EpsilonEquals(double.NegativeInfinity));
+            Assert.IsTrue(double.PositiveInfinity.EpsilonEquals(double.PositiveInfinity));
+            Assert.IsFalse(double.PositiveInfinity.EpsilonEquals(double.NegativeInfinity));
+            Assert.IsFalse(double.NegativeInfinity.EpsilonG(double.PositiveInfinity));
+            Assert.IsTrue(double.NegativeInfinity.EpsilonEquals(double.NegativeInfinity));
+
+            Assert.IsFalse(0.0.EpsilonG(1));
+            Assert.IsFalse(0.0.EpsilonG(0.01, 0.1));
+            Assert.IsFalse(0.0.EpsilonG(0.0));
+            Assert.IsFalse(0.0.EpsilonG(-0.01, 0.1));
+            Assert.IsTrue(0.0.EpsilonG(-1));
+            Assert.IsFalse(0.0.EpsilonG(double.PositiveInfinity));
+            Assert.IsTrue(0.0.EpsilonG(double.NegativeInfinity));
+            Assert.IsFalse(double.PositiveInfinity.EpsilonG(double.PositiveInfinity));
+            Assert.IsTrue(double.PositiveInfinity.EpsilonG(double.NegativeInfinity));
+            Assert.IsFalse(double.NegativeInfinity.EpsilonG(double.PositiveInfinity));
+            Assert.IsFalse(double.NegativeInfinity.EpsilonG(double.NegativeInfinity));
+
+            Assert.IsFalse(0.0.EpsilonGE(1));
+            Assert.IsTrue(0.0.EpsilonGE(0.01, 0.1));
+            Assert.IsTrue(0.0.EpsilonGE(0.0));
+            Assert.IsTrue(0.0.EpsilonGE(-0.01, 0.1));
+            Assert.IsTrue(0.0.EpsilonGE(-1));
+            Assert.IsFalse(0.0.EpsilonGE(double.PositiveInfinity));
+            Assert.IsTrue(0.0.EpsilonGE(double.NegativeInfinity));
+            Assert.IsTrue(double.PositiveInfinity.EpsilonGE(double.NegativeInfinity));
+            Assert.IsTrue(double.PositiveInfinity.EpsilonGE(double.PositiveInfinity));
+            Assert.IsFalse(double.NegativeInfinity.EpsilonGE(double.PositiveInfinity));
+            Assert.IsTrue(double.NegativeInfinity.EpsilonGE(double.NegativeInfinity));
+
+            Assert.IsTrue(0.0.EpsilonL(1));
+            Assert.IsFalse(0.0.EpsilonL(0.01, 0.1));
+            Assert.IsFalse(0.0.EpsilonL(0.0));
+            Assert.IsFalse(0.0.EpsilonL(-0.01, 0.1));
+            Assert.IsFalse(0.0.EpsilonL(-1));
+            Assert.IsTrue(0.0.EpsilonL(double.PositiveInfinity));
+            Assert.IsFalse(0.0.EpsilonL(double.NegativeInfinity));
+            Assert.IsFalse(double.PositiveInfinity.EpsilonL(double.PositiveInfinity));
+            Assert.IsFalse(double.PositiveInfinity.EpsilonL(double.NegativeInfinity));
+            Assert.IsTrue(double.NegativeInfinity.EpsilonL(double.PositiveInfinity));
+            Assert.IsFalse(double.NegativeInfinity.EpsilonL(double.NegativeInfinity));
+
+            Assert.IsTrue(0.0.EpsilonLE(1));
+            Assert.IsTrue(0.0.EpsilonLE(0.01, 0.1));
+            Assert.IsTrue(0.0.EpsilonLE(0.0));
+            Assert.IsTrue(0.0.EpsilonLE(-0.01, 0.1));
+            Assert.IsFalse(0.0.EpsilonLE(-1));
+            Assert.IsTrue(0.0.EpsilonLE(double.PositiveInfinity));
+            Assert.IsFalse(0.0.EpsilonLE(double.NegativeInfinity));
+            Assert.IsTrue(double.PositiveInfinity.EpsilonLE(double.PositiveInfinity));
+            Assert.IsFalse(double.PositiveInfinity.EpsilonLE(double.NegativeInfinity));
+            Assert.IsTrue(double.NegativeInfinity.EpsilonLE(double.PositiveInfinity));
+            Assert.IsTrue(double.NegativeInfinity.EpsilonLE(double.NegativeInfinity));
+        }
     }
 }
